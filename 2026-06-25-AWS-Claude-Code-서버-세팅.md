@@ -49,7 +49,7 @@ tags:
 - [x] Git 전역 사용자 정보 설정 — `markjang29` / GitHub noreply 이메일
 - [x] `~/notes` 원격 저장소 연결 (`github.com/markjang29/notes`)
 - [x] 프로젝트 저장소 초기 세팅 (`autotrader`, `rpg_game`)
-- [ ] **GitHub push용 인증(PAT) 설정** — 현재 미인증, push 대기중
+- [x] **GitHub 인증 완료** — classic PAT 저장(credential helper), 3개 저장소 push 성공 (2026-06-25)
 - [ ] Android Obsidian 에서 `notes` 동기화 세팅
 - [ ] 프로젝트별 기술스택 확정 (autotrader: Python? / rpg_game: 엔진?)
 - [ ] `~/scripts` 에 서버 관리/운영 스크립트 추가
