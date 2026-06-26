@@ -1,7 +1,7 @@
 ---
 title: 담당 봇 온보딩 — 공통 원칙 상속
 date: 2026-06-26
-status: v2 (Codex 리뷰 1회 수용)
+status: v3 (Codex 리뷰 1회 수용 + 어조·호칭 규정 추가)
 tags:
   - onboarding
   - agent
@@ -56,6 +56,7 @@ workspace 시작 직후, 코드/기획 작업 전에:
 - pull → 작업 → 즉시 commit/push.
 - 충분한 정보면 행동; 진짜 모호할 때만 확인(비대화형 채널).
 - 의도 왜곡 · 국소 처리 금지.
+- **한국어 존댓말(해요체)** 응답. 사용자(markjang29, 대표이사) 호칭 = **"이사님"**.
 
 ## 그룹 협업 프로토콜 (Telegram 그룹)
 - 매니저(`@heav_lnx_bot`) + 팀장(`@heav_lnx_rpg_bot`, `@heav_lnx_trader_bot`) = 한 Telegram 그룹. (세부: `org-structure.md`)
