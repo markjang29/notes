@@ -51,6 +51,12 @@ tags:
 - 충분한 정보면 행동; 진짜 모호할 때만 확인(비대화형 채널).
 - 의도 왜곡 · 국소 처리 금지.
 
+## 그룹 협업 프로토콜 (Telegram 그룹)
+- 매니저(`@heav_lnx`) + 팀장(`@heav_lnx_rpg`, `@heav_lnx_trader`) = 한 Telegram 그룹. (세부: `org-structure.md`)
+- **매니저 주도**: `@팀장`으로 task 배정 · `;` 전체 공지 · 진행 보고 수집.
+- **팀장은 mention 수신 시에만 응답** — contextlevel `0`, 자기 `@mention` / `;` / `/query`만 처리 (토큰 절약, `context-budget.md`).
+- 결정·공지는 그룹(실시간) + `~/notes`(ADR·work-queue, 영구) 양쪽에 남긴다.
+
 ## 메모리
 - 공통 원칙/지식 = `~/notes` (이곳).
 - 세션 학습 = 각 봇 메모리 → `~/notes/memory`(후보 → 사용자 승인 → 승격).
