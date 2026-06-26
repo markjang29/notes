@@ -5,6 +5,23 @@
 
 ## 활성 작업
 
+### 🔥 autotrader: 라오어 기반 알고리즘 전략 세미나 — 2026-06-26 ★NEW
+- **이사님 지시:** "이 프로젝트는 알고리즘 전략이 중요. 라오어 미국주식 무한매매법 찾아보고 비슷한 이론 세미나부터. 팀원 의견 취합 → 좋은 이론 제안."
+- **완료:** 라오어 이론 조사 + 직원 2명 병렬(알고리즘화/학술 · 유사이론/위험, 검색 1회씩 절제) → 취합 세미나 초안 `notes/.reviews/seminar-raoer-20260626-01.md` (+ 상세 2건).
+- **핵심 통찰:** 라오어의 진짜 엣지 = "행동편향 회피(기계적 분할매수)". **자동매매화 순간 엣지 증발** → 순수 베타+레짐 노출만 잔존(자동화의 역설). 단독 비추천.
+- **팀 추천(하이브리드):** 라오어 분할매수 뼈대(현물 1배, TQQQ 배제) + VAA/DAA 레짔 필터(강세만 매수·현금대피 킬스위치) + 주간/월간 빈도 완화(비용절감) + DRIP.
+- **대기:** 이사님 방향 결정 — (a) 라오어 단독 / (b) 하이브리드★ / (c) 타 방향 / (d) 추가 조사 → **ADR**.
+- **진행(이사님 지시 '백테스트 프로그램 착수'):** 스택 ADR(`decisions/2026-06-26-autotrader-backtest-stack.md`: Python+pandas 경량) + 전략 스펙 v1(`autotrader/strategy-spec-v1.md`) + 백테스트 엔진 구축 완료(`autotrader/backtest/`, venv `~/.venvs/autotrader`). 데이터= yfinance(QQQ·SHV 2010-26). **첫 결과:** 하이브리드 MDD -16%(방어 입증) but 수익 +82% vs B&H +1678%(우상향장 현금비중 발목). 레짔필터 과민(7회 전환). 다음 실험 대기 — (a) 파라미터 튜닝 / (b)★ 비중 슬라이드 개량 / (c) 타 전략.
+- **v1과 관계:** 충돌 아님(방향중립 차익 vs 방향성). 공존 가능 — v1 백본 + 전략 모듈.
+
+### ✅ [확정] 걷기×전술 RPG 컨셉 수렴 — 2026-06-26
+- **상태:** 컨셉(1안) 확정. 내러티브 디테일은 **작가 검증 대기**(메커니즘은 확정, 스토리는 위임).
+- **확정:** 걷기=입장재화(**3겹 캡**: 입장권 로그캡·하루 N판·**걷기→전투력 0기여**) + 동기화 전술 PvP + 지역 PvE + 캐릭터 로맨스(A안) + 진영 분기(성별 무관). P2W 자원 판매 0.
+- **폐기:** 비동기 위치 영토 PvP/공성/술래잡기(위치 기반) — 구조적 불가(Codex 판정).
+- **문서:** 수렴안 `projects/rpg_game/ideation/06-concept-convergence.md` · 원안 `05-user-idea-walking-fitness-rpg.md` · 회의록 `meetings/2026-06-26-rpg-walking-rpg-ideation.md` · 검증 7건 `.reviews/walking-rpg-*-20260626-01.md`.
+- **인계(다음 세션 `--session 113cf6f8-…2d9be7`):** (1) 내러티브 작가 검증 위임 (2) 엔진 ADR(Godot 권장) (3) 시그니처 CIPHER/RUMOR 결합 여부 (4) MVP 범위.
+- **검증 루프:** 2라운드 완료(3+2 에이전트 + Codex + 웹) → 사용자 확정 수령.
+
 ### 아이디에이션 v1 — 사용자 1차 리뷰 완료 (2026-06-26)
 - **RPG** — `/home/ubuntu/projects/rpg_game/IDEATION.md` + `ideation/{01-research,02-mechanics,03-themes,04-genrehybrid}.md`. 파일 전달 완료.
 - **trader** — `/home/ubuntu/projects/autotrader/IDEATION.md` + `notes/.reviews/ideation-{market,strategy,infra,risk}-20260626-01.md`. 파일 전달 완료.
