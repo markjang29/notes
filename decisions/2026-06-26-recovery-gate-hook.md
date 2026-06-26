@@ -11,7 +11,7 @@ tags:
 # ADR — /clear 후 복구 강제 게이트
 
 ## 상태
-accepted (사용자 승인 후 적용, 재발 검증 대기)
+verified (2026-06-26 /clear 후 실제 검증 통과)
 
 ## 날짜
 2026-06-26
@@ -50,7 +50,7 @@ accepted (사용자 승인 후 적용, 재발 검증 대기)
 - [x] 스크립트 단위 4케이스: 주입/통과/fail-closed 차단/DISABLE 우회.
 - [x] 스코프 4케이스: 매니저 cwd→주입+.ok / 팀장 cwd→no-op(주입·차단 없음).
 - [x] settings.json JSON valid, 기존 Stop/env/plugins 보존.
-- [ ] **실제 /clear 후 첫 응답이 akl0hdys 3경로 명시** (사용자 검증 대기).
+- [x] **실제 /clear 후 첫 응답이 akl0hdys 3경로 명시** (2026-06-26 검증 통과 — 세션 `8b32551e`에서 주입 메모리만으로 매니저/팀장/v2 방향/대기결정 파악, 제로상태 답변 재발 없음).
 
 ## 실패 / 복구 과정
 - Codex 1차안이 복구 파일 경로를 틀림(`/home/ubuntu/.cokacdir/workspace/akl0hdys/`에 파일 없음) → 그대로 적용 시 fail-closed 전면 발동 브리킹. 실제 경로(`~/.claude/projects/.../akl0hdys/memory/`)로 수정.
