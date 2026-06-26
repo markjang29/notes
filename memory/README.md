@@ -8,12 +8,19 @@
 - 규칙: 자동 저장은 '후보'로만 들어온다. AI 초안·자동 캡처는 사용자 승인 전까지 지식이 아니다 (`ai-dev-신념.md` §7 작성모델과 정합).
 
 ## 자동 저장 — memory-tick (운영 규칙)
+
+> **현재 상태 (2026-06-26): 부분 구현.**
+> - ✅ memory-tick 스킬 + `stop-hook-throttle.sh` 작성, **Stop hook을 `~/.claude/settings.json`에 등록** (다음 세션 stop 이벤트에서 실제 발화 검증 필요).
+> - ⏸ **`autoMemoryDirectory`(Obsidian 일원화)는 보류** — Codex 검증 결과 키 케이스/위치 문제 + 기존 메모리(`.claude/projects/.../memory`) 충돌 리스크. 작동 미검증이라 안전하게 보류.
+> - 빌트인 자율 메모리는 현재 경로에서 작동 중.
+> 아래는 목표 운영 규칙.
+
 저장은 모델의 자율 판단(빌트인)에만 맡기지 않는다. **stop-hook 기반 강제 발화**로 저장 판단을 트리거한다.
 
 - **메커니즘:** `stop-hook-throttle.sh`가 일정 경과마다 훅 메시지로 찔러주면, tick 스킬이 해당 구간을 돌아보고 저장 여부를 판단.
 - **트리거 시점:** 텔레그램 reply 후, 사용자와 직접 대화한 턴 이후.
 - **명시 트리거:** "기억해 / 저장해줘" 요청에도 활성화. 명시 호출 불필요.
-- **저장소 일원화:** `.claude/settings.local.json`의 `automemorydirectory`가 Obsidian 경로를 가리키도록 설정 → 빌트인(자율)과 tick(stop 훅 강제, 독립 실행) 두 경로 모두 같은 저장소로.
+- **저장소 (목표 / 현재 보류):** `autoMemoryDirectory`로 Obsidian `~/notes/memory` 일원화가 목표. **현재 보류** — 키 작동 미검증 + 기존 `.claude/projects/.../memory` 충돌 리스크. 지금은 빌트인 자율 메모리가 기존 경로에서 작동.
 - **빌트인 vs tick:** 빌트인=시스템 프롬프트 자율 판단 지침, tick=stop 훅 강제 발화 독립 장치. 기억은 모델의 선의에만 맡기지 않는다.
 
 ## 실패·예외 시나리오
