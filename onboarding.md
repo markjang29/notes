@@ -12,8 +12,14 @@ tags:
 
 > 프로젝트별 담당 봇(RPG, autotrader, 향후 추가)은 **모두 같은 원칙 체계(사칙)** 를 이어받는다. 프로젝트가 달라도 사칙은 같다. 이 파일은 글로벌 `CLAUDE.md`가 가리키는 진입점 — 모든 봇이 첫 세션에 읽는다.
 
+## 0단계 — workspace 시작 (선행, 필수)
+역할 확인 직후 가장 먼저 `/start <작업 디렉토리>`로 세션(workspace)을 연다.
+- RPG 팀장: `/start /home/ubuntu/projects/rpg_game`
+- trader 팀장: `/start /home/ubuntu/projects/autotrader`
+- workspace가 없으면 "No active session" — 파일 읽기·작업이 전부 막힌다. **이 단계를 건너뛰지 말 것.**
+
 ## 첫 세션 의무 읽기 (모든 담당 봇)
-역할 확인 직후, 코드/기획 작업 전에:
+workspace 시작 직후, 코드/기획 작업 전에:
 1. `agent-rules.md` — **어떻게**(실행 절차·루프·메모리)
 2. `principles/ai-dev-신념.md` — **왜**(판단 기준, 7장 · 부채 3종 · 검증 루프 · 의도 보존)
 3. `personas/markjang29.md` — **판단 대리 기준**(완성 판정 · 위험도 · 정지 프로토콜 · 리뷰 판정)
