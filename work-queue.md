@@ -26,7 +26,8 @@
 - **팀장:** `@heav_lnx_scenario_bot` → `/home/ubuntu/projects/scenario` (github.com/markjang29/scenario).
 - **역할(이사님 확정 06-30):** 캐릭터 챗(character.ai류)처럼 — 세계관·캐릭터가 상호작용 속에서 **자생적으로 생성·운영**되는 독립 시나리오 생태계. **RPG 세계관과는 분리**(RPG 세계관은 RPG 팀 소유, 이관 없음).
 - **소스:** 이사님 윈도우 PC 정리 중(진행 중) → scenario repo로 push 예정. **현재 repo 비어있음**(이사님 push 대기) → 매니저/팀장은 초기화 금지, push 후 작업.
-- **첫 지시(시나리오 팀장):** (1) 온보딩 사칙 인증 (2) 이사님 소스 push 대기 + 자생 세계관 설계 방향 구상.
+- **설계 원칙(codex 검토 · 이사님 승인 06-30):** 시나리오 팀 = **"상태를 가진 자생 서사 시스템"** 운영팀(일반 작가팀 아님). 산출 = "이야기"가 아니라 "운영 가능한 세계 상태". 초기 설계 반영: (1) canonical 기록 체계(ADR 외 별도 — world state · character memory · canon policy · event log · retcon log) (2) 상태 라이프사이클 draft→observed→canon→deprecated→retconned (3) 캐릭터별 목표·금기·말투 제약 + 재사용 우선 정책 (4) 평가지표(충돌률·반복률·구분성·retcon 빈도) (5) RPG와 초기 완전 분리, 공유는 ADR 수출 절차(제한 자산만).
+- **첫 지시(시나리오 팀장):** (1) 온보딩 사칙 인증 (2) 위 프레임워크 기반 자생 세계관 시스템 초기 설계 draft(notes) + 이사님 소스 push 대기.
 
 ### 아이디에이션 v1 → v2 대기
 - 산출: RPG `projects/rpg_game/IDEATION.md`(+ideation/), trader `projects/autotrader/IDEATION.md`(+`notes/.reviews/`).
