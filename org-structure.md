@@ -17,6 +17,7 @@ tags:
 - **총 매니저 봇 `@heav_lnx_bot`** (이 봇) — 조율·보고·회의 정리·ADR support·쿼터 감시.
 - **RPG 팀장 봇 `@heav_lnx_rpg_bot`** — 프로젝트 실행 + subagent 직원.
 - **trader 팀장 봇 `@heav_lnx_trader_bot`** — 프로젝트 실행 + subagent 직원.
+- **시나리오 팀장 봇 `@heav_lnx_scenario_bot`** — 게임과 **구분된 독립 시나리오/세계관** 작업(데이팅 앱 등) + subagent 직원. repo `~/projects/scenario`. 2026-06-30 신설.
 - (향후 팀장 추가 시 동일 패턴)
 
 ## 운영 사이클 (매니저 주도)
@@ -27,7 +28,7 @@ tags:
 
 ## 메시지 프로토콜 (cokacdir 그룹)
 - `@heav_lnx_bot <...>` — 사용자→매니저 지시/질문.
-- `@heav_lnx_rpg_bot <...>` / `@heav_lnx_trader_bot <...>` — 매니저→팀장 task 배정 (또는 사용자 직접).
+- `@heav_lnx_rpg_bot <...>` / `@heav_lnx_trader_bot <...>` / `@heav_lnx_scenario_bot <...>` — 매니저→팀장 task 배정 (또는 사용자 직접).
 - `;<...>` — 전체 브로드캐스트 (사칙 변경 등 공지).
 - `/query@봇 <...>` — 특정 봇 쿼리.
 
@@ -48,7 +49,7 @@ tags:
 - **영구 기록·인계·결정(ADR)·큐** → `~/notes` (`work-queue.md`, `decisions/`, `.reviews/`).
 
 ## 체크리스트
-- [x] 봇 ID: 매니저 `@heav_lnx_bot`, RPG `@heav_lnx_rpg_bot`, trader `@heav_lnx_trader_bot`
+- [x] 봇 ID: 매니저 `@heav_lnx_bot`, RPG `@heav_lnx_rpg_bot`, trader `@heav_lnx_trader_bot`, 시나리오 `@heav_lnx_scenario_bot`
 - [x] 그룹 채팅 생성 + 봇 초대
 - [ ] BotFather 프라이버시모드 off (각 봇 `/setprivacy` → Disable) — 확인 필요
 - [ ] 그룹에서 `/contextlevel` 설정 (매니저 8 / 팀장 0)

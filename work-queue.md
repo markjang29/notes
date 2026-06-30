@@ -1,7 +1,8 @@
 # Work Queue — markjang29 dev
 
 > 매니저(`@heav_lnx_bot`)가 관리. 활성 작업 · 대기 결정 · 다음 스텝. 마무리/새 작업 시 갱신.
-> 최근 갱신: 2026-06-30 08:40 — **529(1M 유령 세션) 해결**: reaper 스크립트+crontab 배포. `decisions/2026-06-30-session-reaper.md`. 이사님 "재연결 시 풀 로그 읽기"는 역효과(1M 재폭발)로 채택 안 함 → 체크포인트 요약으로 대체.
+> 최근 갱신: 2026-06-30 14:10 — **시나리오 팀 신설**: `@heav_lnx_scenario_bot` → `~/projects/scenario`. 게임과 구분된 독립 시나리오/세계관(데이팅 앱 등). org-structure·onboarding·본 큐 갱신.
+> (이전 06-30 08:40 — **529 해결**: reaper 스크립트+crontab 배포. `decisions/2026-06-30-session-reaper.md`.)
 
 ## 활성 작업
 
@@ -20,6 +21,13 @@
 - **폐기:** 비동기 위치 영토 PvP/공성(구조적 불가, Codex 판정).
 - **문서:** `projects/rpg_game/ideation/06-concept-convergence.md`(+원안 05·회의록·검증 7건 `.reviews/`).
 - **인계(다음 세션):** (1) 내러티브 작가 검증 (2) 엔진 ADR(Godot 권장) (3) CIPHER/RUMOR 결합 (4) MVP 범위.
+
+### 🆕 시나리오 팀 — 게임과 구분된 독립 시나리오/세계관 (2026-06-30 신설)
+- **팀장:** `@heav_lnx_scenario_bot` → `/home/ubuntu/projects/scenario` (github.com/markjang29/scenario).
+- **역할:** 게임(RPG 등)과 **구분**. 데이팅 앱 등 독립 시나리오 영역. 세계관·캐릭터·내러티브 자산 구축 → 다른 프로젝트가 참고.
+- **소스:** 이사님 윈도우 PC 정리 중인 시나리오 소스 → scenario repo로 정리 예정. **현재 repo 비어있음**(이사님 push 대기) → 매니저/팀장은 초기화 금지, push 후 작업.
+- **첫 지시(시나리오 팀장):** (1) 온보딩 사칙 인증 (2) 이사님 소스 push 대기 + 역할 범위 브레인스토밍 draft.
+- **RPG와 교차점(이사님 확인 필요):** RPG 내러티브(로맨스 A안·진영 분기·세계관) 자산을 시나리오 팀 주도로 가져올지 논의. 메커니즘은 RPG 확정, 내러티브 자산은 시나리오 팀 후보.
 
 ### 아이디에이션 v1 → v2 대기
 - 산출: RPG `projects/rpg_game/IDEATION.md`(+ideation/), trader `projects/autotrader/IDEATION.md`(+`notes/.reviews/`).
@@ -52,6 +60,6 @@
 3. 쿼터/검색 장애 대응 → `decisions/2026-06-26-quota-checkpoint-resume.md`.
 
 ## 세션 노트 (요약)
-- 매니저 사칙 인증 완료. 팀장 2명 repo 바인딩(rpg_game·autotrader).
+- 매니저 사칙 인증 완료. 팀장 3명 repo 바인딩(rpg_game·autotrader·scenario).
 - 핸들 `_bot` 접미사 수정(commit bc4d04b).
 - 이슈: 병렬 검색 과다 → search -429/529 → ADR 대응.

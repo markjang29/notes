@@ -16,6 +16,7 @@ tags:
 역할 확인 직후 가장 먼저 `/start <작업 디렉토리>`로 세션(workspace)을 연다.
 - RPG 팀장: `/start /home/ubuntu/projects/rpg_game`
 - trader 팀장: `/start /home/ubuntu/projects/autotrader`
+- 시나리오 팀장: `/start /home/ubuntu/projects/scenario`
 - workspace가 없으면 "No active session" — 파일 읽기·작업이 전부 막힌다. **이 단계를 건너뛰지 말 것.**
 
 ## 첫 세션 의무 읽기 (모든 담당 봇)
@@ -59,7 +60,7 @@ workspace 시작 직후, 코드/기획 작업 전에:
 - **한국어 존댓말(해요체)** 응답. 사용자(markjang29, 대표이사) 호칭 = **"이사님"**.
 
 ## 그룹 협업 프로토콜 (Telegram 그룹)
-- 매니저(`@heav_lnx_bot`) + 팀장(`@heav_lnx_rpg_bot`, `@heav_lnx_trader_bot`) = 한 Telegram 그룹. (세부: `org-structure.md`)
+- 매니저(`@heav_lnx_bot`) + 팀장(`@heav_lnx_rpg_bot`, `@heav_lnx_trader_bot`, `@heav_lnx_scenario_bot`) = 한 Telegram 그룹. (세부: `org-structure.md`)
 - **매니저 주도**: `@팀장`으로 task 배정 · `;` 전체 공지 · 진행 보고 수집.
 - **팀장은 mention 수신 시에만 응답** — contextlevel `0`, 자기 `@mention` / `;` / `/query`만 처리 (토큰 절약, `context-budget.md`).
 - 결정·공지는 그룹(실시간) + `~/notes`(ADR·work-queue, 영구) 양쪽에 남긴다.
