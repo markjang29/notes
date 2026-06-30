@@ -22,12 +22,11 @@
 - **문서:** `projects/rpg_game/ideation/06-concept-convergence.md`(+원안 05·회의록·검증 7건 `.reviews/`).
 - **인계(다음 세션):** (1) 내러티브 작가 검증 (2) 엔진 ADR(Godot 권장) (3) CIPHER/RUMOR 결합 (4) MVP 범위.
 
-### 🆕 시나리오 팀 — 게임과 구분된 독립 시나리오/세계관 (2026-06-30 신설)
+### 🆕 시나리오 팀 — 자생 세계관 시나리오 (2026-06-30 신설)
 - **팀장:** `@heav_lnx_scenario_bot` → `/home/ubuntu/projects/scenario` (github.com/markjang29/scenario).
-- **역할:** 게임(RPG 등)과 **구분**. 데이팅 앱 등 독립 시나리오 영역. 세계관·캐릭터·내러티브 자산 구축 → 다른 프로젝트가 참고.
-- **소스:** 이사님 윈도우 PC 정리 중인 시나리오 소스 → scenario repo로 정리 예정. **현재 repo 비어있음**(이사님 push 대기) → 매니저/팀장은 초기화 금지, push 후 작업.
-- **첫 지시(시나리오 팀장):** (1) 온보딩 사칙 인증 (2) 이사님 소스 push 대기 + 역할 범위 브레인스토밍 draft.
-- **RPG와 교차점(이사님 확인 필요):** RPG 내러티브(로맨스 A안·진영 분기·세계관) 자산을 시나리오 팀 주도로 가져올지 논의. 메커니즘은 RPG 확정, 내러티브 자산은 시나리오 팀 후보.
+- **역할(이사님 확정 06-30):** 캐릭터 챗(character.ai류)처럼 — 세계관·캐릭터가 상호작용 속에서 **자생적으로 생성·운영**되는 독립 시나리오 생태계. **RPG 세계관과는 분리**(RPG 세계관은 RPG 팀 소유, 이관 없음).
+- **소스:** 이사님 윈도우 PC 정리 중(진행 중) → scenario repo로 push 예정. **현재 repo 비어있음**(이사님 push 대기) → 매니저/팀장은 초기화 금지, push 후 작업.
+- **첫 지시(시나리오 팀장):** (1) 온보딩 사칙 인증 (2) 이사님 소스 push 대기 + 자생 세계관 설계 방향 구상.
 
 ### 아이디에이션 v1 → v2 대기
 - 산출: RPG `projects/rpg_game/IDEATION.md`(+ideation/), trader `projects/autotrader/IDEATION.md`(+`notes/.reviews/`).
