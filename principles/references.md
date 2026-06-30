@@ -21,3 +21,6 @@ tags:
 ## 외부 메모리 시스템 후보
 - Mem0 — 외부 메모리 서비스. company-wide 메모리(§5)의 참고 구현.
 - seCall — https://github.com/hang-in/seCall. 세션/호출 기반 메모리 캡처 패턴.
+
+## 시나리오 창작 생태계
+- scenario repo — `github.com/markjang29/scenario` (private). `D:\LLM` RisuAI 창작 생태계의 구조·템플릿·샘플을 정리. 시나리오가 들어가는 모든 프로젝트에서 범용 참고. 상세 → [[scenario-resources]] (`principles/scenario-resources.md`).
