@@ -1,7 +1,15 @@
+# 컨텍스트 방전 체크포인트 — manager
+- 시각: 2026-07-03 15:02:46 KST
+- 모드: check
+- 측정: 📊 glm-4.6[1m] | 한계 1,000,000 | 79,456 (7.9%) | 0.3MB
+- 퍼센트: 7.9%
+
+## 활성 작업 (work-queue.md 상단)
+```
 # Work Queue — markjang29 dev
 
 > 매니저(`@heav_lnx_bot`)가 관리. 활성 작업 · 대기 결정 · 다음 스텝. **과거 상세는 `work-archive.md`**.
-> 최근 갱신: 2026-07-04 08:55 — **★ 이사님 08:47 선회 확정: "임의로 뿌린 시드 전부 이어가지 마. RPG 팀장이 요청하는 시나리오만." → 시드1(헌터월드) 포함 worlds 전체 폐기 완료(커밋 `3d22856` push).** 01:09 결정(mfg 폐기)에서 더 나아가 **RPG=클라이언트·시나리오팀=서포터** 구도 확정. 양 팀장에 --message 통보(RPG→의뢰서 작성·시나리오팀→대기). RPG 의뢰 도착·ack 대기. Oracle=1521 LISTEN.
+> 최근 갱신: 2026-07-03 07:00 — 야간 배정 취합. autotrader=WIP draft 3종 적재(양호) / RPG=Reasoning-Parry 데모+시나리오팀장 핸드오프(07-02 이사님 콜 확정, push완료) / **scenario=배정 미이행(07-01 이후 0건, coverup-B01 미생성)★이슈**. Oracle=1521 LISTEN(설치됨, docker 권한 분리).
 
 ## 활성 작업
 
@@ -23,24 +31,18 @@
 - **시나리오 팀장 핸드오프(07-03 05:48):** RPG 최신 컨셉을 `WIP-scenario-handoff-reasoning-parry.md` 로 시나리오 팀장에 전달(세계관·연결 포인트 공유).
 - 컨셉 1안(걷기=입장재화·색염색 표현층·동기화 PvP·로맨스 A안·진영 분기·P2W 0) 유지. 상세 `ideation/08-reasoning-parry-signature.md`·`06`·`07`.
 
-### 🆕 시나리오 — RPG 요청 기반 전면 재구축 (07-04 08:47 이사님 선회 ★)
-- **★ 이사님 08:47 말씀:** *"기존 시나리오 무슨 제조공장? 폐기하고. RPG 팀장 요청 시나리오팀에 배정해. 맘에 들면 디벨롭하는 거지 그냥 씨부린 거 이어가지 마."* → 01:09 결정(mfg 폐기)에서 **더 나아가**: 임의 시드 전부(시드1 헌터월드 포함) 폐기, 오직 RPG 팀장 의뢰만.
-- **repo 정리(07-04 08:53 완료):** `worlds/` 전체 git rm(oracle-audit-A01 + manufacturing-coverup-B01 tracked 12건 + 미커밋 시드2 4건) → 커밋 `3d22856` (rebase on `c87877e`) → push 완료. **`worlds/` 디렉토리 소멸.** templates·ecosystem·examples는 본래 "참고 repo" 주축이라 무관→유지.
-- **새 구도:** **RPG=클라이언트, 시나리오팀=서포터.** 시나리오팀은 RPG 팀장(@heav_lnx_rpg_bot) 의뢰서에만 작업. **임의 시드/월드 자체 생성 절대 금지.** RPG 의뢰 전 대기.
-- **팀장 통보(07-04 08:49 송신):**
-  - RPG(msg_...5f4c5723): Reasoning-Parry 시그니처 체감용 시나리오(씬·월드·캐릭터) 구체 정의→시나리오팀에 직접 의뢰. v2 체감 우선·show don't tell.
-  - 시나리오팀(msg_...ab21e780): 기존 전면 폐기+임의시드 금지+RPG 의뢰 대기+자가점검(시점·연속성·장르·JSON).
-- **대기:** ① RPG 의뢰서 도착 ② 양 팀장 ack.
-- **핵심 포인트(팀장 지시에 포함됨):** Reasoning-Parry 3단(참모 추론→지휘관 결정→패링 손맛) 장면에 녹이기 / 자의적 해석·월드 확장 금지 / 자가점검.
-- **근본 교훈(폐기 사유):** 시나리오팀이 "재밌는 월드" 만들기에 몰두, 매니저가 준 연결 조건(시그니처)·정합성을 '제약'이 아니라 '옵션'으로 취급. **"연결하라"가 아니라 "RPG가 주문하는 구도"로 뒤집어야 근본 해결.** 상세 `decisions/2026-07-04-scenario-pivot-rpg-driven.md` (작성 예정) + `rpg_game/ideation/DECISION-2026-07-04-manufacturing-deprecate.md`.
-- **시드3(회계 은폐) 제안은 철회** — 이사님 "임의 시드 금지"에 따라 매니저 자체 시드 제안도 안 함. 앞으로 모든 시나리오는 RPG 의뢰에서만.
-- **영감(보존):** "의미의 국경" 엔진(Papers, Please류)·RPG 패링 타겟="현장에 걸린 거짓말" — RPG 의뢰서에 RPG 팀장이 반영할지 판단. 상세 `work-archive.md`.
+### 🆕 시나리오 — 제조공장 은폐팩 + 매일 리포트 (07-02 방향 확정)
+- 팀장 "방향 감각 상실" 진단 → 다음 월드 **단일 지정**으로 해소.
+- **① 다음 월드 = 제조공장 사고 은폐팩 (★).** `worlds/manufacturing-coverup-B01/`. oracle-audit-A01 복제 템플릿(README + lorebook 3-tier + scenes + case JSON). 핵심 갈등: 회사 사전튜닝→노동자 안전불만 위험발화, 산재→은닉접촉 재분류. "한 명 구하기 vs 시스템 건드리기". 1차 WIP: 튜토리얼 scene 1 + case JSON 1.
+- **⚠ 07-03 07:00 이슈: 01:00 야간 배정 미이행.** 팀장 마지막 활동 = 07-01 12:55. `manufacturing-coverup-B01/` **미생성**, scene/case JSON 산출 0건. 원인 점검(팀장 비활성? 세션 미시작?) + 재배정 필요.
+- **② 매일 1건 리포트 (이사님 피드백):** 캐릭터 셋 회전 → 메인 시나리오 요약 → 카타르시스 지점 분석 → RPG 액션/컨셉 연결 가능성. **cron 08:00 KST 매니저 예약 완료** (시드 회전, 매니저→시나리오 팀장 시드 전달).
+- **시드 1 (07-03) 완료 — 매니저 폴백(팀장 비활성).** 셋: 한지원(S급 서포터·'진실의 시선') × 이하은(D랭크 헌터) × 유키하(교사). 사전 튜닝 던전 은폐 시나리오 → Reasoning-Parry(참모 추론→지휘관 결정→패링 손맛) 3단 루프 드라마화. **다음 시드=2.**
+- 영감 메모: "의미의 국경" 엔진(Papers, Please류) · 게임 자체가 ORACLE 자기지시적 메타. 상세 `work-archive.md`.
 
 ## 대기 결정 (ADR)
 - ~~RPG 엔진 Godot?~~ → **Godot 확정** (07-02).
 - ~~trader 스택 Python+NautilusTrader?~~ → **FastAPI 웹 + Oracle DB** 확정 (07-02). 엔진은 기존 pandas.
 - **남은 결정:** Oracle 설치 방식(Docker 컨테이너 vs 직접) — 매니저 판단 진행중.
-- **★ 07-04 아침 승인 안건:** 매니저 cron 3종을 **매니저 본키(`f5c0501a3a7999ad`, `heav_lnx_bot`)** 로 이관 + 시나리오 봇을 그룹 `-5495363819` public/context 설정 → 시나리오 팀장 정상 가동. fix 초안 `decisions/2026-07-04-manager-cron-key-fix.md`.
 - 팀장 사칙 인증: 결정·commit 전 필수.
 
 ## 🔧 인프라 (매니저 직접 ops, 07-02 착수)
@@ -49,13 +51,44 @@
 - **매니저 cron 3종 정상 가동 (07-02 07:46 세팅, 07-03 확인):** `432D035D` 01:00 야간 배정 / `3CC484D7` 07:00 아침 브리프 / `E755367D` 08:00 시나리오 리포트. 모두 KST.
 
 ## 🔥 야간 자율 운영 (이사님 승인)
-- **야간 자동** = 리서치·draft·숫자표·설계 프레임워크 (WIP 팀당 2건).
-- **아침 승인 필수** = 전략 채택·commit/push·ADR·외부 송신·실거래.
-- cron(cokacdir): `01:00` 야간 배정 / `07:00` 아침 브리프 / `08:00` 시나리오 리포트 (KST).
+```
 
-## 다음 스텝
-1. Oracle DB 설치(Docker) → 연결정보 autotrader 팀장 전달.
-2. ~~매니저 야간/아침 cron 재설정~~ → 완료(07-02). 3종 정상 가동.
-3. **★ scenario: RPG 팀장 의뢰서 도착 시 시나리오팀에 작업 지시 + 양 팀장 ack 추적.** (07-04 신규)
-4. 3팀장 결과 수령 → 07:00 아침 브리프 취합.
-5. 쿼터/검색 장애 → `decisions/2026-06-26-quota-checkpoint-resume.md`.
+## git 상태 — scenario
+status:
+log:
+feb1372 [ADR] 자생 서사 시스템 설계 + oracle-audit-A01 로어북 구조화 + Case 001 JSON 설계
+c0e0ce3 cases: 데모 첫 사건 001 '번역된 위험' (Nguyen Linh, 이민자팩)
+98d9d0b worlds: 첫 자생 서사 인스턴스 oracle-audit-A01 (신탁감사관)
+
+## git 상태 — rpg_game
+status:
+log:
+be71fdf feat: Walk-to-Play 전투 컨셉 문서 (ideation 09)
+06697b2 WIP: 시나리오 팀장 핸드오프 — RPG 최신 상태(Reasoning-Parry) 안내
+1c85c02 데모: reasoning 모듈 (참모 추론 × 지휘관 결정 × 패막) — 시그니처 프로토타입
+
+## git 상태 — autotrader
+status:
+?? IDEATION.md
+?? analysis_exit_ratio.py
+?? api/
+?? backtest/
+?? dashboard.py
+?? research/
+?? research_exit_ratio.py
+?? run_backtest.py
+?? strategy-spec-v1.md
+log:
+f89bb80 초기 세팅: 자동매매 프로젝트 README + .gitignore
+
+## 세션·복구 포인터
+- canonical memory: /home/ubuntu/.claude/projects/-home-ubuntu--cokacdir-workspace-akl0hdys/memory
+- 복구入口: akl0hdys memory MEMORY.md → work-queue.md
+- CLAUDE_CODE_SESSION_ID: 2d60fee3-a246-447a-86a2-4f09c441171e
+- transcript 힌트: /home/ubuntu/.claude/projects/-home-ubuntu-projects-rpg-game/2d60fee3-a246-447a-86a2-4f09c441171e.jsonl
+
+## 복구 지침
+1. /clear (또는 신규 세션). cron --session 으로 같은 세션 resume 금지(누적 폭발 원인).
+2. 위 활성 작업·미커밋 변경부터 마무리.
+3. memory + work-queue.md 기반 복구 (clear-recovery-map 참조).
+4. 1M 폭발 재발 방지: work-queue/memory 통째 주입 억제, WebSearch dump 발췌만.
