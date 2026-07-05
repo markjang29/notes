@@ -1,3 +1,11 @@
+# 컨텍스트 방전 체크포인트 — manager
+- 시각: 2026-07-04 10:57:32 KST
+- 모드: check
+- 측정: 📊 glm-5.2[1m] | 한계 1,000,000 | 225,788 (22.6%) | 1.5MB
+- 퍼센트: 22.6%
+
+## 활성 작업 (work-queue.md 상단)
+```
 # Work Queue — markjang29 dev
 
 > 매니저(`@heav_lnx_bot`)가 관리. 활성 작업 · 대기 결정 · 다음 스텝. **과거 상세는 `work-archive.md`**.
@@ -15,7 +23,7 @@
 - **진행(07-02 완료):** `api/` 패키지 구현(main·schemas·repository·__init__) + `backtest/strategies.py` target 일반화. uvicorn 포트8001 기동·엔드포인트(`/strategies`·`/backtest` 단일+자동비교·`/health`·`/docs`) 테스트 통과. **경로:** `api/main.py`(매니저 예상 app/main.py — 유지 OK 확정).
 - **Oracle E2E 완료(07-02):** NoopRepo→OracleRepo 교체. 연결 v23.26(23ai Free). 스키마 `bt_runs`(run_id·ts·strategy·target·start_date·end_date·params·metrics). 저장·조회 검증. 비번=`~/.oracle-env`. 서버 재기동 시 환경변수 export 필요.
 - **리서치(07-02):** 기간(2020/2010/2007-26)×심볼(QQQ/SPY)×exit_ratio. **exit=0(매도X=라오어원형)가 전 기간·심볼서 수익 압도** (QQQ 2007-26: +1271% vs exit=1 +119%). 매도 비용 = 복리 폭증. SPY서 동일(견고). MDD는 exit=1 우수 but Sharpe는 exit=0 최고. **결론: 레짔 "매도" 룰이 라오어 본질 엣지(하락매수·평단가하락) 훼손.** 후보: (a)★ 비중 슬라이드 (b) 라오어 원형 정밀 (c) 재진입 개선.
-- **이사님용 대시보드(07-02):** Streamlit UI 포트8002 + 80(`0.0.0.0`, dashboard.py, nohup/sudo 세션분리). 비금융친화(용어 풀어쓰기·차트·자동비교). **로컬 기동 OK(둘 다 HTTP200, LISTEN). 외부 접속 OK — http://13.125.131.126/ (80)·:8002 둘 다 07-04 실측 200.** ✅ **이사님 07-04: AWS 인바운드 8002-8010 웹포트 오픈 확정** (종전 매니저 "접속 안 됨=SG 미오픈" 판단은 오류, 정정). REST API는 8003 운영중(원계획 8001 → 실 8003).
+- **이사님용 대시보드(07-02):** Streamlit UI 포트8002 + 80(`0.0.0.0`, dashboard.py, nohup/sudo 세션분리). 비금융친화(용어 풀어쓰기·차트·자동비교). **로컬 기동 OK(둘 다 HTTP200, LISTEN). 외부접속 URL: http://13.125.131.126/ (80) 및 :8002.** ⚠ **접속 안 됨 = AWS 보안그룹 인바운드 80·8002 미오픈. 매니저 ops 처리 대기(이 서버 AWS CLI 권한 無).** FastAPI(8001) REST는 별도 유지.
 
 ### 🎮 RPG — Reasoning-Parry 시그니처 (07-02 이사님 콜 확정 ★)
 - **엔진 Godot 확정** (07-02). **전투 시그니처 = "참모 추론 × 지휘관 결정 × 패막 손맛"(Reasoning-Parry)** — **이사님 07-02 세션 직접 콜 확정**, Codex 검증. (CIPHER/LUMEN/RUMOR 후보 폐기)
@@ -42,22 +50,48 @@
 - ~~RPG 엔진 Godot?~~ → **Godot 확정** (07-02).
 - ~~trader 스택 Python+NautilusTrader?~~ → **FastAPI 웹 + Oracle DB** 확정 (07-02). 엔진은 기존 pandas.
 - **남은 결정:** Oracle 설치 방식(Docker 컨테이너 vs 직접) — 매니저 판단 진행중.
-- **✅ 07-04 아침 승인 안건 — 완료(07-05 01:00):** 매니저 cron 3종 → 매니저 본키(`f5c0501a3a7999ad`) 이관(새 cron `A7BDAC88` 01:00·`35FD5808` 07:00·`2E1BCACC` 08:00) + 시나리오 봇 그룹 `-5495363819` 설정. **잔존 구 cron 3종(`432D035D`·`3CC484D7`·`E755367D`, 시나리오 봇 key)을 07-05 야간 제거 → 3 시간대 이중 실행 해소.** 상세 `checkpoints/checkpoint-duplicate-cron-fix-2026-07-05_0100.md`.
-- 팀장 사칙 인증: 결정·commit 전 필수.
+- **★ 07-04 아침 승인 안건:** 매니저 cron 3종을 **매니저 본키(`f5c0501a3a7999ad`, `heav_lnx_bot`)** 로 이관 + 시나리오 봇을 그룹 `-5495363819` public/context 설정 → 시나리오 팀장 정상 가동. fix 초안 `decisions/2026-07-04-manager-cron-key-fix.md`.
+```
 
-## 🔧 인프라 (매니저 직접 ops, 07-02 착수)
-- **포트 정책:** `decisions/2026-07-02-port-allocation-policy.md`. 8000-8099 API / 1521 Oracle / 80·443 nginx 리버스 프록시.
-- **Oracle DB Free 23ai:** 설치 예정(RAM 7.6G·disk 143G·2 core → 가능). 완료 시 팀장에 연결정보 전달.
-- **매니저 cron 3종 정상 가동 (07-02 07:46 세팅, 07-03 확인):** `432D035D` 01:00 야간 배정 / `3CC484D7` 07:00 아침 브리프 / `E755367D` 08:00 시나리오 리포트. 모두 KST.
+## git 상태 — scenario
+status:
+?? deliverables/
+log:
+57ddde2 feat: scenario-generator v0 구현 — 파이프라인+FastAPI+웹
+634bac1 feat: scenario-generator DB 셋업 — SCENARIO 유저 + 스키마
+3479a13 설계: scenario-generator v3 — 웹 서비스 + Oracle DB
 
-## 🔥 야간 자율 운영 (이사님 승인)
-- **야간 자동** = 리서치·draft·숫자표·설계 프레임워크 (WIP 팀당 2건).
-- **아침 승인 필수** = 전략 채택·commit/push·ADR·외부 송신·실거래.
-- cron(cokacdir): `01:00` 야간 배정 / `07:00` 아침 브리프 / `08:00` 시나리오 리포트 (KST).
+## git 상태 — rpg_game
+status:
+?? ideation/WIP-party-boss-godot-impl-design.md
+?? ideation/WIP-second-battle-scene-reasoning-parry.md
+log:
+5144753 feat: 시나리오팀 의뢰서 — 첫 보스 한 판 체험 (Reasoning-Parry)
+b7f7a9d feat: 이사님 결정 — manufacturing-coverup 폐기, RPG 시그니처 기반 시나리오 전환
+a8cc999 feat: 시나리오 팀장 핸드오프 — 4인 파티 보스전 + AI 전략 + 보스 혼종 + 정당성
 
-## 다음 스텝
-1. Oracle DB 설치(Docker) → 연결정보 autotrader 팀장 전달.
-2. ~~매니저 야간/아침 cron 재설정~~ → 완료(07-02). 3종 정상 가동.
-3. **★ scenario: RPG 팀장 의뢰서 도착 시 시나리오팀에 작업 지시 + 양 팀장 ack 추적.** (07-04 신규)
-4. 3팀장 결과 수령 → 07:00 아침 브리프 취합.
-5. 쿼터/검색 장애 → `decisions/2026-06-26-quota-checkpoint-resume.md`.
+## git 상태 — autotrader
+status:
+?? IDEATION.md
+?? analysis_exit_ratio.py
+?? api/
+?? backtest/
+?? dashboard.py
+?? research/
+?? research_exit_ratio.py
+?? run_backtest.py
+?? strategy-spec-v1.md
+log:
+f89bb80 초기 세팅: 자동매매 프로젝트 README + .gitignore
+
+## 세션·복구 포인터
+- canonical memory: /home/ubuntu/.claude/projects/-home-ubuntu--cokacdir-workspace-akl0hdys/memory
+- 복구入口: akl0hdys memory MEMORY.md → work-queue.md
+- CLAUDE_CODE_SESSION_ID: 41399726-2d71-4bca-a5d8-6322719533d3
+- transcript 힌트: /home/ubuntu/.claude/projects/-home-ubuntu--cokacdir-workspace-ndznfeai/41399726-2d71-4bca-a5d8-6322719533d3.jsonl
+
+## 복구 지침
+1. /clear (또는 신규 세션). cron --session 으로 같은 세션 resume 금지(누적 폭발 원인).
+2. 위 활성 작업·미커밋 변경부터 마무리.
+3. memory + work-queue.md 기반 복구 (clear-recovery-map 참조).
+4. 1M 폭발 재발 방지: work-queue/memory 통째 주입 억제, WebSearch dump 발췌만.
