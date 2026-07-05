@@ -26,11 +26,12 @@ tags:
 | 8788 | GLM 프록시 (node) | 내부 |
 | 22 | SSH | 기존 |
 
-## 매핑 (07-04 실측 `ss -tlnp`)
-- **8002 + 80** → autotrader Streamlit 대시보드 (동일 서비스, 80·8002 둘 다 LISTEN, 외부 200 OK). **80은 nginx 아님 — streamlit이 root 로 직접 바인딩.**
-- **8003** → autotrader REST API (`app.py`, trader 팀장). 원계획 8001이나 실운영 포트 = 8003. (8001 미사용, 예약.)
+## 매핑 (07-05 실측 `ss -tlnp` + `/proc/cwd`)
+- **8002 + 80** → autotrader Streamlit 대시보드 (동일 서비스, 80·8002 둘 다 LISTEN, 외부 200 OK). 80은 nginx 아님 — streamlit이 root 로 직접 바인딩.
+- **8003** → **시나리오팀 scenario-generator backend** (FastAPI, `scenario/tools/scenario-generator/backend/app.py`). autotrader venv 를 인터프리터로만 재사용 — **서비스 소유 = 시나리오팀** (07-05 시나리오팀 인계 정정). 매니저 ops 인수.
+- **8001** → 미사용 (autotrader REST API 기동 안 됨, 포트 미확정).
 - nginx 미설치.
-- **1521** → Oracle DB Free 23ai
+- **1521** → Oracle DB Free 23ai (유저: autotrader `~/.oracle-env`, SCENARIO `~/.oracle-env-scenario` 07-04 생성)
 
 ## 원칙 (07-04 개정)
 1. **8002-8010 = 웹 전용 대역, 외부 직접 노출 허용.** 각 웹 서비스 = 고유 포트.

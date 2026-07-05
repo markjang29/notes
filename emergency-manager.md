@@ -1,10 +1,10 @@
-# 긴급 상황 — 2026-07-04 10:57:32 KST
+# 긴급 상황 — 2026-07-06 00:21:00 KST
 ## 봇: manager
 
 ### 상황
-- 원인: context 22.6% (>70% check 임계 또는 트리거 에러)
-- 마지막 작업: ctx-evac check 완료: /home/ubuntu/notes/checkpoints/checkpoint-manager-2026-07-04_105732.md
-- 감지 시점: 2026-07-04 10:57:32 KST
+- 원인: context 18.9% (>70% check 임계 또는 트리거 에러)
+- 마지막 작업: ctx-evac check 완료: /home/ubuntu/notes/checkpoints/checkpoint-manager-2026-07-06_002100.md
+- 감지 시점: 2026-07-06 00:21:00 KST
 
 ### 상태
 - LLM 호출: 불가
@@ -21,5 +21,5 @@
 
 ### 기술 정보
 - 호스트: ip-172-26-2-127
-- PID: 229604
+- PID: 262549
 - 사용자: ubuntu

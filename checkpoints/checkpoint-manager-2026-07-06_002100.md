@@ -1,3 +1,11 @@
+# 컨텍스트 방전 체크포인트 — manager
+- 시각: 2026-07-06 00:21:00 KST
+- 모드: check
+- 측정: 📊 glm-5.2[1m] | 한계 1,000,000 | 189,091 (18.9%) | 2.5MB
+- 퍼센트: 18.9%
+
+## 활성 작업 (work-queue.md 상단)
+```
 # Work Queue — markjang29 dev
 
 > 매니저(`@heav_lnx_bot`)가 관리. 활성 작업 · 대기 결정 · 다음 스텝. **과거 상세는 `work-archive.md`**.
@@ -43,22 +51,36 @@
 - ~~trader 스택 Python+NautilusTrader?~~ → **FastAPI 웹 + Oracle DB** 확정 (07-02). 엔진은 기존 pandas.
 - **남은 결정:** Oracle 설치 방식(Docker 컨테이너 vs 직접) — 매니저 판단 진행중.
 - **✅ 07-04 아침 승인 안건 — 완료(07-05 01:00):** 매니저 cron 3종 → 매니저 본키(`f5c0501a3a7999ad`) 이관(새 cron `A7BDAC88` 01:00·`35FD5808` 07:00·`2E1BCACC` 08:00) + 시나리오 봇 그룹 `-5495363819` 설정. **잔존 구 cron 3종(`432D035D`·`3CC484D7`·`E755367D`, 시나리오 봇 key)을 07-05 야간 제거 → 3 시간대 이중 실행 해소.** 상세 `checkpoints/checkpoint-duplicate-cron-fix-2026-07-05_0100.md`.
-- 팀장 사칙 인증: 결정·commit 전 필수.
+```
 
-## 🔧 인프라 (매니저 직접 ops, 07-02 착수)
-- **포트 정책:** `decisions/2026-07-02-port-allocation-policy.md`. 8000-8099 API / 1521 Oracle / 80·443 nginx 리버스 프록시.
-- **Oracle DB Free 23ai:** 설치 예정(RAM 7.6G·disk 143G·2 core → 가능). 완료 시 팀장에 연결정보 전달.
-- **매니저 cron 3종 재등록 (07-05, 이전 3종 소멸→재가동):** `2D8F5150` 01:00 야간배정 / `88C5A226` 07:00 아침브리프 / `C9804825` 08:00 시나리오리포트(자율창작 프롬프트·사칙정합). KST. **보고 라인 복구.** (이전 id 432D035D/3CC484D7/E755367D는 소멸)
-- **8003 시나리오팀 backend 버그수정 (07-05):** Oracle SCENARIO env 미주입→`DPY-1001 not connected`로 /generate 클릭 시 무응답. 매니저 재기동(pid 254033, `~/.oracle-env-scenario` source)으로 해결. **근본(app.py/db 모듈이 oracle-env 자동 로드)은 시나리오팀 코드수정 대기.**
+## git 상태 — scenario
+status:
+log:
+316fa90 보존(감사브리프): first-boss-reasoning-parry deliverable — 이사님 보류 산물 추적
+57ddde2 feat: scenario-generator v0 구현 — 파이프라인+FastAPI+웹
+634bac1 feat: scenario-generator DB 셋업 — SCENARIO 유저 + 스키마
 
-## 🔥 야간 자율 운영 (이사님 승인)
-- **야간 자동** = 리서치·draft·숫자표·설계 프레임워크 (WIP 팀당 2건).
-- **아침 승인 필수** = 전략 채택·commit/push·ADR·외부 송신·실거래.
-- cron(cokacdir): `01:00` 야간 배정 / `07:00` 아침 브리프 / `08:00` 시나리오 리포트 (KST).
+## git 상태 — rpg_game
+status:
+log:
+ddbc02d 보존(감사브리프): WIP 보스전 구현설계 2건 — godot-impl·second-battle-scene
+5144753 feat: 시나리오팀 의뢰서 — 첫 보스 한 판 체험 (Reasoning-Parry)
+b7f7a9d feat: 이사님 결정 — manufacturing-coverup 폐기, RPG 시그니처 기반 시나리오 전환
 
-## 다음 스텝
-1. Oracle DB 설치(Docker) → 연결정보 autotrader 팀장 전달.
-2. ~~매니저 야간/아침 cron 재설정~~ → 완료(07-02). 3종 정상 가동.
-3. **★ scenario: RPG 팀장 의뢰서 도착 시 시나리오팀에 작업 지시 + 양 팀장 ack 추적.** (07-04 신규)
-4. 3팀장 결과 수령 → 07:00 아침 브리프 취합.
-5. 쿼터/검색 장애 → `decisions/2026-06-26-quota-checkpoint-resume.md`.
+## git 상태 — autotrader
+status:
+log:
+e20e9f5 보존(감사브리프 긴급): 미추적 산출물 일괄 — IDEATION/strategy-spec-v1/api/backtest/dashboard/research/run_backtest/analysis_exit_ratio
+f89bb80 초기 세팅: 자동매매 프로젝트 README + .gitignore
+
+## 세션·복구 포인터
+- canonical memory: /home/ubuntu/.claude/projects/-home-ubuntu--cokacdir-workspace-akl0hdys/memory
+- 복구入口: akl0hdys memory MEMORY.md → work-queue.md
+- CLAUDE_CODE_SESSION_ID: d6809134-5419-4b86-91b1-208d138b3e66
+- transcript 힌트: /home/ubuntu/.claude/projects/-home-ubuntu--cokacdir-workspace-20bkmfvt/d6809134-5419-4b86-91b1-208d138b3e66.jsonl
+
+## 복구 지침
+1. /clear (또는 신규 세션). cron --session 으로 같은 세션 resume 금지(누적 폭발 원인).
+2. 위 활성 작업·미커밋 변경부터 마무리.
+3. memory + work-queue.md 기반 복구 (clear-recovery-map 참조).
+4. 1M 폭발 재발 방지: work-queue/memory 통째 주입 억제, WebSearch dump 발췌만.
