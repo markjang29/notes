@@ -30,6 +30,7 @@ tags:
   - `~/projects` — 개발 프로젝트
     - `autotrader` → `github.com/markjang29/autotrader` (자동매매 시스템)
     - `rpg_game` → `github.com/markjang29/rpg_game` (파랜드 택틱스풍 전술 RPG)
+    - `scenario` → `github.com/markjang29/scenario` (시나리오/RISU 자산·자생 서사, 2026-06-30 추가)
   - `~/notes` → `github.com/markjang29/notes` (Obsidian / 작업노트)
   - `~/scripts` — 서버 관리 스크립트
 - [x] 작업 컨텍스트(메모리)는 cokacdir workspace 하위에 보관
@@ -50,6 +51,7 @@ tags:
 - [x] `~/notes` 원격 저장소 연결 (`github.com/markjang29/notes`)
 - [x] 프로젝트 저장소 초기 세팅 (`autotrader`, `rpg_game`)
 - [x] **GitHub 인증 완료** — classic PAT 저장(credential helper), 3개 저장소 push 성공 (2026-06-25)
+- [x] 현재 운영 repo 기준 갱신 — `notes`, `autotrader`, `rpg_game`, `scenario` 총 4개 (2026-07-06)
 - [ ] Android Obsidian 에서 `notes` 동기화 세팅
 - [ ] 프로젝트별 기술스택 확정 (autotrader: Python? / rpg_game: 엔진?)
 - [ ] `~/scripts` 에 서버 관리/운영 스크립트 추가

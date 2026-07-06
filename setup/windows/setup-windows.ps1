@@ -43,6 +43,7 @@ $SkillsSrcDir = Join-Path $NotesDir "setup\windows\skills"
 Write-Host ">> [3/9] project repos"
 Clone-Or-Pull "https://github.com/markjang29/autotrader.git" (Join-Path $ProjectsDir "autotrader") "autotrader"
 Clone-Or-Pull "https://github.com/markjang29/rpg_game.git"   (Join-Path $ProjectsDir "rpg_game")   "rpg_game"
+Clone-Or-Pull "https://github.com/markjang29/scenario.git"   (Join-Path $ProjectsDir "scenario")   "scenario"
 
 Write-Host ">> [4/9] .claude\CLAUDE.md <- agent-rules.md 미러 (경로 치환)"
 $rules = Get-Content (Join-Path $NotesDir "agent-rules.md") -Raw

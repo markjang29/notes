@@ -21,7 +21,7 @@
 
 2. 경로 인식: 이 문서의 /home/ubuntu/... 와 /akl0hdys 는 Linux 서버 기준이다.
    /akl0hdys 는 서버 전용 cokacdir workspace 포인터 — Windows엔 대응 경로 없음.
-   내 작업 디렉토리는 notes 와 projects(autotrader / rpg_game) 의 Windows/WSL 경로다.
+   내 작업 디렉토리는 notes 와 projects(autotrader / rpg_game / scenario) 의 Windows/WSL 경로다.
 
 3. 읽은 직후, 아래 형식으로 온보딩 인증(자기선언):
    "원칙 체계 읽음 — [위 각 문서의 핵심을 1줄씩 인용]. 환경=Windows(WSL|Native)."

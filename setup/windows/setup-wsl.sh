@@ -12,6 +12,7 @@ set -euo pipefail
 NOTES_URL="https://github.com/markjang29/notes.git"
 AUTOTRADER_URL="https://github.com/markjang29/autotrader.git"
 RPG_URL="https://github.com/markjang29/rpg_game.git"
+SCENARIO_URL="https://github.com/markjang29/scenario.git"
 
 NOTES_DIR="${NOTES_DIR:-$HOME/notes}"
 PROJECTS_DIR="${PROJECTS_DIR:-$HOME/projects}"
@@ -43,6 +44,7 @@ clone_or_pull "$NOTES_URL" "$NOTES_DIR" "notes"
 echo ">> [3/8] project repos"
 clone_or_pull "$AUTOTRADER_URL" "$PROJECTS_DIR/autotrader" "autotrader"
 clone_or_pull "$RPG_URL"        "$PROJECTS_DIR/rpg_game"   "rpg_game"
+clone_or_pull "$SCENARIO_URL"   "$PROJECTS_DIR/scenario"   "scenario"
 
 echo ">> [4/8] ~/.claude/CLAUDE.md ← agent-rules.md 미러 (경로 치환)"
 # /home/ubuntu → WSL $HOME,  /akl0hdys → 서버 전용 마커 (Windows엔 대응 경로 없음)

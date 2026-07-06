@@ -8,7 +8,7 @@
 ## HOW YOU WORK HERE
 - Linux (Ubuntu 24.04, AWS EC2) + Claude Code via cokacdir/Telegram. 한국어 사용자 → 한국어 응답.
 - 홈 레이아웃:
-  - `@/home/ubuntu/projects` → autotrader (자동매매), rpg_game (전술 RPG)
+  - `@/home/ubuntu/projects` → autotrader (자동매매), rpg_game (전술 RPG), scenario (시나리오/RISU 자산·자생 서사)
   - `@/home/ubuntu/notes` → github.com/markjang29/notes (Obsidian / 작업노트)
   - `@/home/ubuntu/scripts` → 서버 관리 스크립트
 - git author = `markjang29` / `markjang29@users.noreply.github.com`, 기본 브랜치 `main`
