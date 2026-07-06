@@ -100,6 +100,36 @@ git -C <repo> log --since='24 hours ago' --pretty='%h %ad %s' --date=iso
 - **클리어 보류**: 미추적 산출물, 미커밋 변경, 미전달 파일, 미기록 결정이 남음
 - **즉시 보존 필요**: 세션이 터지면 잃을 수 있는 로컬-only 결과가 있음
 
+### 메신저 대화 백업 의무
+
+이사님이 특정 봇/세션에 대해 "대화 백업", "터진 세션 백업", "읽기 쉬운 백업"을 요청하면, 현재 감사봇 세션이 `/clear` 된 이후라도 반드시 수행한다.
+
+기본 백업 소스:
+
+- AI 세션 history: `~/.cokacdir/ai_sessions/<session_id>.json`
+- Telegram 입력 로그: `~/.cokacdir/logs/telegram_YYYY-MM-DD.jsonl`
+- 그룹 shared log: `~/.cokacdir/group_chat/<chat_id>.jsonl`
+- Claude transcript: `~/.claude/projects/*/<session_id>.jsonl`
+
+기본 출력:
+
+- 사람이 읽기 쉬운 Markdown `.md`
+- `User / Assistant` 턴 번호 구분
+
+도구:
+
+```bash
+python3 ~/scripts/export-chat-backup.py --session-id <SESSION_ID> --out <OUT.md>
+python3 ~/scripts/export-chat-backup.py --latest --out <OUT.md>
+```
+
+크기 제한:
+
+- 백업이 너무 커서 1M 토큰을 넘길 것 같으면 그대로 전달하지 않는다.
+- 기본 `--max-chars 2000000`로 자르고, 기본은 `--keep tail`이다.
+- 즉, 최근/뒤쪽 대화를 보존하고 앞쪽을 절단한다.
+- 필요 시 `--keep head` 또는 `--keep middle` 사용.
+
 보고 양식:
 
 ```markdown
