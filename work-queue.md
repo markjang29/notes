@@ -10,6 +10,16 @@
 - 중요한 `.md`/ADR/checkpoint/work-queue 변경은 Git 보존 후 세션 클리어.
 - 긴 문서 전체 재독 금지. 필요한 부분만 읽는다.
 
+## 야간 자율 배정 (2026-07-07 01:00 KST)
+
+이사님 지시 — 리서치·draft·설계 프레임워크만 / WIP 팀당 2건 / 전략 채택·commit/push·외부송신·실거래 금지(아침 승인 필수) / show-don't-tell(체감 우선) / 07:00 아침 브리프에서 취합.
+
+- **RPG** (`@heav_lnx_rpg_bot`): '첫 보스 한 판 체험' 핵심 1턴 체감 스토리보드 draft(참모 추론→지휘관 결정→패막 손맛) + 기존 WIP 2건(godot-impl·second-battle-scene) 점검 메모. 새 WIP 금지 — 2건 한도 도달.
+- **autotrader** (`@heav_lnx_trader_bot`): strategy-spec-v1 전략 1개를 숫자 예시 거래로 인스턴스화 draft + REST API 포트/소유 ADR 초안. 실거래 금지, 백테스트 과거 데이터만.
+- **scenario** (`@heav_lnx_scenario_bot`): RISU 실제 자산 1개를 펼쳐 draft 캐릭터/씬 1건(메타 아닌 실제 내용) + (선택) RPG 보스 체험용 캐릭터 draft. 디벨롭 금지, draft만.
+
+지시 송신 완료(01:03 KST). 취합은 07:00 아침 브리프. work-queue 커밋은 아침 승인 후.
+
 ## 활성 작업
 
 ### 1. 시나리오팀 — RISU 기반 창작 체계
@@ -45,7 +55,7 @@
 ### 4. 매니저/감사/복구
 
 - 감사봇: Codex 감사 봇 1개. Claude 매니저/팀장 감시.
-- 일일 감사: `9AE18D26` 매일 09:10.
+- 일일 감사: `B7C51FA3` 매일 09:10 (`10 9 * * *`).
 - ctx-evac:
   - Stop 훅 JSON 오탐 수정 완료
   - 실제 `API Error: context window limit`는 별도 장애로 취급
@@ -74,4 +84,3 @@ git -C ~/projects/autotrader status --short
 ```bash
 python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
 ```
-
