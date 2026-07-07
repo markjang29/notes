@@ -1,0 +1,28 @@
+[Unit]
+Description=Z.ai 1M-first Proxy (conditional short fallback)
+After=network.target
+# cokacdir가 Claude Code를 spawn하기 전에 프록시가 먼저 올라와야 함
+Before=cokacdir.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/node /home/ubuntu/scripts/zai-fallback-proxy.js
+Restart=always
+RestartSec=3
+Environment=NODE_ENV=production
+# 튜닝 (필요시 변경)
+# Environment=ZAI_UPSTREAM=https://api.z.ai/api/anthropic
+# Environment=PROXY_PORT=8788
+# 조건부 fallback: 짧은 요청만 표준 모델로 살리고, 긴 요청은 1M을 보장한다.
+Environment=FALLBACK_MODEL=glm-5.2
+Environment=OVERLOAD_MODELS=glm-5.2[1m]
+Environment=STANDARD_FALLBACK_MAX_BYTES=204800
+Environment=NOTIFY_CHAT=8315615299
+Environment=MAX_ATTEMPTS=4
+# Environment=NOTIFY_BOT_TOKEN=  (비워두면 cokacctl.json 첫 토큰 자동 사용)
+# Environment=MAX_ATTEMPTS=4
+StandardOutput=append:/home/ubuntu/.local/state/cokacdir/zai-fallback-proxy.stdout.log
+StandardError=append:/home/ubuntu/.local/state/cokacdir/zai-fallback-proxy.log
+
+[Install]
+WantedBy=default.target
