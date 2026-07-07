@@ -76,8 +76,11 @@ notes/setup/server/chat-log-backup.py
 - 512KB 초과 파일 없음
 - Python 문법 검사 통과
 
+추가 정리:
+
+- notes repo 안에 미추적으로 남아 있던 기존 Markdown 대화 백업 `chat-backups/`는 raw 로그 성격이므로 Git에 넣지 않고 `/home/ubuntu/chat_logs/legacy_markdown/` 하위로 이동해 보존했다.
+
 현재 주의:
 
 - 과거 세션 중 current_path가 현재 bot_settings 매핑에 없는 것은 `unknown/unknown`으로 백업됨.
 - 이는 과거 임시 workspace 세션 보존용이며, 현재 운영 봇 매핑에는 영향 없음.
-
