@@ -270,6 +270,7 @@ def main() -> int:
     ap.add_argument("--max-bytes", type=int, default=512 * 1024)
     ap.add_argument("--retention-days", type=int, default=7)
     ap.add_argument("--source", choices=["all", "ai", "telegram"], default="all")
+    ap.add_argument("--quiet", action="store_true", help="suppress summary output for low-noise hooks")
     args = ap.parse_args()
 
     root = Path(args.root)
@@ -293,7 +294,8 @@ def main() -> int:
     summary["purge"] = purge_old(root, args.retention_days)
     save_json_atomic(state_path, state)
 
-    print(json.dumps(summary, ensure_ascii=False, sort_keys=True))
+    if not args.quiet:
+        print(json.dumps(summary, ensure_ascii=False, sort_keys=True))
     return 0
 
 
