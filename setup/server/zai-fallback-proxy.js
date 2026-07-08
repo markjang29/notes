@@ -14,7 +14,8 @@
  * 환경변수(기본값):
  *   ZAI_UPSTREAM       https://api.z.ai/api/anthropic   실제 Z.ai 엔드포인트
  *   PROXY_PORT         8788                             로컬 수신 포트
- *   FALLBACK_MODEL     glm-5.2                          짧은 요청에서만 치환할 표준 모델
+ *   FALLBACK_MODEL     glm-5.2                          구버전 호환: 단일 fallback 모델
+ *   FALLBACK_MODELS    glm-5.1,glm-4.6                  짧은 요청에서만 순차 fallback할 모델 체인
  *   OVERLOAD_MODELS    glm-5.2[1m]                      폴백 대상 1M 변형(콤마 구분)
  *   STANDARD_FALLBACK_MAX_BYTES 204800                  이 크기 이하 요청만 표준 모델 백업 허용
  *   MAX_ATTEMPTS       4                                원본 1 + 폴백 재시도 3
@@ -33,6 +34,7 @@ const path = require('path');
 const UPSTREAM       = process.env.ZAI_UPSTREAM    || 'https://api.z.ai/api/anthropic';
 const PORT           = parseInt(process.env.PROXY_PORT || '8788', 10);
 const FALLBACK_MODEL = process.env.FALLBACK_MODEL  || 'glm-5.2';
+const FALLBACK_MODELS = (process.env.FALLBACK_MODELS || FALLBACK_MODEL).split(',').map(s => s.trim()).filter(Boolean);
 const OVERLOAD_MODELS= (process.env.OVERLOAD_MODELS || 'glm-5.2[1m]').split(',').map(s => s.trim()).filter(Boolean);
 const STANDARD_FALLBACK_MAX_BYTES = parseInt(process.env.STANDARD_FALLBACK_MAX_BYTES || '204800', 10);
 const MAX_ATTEMPTS   = parseInt(process.env.MAX_ATTEMPTS || '4', 10);
@@ -114,8 +116,19 @@ function isOverloadModel(m) {
   if (!m) return false;
   return OVERLOAD_MODELS.some(o => m.includes(o));
 }
+function isFallbackChainModel(m) {
+  if (!m) return false;
+  return FALLBACK_MODELS.some(o => m.includes(o));
+}
+function nextFallbackModel(currentModel) {
+  if (!currentModel || !FALLBACK_MODELS.length) return null;
+  // If the original overloaded model is not in the fallback chain, enter at the first fallback.
+  const idx = FALLBACK_MODELS.findIndex(m => currentModel.includes(m));
+  if (idx < 0) return FALLBACK_MODELS[0];
+  return FALLBACK_MODELS[idx + 1] || null;
+}
 function canStandardFallback(bodyBuf) {
-  return bodyBuf.length <= STANDARD_FALLBACK_MAX_BYTES && FALLBACK_MODEL && FALLBACK_MODEL !== parseModel(bodyBuf);
+  return bodyBuf.length <= STANDARD_FALLBACK_MAX_BYTES && !!nextFallbackModel(parseModel(bodyBuf));
 }
 function parseModel(bodyBuf) {
   try { return JSON.parse(bodyBuf.toString('utf8')).model || null; } catch { return null; }
@@ -233,13 +246,14 @@ const server = http.createServer(async (clientReq, clientRes) => {
     const curModel = parseModel(bodyBuf);
     if (isOverloadStatus(resp.status)) {
       log(`OVERLOAD status=${resp.status} attempt=${attempt} model=${curModel} reqBytes=${bodyBuf.length} body=${resp.buffered.toString('utf8').slice(0,160)}`);
-      // 1M 변형이면 요청 크기에 따라 분기:
+      // 1M/5.x 계열이면 요청 크기에 따라 분기:
       // - 짧은 요청: 표준 모델 백업으로 가용성 확보
       // - 긴 요청: 1M을 보장해야 하므로 같은 모델로 재시도하고, 안 되면 명시 실패
-      if (isOverloadModel(curModel)) {
+      if (isOverloadModel(curModel) || isFallbackChainModel(curModel)) {
         if (canStandardFallback(bodyBuf)) {
-          log(`FALLBACK-SHORT ${curModel} -> ${FALLBACK_MODEL} reqBytes=${bodyBuf.length} max=${STANDARD_FALLBACK_MAX_BYTES}`);
-          bodyBuf = swapModel(bodyBuf, FALLBACK_MODEL);
+          const nextModel = nextFallbackModel(curModel);
+          log(`FALLBACK-SHORT ${curModel} -> ${nextModel} reqBytes=${bodyBuf.length} max=${STANDARD_FALLBACK_MAX_BYTES}`);
+          bodyBuf = swapModel(bodyBuf, nextModel);
         } else {
           log(`RETRY-1M curModel=${curModel} reqBytes=${bodyBuf.length} maxShortFallback=${STANDARD_FALLBACK_MAX_BYTES}`);
         }
@@ -266,7 +280,7 @@ const server = http.createServer(async (clientReq, clientRes) => {
 });
 
 server.listen(PORT, '127.0.0.1', () => {
-  log(`STARTED listening=127.0.0.1:${PORT} upstream=${UPSTREAM} fallback=${FALLBACK_MODEL} overloadModels=[${OVERLOAD_MODELS.join(',')}] shortFallbackMaxBytes=${STANDARD_FALLBACK_MAX_BYTES} maxAttempts=${MAX_ATTEMPTS}`);
+  log(`STARTED listening=127.0.0.1:${PORT} upstream=${UPSTREAM} fallbackChain=[${FALLBACK_MODELS.join(',')}] overloadModels=[${OVERLOAD_MODELS.join(',')}] shortFallbackMaxBytes=${STANDARD_FALLBACK_MAX_BYTES} maxAttempts=${MAX_ATTEMPTS}`);
 });
 server.on('error', (e) => { log(`FATAL ${e.message}`); process.exit(1); });
 
