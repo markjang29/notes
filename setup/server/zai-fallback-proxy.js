@@ -43,6 +43,7 @@ const LOG_PATH       = process.env.PROXY_LOG || path.join(os.homedir(), '.local/
 // --- 폴백 텔레그램 알림 (선택) ---
 const NOTIFY_CHAT     = process.env.NOTIFY_CHAT || '';           // 알림 받을 chat_id (없으면 알림 안 함)
 const NOTIFY_BATCH_MS = parseInt(process.env.NOTIFY_BATCH_MS || '90000', 10);
+const NOTIFY_ALL_MODELS = process.env.NOTIFY_ALL_MODELS === '1';
 function loadNotifyBotToken() {
   if (process.env.NOTIFY_BOT_TOKEN) return process.env.NOTIFY_BOT_TOKEN;
   try { // 기존 cokacctl.json 의 첫 봇 토큰 재사용 (평문 비밀 추가 회피)
@@ -67,6 +68,7 @@ const backoffMs = (a) => Math.min(8000, (1 << (a - 1)) * 1000); // 1,2,4,8s
 
 // --- 텔레그램 알림 전송 ---
 let _recoverCount = 0, _lastRecoverNotify = 0, _lastGaveupKey = '';
+let _routeLines = [], _lastRouteNotify = 0;
 function tgSend(text) {
   if (!NOTIFY_CHAT || !NOTIFY_BOT) return;
   try {
@@ -91,6 +93,22 @@ function notifyRecovered(fromModel, toModel, usage, reqBytes) {
     line += `\n최근 ${Math.round(NOTIFY_BATCH_MS/1000)}초 ${_recoverCount}회 응답 정상 복구`;
     tgSend(line);
     _recoverCount = 0; _lastRecoverNotify = now;
+  }
+}
+function notifyRoute(fromModel, toModel, usage, reqBytes, attempts, status) {
+  if (!NOTIFY_ALL_MODELS || !NOTIFY_CHAT || !NOTIFY_BOT) return;
+  const now = Date.now();
+  const route = `${fromModel || '?'}→${toModel || '?'}`;
+  const parts = [`${route}`, `${attempts}회`, `${status}`];
+  if (reqBytes) parts.push(`${(reqBytes/1024).toFixed(1)}KB`);
+  if (usage && usage.input) parts.push(`in ${usage.input.toLocaleString()}`);
+  if (usage && usage.output) parts.push(`out ${usage.output.toLocaleString()}`);
+  _routeLines.push(`- ${parts.join(' · ')}`);
+  if (_routeLines.length > 12) _routeLines = _routeLines.slice(-12);
+  if (now - _lastRouteNotify >= NOTIFY_BATCH_MS) {
+    tgSend(`📡 *Z.ai 모델 라우팅*\n최근 ${Math.round(NOTIFY_BATCH_MS/1000)}초\n${_routeLines.join('\n')}`);
+    _routeLines = [];
+    _lastRouteNotify = now;
   }
 }
 // 응답 본문(SSE/non-stream)에서 토큰 usage 추출
@@ -234,10 +252,17 @@ const server = http.createServer(async (clientReq, clientRes) => {
         const tm = parseModel(bodyBuf) || FALLBACK_MODEL;
         log(`RECOVERED model=${tm} attempts=${attempt} startModel=${fm} status=${resp.status} reqBytes=${reqBytes}`);
         pipeUpstreamToClient(clientRes, resp.res, resp.status, resp.headers, (buf) => {
-          notifyRecovered(fm, tm, extractUsage(buf), reqBytes);
+          const usage = extractUsage(buf);
+          notifyRecovered(fm, tm, usage, reqBytes);
+          notifyRoute(fm, tm, usage, reqBytes, attempt, resp.status);
         });
       } else {
-        pipeUpstreamToClient(clientRes, resp.res, resp.status, resp.headers);
+        const reqBytes = bodyBuf.length;
+        const fm = startedModel || '?';
+        const tm = parseModel(bodyBuf) || fm;
+        pipeUpstreamToClient(clientRes, resp.res, resp.status, resp.headers, (buf) => {
+          notifyRoute(fm, tm, extractUsage(buf), reqBytes, attempt, resp.status);
+        });
       }
       return;
     }

@@ -20,6 +20,7 @@ Environment=FALLBACK_MODELS=glm-5.1,glm-4.6
 Environment=OVERLOAD_MODELS=glm-5.2[1m],glm-5.2
 Environment=STANDARD_FALLBACK_MAX_BYTES=204800
 Environment=NOTIFY_CHAT=8315615299
+Environment=NOTIFY_ALL_MODELS=1
 Environment=MAX_ATTEMPTS=4
 # Environment=NOTIFY_BOT_TOKEN=  (비워두면 cokacctl.json 첫 토큰 자동 사용)
 # Environment=MAX_ATTEMPTS=4
