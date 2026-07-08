@@ -36,8 +36,10 @@ const PORT           = parseInt(process.env.PROXY_PORT || '8788', 10);
 const FALLBACK_MODEL = process.env.FALLBACK_MODEL  || 'glm-5.2';
 const FALLBACK_MODELS = (process.env.FALLBACK_MODELS || FALLBACK_MODEL).split(',').map(s => s.trim()).filter(Boolean);
 const OVERLOAD_MODELS= (process.env.OVERLOAD_MODELS || 'glm-5.2[1m]').split(',').map(s => s.trim()).filter(Boolean);
-const FORCE_1M_FROM   = process.env.FORCE_1M_FROM || 'glm-5.2';
-const FORCE_1M_TO     = process.env.FORCE_1M_TO   || 'glm-5.2[1m]';
+// 기본은 비활성화. Z.ai Anthropic endpoint는 glm-5.2[1m]를 요청 model code로 받지 않을 수 있다.
+// 필요할 때만 서비스 env로 FORCE_1M_FROM/FORCE_1M_TO를 명시한다.
+const FORCE_1M_FROM   = process.env.FORCE_1M_FROM || '';
+const FORCE_1M_TO     = process.env.FORCE_1M_TO   || '';
 const STANDARD_FALLBACK_MAX_BYTES = parseInt(process.env.STANDARD_FALLBACK_MAX_BYTES || '204800', 10);
 const MAX_ATTEMPTS   = parseInt(process.env.MAX_ATTEMPTS || '4', 10);
 const LOG_PATH       = process.env.PROXY_LOG || path.join(os.homedir(), '.local/state/cokacdir/zai-fallback-proxy.log');
@@ -228,6 +230,11 @@ function notifyGaveup(model) {
 function isOverloadStatus(status) {
   return status === 529 || status === 503 || status === 429;
 }
+function isUnknownModel(resp) {
+  if (!resp || resp.status !== 400 || !resp.buffered) return false;
+  const s = resp.buffered.toString('utf8');
+  return s.includes('Unknown Model') || s.includes('[1211]');
+}
 function interestingRateHeaders(headers) {
   const out = [];
   for (const [k, v] of Object.entries(headers || {})) {
@@ -411,6 +418,13 @@ const server = http.createServer(async (clientReq, clientRes) => {
     }
 
     // 그 외 에러(400 모델오류, 401 등) → 폴백으로 해결될 수 없으니 그대로 반환
+    if (isUnknownModel(resp) && FORCE_1M_FROM && FORCE_1M_TO && curModel === FORCE_1M_TO) {
+      log(`UNKNOWN-MODEL-ROLLBACK ${FORCE_1M_TO} -> ${FORCE_1M_FROM} reqBytes=${bodyBuf.length}`);
+      bodyBuf = swapModel(bodyBuf, FORCE_1M_FROM);
+      lastNon2xx = resp;
+      await sleep(backoffMs(attempt));
+      continue;
+    }
     writeBuffered(clientRes, resp.status, resp.headers, resp.buffered);
     return;
   }
@@ -427,7 +441,7 @@ const server = http.createServer(async (clientReq, clientRes) => {
 });
 
 server.listen(PORT, '127.0.0.1', () => {
-  log(`STARTED listening=127.0.0.1:${PORT} upstream=${UPSTREAM} fallbackChain=[${FALLBACK_MODELS.join(',')}] overloadModels=[${OVERLOAD_MODELS.join(',')}] force1m=${FORCE_1M_FROM}->${FORCE_1M_TO} shortFallbackMaxBytes=${STANDARD_FALLBACK_MAX_BYTES} maxAttempts=${MAX_ATTEMPTS} contextLimit=${CONTEXT_LIMIT_TOKENS} warn=${CONTEXT_WARN_PCT} danger=${CONTEXT_DANGER_PCT} requestSummaryMinBytes=${REQUEST_SUMMARY_MIN_BYTES}`);
+  log(`STARTED listening=127.0.0.1:${PORT} upstream=${UPSTREAM} fallbackChain=[${FALLBACK_MODELS.join(',')}] overloadModels=[${OVERLOAD_MODELS.join(',')}] force1m=${FORCE_1M_FROM && FORCE_1M_TO ? FORCE_1M_FROM + '->' + FORCE_1M_TO : 'disabled'} shortFallbackMaxBytes=${STANDARD_FALLBACK_MAX_BYTES} maxAttempts=${MAX_ATTEMPTS} contextLimit=${CONTEXT_LIMIT_TOKENS} warn=${CONTEXT_WARN_PCT} danger=${CONTEXT_DANGER_PCT} requestSummaryMinBytes=${REQUEST_SUMMARY_MIN_BYTES}`);
 });
 server.on('error', (e) => { log(`FATAL ${e.message}`); process.exit(1); });
 
