@@ -1,7 +1,7 @@
 ---
 title: ADR — 포트 할당 정책 (다중 웹 서비스 충돌 방지)
-date: 2026-07-02 (갱신 2026-07-04)
-status: 확정 (07-02 매니저 판단 · 07-04 이사님 방향 반영 — "8002-8010 웹포트 외부 오픈")
+date: 2026-07-02 (갱신 2026-07-08)
+status: 확정 (07-02 매니저 판단 · 07-04 이사님 방향 반영 — "8002-8010 웹포트 외부 오픈" · 07-08 실측 매핑 보강)
 tags:
   - infrastructure
   - ops
@@ -26,9 +26,10 @@ tags:
 | 8788 | GLM 프록시 (node) | 내부 |
 | 22 | SSH | 기존 |
 
-## 매핑 (07-05 실측 `ss -tlnp` + `/proc/cwd`)
+## 매핑 (07-05 실측 `ss -tlnp` + `/proc/cwd`, 07-08 Git 문서 정합성 보강)
 - **8002 + 80** → autotrader Streamlit 대시보드 (동일 서비스, 80·8002 둘 다 LISTEN, 외부 200 OK). 80은 nginx 아님 — streamlit이 root 로 직접 바인딩.
 - **8003** → **시나리오팀 scenario-generator backend** (FastAPI, `scenario/tools/scenario-generator/backend/app.py`). autotrader venv 를 인터프리터로만 재사용 — **서비스 소유 = 시나리오팀** (07-05 시나리오팀 인계 정정). 매니저 ops 인수.
+- **8004** → **RPG 시스템 설명 웹서버** (Flask, `rpg_game/web/app.py`). 기존 "시나리오 뷰어 8004 예약" 문구보다 이 실구현 매핑이 우선한다.
 - **8001** → 미사용 (autotrader REST API 기동 안 됨, 포트 미확정).
 - nginx 미설치.
 - **1521** → Oracle DB Free 23ai (유저: autotrader `~/.oracle-env`, SCENARIO `~/.oracle-env-scenario` 07-04 생성)
@@ -38,9 +39,9 @@ tags:
 2. 8001(API)·1521(Oracle)·8788(GLM) = 외부 노출 금지 (내부 바인딩 우선).
 3. 신규 서비스 등록 시 본 문서 매핑에 즉시 기록 (포트·서비스·소유 팀장·시작일).
 4. 충돌 전 사전 `ss -tlnp` 점유 확인.
-5. 향후 웹 서비스는 8002부터 순차 할당 — 8004 시나리오 뷰어, 8005 RPG 데모 등 예약.
+5. 향후 웹 서비스는 8002부터 순차 할당하되, 이미 Git에 반영된 실구현 매핑이 예약 문구보다 우선한다. 현재 8004는 RPG 웹서버가 사용한다.
 
 ## 차기 (매니저 ops)
 - 8003·80 포트 정체 확인.
-- 시나리오 뷰어 → 8004 예약 (scenario-generator v0 산출 후 착수).
+- 시나리오 뷰어는 현행 8003 scenario-generator와 통합하거나, 별도 분리가 필요하면 8005+ 신규 포트로 ADR 갱신 후 배정.
 - 포털 랜딩(80 통합) vs 개별 포트 직접 — 이사님 구상 확정 대기.

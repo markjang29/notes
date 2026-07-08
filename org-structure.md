@@ -17,7 +17,7 @@ tags:
 - **총 매니저 봇 `@heav_lnx_bot`** (이 봇) — 조율·보고·회의 정리·ADR support·쿼터 감시.
 - **RPG 팀장 봇 `@heav_lnx_rpg_bot`** — 프로젝트 실행 + subagent 직원.
 - **trader 팀장 봇 `@heav_lnx_trader_bot`** — 프로젝트 실행 + subagent 직원.
-- **시나리오 팀장 봇 `@heav_lnx_scenario_bot`** — **자생 세계관 시나리오**: 캐릭터 챗(character.ai류)처럼 세계관·캐릭터가 자생적으로 생성·운영되는 독립 시나리오 생태계. RPG 세계관과 **분리**. repo `~/projects/scenario`. 2026-06-30 신설.
+- **시나리오 팀장 봇 `@heav_lnx_scenario_bot`** — **RISU 자산 기반 창작 스튜디오**. repo `~/projects/scenario`. 2026-06-30 신설. 2026-07-04 이후 최신 기준은 `principles/scenario-team-purpose.md`가 우선한다: 자의적 자생서사는 금지, RISU 기반 draft 창작은 본업, 디벨롭은 이사님 컨펌 후, RPG 의뢰 시 RPG=클라이언트/시나리오팀=창작 서포터로 협업한다.
 - (향후 팀장 추가 시 동일 패턴)
 
 ## 운영 사이클 (매니저 주도)
