@@ -14,8 +14,10 @@ Environment=NODE_ENV=production
 # Environment=ZAI_UPSTREAM=https://api.z.ai/api/anthropic
 # Environment=PROXY_PORT=8788
 # 조건부 fallback: 짧은 요청만 표준 모델로 살리고, 긴 요청은 1M을 보장한다.
-Environment=FALLBACK_MODEL=glm-5.2
-Environment=OVERLOAD_MODELS=glm-5.2[1m]
+# 짧은 복구/부트 요청은 glm-5.2 계열 과부하 시 glm-5.1로 회피한다.
+# 긴 요청은 프록시 코드가 reqBytes 기준으로 fallback을 막아 1M/긴문맥 보장을 우선한다.
+Environment=FALLBACK_MODEL=glm-5.1
+Environment=OVERLOAD_MODELS=glm-5.2[1m],glm-5.2
 Environment=STANDARD_FALLBACK_MAX_BYTES=204800
 Environment=NOTIFY_CHAT=8315615299
 Environment=MAX_ATTEMPTS=4

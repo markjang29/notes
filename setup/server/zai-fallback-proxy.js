@@ -232,7 +232,7 @@ const server = http.createServer(async (clientReq, clientRes) => {
     // 비-2xx
     const curModel = parseModel(bodyBuf);
     if (isOverloadStatus(resp.status)) {
-      log(`OVERLOAD status=${resp.status} attempt=${attempt} model=${curModel} body=${resp.buffered.toString('utf8').slice(0,160)}`);
+      log(`OVERLOAD status=${resp.status} attempt=${attempt} model=${curModel} reqBytes=${bodyBuf.length} body=${resp.buffered.toString('utf8').slice(0,160)}`);
       // 1M 변형이면 요청 크기에 따라 분기:
       // - 짧은 요청: 표준 모델 백업으로 가용성 확보
       // - 긴 요청: 1M을 보장해야 하므로 같은 모델로 재시도하고, 안 되면 명시 실패
