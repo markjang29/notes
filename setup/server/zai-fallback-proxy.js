@@ -36,6 +36,8 @@ const PORT           = parseInt(process.env.PROXY_PORT || '8788', 10);
 const FALLBACK_MODEL = process.env.FALLBACK_MODEL  || 'glm-5.2';
 const FALLBACK_MODELS = (process.env.FALLBACK_MODELS || FALLBACK_MODEL).split(',').map(s => s.trim()).filter(Boolean);
 const OVERLOAD_MODELS= (process.env.OVERLOAD_MODELS || 'glm-5.2[1m]').split(',').map(s => s.trim()).filter(Boolean);
+const FORCE_1M_FROM   = process.env.FORCE_1M_FROM || 'glm-5.2';
+const FORCE_1M_TO     = process.env.FORCE_1M_TO   || 'glm-5.2[1m]';
 const STANDARD_FALLBACK_MAX_BYTES = parseInt(process.env.STANDARD_FALLBACK_MAX_BYTES || '204800', 10);
 const MAX_ATTEMPTS   = parseInt(process.env.MAX_ATTEMPTS || '4', 10);
 const LOG_PATH       = process.env.PROXY_LOG || path.join(os.homedir(), '.local/state/cokacdir/zai-fallback-proxy.log');
@@ -264,6 +266,14 @@ function swapModel(bodyBuf, newModel) {
     return Buffer.from(JSON.stringify(j), 'utf8');
   } catch { return bodyBuf; }
 }
+function normalizeInitialModel(bodyBuf) {
+  const m = parseModel(bodyBuf);
+  if (FORCE_1M_FROM && FORCE_1M_TO && m === FORCE_1M_FROM) {
+    log(`NORMALIZE-MODEL ${FORCE_1M_FROM} -> ${FORCE_1M_TO} reqBytes=${bodyBuf.length}`);
+    return swapModel(bodyBuf, FORCE_1M_TO);
+  }
+  return bodyBuf;
+}
 
 /**
  * upstream으로 1회 시도.
@@ -331,7 +341,9 @@ const server = http.createServer(async (clientReq, clientRes) => {
     fwdHeaders[k] = v;
   }
 
-  const startedModel = parseModel(bodyBuf);
+  const requestedModel = parseModel(bodyBuf);
+  bodyBuf = normalizeInitialModel(bodyBuf);
+  const startedModel = parseModel(bodyBuf) || requestedModel;
   if (bodyBuf.length >= REQUEST_SUMMARY_MIN_BYTES) {
     log(`REQ-SUMMARY ${summarizeRequest(bodyBuf)}`);
   }
@@ -415,7 +427,7 @@ const server = http.createServer(async (clientReq, clientRes) => {
 });
 
 server.listen(PORT, '127.0.0.1', () => {
-  log(`STARTED listening=127.0.0.1:${PORT} upstream=${UPSTREAM} fallbackChain=[${FALLBACK_MODELS.join(',')}] overloadModels=[${OVERLOAD_MODELS.join(',')}] shortFallbackMaxBytes=${STANDARD_FALLBACK_MAX_BYTES} maxAttempts=${MAX_ATTEMPTS} contextLimit=${CONTEXT_LIMIT_TOKENS} warn=${CONTEXT_WARN_PCT} danger=${CONTEXT_DANGER_PCT} requestSummaryMinBytes=${REQUEST_SUMMARY_MIN_BYTES}`);
+  log(`STARTED listening=127.0.0.1:${PORT} upstream=${UPSTREAM} fallbackChain=[${FALLBACK_MODELS.join(',')}] overloadModels=[${OVERLOAD_MODELS.join(',')}] force1m=${FORCE_1M_FROM}->${FORCE_1M_TO} shortFallbackMaxBytes=${STANDARD_FALLBACK_MAX_BYTES} maxAttempts=${MAX_ATTEMPTS} contextLimit=${CONTEXT_LIMIT_TOKENS} warn=${CONTEXT_WARN_PCT} danger=${CONTEXT_DANGER_PCT} requestSummaryMinBytes=${REQUEST_SUMMARY_MIN_BYTES}`);
 });
 server.on('error', (e) => { log(`FATAL ${e.message}`); process.exit(1); });
 
