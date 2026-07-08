@@ -47,6 +47,8 @@ const NOTIFY_ALL_MODELS = process.env.NOTIFY_ALL_MODELS === '1';
 const CONTEXT_LIMIT_TOKENS = parseInt(process.env.CONTEXT_LIMIT_TOKENS || '1000000', 10);
 const CONTEXT_WARN_PCT = parseFloat(process.env.CONTEXT_WARN_PCT || '70');
 const CONTEXT_DANGER_PCT = parseFloat(process.env.CONTEXT_DANGER_PCT || '85');
+// 원문 저장 없이 큰 요청의 구조만 기록한다. hidden/system/tool_result 비대화 증식을 잡기 위한 계측.
+const REQUEST_SUMMARY_MIN_BYTES = parseInt(process.env.REQUEST_SUMMARY_MIN_BYTES || '200000', 10);
 function loadNotifyBotToken() {
   if (process.env.NOTIFY_BOT_TOKEN) return process.env.NOTIFY_BOT_TOKEN;
   try { // 기존 cokacctl.json 의 첫 봇 토큰 재사용 (평문 비밀 추가 회피)
@@ -158,6 +160,61 @@ function inferWorkload(bodyBuf) {
   if (s.includes('/home/ubuntu/.cokacdir/workspace/r2meshwa')) return 'audit';
   if (s.includes('/home/ubuntu/notes')) return 'manager';
   return 'unknown';
+}
+function jsonBytes(v) {
+  try { return Buffer.byteLength(JSON.stringify(v), 'utf8'); } catch { return 0; }
+}
+function addBucket(bucket, key, n) {
+  bucket[key] = (bucket[key] || 0) + (n || 0);
+}
+function summarizeRequest(bodyBuf) {
+  try {
+    const j = JSON.parse(bodyBuf.toString('utf8'));
+    const roleBytes = {};
+    const partBytes = {};
+    const largest = [];
+    const pushLargest = (label, n) => {
+      largest.push([label, n || 0]);
+      largest.sort((a, b) => b[1] - a[1]);
+      if (largest.length > 5) largest.pop();
+    };
+    const systemBytes = jsonBytes(j.system);
+    if (systemBytes) pushLargest('system', systemBytes);
+    const messages = Array.isArray(j.messages) ? j.messages : [];
+    for (const m of messages) {
+      const role = m && m.role ? m.role : 'unknown';
+      const mb = jsonBytes(m);
+      addBucket(roleBytes, role, mb);
+      const c = m ? m.content : null;
+      if (Array.isArray(c)) {
+        for (const p of c) {
+          const pt = p && p.type ? p.type : typeof p;
+          const pb = jsonBytes(p);
+          addBucket(partBytes, pt, pb);
+          pushLargest(`${role}:${pt}`, pb);
+        }
+      } else {
+        const pt = typeof c;
+        const cb = jsonBytes(c);
+        addBucket(partBytes, pt, cb);
+        pushLargest(`${role}:${pt}`, cb);
+      }
+    }
+    const fmt = (obj) => Object.entries(obj).sort((a,b)=>b[1]-a[1])
+      .slice(0, 8).map(([k,v]) => `${k}:${v}`).join(',');
+    return [
+      `model=${j.model || '?'}`,
+      `total=${bodyBuf.length}`,
+      `system=${systemBytes}`,
+      `messages=${messages.length}`,
+      `roles=${fmt(roleBytes) || '-'}`,
+      `parts=${fmt(partBytes) || '-'}`,
+      `largest=${largest.map(([k,v]) => `${k}:${v}`).join(',') || '-'}`,
+      `keys=${Object.keys(j).sort().join(',')}`
+    ].join(' ');
+  } catch (e) {
+    return `parse_error=${e.message} total=${bodyBuf.length}`;
+  }
 }
 function notifyGaveup(model) {
   const key = model + ts().slice(0, 16); // 분 단위 중복 억제
@@ -275,6 +332,9 @@ const server = http.createServer(async (clientReq, clientRes) => {
   }
 
   const startedModel = parseModel(bodyBuf);
+  if (bodyBuf.length >= REQUEST_SUMMARY_MIN_BYTES) {
+    log(`REQ-SUMMARY ${summarizeRequest(bodyBuf)}`);
+  }
   let attempt = 0;
   let lastNon2xx = null;
 
@@ -355,7 +415,7 @@ const server = http.createServer(async (clientReq, clientRes) => {
 });
 
 server.listen(PORT, '127.0.0.1', () => {
-  log(`STARTED listening=127.0.0.1:${PORT} upstream=${UPSTREAM} fallbackChain=[${FALLBACK_MODELS.join(',')}] overloadModels=[${OVERLOAD_MODELS.join(',')}] shortFallbackMaxBytes=${STANDARD_FALLBACK_MAX_BYTES} maxAttempts=${MAX_ATTEMPTS} contextLimit=${CONTEXT_LIMIT_TOKENS} warn=${CONTEXT_WARN_PCT} danger=${CONTEXT_DANGER_PCT}`);
+  log(`STARTED listening=127.0.0.1:${PORT} upstream=${UPSTREAM} fallbackChain=[${FALLBACK_MODELS.join(',')}] overloadModels=[${OVERLOAD_MODELS.join(',')}] shortFallbackMaxBytes=${STANDARD_FALLBACK_MAX_BYTES} maxAttempts=${MAX_ATTEMPTS} contextLimit=${CONTEXT_LIMIT_TOKENS} warn=${CONTEXT_WARN_PCT} danger=${CONTEXT_DANGER_PCT} requestSummaryMinBytes=${REQUEST_SUMMARY_MIN_BYTES}`);
 });
 server.on('error', (e) => { log(`FATAL ${e.message}`); process.exit(1); });
 
