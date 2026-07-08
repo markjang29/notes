@@ -100,21 +100,25 @@ function notifyRecovered(fromModel, toModel, usage, reqBytes) {
     _recoverCount = 0; _lastRecoverNotify = now;
   }
 }
-function notifyRoute(fromModel, toModel, usage, reqBytes, attempts, status) {
+function notifyRoute(fromModel, toModel, usage, reqBytes, attempts, status, workload) {
   if (!NOTIFY_ALL_MODELS || !NOTIFY_CHAT || !NOTIFY_BOT) return;
   const now = Date.now();
   const route = `${fromModel || '?'}→${toModel || '?'}`;
-  const parts = [`${route}`, `${attempts}회`, `${status}`];
-  if (reqBytes) parts.push(`${(reqBytes/1024).toFixed(1)}KB`);
+  const parts = [];
+  if (workload) parts.push(workload);
+  parts.push(route, `try ${attempts}`, `status ${status}`);
+  if (reqBytes) parts.push(`req ${(reqBytes/1024).toFixed(1)}KB`);
   if (usage && usage.input) parts.push(`in ${usage.input.toLocaleString()}`);
   if (usage && usage.cacheRead) parts.push(`cache ${usage.cacheRead.toLocaleString()}`);
   if (usage && usage.output) parts.push(`out ${usage.output.toLocaleString()}`);
   const ctx = contextInfo(usage);
-  let prefix = '-';
+  let prefix = fromModel && toModel && fromModel !== toModel ? '🔁' : '-';
   if (ctx) {
     parts.push(`ctx ${ctx.total.toLocaleString()}/${CONTEXT_LIMIT_TOKENS.toLocaleString()} (${ctx.pct.toFixed(1)}%)`);
     if (ctx.pct >= CONTEXT_DANGER_PCT) prefix = '🚨';
     else if (ctx.pct >= CONTEXT_WARN_PCT) prefix = '⚠️';
+  } else {
+    parts.push('ctx n/a');
   }
   _routeLines.push(`${prefix} ${parts.join(' · ')}`);
   if (ctx && ctx.pct >= CONTEXT_DANGER_PCT) {
@@ -145,6 +149,15 @@ function contextInfo(usage) {
   const total = (usage.input || 0) + (usage.cacheRead || 0) + (usage.cacheCreate || 0);
   if (!total || !CONTEXT_LIMIT_TOKENS) return null;
   return { total, pct: total / CONTEXT_LIMIT_TOKENS * 100 };
+}
+function inferWorkload(bodyBuf) {
+  const s = bodyBuf.toString('utf8');
+  if (s.includes('/home/ubuntu/projects/scenario')) return 'scenario';
+  if (s.includes('/home/ubuntu/projects/rpg_game')) return 'rpg';
+  if (s.includes('/home/ubuntu/projects/autotrader')) return 'trader';
+  if (s.includes('/home/ubuntu/.cokacdir/workspace/r2meshwa')) return 'audit';
+  if (s.includes('/home/ubuntu/notes')) return 'manager';
+  return 'unknown';
 }
 function notifyGaveup(model) {
   const key = model + ts().slice(0, 16); // 분 단위 중복 억제
@@ -280,14 +293,14 @@ const server = http.createServer(async (clientReq, clientRes) => {
         pipeUpstreamToClient(clientRes, resp.res, resp.status, resp.headers, (buf) => {
           const usage = extractUsage(buf);
           notifyRecovered(fm, tm, usage, reqBytes);
-          notifyRoute(fm, tm, usage, reqBytes, attempt, resp.status);
+          notifyRoute(fm, tm, usage, reqBytes, attempt, resp.status, inferWorkload(bodyBuf));
         });
       } else {
         const reqBytes = bodyBuf.length;
         const fm = startedModel || '?';
         const tm = parseModel(bodyBuf) || fm;
         pipeUpstreamToClient(clientRes, resp.res, resp.status, resp.headers, (buf) => {
-          notifyRoute(fm, tm, extractUsage(buf), reqBytes, attempt, resp.status);
+          notifyRoute(fm, tm, extractUsage(buf), reqBytes, attempt, resp.status, inferWorkload(bodyBuf));
         });
       }
       return;
