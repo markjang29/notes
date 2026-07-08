@@ -18,7 +18,7 @@ Environment=NODE_ENV=production
 # 긴 요청은 프록시 코드가 reqBytes 기준으로 fallback을 막아 1M/긴문맥 보장을 우선한다.
 Environment=FALLBACK_MODELS=glm-5.1,glm-4.6
 Environment=OVERLOAD_MODELS=glm-5.2[1m],glm-5.2
-Environment=STANDARD_FALLBACK_MAX_BYTES=204800
+Environment=STANDARD_FALLBACK_MAX_BYTES=307200
 Environment=NOTIFY_CHAT=8315615299
 Environment=NOTIFY_ALL_MODELS=1
 Environment=CONTEXT_LIMIT_TOKENS=1000000
