@@ -44,6 +44,9 @@ const LOG_PATH       = process.env.PROXY_LOG || path.join(os.homedir(), '.local/
 const NOTIFY_CHAT     = process.env.NOTIFY_CHAT || '';           // 알림 받을 chat_id (없으면 알림 안 함)
 const NOTIFY_BATCH_MS = parseInt(process.env.NOTIFY_BATCH_MS || '90000', 10);
 const NOTIFY_ALL_MODELS = process.env.NOTIFY_ALL_MODELS === '1';
+const CONTEXT_LIMIT_TOKENS = parseInt(process.env.CONTEXT_LIMIT_TOKENS || '1000000', 10);
+const CONTEXT_WARN_PCT = parseFloat(process.env.CONTEXT_WARN_PCT || '70');
+const CONTEXT_DANGER_PCT = parseFloat(process.env.CONTEXT_DANGER_PCT || '85');
 function loadNotifyBotToken() {
   if (process.env.NOTIFY_BOT_TOKEN) return process.env.NOTIFY_BOT_TOKEN;
   try { // 기존 cokacctl.json 의 첫 봇 토큰 재사용 (평문 비밀 추가 회피)
@@ -89,6 +92,8 @@ function notifyRecovered(fromModel, toModel, usage, reqBytes) {
     if (reqBytes) parts.push(`요청 ${(reqBytes/1024).toFixed(1)}KB`);
     if (usage && usage.input) parts.push(`입력 ${usage.input.toLocaleString()}토큰`);
     if (usage && usage.output) parts.push(`출력 ${usage.output.toLocaleString()}토큰`);
+    const ctx = contextInfo(usage);
+    if (ctx) parts.push(`ctx ${ctx.total.toLocaleString()} (${ctx.pct.toFixed(1)}%)`);
     if (parts.length) line += '\n' + parts.join(' · ');
     line += `\n최근 ${Math.round(NOTIFY_BATCH_MS/1000)}초 ${_recoverCount}회 응답 정상 복구`;
     tgSend(line);
@@ -102,8 +107,19 @@ function notifyRoute(fromModel, toModel, usage, reqBytes, attempts, status) {
   const parts = [`${route}`, `${attempts}회`, `${status}`];
   if (reqBytes) parts.push(`${(reqBytes/1024).toFixed(1)}KB`);
   if (usage && usage.input) parts.push(`in ${usage.input.toLocaleString()}`);
+  if (usage && usage.cacheRead) parts.push(`cache ${usage.cacheRead.toLocaleString()}`);
   if (usage && usage.output) parts.push(`out ${usage.output.toLocaleString()}`);
-  _routeLines.push(`- ${parts.join(' · ')}`);
+  const ctx = contextInfo(usage);
+  let prefix = '-';
+  if (ctx) {
+    parts.push(`ctx ${ctx.total.toLocaleString()}/${CONTEXT_LIMIT_TOKENS.toLocaleString()} (${ctx.pct.toFixed(1)}%)`);
+    if (ctx.pct >= CONTEXT_DANGER_PCT) prefix = '🚨';
+    else if (ctx.pct >= CONTEXT_WARN_PCT) prefix = '⚠️';
+  }
+  _routeLines.push(`${prefix} ${parts.join(' · ')}`);
+  if (ctx && ctx.pct >= CONTEXT_DANGER_PCT) {
+    tgSend(`🚨 *컨텍스트 위험*\n${route}\nctx ${ctx.total.toLocaleString()}/${CONTEXT_LIMIT_TOKENS.toLocaleString()} (${ctx.pct.toFixed(1)}%)\n권고: checkpoint 후 /clear`);
+  }
   if (_routeLines.length > 12) _routeLines = _routeLines.slice(-12);
   if (now - _lastRouteNotify >= NOTIFY_BATCH_MS) {
     tgSend(`📡 *Z.ai 모델 라우팅*\n최근 ${Math.round(NOTIFY_BATCH_MS/1000)}초\n${_routeLines.join('\n')}`);
@@ -116,9 +132,19 @@ function extractUsage(buf) {
   const u = {};
   const mi = buf.match(/"input_tokens"\s*:\s*(\d+)/);
   if (mi) u.input = +mi[1];
+  const mcr = buf.match(/"cache_read_input_tokens"\s*:\s*(\d+)/);
+  if (mcr) u.cacheRead = +mcr[1];
+  const mcc = buf.match(/"cache_creation_input_tokens"\s*:\s*(\d+)/);
+  if (mcc) u.cacheCreate = +mcc[1];
   const outs = buf.match(/"output_tokens"\s*:\s*(\d+)/g) || [];
   if (outs.length) u.output = +outs[outs.length - 1].match(/\d+/)[0];
   return u;
+}
+function contextInfo(usage) {
+  if (!usage) return null;
+  const total = (usage.input || 0) + (usage.cacheRead || 0) + (usage.cacheCreate || 0);
+  if (!total || !CONTEXT_LIMIT_TOKENS) return null;
+  return { total, pct: total / CONTEXT_LIMIT_TOKENS * 100 };
 }
 function notifyGaveup(model) {
   const key = model + ts().slice(0, 16); // 분 단위 중복 억제
@@ -305,7 +331,7 @@ const server = http.createServer(async (clientReq, clientRes) => {
 });
 
 server.listen(PORT, '127.0.0.1', () => {
-  log(`STARTED listening=127.0.0.1:${PORT} upstream=${UPSTREAM} fallbackChain=[${FALLBACK_MODELS.join(',')}] overloadModels=[${OVERLOAD_MODELS.join(',')}] shortFallbackMaxBytes=${STANDARD_FALLBACK_MAX_BYTES} maxAttempts=${MAX_ATTEMPTS}`);
+  log(`STARTED listening=127.0.0.1:${PORT} upstream=${UPSTREAM} fallbackChain=[${FALLBACK_MODELS.join(',')}] overloadModels=[${OVERLOAD_MODELS.join(',')}] shortFallbackMaxBytes=${STANDARD_FALLBACK_MAX_BYTES} maxAttempts=${MAX_ATTEMPTS} contextLimit=${CONTEXT_LIMIT_TOKENS} warn=${CONTEXT_WARN_PCT} danger=${CONTEXT_DANGER_PCT}`);
 });
 server.on('error', (e) => { log(`FATAL ${e.message}`); process.exit(1); });
 
