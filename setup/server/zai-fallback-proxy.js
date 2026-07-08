@@ -169,6 +169,16 @@ function notifyGaveup(model) {
 function isOverloadStatus(status) {
   return status === 529 || status === 503 || status === 429;
 }
+function interestingRateHeaders(headers) {
+  const out = [];
+  for (const [k, v] of Object.entries(headers || {})) {
+    const lk = k.toLowerCase();
+    if (lk.includes('ratelimit') || lk.includes('rate-limit') || lk === 'retry-after' || lk.includes('quota')) {
+      out.push(`${k}=${Array.isArray(v) ? v.join('|') : v}`);
+    }
+  }
+  return out.join(' ');
+}
 function isOverloadModel(m) {
   if (!m) return false;
   return OVERLOAD_MODELS.some(o => m.includes(o));
@@ -309,7 +319,8 @@ const server = http.createServer(async (clientReq, clientRes) => {
     // 비-2xx
     const curModel = parseModel(bodyBuf);
     if (isOverloadStatus(resp.status)) {
-      log(`OVERLOAD status=${resp.status} attempt=${attempt} model=${curModel} reqBytes=${bodyBuf.length} body=${resp.buffered.toString('utf8').slice(0,160)}`);
+      const rateHeaders = interestingRateHeaders(resp.headers);
+      log(`OVERLOAD status=${resp.status} attempt=${attempt} model=${curModel} reqBytes=${bodyBuf.length}${rateHeaders ? ' headers=' + rateHeaders : ''} body=${resp.buffered.toString('utf8').slice(0,160)}`);
       // 1M/5.x 계열이면 요청 크기에 따라 분기:
       // - 짧은 요청: 표준 모델 백업으로 가용성 확보
       // - 긴 요청: 1M을 보장해야 하므로 같은 모델로 재시도하고, 안 되면 명시 실패
