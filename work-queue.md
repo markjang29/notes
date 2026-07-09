@@ -10,17 +10,17 @@
 - 중요한 `.md`/ADR/checkpoint/work-queue 변경은 Git 보존 후 세션 클리어.
 - 긴 문서 전체 재독 금지. 필요한 부분만 읽는다.
 
-## 야간 자율 배정 (2026-07-08 01:00 KST — 인사이트 발굴)
+## 야간 자율 배정 (2026-07-09 01:00 KST — 리서치·draft·설계 프레임워크)
 
-★ 이사님 07-07 재정의: 야간 자율 = **일(코드/draft 산출)이 아님 — 인사이트 발굴이 메인**. 진행중 작업 × 인문/철학/게임학/미학 → 고차원·직관적 통찰. 07:00 아침 브리프 "오늘의 인사이트"로 취합.
+★ 이사님 07-09 재정의: 야간 자율 = **리서치·draft·설계 프레임워크** (WIP 팀당 2건 한도). 07-08 "인사이트 발굴(산출 금지)"에서 범위 확장 — 이제 산출(draft/프레임워크) 허용. **show-don't-tell(체감 우선)**: 추상 설계 말고 한 장면/한 거래/한 사이클의 체감 인스턴스로. 기존 WIP를 한 단계 구체화.
 
-- **RPG** (`@heav_lnx_rpg_bot`): 메커닉·플레이 철학. 시드 = Reasoning-Parry(참모 추론×지휘관 결정×패막 손맛)·첫 보스 한 판. 각도 후보: 결단의 본질/손맛=신체적 지성/한 판의 완결성/선택불가능성.
-- **autotrader** (`@heav_lnx_trader_bot`): 시장·위험·시간 철학. 시드 = 재진입·가중치·청산·전략 인스턴스화. 각도 후보: 재진입=인내와 미련/시간과 확률/청산의 용기/기계적 룰 vs 직관.
-- **scenario** (`@heav_lnx_scenario_bot`): 서사·세계관·캐릭터 철학. 시드 = 자산 공장·RISU 자산 기반 창작·캐릭터 회전. 각도 후보: 재료와 창작(브리콜라주)/'공장' 메타포/정체성 유동/자산의 굴레.
+금지(아침 승인 필수): 전략 채택 · commit/push · 외부 송신 · 실거래. 시나리오팀은 추가로 컨펌 전 디벨롭/구현 금지(사칙).
 
-형식 = 통찰 한 문장 + 근거(진행중작업 × 인문/철학/게임학) + 이사님께 왜 의미있는지. 1~2개/팀. 금지: 산출·commit/push·전략채택·ADR·실거래·디벨롭. 이사님께 직접 보고 X(07:00 통합).
+- **RPG** (`@heav_lnx_rpg_bot`, 2건 — 한도 내): ① 첫 보스 1턴 체감 인스턴스 구체화(`ideation/DRAFT-first-boss-one-turn-instance.md` → 한 장면 대본 수준) ② 패막 손맛 장면(`ideation/WIP-second-battle-scene-reasoning-parry.md` "속이는 자" 패턴 변화 묘사). 금지: Godot 코드 commit·새 모듈 구현·시그니처 변경.
+- **autotrader** (`@heav_lnx_trader_bot`, WIP 3→2로 좁힘): ① 전략 인스턴스 거래(`research/WIP-strategy-instance-trade-v1-draft.md` → 2008/2020/2022 중 1~2장면 구체 숫자 딥다이브) ② 비중 슬라이드(`research/WIP-weight-slide-results-v1-draft.md` → MDD 방어 vs 수익 트레이드오프 체감 시각화). 재진입(WIP-reentry)은 이번 제외. 금지: 실거래·거래소 API·전략 채택·commit. yfinance 백테스트 범위 내만.
+- **scenario** (`@heav_lnx_scenario_bot`, 2건 — 한도 내, 사칙 준수): ① 자산 공장 1사이클 체감 draft(`drafts/d1-scene-minami-rio.md` → RISU 자산→장면 end-to-end 한 사이클) ② 자산→제품 이식 패턴(`drafts/d2-rpg-advisor-han-jiwon.md` → 캐릭터 회전 1예 확장). 금지: 구현/디벨롭(컨펌 전)·전략 채택·commit. PROVENANCE 블록 의무.
 
-시드 송신 완료(01:02 KST). 회신 취합은 07:00 아침 브리프. 운영 큐 보존은 감사봇이 정합성 확인 후 commit/push 가능.
+지시문 파일: 각 팀 repo에 `OVERNIGHT_2026-07-09.md`. 팀장에게 `--message` 송신. 산출은 각 팀 지정 경로에 남기고 이사님께 직접 보고 금지 — 07:00 아침 브리프에서 매니저 취합. 야간 결과 push는 이사님 확인 후(★ 07-08 지시).
 
 ## 활성 작업
 
