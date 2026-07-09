@@ -10,17 +10,27 @@
 - 중요한 `.md`/ADR/checkpoint/work-queue 변경은 Git 보존 후 세션 클리어.
 - 긴 문서 전체 재독 금지. 필요한 부분만 읽는다.
 
-## 야간 자율 배정 (2026-07-09 01:00 KST — 리서치·draft·설계 프레임워크)
+## 야간 자율 배정 — 현재 사이클 (07-10 01:00 KST, 배정 완료)
 
-★ 이사님 07-09 재정의: 야간 자율 = **리서치·draft·설계 프레임워크** (WIP 팀당 2건 한도). 07-08 "인사이트 발굴(산출 금지)"에서 범위 확장 — 이제 산출(draft/프레임워크) 허용. **show-don't-tell(체감 우선)**: 추상 설계 말고 한 장면/한 거래/한 사이클의 체감 인스턴스로. 기존 WIP를 한 단계 구체화.
+★ 이사님 07-09 재정의(유지): 야간 자율 = **리서치·draft·설계 프레임워크** (WIP 팀당 2건 한도). **show-don't-tell(체감 우선)** — 기존 WIP를 한 단계 구체화.
+금지(아침 승인 필수): 전략 채택 · commit/push · 외부 송신 · 실거래. 시나리오팀 추가: 컨펌 전 디벨롭/구현·새 자산 사용 금지(사칙 5.1).
 
-금지(아침 승인 필수): 전략 채택 · commit/push · 외부 송신 · 실거래. 시나리오팀은 추가로 컨펌 전 디벨롭/구현 금지(사칙).
+### 07-09 밤 결과 (취합 완료 → 07-10 배정의 기반)
+- **RPG**: 1턴 대본(§2.5)·턴2 페인트 대본(§3.4) 완성, 체감 양호. 부족: 감각(청각/촉각/진동)·Miss 실패 분기·턴1/3 대본·수치 정합(25↔32%).
+- **autotrader**: 2008/2020 딥다이브 풍부, weight-slide 가설 반박 명시, 양호. 부족: 2022 인플레 장면·weight-slide 대안 부재. ⚠ 예산외 `WIP-adr-rest-api-port-ownership-v1-draft.md` 추가됨(지시문 無).
+- **scenario**: d1(Rio)·d2(Ji-Won) PROVENANCE·실제 자산 내용 펼침, 양호. ⚠ **이사님 컨펌 없이 Rio·Ji-Won 자산 창작 사용** → 사칙 5.1 긴장. 07:00 컨펌 안건 상정.
 
-- **RPG** (`@heav_lnx_rpg_bot`, 2건 — 한도 내): ① 첫 보스 1턴 체감 인스턴스 구체화(`ideation/DRAFT-first-boss-one-turn-instance.md` → 한 장면 대본 수준) ② 패막 손맛 장면(`ideation/WIP-second-battle-scene-reasoning-parry.md` "속이는 자" 패턴 변화 묘사). 금지: Godot 코드 commit·새 모듈 구현·시그니처 변경.
-- **autotrader** (`@heav_lnx_trader_bot`, WIP 3→2로 좁힘): ① 전략 인스턴스 거래(`research/WIP-strategy-instance-trade-v1-draft.md` → 2008/2020/2022 중 1~2장면 구체 숫자 딥다이브) ② 비중 슬라이드(`research/WIP-weight-slide-results-v1-draft.md` → MDD 방어 vs 수익 트레이드오프 체감 시각화). 재진입(WIP-reentry)은 이번 제외. 금지: 실거래·거래소 API·전략 채택·commit. yfinance 백테스트 범위 내만.
-- **scenario** (`@heav_lnx_scenario_bot`, 2건 — 한도 내, 사칙 준수): ① 자산 공장 1사이클 체감 draft(`drafts/d1-scene-minami-rio.md` → RISU 자산→장면 end-to-end 한 사이클) ② 자산→제품 이식 패턴(`drafts/d2-rpg-advisor-han-jiwon.md` → 캐릭터 회전 1예 확장). 금지: 구현/디벨롭(컨펌 전)·전략 채택·commit. PROVENANCE 블록 의무.
+### 07-10 밤 배정 (지시 송신 완료 — 각 repo `OVERNIGHT_2026-07-10.md`)
+- **RPG** (2건): ① DRAFT 1턴 — 감각 디테일 + Miss/Good 실패 분기 1장면 ② 2번째 씬 — 턴1/3 감각 대본(턴3 광역 3연패링 카타르시스) + 수치 정합.
+- **autotrader** (2건): ① strategy-instance — 2022 인플레 장면 딥다이브(세 시장 유형 비교 완성) ② weight-slide — 하이브리드(WS+부분매도, MDD 캡) 숫자 장면. ★예산외 WIP-adr 추가 작업 금지.
+- **scenario** (2건, 보수): ① d1(Rio) — 공장 1사이클 체감 딜레마 보강(자산 범위 내) ② d2(Ji-Won) — identity_kernel 불변핵 체감 1장면. **★새 자산·제품 이식 금지(컨펌 전)**.
 
-지시문 파일: 각 팀 repo에 `OVERNIGHT_2026-07-09.md`. 팀장에게 `--message` 송신. 산출은 각 팀 지정 경로에 남기고 이사님께 직접 보고 금지 — 07:00 아침 브리프에서 매니저 취합. 야간 결과 push는 이사님 확인 후(★ 07-08 지시).
+### ★ 07:00 아침 브리프 취합 안건 (cron `88C5A226` 매일 07:00 KST)
+1. **scenario 자산 사용 컨펌** — Minami Rio, Han Ji-Won 예시로 계속 써도 되는지 (사칙 5.1 "올려준 것≠공감한 것").
+2. **autotrader 예산외 `WIP-adr-rest-api-port-ownership`** — 매니저 검토 후 keep/폐기(범위 확장 금지 위반 소지).
+3. **야간 결과 push** — 이사님 확인 후 (★ 07-08 지시 유지).
+
+> 과거 사이클 상세는 Git 이력·`work-archive.md`·각 repo `OVERNIGHT_*.md` 참조.
 
 ## 활성 작업
 
