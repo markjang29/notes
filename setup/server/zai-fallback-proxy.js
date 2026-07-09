@@ -220,11 +220,15 @@ function summarizeRequest(bodyBuf) {
     return `parse_error=${e.message} total=${bodyBuf.length}`;
   }
 }
-function notifyGaveup(model) {
+function notifyGaveup(model, reqBytes) {
   const key = model + ts().slice(0, 16); // 분 단위 중복 억제
   if (key === _lastGaveupKey) return;
   _lastGaveupKey = key;
-  tgSend(`❌ *Z.ai 529 완전실패*\n${model} — 폴백 체인 전부 과부하. 응답 없음.`);
+  if (reqBytes && reqBytes > STANDARD_FALLBACK_MAX_BYTES) {
+    tgSend(`❌ *Z.ai 529 완전실패*\n${model} — 긴 요청이라 fallback 차단\n요청 ${(reqBytes/1024).toFixed(1)}KB > 한도 ${(STANDARD_FALLBACK_MAX_BYTES/1024).toFixed(0)}KB\n같은 모델 재시도 실패. 응답 없음.`);
+  } else {
+    tgSend(`❌ *Z.ai 529 완전실패*\n${model} — fallback 체인 재시도 실패. 응답 없음.`);
+  }
 }
 
 function isOverloadStatus(status) {
@@ -431,7 +435,7 @@ const server = http.createServer(async (clientReq, clientRes) => {
 
   // 재시도 한도 초과 → 마지막 응답 반환 (가능하면 폴백 모델 상태)
   log(`GAVE-UP attempts=${attempt} model=${parseModel(bodyBuf)} status=${lastNon2xx ? lastNon2xx.status : '?'}`);
-  notifyGaveup(parseModel(bodyBuf) || '?');
+  notifyGaveup(parseModel(bodyBuf) || '?', bodyBuf.length);
   if (lastNon2xx) {
     writeBuffered(clientRes, lastNon2xx.status, lastNon2xx.headers, lastNon2xx.buffered);
   } else {
