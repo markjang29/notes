@@ -19,7 +19,7 @@ Environment=NODE_ENV=production
 Environment=FALLBACK_MODELS=glm-5.1,glm-4.6
 Environment=OVERLOAD_MODELS=glm-5.2[1m],glm-5.2
 Environment=STANDARD_FALLBACK_MAX_BYTES=307200
-Environment=NOTIFY_CHAT=8315615299
+Environment=NOTIFY_CHAT=-5402233196
 Environment=NOTIFY_ALL_MODELS=1
 Environment=CONTEXT_LIMIT_TOKENS=1000000
 Environment=CONTEXT_WARN_PCT=70
