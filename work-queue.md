@@ -34,10 +34,20 @@
 - **autotrader** (2건): ① strategy-instance — 2022 인플레 장면 딥다이브(세 시장 유형 비교 완성) ② weight-slide — 하이브리드(WS+부분매도, MDD 캡) 숫자 장면. ★예산외 WIP-adr 추가 작업 금지.
 - **scenario** (2건, 보수): ① d1(Rio) — 공장 1사이클 체감 딜레마 보강(자산 범위 내) ② d2(Ji-Won) — identity_kernel 불변핵 체감 1장면. **★새 자산·제품 이식 금지(컨펌 전)**.
 
+### 07-11 밤 배정 (지시 송신 완료 01:02 KST — 팀장 3인 `--message` 수신)
+- 기준: 07-09 재정의 유지(리서치·draft·설계, WIP 팀당 2건, show-don't-tell). push/전략채택/외부송신/실거래 금지.
+- **RPG** (2건): ① 1턴 대본 — 감각 디테일(청각/촉각/진동) + Miss/Good 실패 분기 1장면 다듬기 ② 2번째 씬 — 턴1/3 감각 대본(턴3 광역 3연패링 카타르시스) + 수치 정합(25↔32%). ★push 보류 유지(이사님 대본 확인 후 재결정).
+- **autotrader** (2건): ① strategy-instance — 2022 인플레 장면 딥다이브(세 시장 유형 비교) ② weight-slide — 하이브리드(WS+부분매도, MDD 캡) 숫자 장면. ★예산외 WIP-adr 추가 작업 금지. push 대기 유지.
+- **scenario** (2건, 보수): ① d1/d2(Rio·Ji-Won) — 부가설명(정체·맥락·사용 이유) 동반 보강 또는 RISU 범위 내 이사님 인지 자산으로 시안 교체 ② identity_kernel 불변핵 체감 1장면. ★새 자산·제품 이식 금지, 컨펌 전 디벨롭/구현 금지(사칙 5.1, 이사님 07-10 정책: 미인지 캐릭터 부가설명 필수·불가 시 사용 금지).
+
 ### ★ 07:00 아침 브리프 취합 안건 (cron `88C5A226` 매일 07:00 KST)
 1. **scenario 자산 사용 컨펌** — Minami Rio, Han Ji-Won 예시로 계속 써도 되는지 (사칙 5.1 "올려준 것≠공감한 것").
 2. **autotrader 예산외 `WIP-adr-rest-api-port-ownership`** — 매니저 검토 후 keep/폐기(범위 확장 금지 위반 소지).
 3. **야간 결과 push** — 이사님 확인 후 (★ 07-08 지시 유지).
+4. ★**scenario d1/d2 수정(+80/+88) vs Rio·Ji-Won 반려 충돌** — 반려된 자산에 대한 보강인지 교체 시안인지, 처리 방침 필요(07-11 01:00 git 체크 발견).
+5. **autotrader 예산외 `WIP-adr-rest-api-port-ownership-v1-draft.md`** — 미추적, keep/폐기(위 #2와 동일, 강조).
+6. **notes 수정 2건** — `.reviews/session-reaper.log`(커밋/무시 정책, 대기결정 #3) + `setup/server/zai-proxy.service`(+2/-1, ops push 여부).
+7. **3 repo ahead 1**(notes/autotrader/scenario) — 야간 push 금지 정책상 보류, 아침 승인 후 일괄 push 검토. rpg_game은 clean(07-09 OVERNIGHT만 미추적).
 
 > 과거 사이클 상세는 Git 이력·`work-archive.md`·각 repo `OVERNIGHT_*.md` 참조.
 
