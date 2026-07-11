@@ -35,14 +35,22 @@
 - **autotrader** (2건): ① strategy-instance — 세 시나리오→"전략 선택 나침반"(의사결정 트리/매트릭스, 전략 채택 아님) ② weight-slide — WS/exit/하이브리드 3-way 비교(2020 코로나, 트레이드오프 숫자). ★예산외 WIP-adr 추가 작업 금지.
 - **scenario** (2건, 보수·사칙 정위치): ① d1(Rio) — **이사님용 부가설명 블록**(PROVENANCE+캐릭터 배경, 장면 수정 없이 메타 보강만) ② d2(Ji-Won) — 부가설명 블록 + 가상제품 사칙 정위치("추상 예시, 컨펌 후 실제 적용" 명시). **★Rio·Ji-Won 디벨롭·창작 확장·새 자산 금지**.
 
+### 07-12 밤 배정 (01:02 KST, `--message` 송신 완료 — 3팀장 수신)
+★이사님 07-09 재정의 유지(리서치·draft·설계, WIP 2건, show-don't-tell). push/전략채택/외부송신/실거래 금지.
+**★★07-11 밤 배정 과제 3팀 전체 미수행**(repo에 07-11 01:18 이후 산출 commit 없음 → 07:00 최우선 안건 #1). 07-11 밤 과제를 사실상 재배정.
+- **RPG** (2건, 재전달): ① 1턴 패링 손맛 인터페이스(입력→히트스톱→감각) 한 호흡 draft ② 2번째 씬 풀 1판 플레이스루 대본(오프닝→3턴→결말).
+- **autotrader** (2건, 재전달): ① strategy-instance 세 시나리오→'전략 선택 나침반'(의사결정 트리, 전략 채택 아님) ② weight-slide WS/exit/하이브리드 3-way 비교(2020 코로나 숫자). ★예산외 WIP-adr 작업 금지 유지.
+- **scenario** (2건, 재전달·보수): ① d1(Rio) 부가설명 블록(PROVENANCE+배경, 장면 수정 없이 메타 보강) ② d2(Ji-Won) 부가설명 + 가상제품 사칙 정위치. ★새 자산·디벨롭 금지 유지. 배정 과제를 자율 ops보다 우선 요청(07-11 새벽 크롤링 ops 우선시한 정위치).
+
 ### ★ 07:00 아침 브리프 취합 안건 (cron `88C5A226` 매일 07:00 KST)
-1. **★ 07-11 밤 중복 트리거 사고 보고** — 두 매니저 세션 동시 배정. repo 파일 정본 처리. 재발 방지(cron 중복 감지 후보).
-2. **07-10 밤 결과 push** — 이사님 확인 후 (★ 07-08 지시 유지). RPG 대본 사이트 표현(07-10 이사님 요청)은 매니저 보드 카드 처리.
-3. **autotrader 예산외 `WIP-adr-rest-api-port-ownership`** — keep/폐기 결정(이사님 07-10 "대기").
-4. **scenario 부가설명 보강 결과** — 이사님 반려(07-10) 후 첫 산출. 부가설명으로 자산 사용 재개 가능한지 재컨펌.
-5. **autotrader 예산외 `WIP-adr-rest-api-port-ownership-v1-draft.md`** — 미추적, keep/폐기(위 #2와 동일, 강조).
-6. **notes 수정 2건** — `.reviews/session-reaper.log`(커밋/무시 정책, 대기결정 #3) + `setup/server/zai-proxy.service`(+2/-1, ops push 여부).
-7. **Git push 대기 상태** — 07:00 안건 작성 시점 기준: notes/autotrader/scenario ahead, rpg_game은 clean(07-09 OVERNIGHT만 미추적)으로 관측. **09:10 감사 실측 기준은 별도 주석 참조.**
+1. **★★ 07-11 밤 배정 과제 3팀 전체 미수행** — RPG/autotrader/scenario 모두 repo에 07-11 01:18 이후 산출 commit 없음. 팀장 세션 미실행 또는 commit 누락 의심. 원인 파악 + 07-12 밤 재배정 효력 확인. ★최우선.
+2. **★ 07-11 밤 중복 트리거 사고 보고** — 두 매니저 세션 동시 배정(01:02 + 01:18). repo 파일 정본 처리. 재발 방지(cron 중복 감지 후보).
+3. **07-10 밤 결과 push** — 이사님 확인 후 (★ 07-08 지시 유지). RPG 대본 사이트 표현(07-10 이사님 요청)은 매니저 보드 카드 처리(완료).
+4. **autotrader 예산외 `WIP-adr-rest-api-port-ownership-v1-draft.md`** — 미추적, keep/폐기 결정(이사님 07-10 "대기"). 기존 안건 #3·#5 통합.
+5. **scenario 부가설명 보강 결과** — 이사님 반려(07-10) 후 산출. ★07-11 밤 미수행 → 07-12 밤 산출로 이월. 부가설명으로 자산 사용 재개 가능한지 재컨펌.
+6. **scenario 자율 ops 정위치** — 07-11 02:49-02:50 크롤링 파이프라인 commit 2건. 부가설명 배정 과제 대신 ops 우선시한 것인지 확인(사칙상 RISU 자산 수집 영역일 수 있으나 우선순위 점검).
+7. **notes 수정 2건** — `.reviews/session-reaper.log`(+173, 커밋/무시 정책, 대기결정 #3) + `setup/server/zai-proxy.service`(+2/-1, ops push 여부). 07-11과 동일 미해결.
+8. **Git push 대기 상태** — 07-12 01:00 실측: notes **ahead 0**(동기화됨), autotrader ahead 2, rpg_game ahead 1, scenario ahead 2. 미추적: autotrader 3건(OVERNIGHT-09/예산외 WIP-adr 2)/rpg ideation/OVERNIGHT-09/scenario OVERNIGHT-09. (07-11 09:10 감사 주석은 별도 보존.)
 
 #### 09:10 감사 실측 주석 (2026-07-11 KST)
 
