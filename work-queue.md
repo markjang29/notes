@@ -42,7 +42,15 @@
 4. **scenario 부가설명 보강 결과** — 이사님 반려(07-10) 후 첫 산출. 부가설명으로 자산 사용 재개 가능한지 재컨펌.
 5. **autotrader 예산외 `WIP-adr-rest-api-port-ownership-v1-draft.md`** — 미추적, keep/폐기(위 #2와 동일, 강조).
 6. **notes 수정 2건** — `.reviews/session-reaper.log`(커밋/무시 정책, 대기결정 #3) + `setup/server/zai-proxy.service`(+2/-1, ops push 여부).
-7. **3 repo ahead 1**(notes/autotrader/scenario) — 야간 push 금지 정책상 보류, 아침 승인 후 일괄 push 검토. rpg_game은 clean(07-09 OVERNIGHT만 미추적).
+7. **Git push 대기 상태** — 07:00 안건 작성 시점 기준: notes/autotrader/scenario ahead, rpg_game은 clean(07-09 OVERNIGHT만 미추적)으로 관측. **09:10 감사 실측 기준은 별도 주석 참조.**
+
+#### 09:10 감사 실측 주석 (2026-07-11 KST)
+
+- `notes`: `origin/main` 대비 ahead 3, 로컬 수정 2건(`.reviews/session-reaper.log`, `setup/server/zai-proxy.service`).
+- `autotrader`: ahead 2, 로컬 WIP/야간 draft 미반영 4건.
+- `rpg_game`: ahead 1, 로컬 미추적 `ideation/OVERNIGHT_2026-07-09.md`.
+- `scenario`: ahead 2, 로컬 draft 수정 2건 + 미추적 `OVERNIGHT_2026-07-09.md`.
+- 해석: 07:00 안건의 repo 수/ ahead 수는 작성 시점 관측값으로 보존하고, 현재 기준 판단은 이 09:10 실측값을 우선한다.
 
 > 과거 사이클 상세는 Git 이력·`work-archive.md`·각 repo `OVERNIGHT_*.md` 참조.
 
