@@ -61,6 +61,14 @@
 - `scenario`: ahead 2, 로컬 draft 수정 2건 + 미추적 `OVERNIGHT_2026-07-09.md`.
 - 해석: 07:00 안건의 repo 수/ ahead 수는 작성 시점 관측값으로 보존하고, 현재 기준 판단은 이 09:10 실측값을 우선한다.
 
+#### 09:10 감사 실측 주석 (2026-07-12 KST)
+
+- `notes`: `origin/main` 대비 ahead 2, 로컬 수정 2건(`.reviews/session-reaper.log`, `setup/server/zai-proxy.service`). `zai-proxy.service`는 실제 user service와 동일한 `STANDARD_FALLBACK_MAX_BYTES=614400` 보존 변경으로 확인. `.reviews/session-reaper.log`는 자동 로그라 커밋/무시 정책 결정 전 보류.
+- `autotrader`: ahead 2, 로컬 변경/미추적 7건. 07-12 WIP 2건은 `commit 금지` 문구를 담은 야간 draft, `WIP-adr-rest-api-port-ownership`은 이사님 대기 안건, 나머지는 07-09/07-12 야간 산출 보존 후보.
+- `rpg_game`: ahead 1, 로컬 미추적 6건. 07-12 정본 재배정 산출 2건(`DRAFT-parry...`, `WIP-second-battle-full-match-script`)과 취소된 01:05 보류 draft 2건이 섞여 있어 이사님 처분 전 push 금지.
+- `scenario`: ahead 2, 로컬 draft 수정 2건 + 미추적 `OVERNIGHT_2026-07-09.md`, `OVERNIGHT_2026-07-12.md`. Rio/Ji-Won 부가설명·사칙 정위치 보강이나 07-10 반려 미해제 상태라 이사님 재컨펌 전 push 금지.
+- 해석: 2연속 야간 중복 트리거로 선행 01:02 정본과 01:04~05 보류 산출이 혼재. 팀장 repo는 기계적 push 금지, 매니저가 정본/보류/폐기 분류 후 승인 보드 또는 이사님 확인 필요.
+
 > 과거 사이클 상세는 Git 이력·`work-archive.md`·각 repo `OVERNIGHT_*.md` 참조.
 
 ## 활성 작업
