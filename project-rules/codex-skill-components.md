@@ -79,6 +79,33 @@ skill 실패는 일반 작업 실패보다 다음 피드백이 쉽다.
 
 토큰, 쿠키, 세션, 비밀번호, 원본 응답 본문, 로컬 비밀 경로는 실패 record에 넣지 않는다.
 
+## Codex/Claude 공용 skill 동기화
+
+agent별 skill 본문을 따로 관리하지 않는다.
+
+```text
+.agents/skills/<skill>          단일 정본
+.claude/skills/<skill>          Claude용 생성 mirror
+~/.codex/skills/<skill>         Codex 전역 설치
+~/.claude/skills/<skill>        Claude 전역 설치
+agent-skills.lock.json          파일별 SHA-256 계약
+```
+
+수정자는 `.agents` 정본만 편집한다. 동기화 프로그램이 Claude repo mirror와 두 전역
+설치를 갱신한다. pre-commit은 mirror와 lock을 재생성·stage하고, CI는 정본과 mirror가
+다르면 실패한다. Claude와 Codex는 같은 완료 조건과 `arca-collection-failure-v1`을 사용해
+서로의 실패 지점부터 재개한다.
+
+공용 skill 명세에 반드시 포함할 것:
+
+- 양쪽 agent에서 같은 trigger 의미
+- 동일한 terminal outcome과 gate
+- 도구 이름이 달라도 유지되는 행위 수준의 절차
+- 공통 helper와 failure record schema
+- 정본·mirror·전역 설치 위치
+- sync/check 명령과 drift 차단 방식
+- 제품별로 완화할 수 없는 보안·provenance 규칙
+
 ## 테스트 원칙
 
 1. 구문·schema·skill validator를 먼저 통과한다.
