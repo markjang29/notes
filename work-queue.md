@@ -10,6 +10,16 @@
 - 중요한 `.md`/ADR/checkpoint/work-queue 변경은 Git 보존 후 세션 클리어.
 - 긴 문서 전체 재독 금지. 필요한 부분만 읽는다.
 
+## 이사님 결정 — scenario repo freeze (07-12 KST, 이사님 직접)
+
+★ 이사님 직접 확인(07-12): **scenario repo 리뉴얼(갈아엎기) 전까지 일체 수정 금지(freeze)**. 리뉴얼 룰 통보 시 새 룰 따름. 상세 · 크론 백업 → `decisions/2026-07-12-scenario-repo-freeze.md`.
+
+- 매니저 방침: **scenario 야간 배정 사이클 전면 중단** (리뉴얼 룰 통보 전까지). RPG·autotrader 정상.
+- `0FC5A6F0`(시나리오 야간) → 팀장 제거 완료. `C9804825`(08:00 시나리오팀 창작 리포트) → 매니저 제거, 리뉴얼 후 재등록.
+- `2D8F5150`(01:00 3팀 공통 배정)은 유지 — 본 섹션 읽고 scenario 제외 처리. 아래 07-12 밤 배정(라인 하단)의 scenario 과제는 모두 **freeze로 무효**.
+- 미커밋 잔류(`drafts/d1`, `d2`, `OVERNIGHT_2026-07-12.md`): 보존, 조치 없음. scenario 봇·매니저 git 조작 금지.
+- 재개 조건: 이사님 리뉴얼 룰 통보.
+
 ## 이사님 결정 — 승인 보드 (07-10 18:57–59 KST)
 
 ★ 이사님이 승인 보드(http://13.125.131.126:8005)에서 직접 결정. `decisions.json` 반영됨.
@@ -74,6 +84,8 @@
 ## 활성 작업
 
 ### 1. 시나리오팀 — RISU 기반 창작 체계
+
+★ **FREEZE (07-12 이사님 직접 지시)** — 리뉴얼(갈아엎기) 전까지 일체 수정 금지. 배정·창작·git 조작 전면 중단, 리뉴얼 룰 통보 시까지 대기. 위 'scenario repo freeze' 결정 · `decisions/2026-07-12-scenario-repo-freeze.md` 참조.
 
 - 사칙: `principles/scenario-team-purpose.md`
 - 존재 이유: RISU 자산 기반 창작 스튜디오. 창작은 자유, 디벨롭은 이사님 컨펌 후.
