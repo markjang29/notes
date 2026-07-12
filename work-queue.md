@@ -20,6 +20,12 @@
 - 미커밋 잔류(`drafts/d1`, `d2`, `OVERNIGHT_2026-07-12.md`): 보존, 조치 없음. scenario 봇·매니저 git 조작 금지.
 - 재개 조건: 이사님 리뉴얼 룰 통보.
 
+★ **해제됨 (07-12 17:23 KST, 이사님 승인 "프리즈 전면 해제해")**. 코덱스 제안 리뉴얼 룰 7조 확정 적용 — reviewed 자산만 사용 / fragment ID·입력커밋·기여 기록 / `.extract`·`catalog/index.json`·crawler후보·`needs_review` 입력금지 / 게시물완결 / 보정재실행 / `usable`·`usable_with_changes`·`not_usable` 판정 / 생성물·검증근거·한국어해설 Git커밋. `ee11cc` running → 시나리오팀장 전달(msg_20260712_172300_5ca2ef60). 시나리오팀 야간 배정 사이클 재개 가능.
+
+## 인바운드 작업요청 창구 (07-12 신설, approval-board 포트 8005)
+
+외부 Codex/ZCODE → AWS 봇 작업요청. 원장 `requests.json`(Git), 클라이언트 토큰 `clients.json`(gitignore). 이사님 웹 `/requests`. 라우터: webhook(POST 즉시) + 1분 cron 폴백(A36A9120) + claim 잠금(멱등). commits: 509e857/74622a7/31c56ab. 코덱스 루프(게시물 110558063) 단계1(라우터)·2(룰확정) 완료, 단계3(ee11cc 실행) 진행 중.
+
 ## 이사님 결정 — 승인 보드 (07-10 18:57–59 KST)
 
 ★ 이사님이 승인 보드(http://13.125.131.126:8005)에서 직접 결정. `decisions.json` 반영됨.
