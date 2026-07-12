@@ -1,26 +1,19 @@
-# arca 크롤링 파이프라인 — @heav_ai_bot(노트북) 핸드오프
+# arca 수집 핸드오프 — 단건 완결 정책
 
-노트북(Windows, @heav_ai_bot)에서 돌리는 arca.live 자료 수집→발췌→분석→카탈로그 파이프라인. AWS(cokacdir) 봇과 분리.
+이 문서는 구형 야간 일괄 수집/GLM/수동 다운로드 정책을 대체한다.
 
-## 상세
-- **전체 문서/코드**: 시나리오 git `markjang29/scenario` 의 `HANDOFF_heav_ai_bot.md`(역할분리/상태/이어서 작업 가이드) + `tools/crawler/`, `tools/{extract_collected,analyze_collected,run_pipeline,build_catalog}.py`, `ecosystem/collected-pipeline.md`.
-- **노트북 자동메모리**: `arca-collector-project.md`(.claude memory) — 정책/이슈 상세.
+정본: `C:\Users\heave\projects\scenario`
 
-## 핵심 (한 줄)
-노트북이 arca 자원 탭(자료/프롬/로어북/대회/에셋모듈봇/페르소나/모델공유)을 느리게 수집 → `D:\LLM\_새수집\` → 2차 클론(`D:\LLM\AI-정리-발췌-scenario`)에서 발췌(legacy `.extract/{characters,modules,prompts}/`)+GLM 분석+카탈로그 → git push. 서버(AWS)가 pull 해 매트릭스(scenario-generator) 랜덤 생성에 소비.
+필수 문서:
 
-## 충돌 회피
-- **catalog 쓰기 = 노트북만**(수집분 갱신). AWS는 읽기(pull 후 매트릭스).
-- **`tools/scenario-generator/`(백엔드) = AWS 관리**. 노트북은 수정 X.
-- 노트북 산출물(`.extract/`, `cookies.json`, PDF)은 gitignore(저작권/민감).
+- `docs/one-post-resolution-runbook.md`
+- `docs/new-asset-ingestion-rules.md`
+- `docs/current-pipeline-map.md`
+- `docs/scenario-team-operating-rules.md`
+- `docs/aws-request-bridge.md`
 
-## 이어서 (노트북 세션)
-- 세션 갱신: `python D:\LLM\_새수집\_crawler\collector.py --login`
-- 한 번 실행: `python D:\LLM\AI-정리-발췌-scenario\tools\run_pipeline.py` 또는 `/arca-crawl`("아카라이브 크롤링 해줘")
-- 대량 수집: `python D:\LLM\_새수집\_crawler\collect_top.py` (TOPN/PAGES/MIN_RATE/MIN_CC/SCALE)
-- 수동 다운: `catalog/needs_manual_download.md` → 폴더에 파일 → 다음 run_pipeline 자동 통합
+원칙: 게시물 한 건을 선택하면 실제 다운로드부터 parser-backed 추출, 검토, 정규화, 프롬프트 조각, 시나리오 빌더 가용성 판정까지 닫은 뒤 다음 건으로 넘어간다.
 
-## 상태 (2026-07-09)
-- 카탈로그 699에셋(601 기존 + 수집 98). 야간 심층 수집(개념+일반 p1~5, 추천3↑/댓글5↑, 버전 dedup, NSFW 포함) 진행.
-- 수집분 본문: external(proton 등) → 수동 다운 리스트.
-- 분석: z.ai GLM(Messages API, `~/.claude/settings.json` 토큰). 진짜 Anthropic 아님.
+`/arca-crawl`, `run_pipeline.py`, 대량 수집, 야간 CATCHUP, `NEEDS_DL` 수동 위임, legacy `.extract`/GLM/catalog index 승격은 금지한다.
+
+현재 `110558063`의 AWS 가용성 테스트 요청은 `req-20260712163919-ee11cc`다. 결과 검증 전 다른 게시물을 시작하지 않는다.
