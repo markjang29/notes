@@ -113,3 +113,15 @@ agent-skills.lock.json          파일별 SHA-256 계약
 3. 실제 테스트는 한 게시글·한 장치·한 lease로 제한한다.
 4. browser pending, AWS open request, Git push 전 단계는 terminal 성공이 아니다.
 5. 실패 테스트 결과가 다음 실행에서 실제 resume 입력으로 사용되는지 확인한다.
+
+## Windows 브라우저 런타임 복구 구성요소
+
+브라우저가 페이지를 열기 전 `failed to write kernel assets`와 Windows `os error 3`으로
+실패하면 대상 사이트 장애가 아니라 `node_repl` sandbox 초기화 장애로 분류한다.
+
+- 정본 skill의 `repair_node_repl_sandbox.ps1`가 `~/.codex/config.toml`의
+  `[mcp_servers.node_repl]`에 `args = ["--disable-sandbox"]`를 멱등 적용한다.
+- 설정 적용 뒤 Codex task/app을 재시작해 MCP 프로세스를 새로 만들고 같은 게시글의
+  browser documentation/navigation부터 재개한다.
+- 임시 복구 코드에 session id, turn id, runtime hash, cookie, token을 저장하지 않는다.
+- 복구 뒤에도 실제 브라우저 클릭과 로컬 파일 존재 확인이라는 download gate는 유지한다.
