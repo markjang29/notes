@@ -124,10 +124,34 @@ agent-skills.lock.json          파일별 SHA-256 계약
 
 - 정본 skill의 `repair_node_repl_sandbox.ps1`가 `~/.codex/config.toml`의
   `[mcp_servers.node_repl]`에 `args = ["--disable-sandbox"]`를 멱등 적용한다.
-- 설정 적용 뒤 Codex task/app을 재시작해 MCP 프로세스를 새로 만들고 같은 게시글의
-  browser documentation/navigation부터 재개한다.
+- 설정 적용 뒤 공식 browser transport를 다시 시도한다. transport만 닫혔고 Codex 앱의
+  computer-use pipe가 살아 있으면 `browser_rpc_client.py`가 현재 runtime/plugin/pipe와
+  rollout의 session/turn을 매번 동적으로 찾아 smoke를 수행한다.
+- 공식 transport와 동적 복구가 모두 실패할 때만 Codex task/app을 재시작하고 같은
+  게시글의 browser documentation/navigation부터 재개한다.
 - 임시 복구 코드에 session id, turn id, runtime hash, cookie, token을 저장하지 않는다.
 - 복구 뒤에도 실제 브라우저 클릭과 로컬 파일 존재 확인이라는 download gate는 유지한다.
+
+## live 링크 재대조와 Proton 저장 복구
+
+외부 host를 열기 직전에 Arca 루트 본문을 live로 다시 받아 캐시 링크와 비교한다. 캐시된
+Proton 주소가 422/폐기 상태이고 live 본문에 다른 주소가 있으면 브라우저 장애가 아니라
+`stale_source_link`다. 새 주소로 resolution evidence를 교체하고 같은 게시글을 계속한다.
+
+Proton 단일 파일은 첫 다운로드 버튼 뒤의 `다운로드` 또는 `스캔 및 다운로드`까지 눌러야
+한다. 전송 관리자가 완료됐는데 headless Chrome의 native save event만 canceled이고 파일이
+없으면 `proton_public_download.py`가 브라우저에서 이미 복호화된 Blob을 청크로 로컬 파일에
+쓴다. 이는 HTTP 우회가 아니라 실제 브라우저 해독 흐름의 저장 보정이다. 최종 bytes와
+SHA-256 검증은 생략하지 않는다.
+
+2026-07-13 post `176729619` 실측:
+
+- stale Proton `S5H9QGGA3C` → live `4V1MPJKKK0` 교체 감지
+- `무직전생Alternate V1.6 (1).charx`, 308,166,666 bytes 회수
+- 동적 browser smoke와 Proton inspect-only 스크립트 통과
+- CHARX parser v1의 혼합 엔트리 과삭제 발견: 이미지 태그 한 줄 때문에 긴 캐릭터 설정
+  전체를 버리던 조건을 v2에서 전용/짧은 이미지 명령만 제외하도록 수정
+- RCC-110558063 회귀 결과 유지: lorebook 49 retained / 12 omitted
 
 ## AWS accepted 정체 복구 구성요소
 
