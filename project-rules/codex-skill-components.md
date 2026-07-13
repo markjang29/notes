@@ -43,6 +43,7 @@ skill은 질문 답변용 설명서가 아니라, 요청이 trigger되었을 때
 -> bytes/SHA-256 / 승인 parser / 직접 검토
 -> extracted/normalized/fragments/RPG 자산 승격
 -> AWS 시나리오 가용성 검증
+-> lifecycle availability_testing 잠금 / AWS gate=false 보고
 -> usable 또는 not_usable terminal 판정
 -> lifecycle closure
 -> 제한 staging / commit / push
@@ -50,6 +51,8 @@ skill은 질문 답변용 설명서가 아니라, 요청이 trigger되었을 때
 ```
 
 중간 단계만 성공한 상태를 skill 성공으로 보고하지 않는다.
+가용성 요청을 등록했는데 해당 asset의 lifecycle 행이 없으면 열린 게이트로 간주하지
+않고, `availability_testing` 행을 생성해 다음 게시글을 차단한 뒤 판정을 기다린다.
 
 ## 실패 피드백의 장점
 
