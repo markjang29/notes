@@ -128,3 +128,14 @@ agent-skills.lock.json          파일별 SHA-256 계약
   browser documentation/navigation부터 재개한다.
 - 임시 복구 코드에 session id, turn id, runtime hash, cookie, token을 저장하지 않는다.
 - 복구 뒤에도 실제 브라우저 클릭과 로컬 파일 존재 확인이라는 download gate는 유지한다.
+
+## AWS accepted 정체 복구 구성요소
+
+approval-board의 `accepted`는 claim 잠금만 획득한 상태이며 실행 성공이 아니다. scenario
+요청에 result가 없으면 라우터가 휴면 팀장 프로세스를 실제로 시작했는지 확인한다.
+
+- scenario freeze는 2026-07-12 해제 상태이므로 과거 freeze 프롬프트를 재사용하지 않는다.
+- 휴면 세션에 `--message`만 보내지 않고 scenario bot 설정 key로 one-shot을 예약한다.
+- 프로세스 또는 schedule history 생성 후에만 `running`으로 보고한다.
+- 실행을 시작할 수 없으면 `accepted`에 방치하지 않고 `failed`와 재시도 근거를 쓴다.
+- 원 요청 result가 terminal 판정을 갖기 전까지 lifecycle/AWS gate를 닫아 둔다.
