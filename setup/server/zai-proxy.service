@@ -18,9 +18,10 @@ Environment=NODE_ENV=production
 # 긴 요청은 프록시 코드가 reqBytes 기준으로 fallback을 막아 1M/긴문맥 보장을 우선한다.
 Environment=FALLBACK_MODELS=glm-5.1,glm-4.6
 Environment=OVERLOAD_MODELS=glm-5.2[1m],glm-5.2
-Environment=STANDARD_FALLBACK_MAX_BYTES=614400
+Environment=STANDARD_FALLBACK_MAX_BYTES=1258291
 Environment=NOTIFY_CHAT=-5402233196
-Environment=NOTIFY_ALL_MODELS=1
+# 정상 요청의 모델 라우팅 보고는 중지한다. 폴백 복구/완전실패 경고는 유지한다.
+Environment=NOTIFY_ALL_MODELS=0
 Environment=CONTEXT_LIMIT_TOKENS=1000000
 Environment=CONTEXT_WARN_PCT=70
 Environment=CONTEXT_DANGER_PCT=85
