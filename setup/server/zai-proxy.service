@@ -9,16 +9,18 @@ Type=simple
 ExecStart=/usr/bin/node /home/ubuntu/scripts/zai-fallback-proxy.js
 Restart=always
 RestartSec=3
+TimeoutStopSec=5
 Environment=NODE_ENV=production
 # 튜닝 (필요시 변경)
 # Environment=ZAI_UPSTREAM=https://api.z.ai/api/anthropic
 # Environment=PROXY_PORT=8788
-# 조건부 fallback: 짧은 요청만 표준 모델로 살리고, 긴 요청은 1M을 보장한다.
-# 짧은 복구/부트 요청은 glm-5.2 계열 과부하 시 5.1 → 4.6 순서로 회피한다.
-# 긴 요청은 프록시 코드가 reqBytes 기준으로 fallback을 막아 1M/긴문맥 보장을 우선한다.
+# 조건부 fallback: 완료된 과거 thinking을 먼저 압축하고 5.1 → 4.6 순서로 회피한다.
+# 진행 중 tool loop는 압축하지 않으며, 1.2MiB 초과 요청은 1M 모델 재시도를 유지한다.
 Environment=FALLBACK_MODELS=glm-5.1,glm-4.6
 Environment=OVERLOAD_MODELS=glm-5.2[1m],glm-5.2
 Environment=STANDARD_FALLBACK_MAX_BYTES=1258291
+Environment=CONTEXT_COMPACT_MIN_BYTES=460800
+Environment=FAILED_RETRY_SUPPRESS_MS=30000
 Environment=NOTIFY_CHAT=-5402233196
 # 정상 요청의 모델 라우팅 보고는 중지한다. 폴백 복구/완전실패 경고는 유지한다.
 Environment=NOTIFY_ALL_MODELS=0

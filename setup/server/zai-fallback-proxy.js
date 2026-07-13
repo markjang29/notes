@@ -30,6 +30,7 @@ const https = require('https');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const crypto = require('crypto');
 
 const UPSTREAM       = process.env.ZAI_UPSTREAM    || 'https://api.z.ai/api/anthropic';
 const PORT           = parseInt(process.env.PROXY_PORT || '8788', 10);
@@ -53,6 +54,11 @@ const CONTEXT_WARN_PCT = parseFloat(process.env.CONTEXT_WARN_PCT || '70');
 const CONTEXT_DANGER_PCT = parseFloat(process.env.CONTEXT_DANGER_PCT || '85');
 // 원문 저장 없이 큰 요청의 구조만 기록한다. hidden/system/tool_result 비대화 증식을 잡기 위한 계측.
 const REQUEST_SUMMARY_MIN_BYTES = parseInt(process.env.REQUEST_SUMMARY_MIN_BYTES || '200000', 10);
+// 완료된 과거 턴의 내부 thinking만 제거한다. 진행 중 tool loop는 건드리지 않는다.
+const CONTEXT_COMPACT_MIN_BYTES = parseInt(process.env.CONTEXT_COMPACT_MIN_BYTES || '460800', 10);
+// 같은 요청이 완전 실패한 직후 SDK가 그대로 재투입해 upstream을 증폭시키는 것을 막는다.
+const FAILED_RETRY_SUPPRESS_MS = parseInt(process.env.FAILED_RETRY_SUPPRESS_MS || '30000', 10);
+const failedRequestCache = new Map();
 function loadNotifyBotToken() {
   if (process.env.NOTIFY_BOT_TOKEN) return process.env.NOTIFY_BOT_TOKEN;
   try { // 기존 cokacctl.json 의 첫 봇 토큰 재사용 (평문 비밀 추가 회피)
@@ -220,6 +226,68 @@ function summarizeRequest(bodyBuf) {
     return `parse_error=${e.message} total=${bodyBuf.length}`;
   }
 }
+function isPlainUserTurn(message) {
+  if (!message || message.role !== 'user') return false;
+  if (typeof message.content === 'string') return true;
+  if (!Array.isArray(message.content)) return false;
+  return !message.content.some(p => p && typeof p === 'object' && p.type === 'tool_result');
+}
+function compactCompletedThinking(bodyBuf) {
+  if (bodyBuf.length < CONTEXT_COMPACT_MIN_BYTES) return bodyBuf;
+  try {
+    const j = JSON.parse(bodyBuf.toString('utf8'));
+    if (!Array.isArray(j.messages) || !j.messages.length) return bodyBuf;
+    if (!isPlainUserTurn(j.messages[j.messages.length - 1])) return bodyBuf;
+
+    let removedBlocks = 0;
+    let removedBytes = 0;
+    for (let i = 0; i < j.messages.length - 1; i++) {
+      const m = j.messages[i];
+      if (!m || m.role !== 'assistant' || !Array.isArray(m.content)) continue;
+      const kept = [];
+      for (const part of m.content) {
+        if (part && (part.type === 'thinking' || part.type === 'redacted_thinking')) {
+          removedBlocks++;
+          removedBytes += jsonBytes(part);
+        } else {
+          kept.push(part);
+        }
+      }
+      m.content = kept;
+    }
+    if (!removedBlocks) return bodyBuf;
+    const compacted = Buffer.from(JSON.stringify(j), 'utf8');
+    log(`CONTEXT-COMPACT before=${bodyBuf.length} after=${compacted.length} removedBytes=${removedBytes} removedThinkingBlocks=${removedBlocks}`);
+    return compacted;
+  } catch (e) {
+    log(`CONTEXT-COMPACT-SKIP error=${e.message} reqBytes=${bodyBuf.length}`);
+    return bodyBuf;
+  }
+}
+function requestFingerprint(bodyBuf) {
+  return crypto.createHash('sha256').update(bodyBuf).digest('hex');
+}
+function getRecentFailedRequest(fingerprint) {
+  const now = Date.now();
+  for (const [key, value] of failedRequestCache) {
+    if (!value || value.until <= now) failedRequestCache.delete(key);
+  }
+  return failedRequestCache.get(fingerprint) || null;
+}
+function rememberFailedRequest(fingerprint, response, model, reqBytes) {
+  if (!FAILED_RETRY_SUPPRESS_MS || !response || !response.buffered) return;
+  failedRequestCache.set(fingerprint, {
+    until: Date.now() + FAILED_RETRY_SUPPRESS_MS,
+    status: response.status,
+    headers: response.headers,
+    buffered: response.buffered,
+    model,
+    reqBytes,
+  });
+  while (failedRequestCache.size > 128) {
+    failedRequestCache.delete(failedRequestCache.keys().next().value);
+  }
+}
 function notifyGaveup(model, reqBytes) {
   const key = model + ts().slice(0, 16); // 분 단위 중복 억제
   if (key === _lastGaveupKey) return;
@@ -354,9 +422,18 @@ const server = http.createServer(async (clientReq, clientRes) => {
 
   const requestedModel = parseModel(bodyBuf);
   bodyBuf = normalizeInitialModel(bodyBuf);
+  bodyBuf = compactCompletedThinking(bodyBuf);
   const startedModel = parseModel(bodyBuf) || requestedModel;
+  const fingerprint = requestFingerprint(bodyBuf);
   if (bodyBuf.length >= REQUEST_SUMMARY_MIN_BYTES) {
     log(`REQ-SUMMARY ${summarizeRequest(bodyBuf)}`);
+  }
+  const cachedFailure = getRecentFailedRequest(fingerprint);
+  if (cachedFailure) {
+    const ttlMs = Math.max(0, cachedFailure.until - Date.now());
+    log(`DUPLICATE-BLOCK model=${cachedFailure.model} reqBytes=${cachedFailure.reqBytes} ttlMs=${ttlMs}`);
+    writeBuffered(clientRes, cachedFailure.status, cachedFailure.headers, cachedFailure.buffered);
+    return;
   }
   let attempt = 0;
   let lastNon2xx = null;
@@ -437,6 +514,7 @@ const server = http.createServer(async (clientReq, clientRes) => {
   log(`GAVE-UP attempts=${attempt} model=${parseModel(bodyBuf)} status=${lastNon2xx ? lastNon2xx.status : '?'}`);
   notifyGaveup(parseModel(bodyBuf) || '?', bodyBuf.length);
   if (lastNon2xx) {
+    rememberFailedRequest(fingerprint, lastNon2xx, parseModel(bodyBuf) || '?', bodyBuf.length);
     writeBuffered(clientRes, lastNon2xx.status, lastNon2xx.headers, lastNon2xx.buffered);
   } else {
     writeBuffered(clientRes, 502, {'content-type':'application/json'},
@@ -445,7 +523,7 @@ const server = http.createServer(async (clientReq, clientRes) => {
 });
 
 server.listen(PORT, '127.0.0.1', () => {
-  log(`STARTED listening=127.0.0.1:${PORT} upstream=${UPSTREAM} fallbackChain=[${FALLBACK_MODELS.join(',')}] overloadModels=[${OVERLOAD_MODELS.join(',')}] force1m=${FORCE_1M_FROM && FORCE_1M_TO ? FORCE_1M_FROM + '->' + FORCE_1M_TO : 'disabled'} shortFallbackMaxBytes=${STANDARD_FALLBACK_MAX_BYTES} maxAttempts=${MAX_ATTEMPTS} contextLimit=${CONTEXT_LIMIT_TOKENS} warn=${CONTEXT_WARN_PCT} danger=${CONTEXT_DANGER_PCT} requestSummaryMinBytes=${REQUEST_SUMMARY_MIN_BYTES}`);
+  log(`STARTED listening=127.0.0.1:${PORT} upstream=${UPSTREAM} fallbackChain=[${FALLBACK_MODELS.join(',')}] overloadModels=[${OVERLOAD_MODELS.join(',')}] force1m=${FORCE_1M_FROM && FORCE_1M_TO ? FORCE_1M_FROM + '->' + FORCE_1M_TO : 'disabled'} shortFallbackMaxBytes=${STANDARD_FALLBACK_MAX_BYTES} maxAttempts=${MAX_ATTEMPTS} contextLimit=${CONTEXT_LIMIT_TOKENS} warn=${CONTEXT_WARN_PCT} danger=${CONTEXT_DANGER_PCT} requestSummaryMinBytes=${REQUEST_SUMMARY_MIN_BYTES} contextCompactMinBytes=${CONTEXT_COMPACT_MIN_BYTES} failedRetrySuppressMs=${FAILED_RETRY_SUPPRESS_MS}`);
 });
 server.on('error', (e) => { log(`FATAL ${e.message}`); process.exit(1); });
 
