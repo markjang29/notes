@@ -14,6 +14,7 @@ last_reviewed: 2026-07-14
 - ZCode는 먼저 작은 read-only 패킷으로 통과한 작업 유형에만 사용한다.
 - 실패한 ZCode 패킷을 같은 형태로 반복 호출하지 않는다.
 - 단순 ZCode 작업은 60초 soft deadline, 180초 hard timeout, 30초 사용자 heartbeat를 적용한다.
+- 모든 작업은 10분에 체크포인트를 만들고, 15분 초과 예상 시 이사님 동의 전에는 계속하지 않는다.
 - 카드가 끝날 때마다 이사님께 결과·다음 카드·막힘을 중간보고한다.
 
 상태: `queued / in_progress / review / done / deferred / blocked`
@@ -22,14 +23,16 @@ last_reviewed: 2026-07-14
 
 | ID | 작업 | 상태 | 담당 | 완료조건 |
 |---|---|---|---|---|
-| OPS-01 | 단계별 실행 event 계약 설계 | queued (다음) | Codex | stage/attempt/time/failure schema와 테스트 fixture 확정 |
+| ZC-02a | 초과 응답 필드가 있어도 핵심 결과·usage 보존 | in_progress | Codex | 실제 장애 형태 fixture + 기존 보안 테스트 통과 |
 
 ## ZCode 권한·분업
 
 | ID | 작은 작업 | 상태 | 완료조건 |
 |---|---|---|---|
 | ZC-01 | 현 bridge 권한 제한 근거 감사 | done | 단일 writer·secret 경계와 실패 재현 기록 |
-| ZC-02 | 입력 필터·receipt salvage 최소 fixture | queued | 예시 경로 과잉 차단과 schema 초과 결과 유실을 재현·방지 |
+| ZC-02a | receipt 핵심 결과·usage salvage | in_progress | 알 수 없는 최상위 필드는 폐기하고 신뢰 필드·usage 보존 |
+| ZC-02b | 입력 절대경로 오탐 최소 fixture | queued | 문서 예시 경로는 안전하게 정규화하고 실제 로컬 경로는 차단 |
+| ZC-02c | bridge 단계·heartbeat 표시 | queued | 30초 heartbeat와 stage/elapsed/timeout 가시화 |
 | ZC-03 | raw shell 대신 controller allowlist check 설계 | queued | 명령 문자열 없이 check ID만 허용하는 계약 |
 | ZC-04 | 격리 폴더 read/grep 실험 | queued | repo·환경변수·절대경로 탈출이 불가능함을 테스트 |
 | ZC-05 | exact-file edit 왕복 재검증 | queued | isolated commit + Codex diff review 통과 |
