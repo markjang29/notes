@@ -96,6 +96,9 @@ owner message
   연결한다.
 - 직접 지시는 actor capability, repo 규칙, exact scope, commit, login·lease gate 또는 상시
   금지를 확대하지 않는다.
+- R4가 없을 때 `[DIRECT PENDING <actor>]` 회신은 임시 증거일 뿐이다. `windows-codex`가 복귀
+  후 sanitized transport receipt digest를 idempotency key에 묶어 intake, mail, candidate를
+  정확히 한 번 정본화한다. 대상 actor는 가짜 ID를 만들거나 스스로 backfill하지 않는다.
 
 ## 아이디어 후보 생명주기
 
@@ -119,6 +122,8 @@ immutable proposal(status=pending_morning_review)
 - 구현은 `intent=execute`인 별도 work order와 controller 검수 없이는 시작할 수 없다.
 - candidate-only mail은 project Git 쓰기, commit, push, 배포, 외부 송신, 실거래, 전략 채택,
   자산 승격과 자동 구현을 금지한다.
+- R4 저장소는 후보 1건 완료조건인 mail에 candidate receipt가 정확히 1개만 연결되도록
+  cardinality와 idempotency를 transaction으로 강제한다.
 
 기본 야간 운영과 중복·재시작 규칙은 `overnight-ideation-v1.md`를 따른다. 과거 schedule을
 그대로 재활성화하지 않으며 실제 runtime inventory와 no-op 왕복 뒤에만 enabled로 표시한다.

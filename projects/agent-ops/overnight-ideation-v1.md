@@ -60,6 +60,10 @@ mailbox에만 기록하며 project Git에는 쓰지 않는다. 기존 usable 검
 - 이미 검토된 catalog, 결정, deliverable과 provenance
 - 이전에 승인된 후보와 폐기된 후보의 제목·dedupe 근거
 
+Scenario는 새 후보를 만들 때 (1) 아직 후보화되지 않은 usable 부산물, (2) 이사님이 사용을
+승인한 reviewed 자산, (3) 특정 자산 이름을 쓰지 않는 추상 메커니즘 순서로 선택한다. 이사님이
+알거나 승인하지 않은 특정 캐릭터·자산을 임의로 골라 창작 후보를 만들지 않는다.
+
 새 Arca 수집, live login, QR 복구, 다운로드 또는 승인되지 않은 원문 접근은 야간 아이디어
 작업에 포함하지 않는다. 그런 근거가 필요하면 현재 mail은 `question` 또는 `blocked`로 남기고
 별도의 Arca collection work order를 요청한다.
@@ -109,6 +113,7 @@ mailbox에만 기록하며 project Git에는 쓰지 않는다. 기존 usable 검
 1. AWS에서 과거 schedule과 현재 실행 상태를 read-only로 점검한다.
 2. Agent Mail v2, intake, candidate validator가 통과한다.
 3. actor별 candidate-only no-op mail을 `submitted`까지 왕복한다.
-4. 후보 하나에 승인·보류·폐기 결정을 각각 시험하고 구현 mail이 자동 생성되지 않음을 확인한다.
-5. Cokacdir 재시작 후 중복 candidate와 중복 schedule run이 없음을 확인한다.
-6. 검증이 끝난 뒤에만 runtime schedule을 enabled로 표시한다.
+4. 후보 1건 완료조건의 mail에는 candidate receipt가 정확히 1개만 결속됨을 검증한다.
+5. 후보 하나에 승인·보류·폐기 결정을 각각 시험하고 구현 mail이 자동 생성되지 않음을 확인한다.
+6. Cokacdir 재시작 후 중복 candidate와 중복 schedule run이 없음을 확인한다.
+7. 검증이 끝난 뒤에만 runtime schedule을 enabled로 표시한다.

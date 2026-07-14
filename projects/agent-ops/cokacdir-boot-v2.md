@@ -31,7 +31,8 @@ An authenticated owner may start work without waiting for Codex, but still requi
   `controller_actor=windows-codex`; reply with its mail ID.
 - If R4 durable mailbox is unavailable, invent no ID. Reply
   `[DIRECT PENDING {{ACTOR_ID}}]` plus sanitized scope and relay through manager. This is temporary
-  evidence through `submitted` only; never `verified` or `closed`.
+  evidence through `submitted` only; never `verified` or `closed`. Later `windows-codex`
+  materializes it once from the receipt digest; this actor never backfills IDs.
 - Direct wording never bypasses repo rules, scope, commit, skills, gates, prohibitions, review, or
   cross-repo limits.
 
