@@ -5,14 +5,21 @@ updated: 2026-07-14
 
 # 현재 체크포인트
 
-## 지금 진행 중인 한 장
+## 방금 닫은 한 장
 
-- 현재 WIP: `ZC-02a` — ZCode 응답에 보조 필드가 붙어도 신뢰하는 핵심 필드와
-  provider usage를 보존하고, 보조 필드는 폐기했다는 경고만 남긴다.
-- 이번 카드에서 하지 않는 것: 입력 경로 필터 완화, ZCode 도구 권한 확대,
-  heartbeat/event 계약, 실제 ZCode 재호출, Mirka 후속 처리.
-- 완료조건: 초과 필드가 있는 실제 장애 형태의 fixture가 정상 receipt와 usage 보존을
-  검증하고, 기존 보안·write-scope 테스트가 모두 통과한다.
+- `ZC-02a` 완료: 완전한 필수 9개 필드 뒤에 붙은 알 수 없는 보조 필드는 신뢰하거나
+  receipt에 복사하지 않고 폐기 경고만 남긴다.
+- 실제 로그 재생 중 보조 `experiments` 배열도 닫히지 않은 불완전 JSON임을 추가 확인했다.
+  필수부가 먼저 완전하게 파싱된 경우에만 후반 확장부를 버리고 결과와 provider usage를
+  보존하도록 좁게 복구했다.
+- 필수 필드 누락·필수 키 중복·필수부 파손은 계속 실패한다. stdout 전체의 secret·절대경로
+  검사와 exact write-scope도 그대로다.
+- 실제 실패 로그 재생 결과: `completed`, usage `6,526`, 보조 필드 미포함, salvage 경고 포함.
+- 검증: 스킬 전체 `31/31`, mirror check, skill quick validation, Python compile 통과.
+- Git: scenario `bf29cdb`, 스킬 정본 동기화 `be54957` push 완료.
+- 소요: 체크포인트 커밋 20:14:20부터 최종 동기화 20:22:15까지 약 8분.
+- 실제 ZCode 호출은 하지 않았고 추가 ZCode 토큰 사용량은 `0`이다.
+- 다음 후보는 `ZC-02b` 입력 절대경로 오탐 fixture이며 아직 착수하지 않았다.
 - 운영 한계: 외부 작업은 30초마다 상태를 알리고, 10분에 체크포인트를 만든다.
   15분을 넘길 작업은 사전 동의 없이 계속하지 않는다.
 
@@ -23,8 +30,8 @@ updated: 2026-07-14
   별도 Mirka 감사 `8,560 tokens`까지 포함한 최근 확인 가능 합계는 `17,733 tokens`다.
 - Codex 자체 토큰 사용량은 현재 인터페이스에서 회수할 수 없어 추정하지 않는다.
 - 마지막 ZCode 응답은 실제로 유용한 핵심 결과와 `6,526 tokens` usage를 반환했다.
-  다만 최상위 보조 필드 때문에 bridge가 전체 응답을 계약 위반으로 폐기하면서
-  실패 receipt의 결과와 usage도 `{}`로 바뀌었다.
+  다만 최상위 보조 필드와 닫히지 않은 후반 배열 때문에 bridge가 전체 응답을 계약 위반으로
+  폐기하면서 실패 receipt의 결과와 usage도 `{}`로 바뀌었다. `ZC-02a`에서 복구했다.
 - 권한 부족의 본질은 bridge가 모든 모델 도구를 의도적으로 차단하는 현재 안전 경계다.
   로그인·쿠키·AWS lease·lifecycle·공유 catalog·Git push는 계속 controller 전용이다.
 - 상세 근거: `../reviews/2026-07-14-zcode-permission-audit.md`
@@ -37,7 +44,7 @@ updated: 2026-07-14
 - 원시 결말 조건 중복과 `rescue` 의미 불일치는 비차단 품질 메모로 남긴다.
 - 3차 AWS 재작업은 요청하지 않는다.
 - 다음: AWS 결과 적용 → lifecycle 종결 → 같은 입력으로 로컬 Matrix 2회 재현 → Git push
-- 상태: 브리지 `ZC-02a` 체크포인트가 끝날 때까지 일시 정지. 입력·산출물은 보존한다.
+- 상태: 브리지 `ZC-02a` 완료 체크포인트에서 정지. 입력·산출물은 보존한다.
 
 실제 상태는 `catalog/asset_lifecycle.ndjson`을 우선한다.
 

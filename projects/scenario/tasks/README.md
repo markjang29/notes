@@ -23,14 +23,16 @@ last_reviewed: 2026-07-14
 
 | ID | 작업 | 상태 | 담당 | 완료조건 |
 |---|---|---|---|---|
-| ZC-02a | 초과 응답 필드가 있어도 핵심 결과·usage 보존 | in_progress | Codex | 실제 장애 형태 fixture + 기존 보안 테스트 통과 |
+| ZC-02a | 초과·불완전 후반 응답이 있어도 핵심 결과·usage 보존 | done | Codex | 실제 로그 replay + 전체 31 tests + Git push |
+
+다음 후보는 `ZC-02b`이며 중간보고 전에는 착수하지 않는다.
 
 ## ZCode 권한·분업
 
 | ID | 작은 작업 | 상태 | 완료조건 |
 |---|---|---|---|
 | ZC-01 | 현 bridge 권한 제한 근거 감사 | done | 단일 writer·secret 경계와 실패 재현 기록 |
-| ZC-02a | receipt 핵심 결과·usage salvage | in_progress | 알 수 없는 최상위 필드는 폐기하고 신뢰 필드·usage 보존 |
+| ZC-02a | receipt 핵심 결과·usage salvage | done | 알 수 없는 후반 필드는 폐기하고 신뢰 필드·usage 보존 |
 | ZC-02b | 입력 절대경로 오탐 최소 fixture | queued | 문서 예시 경로는 안전하게 정규화하고 실제 로컬 경로는 차단 |
 | ZC-02c | bridge 단계·heartbeat 표시 | queued | 30초 heartbeat와 stage/elapsed/timeout 가시화 |
 | ZC-03 | raw shell 대신 controller allowlist check 설계 | queued | 명령 문자열 없이 check ID만 허용하는 계약 |
@@ -50,6 +52,15 @@ last_reviewed: 2026-07-14
 - 상세 시간과 운영 실패는 `../reviews/2026-07-14-zcode-permission-audit.md`에 기록했다.
 - 결론: 당장은 권한을 넓히지 않는다. 입력 정제(ZC-02)와 controller 실행 check(ZC-03)를
   먼저 만들고, 통과한 유형만 ZCode에 배정한다.
+
+### ZC-02a 결과
+
+- 실제 응답은 초과 필드뿐 아니라 닫히지 않은 후반 배열도 포함했다.
+- bridge는 완전한 필수 9개 필드가 먼저 확인될 때만 후반 확장부를 폐기한다.
+- 실제 실패 로그에서 `completed`와 `6,526 tokens` usage를 추가 호출 없이 회수했다.
+- 필수 필드 누락·중복·파손은 계속 차단하며 전체 보안 gate는 유지한다.
+- 스킬 전체 31 tests, mirror/quick validation/compile 통과; `bf29cdb`, `be54957` push.
+- 카드 소요 약 8분, 추가 ZCode 호출·토큰 0.
 
 ## 1. 레거시 분류
 

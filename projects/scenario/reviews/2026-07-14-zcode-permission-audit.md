@@ -70,6 +70,18 @@ Codex가 회수했다.
 
 ## 후속 카드
 
-- ZC-02: 예시 경로와 실제 credential 경로를 구분하는 최소 fixture
+- ZC-02b: 예시 경로와 실제 credential 경로를 구분하는 최소 fixture
 - ZC-03: 모델 shell 대신 controller가 실행하는 allowlisted check
 - OPS-01~03: 모든 작업자의 stage event와 wall/active/wait 시간 계측
+
+## ZC-02a 복구 결과
+
+- 실제 sanitized log를 재생해 보니 `classifications`·`experiments` 초과 필드 외에도
+  `experiments` 배열의 닫는 괄호가 누락되어 있었다.
+- controller는 필수 9개 필드와 각 값이 모두 정상 파싱된 뒤 시작되는 알 수 없는 후반
+  확장부만 폐기한다. 필수부 누락·파손·필수 키 중복은 salvage하지 않는다.
+- 실제 로그 replay에서 상태 `completed`, provider usage `6,526`을 보존했고 보조 필드는
+  신뢰 결과에 포함하지 않았다.
+- 전체 skill tests `31/31`, mirror check, quick validation, compile이 통과했다.
+- scenario commit `bf29cdb`, skill 정본 동기화 commit `be54957`; 둘 다 push 완료.
+- 실제 ZCode를 재호출하지 않아 이 복구 카드의 추가 ZCode 사용량은 `0 tokens`다.
