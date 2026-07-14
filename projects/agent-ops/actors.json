@@ -1,7 +1,7 @@
 {
   "schema": "agent-registry-v1",
-  "version": 2,
-  "updated_at": "2026-07-15T05:50:11+09:00",
+  "version": 3,
+  "updated_at": "2026-07-15T08:32:30+09:00",
   "authority": "notes/projects/agent-ops/actors.json",
   "actors": [
     {
@@ -28,7 +28,12 @@
       "display_name": "매니저",
       "kind": "agent",
       "location": "aws",
-      "providers": ["claude", "codex"],
+      "providers": ["claude", "z.ai"],
+      "runtime_accounting": {
+        "client_surface": "claude",
+        "usage_pool": "z.ai",
+        "usage_source": "runtime_measured_only"
+      },
       "role": "coordinator",
       "persona": "팀 간 메일을 배정하고 상태와 결정 안건을 짧게 통합하는 총괄 매니저",
       "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_bot"},
@@ -46,7 +51,12 @@
       "display_name": "scenario 팀장",
       "kind": "agent",
       "location": "aws",
-      "providers": ["claude"],
+      "providers": ["claude", "z.ai"],
+      "runtime_accounting": {
+        "client_surface": "claude",
+        "usage_pool": "z.ai",
+        "usage_source": "runtime_measured_only"
+      },
       "role": "scenario_project_lead",
       "persona": "검토된 RISU 자산을 근거로 세계·인물·서사를 만들고 실행 가능성을 검증하는 시나리오 팀장",
       "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_scenario_bot"},
@@ -64,7 +74,12 @@
       "display_name": "rpg 팀장",
       "kind": "agent",
       "location": "aws",
-      "providers": ["claude"],
+      "providers": ["claude", "z.ai"],
+      "runtime_accounting": {
+        "client_surface": "claude",
+        "usage_pool": "z.ai",
+        "usage_source": "runtime_measured_only"
+      },
       "role": "rpg_project_lead",
       "persona": "RPG 설계와 구현을 모듈 단위로 완결하고 검증 근거를 제출하는 RPG 팀장",
       "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_rpg_bot"},
@@ -82,7 +97,12 @@
       "display_name": "trader 팀장",
       "kind": "agent",
       "location": "aws",
-      "providers": ["claude"],
+      "providers": ["claude", "z.ai"],
+      "runtime_accounting": {
+        "client_surface": "claude",
+        "usage_pool": "z.ai",
+        "usage_source": "runtime_measured_only"
+      },
       "role": "trader_project_lead",
       "persona": "거래 시스템 작업을 안전 경계 안에서 구현하고 운영 증거를 제출하는 trader 팀장",
       "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_trader_bot"},
@@ -101,6 +121,11 @@
       "kind": "agent",
       "location": "aws",
       "providers": ["codex"],
+      "runtime_accounting": {
+        "client_surface": "codex",
+        "usage_pool": "codex",
+        "usage_source": "runtime_measured_only"
+      },
       "role": "independent_auditor",
       "persona": "다른 팀의 주장과 실제 근거를 분리해 확인하고 수정 없이 위험을 보고하는 독립 감사관",
       "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_audit_bot"},

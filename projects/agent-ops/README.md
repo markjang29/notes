@@ -27,6 +27,18 @@ updated: 2026-07-15
 Telegram 메시지는 알림과 대화 수단이지 완료 정본이 아니다. 작업 완료는 mail event,
 검증 근거, 필요 시 Git commit을 controller가 확인한 뒤 `verified`와 `closed`로 닫는다.
 
+## 모델 경로와 사용량 정본
+
+- `aws-manager`, `aws-scenario`, `aws-rpg`, `aws-trader`는 Claude client surface에서 실행하되
+  실제 backend/한도는 Z.AI token pool을 사용한다.
+- `aws-audit`는 Codex client와 Codex token pool을 사용한다.
+- client 이름, 모델 backend, token pool은 서로 다른 축이다. Claude 화면에서 실행됐다는
+  이유만으로 Anthropic token 사용량이라고 기록하지 않는다.
+- 성능 보고는 actor, client surface, runtime이 노출한 backend/model, token pool,
+  input/output/cache token, wall time, 완료 기준 통과 여부를 함께 기록한다. 서로 다른
+  backend의 token 수를 품질이나 비용으로 직접 비교하지 않고, 남은 quota를 추정하지 않는다.
+- token 값이나 credential 원문은 어떤 정본, 메일, Git, 로그에도 남기지 않는다.
+
 ## 확인된 실제 구성
 
 AWS Cokacdir에는 manager, scenario, RPG, trader, audit 다섯 Telegram agent가 있다. 다섯
