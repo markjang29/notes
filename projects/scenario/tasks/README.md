@@ -13,7 +13,7 @@ last_reviewed: 2026-07-14
 - 구현 전 입력·완료조건·rollback을 적고, 완료 후 증거와 소요시간을 기록한다.
 - ZCode는 먼저 작은 read-only 패킷으로 통과한 작업 유형에만 사용한다.
 - 실패한 ZCode 패킷을 같은 형태로 반복 호출하지 않는다.
-- 단순 ZCode 작업은 60초 hard timeout, 30초 사용자 heartbeat를 적용한다.
+- 단순 ZCode 작업은 60초 soft deadline, 180초 hard timeout, 30초 사용자 heartbeat를 적용한다.
 - 카드가 끝날 때마다 이사님께 결과·다음 카드·막힘을 중간보고한다.
 
 상태: `queued / in_progress / review / done / deferred / blocked`
@@ -29,7 +29,7 @@ last_reviewed: 2026-07-14
 | ID | 작은 작업 | 상태 | 완료조건 |
 |---|---|---|---|
 | ZC-01 | 현 bridge 권한 제한 근거 감사 | done | 단일 writer·secret 경계와 실패 재현 기록 |
-| ZC-02 | 문서 속 예시 경로 과잉 차단 최소 fixture | queued | 안전 문서/위험 문서가 정확히 구분되는 테스트 |
+| ZC-02 | 입력 필터·receipt salvage 최소 fixture | queued | 예시 경로 과잉 차단과 schema 초과 결과 유실을 재현·방지 |
 | ZC-03 | raw shell 대신 controller allowlist check 설계 | queued | 명령 문자열 없이 check ID만 허용하는 계약 |
 | ZC-04 | 격리 폴더 read/grep 실험 | queued | repo·환경변수·절대경로 탈출이 불가능함을 테스트 |
 | ZC-05 | exact-file edit 왕복 재검증 | queued | isolated commit + Codex diff review 통과 |
@@ -42,7 +42,8 @@ last_reviewed: 2026-07-14
   단일 소유권과 credential 격리를 보장하기 위해서다.
 - exact snapshot 분석과 exact-file 제안은 이미 허용된다.
 - 문서/코드 4개 감사 패킷은 예시 절대경로 과잉 탐지로 2회 차단됐다.
-- 문서 1개 패킷은 174초 내 유효 receipt를 내지 못했다.
+- 문서 1개 패킷은 173.9초 뒤 6,526-token 결과를 반환했지만 초과 필드 때문에 receipt가 거절됐다.
+- 이번 감사 ZCode 합계는 probe 포함 9,173 tokens다.
 - 상세 시간과 운영 실패는 `../reviews/2026-07-14-zcode-permission-audit.md`에 기록했다.
 - 결론: 당장은 권한을 넓히지 않는다. 입력 정제(ZC-02)와 controller 실행 check(ZC-03)를
   먼저 만들고, 통과한 유형만 ZCode에 배정한다.
