@@ -50,6 +50,8 @@ queued -> claimed -> acknowledged -> in_progress -> submitted -> verified -> clo
 - `acknowledged`: `to_actor`가 자기 정체·범위·완료조건을 읽고 수행 가능하다고 회신했다.
 - `submitted`: worker/팀장이 결과를 냈지만 controller 검증 전이다.
 - `verified`, `closed`: controller만 기록한다.
+- 모든 event는 work-order digest, attempt, idempotency key, 선택적 packet digest, 연속 sequence,
+  직전 event ID를 묶는다. actor 권한이나 상태 전이가 맞지 않으면 새 세션에서도 복구 근거로 쓰지 않는다.
 
 ## 새 세션 복구 순서
 
@@ -79,8 +81,8 @@ desktop session 기억을 신뢰하지 않는다. controller가 매 packet에 `w
 | 단계 | 완료조건 | 상태 |
 |---|---|---|
 | R0 인벤토리 | 실제 agent, service, route 검증 | done |
-| R1 정본 | registry, schema, identity probe Git push | in_progress |
-| R2 자기확인 | AWS 5개 + Windows Codex/ZCode ACK | pending |
+| R1 정본 | registry, schema, identity probe Git push | done |
+| R2 자기확인 | AWS 5개 + Windows Codex/ZCode ACK | done |
 | R3 시작규칙 | Cokacdir instruction/hook와 로컬 skill에 registry boot 적용 | pending |
 | R4 mailbox | transaction claim/event/receipt/restore API | pending |
 | R5 왕복 | 각 actor에 1개 no-op mail을 보내 closed까지 검증 | pending |

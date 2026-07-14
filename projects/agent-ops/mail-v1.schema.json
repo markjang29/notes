@@ -11,14 +11,17 @@
       "type": "string",
       "minLength": 1,
       "maxLength": 512,
-      "not": {"pattern": "(^[A-Za-z]:[\\\\/]|^/|^file:|[?&](token|key|secret)=)"}
+      "not": {
+        "pattern": "((^|[^A-Za-z0-9])[A-Za-z]:[\\\\/]|^/|^file:|[?&](token|key|secret|signature|credential)=|[Hh][Tt][Tt][Pp][Ss]?://[^\\s]*[?#])"
+      }
     },
     "work_order": {
       "type": "object",
       "additionalProperties": false,
       "required": [
         "schema", "mail_id", "thread_id", "from_actor", "to_actor", "subject",
-        "issued_at", "priority", "repo_id", "input_commit", "required_skill_refs",
+        "issued_at", "priority", "repo_id", "input_commit", "attempt",
+        "supersedes_mail_id", "packet_digest", "required_capabilities", "required_skill_refs",
         "read_scope", "write_scope", "forbidden", "dependencies", "done_criteria",
         "approval_policy", "idempotency_key"
       ],
@@ -34,6 +37,18 @@
         "priority": {"enum": ["low", "normal", "high", "urgent"]},
         "repo_id": {"type": ["string", "null"], "pattern": "^[a-z][a-z0-9_.-]{1,63}$"},
         "input_commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+        "attempt": {"type": "integer", "minimum": 1},
+        "supersedes_mail_id": {
+          "type": ["string", "null"],
+          "pattern": "^mail-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"
+        },
+        "packet_digest": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "required_capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$"},
+          "uniqueItems": true
+        },
         "required_skill_refs": {"type": "array", "items": {"$ref": "#/$defs/safe_ref"}, "uniqueItems": true},
         "read_scope": {"type": "array", "items": {"$ref": "#/$defs/safe_ref"}, "uniqueItems": true},
         "write_scope": {"type": "array", "items": {"$ref": "#/$defs/safe_ref"}, "uniqueItems": true},
@@ -50,6 +65,8 @@
       "additionalProperties": false,
       "required": [
         "schema", "event_id", "mail_id", "actor_id", "event_type", "created_at",
+        "attempt", "idempotency_key", "work_order_digest", "packet_digest",
+        "sequence", "previous_event_id", "binding_refs",
         "summary", "evidence_refs", "output_commit", "receipt_ref", "retry_condition",
         "user_action_required"
       ],
@@ -65,6 +82,16 @@
           ]
         },
         "created_at": {"type": "string", "format": "date-time"},
+        "attempt": {"type": "integer", "minimum": 1},
+        "idempotency_key": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{3,127}$"},
+        "work_order_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "packet_digest": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "sequence": {"type": "integer", "minimum": 1},
+        "previous_event_id": {
+          "type": ["string", "null"],
+          "pattern": "^evt-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"
+        },
+        "binding_refs": {"type": "array", "items": {"$ref": "#/$defs/safe_ref"}, "uniqueItems": true},
         "summary": {"type": "string", "minLength": 1, "maxLength": 2000},
         "evidence_refs": {"type": "array", "items": {"$ref": "#/$defs/safe_ref"}, "uniqueItems": true},
         "output_commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},

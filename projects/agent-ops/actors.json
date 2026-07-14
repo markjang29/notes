@@ -1,7 +1,7 @@
 {
   "schema": "agent-registry-v1",
   "version": 1,
-  "updated_at": "2026-07-14T21:31:21+09:00",
+  "updated_at": "2026-07-14T22:04:51+09:00",
   "authority": "notes/projects/agent-ops/actors.json",
   "actors": [
     {
@@ -34,7 +34,7 @@
       "capabilities": ["route", "claim", "report", "schedule", "request_user_decision"],
       "forbidden": ["silent_project_implementation", "invent_completion"],
       "identity_status": "runtime_verified",
-      "ack_status": "pending"
+      "ack_status": "acknowledged"
     },
     {
       "actor_id": "aws-scenario",
@@ -50,7 +50,7 @@
       "capabilities": ["scenario_build", "availability_review", "repo_scoped_change", "report"],
       "forbidden": ["unreviewed_asset_promotion", "controller_secret", "cross_repo_write_without_mail"],
       "identity_status": "runtime_verified",
-      "ack_status": "pending"
+      "ack_status": "acknowledged"
     },
     {
       "actor_id": "aws-rpg",
@@ -66,7 +66,7 @@
       "capabilities": ["rpg_design", "rpg_implementation", "repo_scoped_change", "report"],
       "forbidden": ["cross_repo_write_without_mail", "invent_completion"],
       "identity_status": "runtime_verified",
-      "ack_status": "pending"
+      "ack_status": "acknowledged"
     },
     {
       "actor_id": "aws-trader",
@@ -82,7 +82,7 @@
       "capabilities": ["trader_design", "trader_implementation", "repo_scoped_change", "report"],
       "forbidden": ["cross_repo_write_without_mail", "invent_completion"],
       "identity_status": "runtime_verified",
-      "ack_status": "pending"
+      "ack_status": "acknowledged"
     },
     {
       "actor_id": "aws-audit",
@@ -98,7 +98,7 @@
       "capabilities": ["read_only_audit", "cross_repo_compare", "report"],
       "forbidden": ["repo_write", "state_transition", "self_approval"],
       "identity_status": "runtime_verified",
-      "ack_status": "pending"
+      "ack_status": "acknowledged"
     },
     {
       "actor_id": "windows-codex",
@@ -130,7 +130,7 @@
       "capabilities": ["frozen_analysis", "schema_review", "duplicate_review", "exact_file_proposal"],
       "forbidden": ["live_login", "controller_secret", "aws_control", "shared_state_write", "git_push"],
       "identity_status": "runtime_verified",
-      "ack_status": "pending"
+      "ack_status": "acknowledged"
     }
   ]
 }

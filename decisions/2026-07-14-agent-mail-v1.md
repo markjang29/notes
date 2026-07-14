@@ -13,6 +13,10 @@ tags: [agents, mailbox, telegram, cokacdir, codex, zcode]
 논리 정체성·persona·권한 경계의 단일 reviewed seed로 두고, AWS runtime mailbox가 열린 작업과
 event를 보존한다. 모든 지시는 Agent Mail work order, 모든 회신은 event로 교환한다.
 
+work order는 대상 actor의 필수 참조·능력·상시 금지를 포함하고, 저장소 작업이면 full commit을 고정한다.
+event는 work-order digest, attempt, idempotency key, 선택적 packet digest, sequence와 직전 event ID로
+원 요청과 순서를 증명한다. worker는 자기 결과를 `verified` 또는 `closed`로 승인할 수 없다.
+
 Telegram/Cokacdir는 사람 대화와 wake/relay, Git은 reviewed 명세와 산출물, REST mailbox는
 claim·heartbeat·상태·receipt를 담당한다. Kafka는 현재 규모에서 채택하지 않는다.
 
