@@ -84,7 +84,7 @@ desktop session 기억을 신뢰하지 않는다. controller가 매 packet에 `w
 | R0 인벤토리 | 실제 agent, service, route 검증 | done |
 | R1 정본 | registry, schema, identity probe Git push | done |
 | R2 자기확인 | AWS 5개 + Windows Codex/ZCode ACK | done |
-| R3 시작규칙 | Cokacdir instruction/hook와 로컬 skill에 registry boot 적용 | pending |
+| R3 시작규칙 | Cokacdir instruction/hook와 로컬 skill에 registry boot 적용 | done |
 | R4 mailbox | transaction claim/event/receipt/restore API | pending |
 | R5 왕복 | 각 actor에 1개 no-op mail을 보내 closed까지 검증 | pending |
 
