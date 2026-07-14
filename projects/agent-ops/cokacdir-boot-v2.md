@@ -44,6 +44,9 @@ child IDs, not invented completion. A lead may reach `submitted` offline but can
 For `result_disposition=candidate_only`:
 
 - Submit a reviewed-source, immutable proposal matching `idea-candidate-v1.schema.json`.
+- If R4 is unavailable, invent no candidate or event ID. Prefix the one sanitized temporary
+  receipt with `[CANDIDATE PENDING {{ACTOR_ID}}]`, or return
+  `[NO CANDIDATE {{ACTOR_ID}}]`; stop at transport evidence through `submitted`.
 - Require `write_scope=[]`, `output_commit=null`, and prohibitions `auto_implement`,
   `auto_promote`, `repo_write`, `external_side_effect` plus actor standing rules.
 - Do not write repos, deploy, send externally, trade, promote, collect, recover login, or implement.

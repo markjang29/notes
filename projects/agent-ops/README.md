@@ -17,8 +17,8 @@ updated: 2026-07-15
 - Telegram 직접 지시 intake: `telegram-intake-v1.schema.json`
 - 아이디어 후보와 결정 event: `idea-candidate-v1.schema.json`
 - 야간 후보 정책: `overnight-ideation-v1.md`
-- 배포된 기존 Cokacdir 부팅 규칙: `cokacdir-boot-v1.md`
-- 직접 지시·후보 정책을 포함한 다음 부팅 규칙: `cokacdir-boot-v2.md` (runtime 적용 전)
+- 이전 Cokacdir 부팅 규칙: `cokacdir-boot-v1.md`
+- 현재 배포된 직접 지시·후보 부팅 규칙: `cokacdir-boot-v2.md`
 - 실행 중 상태: AWS mailbox API(구축 전에는 approval-board request ID)
 - 프로젝트 전문 규칙과 산출물: 각 프로젝트 Git
 - 사용자 알림·승인·장애 우회: Telegram
@@ -31,8 +31,15 @@ Telegram 메시지는 알림과 대화 수단이지 완료 정본이 아니다. 
 
 AWS Cokacdir에는 manager, scenario, RPG, trader, audit 다섯 Telegram agent가 있다. 다섯
 bot identity와 long-polling service, restart session 복원은 2026-07-14 실측으로 확인했다.
-같은 날 v1 부팅 규칙을 등록하고 새 세션의 registry refresh와 identity ACK도 검증했다.
-v2 직접 지시와 후보 정책은 정본 계약이 준비된 상태이며 runtime 배포와 왕복 검증 전이다.
+2026-07-15에는 v2 부팅 규칙을 5 actor의 10 chat scope에 적용하고 service, session binding,
+Telegram identity와 instruction 반영을 재검증했다. Telegram 직접 지시의 durable intake와
+후보 decision event 왕복은 R4/R4.5가 준비되기 전까지 임시 receipt 단계다.
+
+같은 날 과거 야간·아침 schedule이 `aws-manager`가 아니라 `aws-audit`에 잘못 등록돼 identity
+gate에서 중단된 사실을 확인했다. 낡은 schedule 네 개와 임시 manager 생성 schedule을 제거하고
+`aws-scenario` 01:00, `aws-rpg` 01:05, `aws-trader` 01:10의 bounded candidate run과
+`aws-manager` 07:00 통합 브리프로 교체했다. schedule 소유 actor도 실행 권한의 일부로
+검증하며, 예약이 존재하거나 일회성 예약이 삭제됐다는 사실만으로 성공을 주장하지 않는다.
 
 기존 approval-board는 manager/scenario만 실제 실행 분기가 있다. RPG·trader는 target으로
 접수돼도 실행되지 않고, audit target은 없으며, Telegram agent가 없는 zcode target은 존재한다.
@@ -148,7 +155,7 @@ immutable proposal(status=pending_morning_review)
 | R2 자기확인 | AWS 5개 + Windows Codex/ZCode ACK | done |
 | R3 시작규칙 | Cokacdir instruction/hook와 로컬 skill에 registry boot v1 적용 | done |
 | R3.5 v2 정본 | direct intake, mail v2, candidate, 야간 정책 작성 | done |
-| R3.6 v2 부팅 | Cokacdir boot v2 적용과 identity/direct-intake probe | pending |
+| R3.6 v2 부팅 | Cokacdir boot v2 적용과 identity probe | done (direct durable intake는 R4에서 검증) |
 | R4 mailbox | transaction claim/event/receipt/restore API | pending |
 | R4.5 후보함 | immutable candidate decision과 schedule run 저장 | pending |
 | R5 왕복 | 각 actor no-op과 야간 후보·아침 결정 왕복을 closed까지 검증 | pending |
