@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/schemas/agent-mail-v1.schema.json",
+  "title": "Agent Mail v1",
+  "$defs": {
+    "actor_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "safe_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "not": {"pattern": "(^[A-Za-z]:[\\\\/]|^/|^file:|[?&](token|key|secret)=)"}
+    },
+    "work_order": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema", "mail_id", "thread_id", "from_actor", "to_actor", "subject",
+        "issued_at", "priority", "repo_id", "input_commit", "required_skill_refs",
+        "read_scope", "write_scope", "forbidden", "dependencies", "done_criteria",
+        "approval_policy", "idempotency_key"
+      ],
+      "properties": {
+        "schema": {"const": "agent-mail-work-order-v1"},
+        "mail_id": {"type": "string", "pattern": "^mail-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"},
+        "thread_id": {"type": "string", "pattern": "^thread-[a-z0-9-]{3,96}$"},
+        "from_actor": {"$ref": "#/$defs/actor_id"},
+        "to_actor": {"$ref": "#/$defs/actor_id"},
+        "subject": {"type": "string", "minLength": 1, "maxLength": 160},
+        "issued_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": ["string", "null"], "format": "date-time"},
+        "priority": {"enum": ["low", "normal", "high", "urgent"]},
+        "repo_id": {"type": ["string", "null"], "pattern": "^[a-z][a-z0-9_.-]{1,63}$"},
+        "input_commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+        "required_skill_refs": {"type": "array", "items": {"$ref": "#/$defs/safe_ref"}, "uniqueItems": true},
+        "read_scope": {"type": "array", "items": {"$ref": "#/$defs/safe_ref"}, "uniqueItems": true},
+        "write_scope": {"type": "array", "items": {"$ref": "#/$defs/safe_ref"}, "uniqueItems": true},
+        "forbidden": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "dependencies": {"type": "array", "items": {"$ref": "#/$defs/safe_ref"}, "uniqueItems": true},
+        "done_criteria": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "approval_policy": {"enum": ["none", "controller_review", "user_approval"]},
+        "idempotency_key": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{3,127}$"},
+        "reply_channel": {"type": ["string", "null"], "maxLength": 160}
+      }
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema", "event_id", "mail_id", "actor_id", "event_type", "created_at",
+        "summary", "evidence_refs", "output_commit", "receipt_ref", "retry_condition",
+        "user_action_required"
+      ],
+      "properties": {
+        "schema": {"const": "agent-mail-event-v1"},
+        "event_id": {"type": "string", "pattern": "^evt-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"},
+        "mail_id": {"type": "string", "pattern": "^mail-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"},
+        "actor_id": {"$ref": "#/$defs/actor_id"},
+        "event_type": {
+          "enum": [
+            "queued", "claimed", "acknowledged", "in_progress", "progress",
+            "question", "submitted", "verified", "closed", "blocked", "failed", "cancelled"
+          ]
+        },
+        "created_at": {"type": "string", "format": "date-time"},
+        "summary": {"type": "string", "minLength": 1, "maxLength": 2000},
+        "evidence_refs": {"type": "array", "items": {"$ref": "#/$defs/safe_ref"}, "uniqueItems": true},
+        "output_commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+        "receipt_ref": {"type": ["string", "null"], "maxLength": 512},
+        "retry_condition": {"type": ["string", "null"], "maxLength": 1000},
+        "user_action_required": {"type": "boolean"},
+        "usage": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "source": {"type": "string", "maxLength": 40},
+            "input_tokens": {"type": "integer", "minimum": 0},
+            "output_tokens": {"type": "integer", "minimum": 0},
+            "total_tokens": {"type": "integer", "minimum": 0},
+            "wall_seconds": {"type": "number", "minimum": 0}
+          }
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {"$ref": "#/$defs/work_order"},
+    {"$ref": "#/$defs/event"}
+  ]
+}
