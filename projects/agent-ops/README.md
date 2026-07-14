@@ -13,6 +13,7 @@ updated: 2026-07-14
 
 - 조직·논리 actor·persona: `actors.json`
 - 작업지시와 회신 형식: `mail-v1.schema.json`
+- AWS Cokacdir 세션 부팅 규칙: `cokacdir-boot-v1.md`
 - 실행 중 상태: AWS mailbox API(구축 전에는 approval-board request ID)
 - 프로젝트 전문 규칙과 산출물: 각 프로젝트 Git
 - 사용자 알림·승인·장애 우회: Telegram
