@@ -13,6 +13,7 @@ last_reviewed: 2026-07-14
 
 - 사용자 질문 접수와 처리 상태: [inbox.md](inbox.md)
 - 실행 로드맵·공수·담당·완료 조건: [roadmap.md](roadmap.md)
+- WIP 1 기반 소형 작업 보드: [tasks/README.md](tasks/README.md)
 - 현재 단건 체크포인트: [handoffs/current.md](handoffs/current.md)
 
 ## 정보 소유권
@@ -57,4 +58,3 @@ last_reviewed: 2026-07-14
 4. 현재 진행 중인 것은 `handoffs/current.md` 한 파일만 갱신한다.
 5. 실행 상태는 machine truth를 링크하고 Notes에 복제하지 않는다.
 6. 종료된 상세는 Git 이력 또는 `archive/`로 보낸다.
-
