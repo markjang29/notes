@@ -10,6 +10,13 @@
 - 중요한 `.md`/ADR/checkpoint/work-queue 변경은 Git 보존 후 세션 클리어.
 - 긴 문서 전체 재독 금지. 필요한 부분만 읽는다.
 
+## ★ Scenario 현재 정본 (2026-07-14)
+
+아래의 과거 freeze·야간 배정·110558063 진행 문구는 역사 기록이며 현재 상태가 아니다.
+Scenario의 질문·방향·우선순위는
+`projects/scenario/README.md`와 `projects/scenario/roadmap.md`를 우선한다.
+실행 상태는 scenario repo의 `catalog/asset_lifecycle.ndjson`을 직접 확인한다.
+
 ## 이사님 결정 — scenario repo freeze (07-12 KST, 이사님 직접)
 
 ★ 이사님 직접 확인(07-12): **scenario repo 리뉴얼(갈아엎기) 전까지 일체 수정 금지(freeze)**. 리뉴얼 룰 통보 시 새 룰 따름. 상세 · 크론 백업 → `decisions/2026-07-12-scenario-repo-freeze.md`.
