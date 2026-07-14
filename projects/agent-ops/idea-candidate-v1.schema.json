@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/schemas/agent-idea-candidate-v1.schema.json",
+  "title": "Agent Idea Candidate v1",
+  "description": "Immutable idea proposals and append-only director decision events.",
+  "$defs": {
+    "actor_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "candidate_id": {
+      "type": "string",
+      "pattern": "^idea-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"
+    },
+    "nullable_candidate_id": {
+      "oneOf": [
+        {"$ref": "#/$defs/candidate_id"},
+        {"type": "null"}
+      ]
+    },
+    "nullable_mail_id": {
+      "type": ["string", "null"],
+      "pattern": "^mail-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"
+    },
+    "nullable_mail_event_id": {
+      "type": ["string", "null"],
+      "pattern": "^evt-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"
+    },
+    "candidate_event_id": {
+      "type": "string",
+      "pattern": "^ideaevt-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"
+    },
+    "nullable_candidate_event_id": {
+      "type": ["string", "null"],
+      "pattern": "^ideaevt-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"
+    },
+    "safe_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "not": {
+        "pattern": "((^|[^A-Za-z0-9])[A-Za-z]:[\\\\/]|^/|^file:|[?&](token|key|secret|signature|credential)=|[Hh][Tt][Tt][Pp][Ss]?://[^\\s]*[?#])"
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema", "candidate_id", "source_kind", "source_mail_id", "source_event_id",
+        "producer_actor", "domain", "title", "pitch", "experience_hook",
+        "provenance_refs", "novelty", "risks", "next_experiment", "duplicate_of",
+        "dedupe_key", "created_at", "status", "decision_actor", "decided_at",
+        "decision_note", "implementation_authorized"
+      ],
+      "properties": {
+        "schema": {"const": "agent-idea-candidate-v1"},
+        "candidate_id": {"$ref": "#/$defs/candidate_id"},
+        "source_kind": {
+          "enum": ["overnight_ideation", "usable_byproduct", "director_direct"]
+        },
+        "source_mail_id": {"$ref": "#/$defs/nullable_mail_id"},
+        "source_event_id": {"$ref": "#/$defs/nullable_mail_event_id"},
+        "producer_actor": {"$ref": "#/$defs/actor_id"},
+        "domain": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]{1,63}$"},
+        "title": {"type": "string", "minLength": 1, "maxLength": 160},
+        "pitch": {"type": "string", "minLength": 1, "maxLength": 2000},
+        "experience_hook": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "provenance_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/safe_ref"},
+          "uniqueItems": true
+        },
+        "novelty": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "risks": {
+          "type": "array",
+          "maxItems": 12,
+          "items": {"type": "string", "minLength": 1, "maxLength": 500},
+          "uniqueItems": true
+        },
+        "next_experiment": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "duplicate_of": {"$ref": "#/$defs/nullable_candidate_id"},
+        "dedupe_key": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "created_at": {"type": "string", "format": "date-time"},
+        "status": {"const": "pending_morning_review"},
+        "decision_actor": {"type": "null"},
+        "decided_at": {"type": "null"},
+        "decision_note": {"type": "null"},
+        "implementation_authorized": {"const": false}
+      }
+    },
+    "candidate_event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema", "event_id", "candidate_id", "actor_id", "event_type", "created_at",
+        "candidate_digest", "sequence", "previous_event_id", "summary",
+        "implementation_authorized"
+      ],
+      "properties": {
+        "schema": {"const": "agent-idea-candidate-event-v1"},
+        "event_id": {"$ref": "#/$defs/candidate_event_id"},
+        "candidate_id": {"$ref": "#/$defs/candidate_id"},
+        "actor_id": {"$ref": "#/$defs/actor_id"},
+        "event_type": {
+          "enum": ["candidate_created", "candidate_approved", "candidate_held", "candidate_discarded"]
+        },
+        "created_at": {"type": "string", "format": "date-time"},
+        "candidate_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "sequence": {"type": "integer", "minimum": 1},
+        "previous_event_id": {"$ref": "#/$defs/nullable_candidate_event_id"},
+        "summary": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "implementation_authorized": {"const": false}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"event_type": {"const": "candidate_created"}},
+            "required": ["event_type"]
+          },
+          "then": {
+            "properties": {
+              "sequence": {"const": 1},
+              "previous_event_id": {"type": "null"}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "event_type": {
+                "enum": ["candidate_approved", "candidate_held", "candidate_discarded"]
+              }
+            },
+            "required": ["event_type"]
+          },
+          "then": {
+            "properties": {
+              "actor_id": {"const": "director"},
+              "sequence": {"type": "integer", "minimum": 2},
+              "previous_event_id": {"$ref": "#/$defs/candidate_event_id"}
+            }
+          }
+        }
+      ]
+    }
+  },
+  "oneOf": [
+    {"$ref": "#/$defs/candidate"},
+    {"$ref": "#/$defs/candidate_event"}
+  ]
+}

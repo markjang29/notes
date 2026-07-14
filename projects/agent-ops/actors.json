@@ -1,7 +1,7 @@
 {
   "schema": "agent-registry-v1",
-  "version": 1,
-  "updated_at": "2026-07-14T22:04:51+09:00",
+  "version": 2,
+  "updated_at": "2026-07-15T05:50:11+09:00",
   "authority": "notes/projects/agent-ops/actors.json",
   "actors": [
     {
@@ -15,7 +15,10 @@
       "transport": {"kind": "telegram", "address": "owner"},
       "repo_ids": ["notes"],
       "required_refs": ["notes:persona.md"],
-      "capabilities": ["approve", "prioritize", "cancel", "rename_persona"],
+      "capabilities": [
+        "approve", "prioritize", "cancel", "rename_persona", "issue_mail",
+        "approve_candidate", "hold_candidate", "discard_candidate"
+      ],
       "forbidden": [],
       "identity_status": "accepted_source",
       "ack_status": "not_required"
@@ -31,7 +34,9 @@
       "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_bot"},
       "repo_ids": ["notes", "approval-board"],
       "required_refs": ["notes:L0-agent-boot.md", "notes:org-structure.md"],
-      "capabilities": ["route", "claim", "report", "schedule", "request_user_decision"],
+      "capabilities": [
+        "route", "claim", "report", "schedule", "request_user_decision", "candidate_curate"
+      ],
       "forbidden": ["silent_project_implementation", "invent_completion"],
       "identity_status": "runtime_verified",
       "ack_status": "acknowledged"
@@ -47,7 +52,9 @@
       "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_scenario_bot"},
       "repo_ids": ["scenario", "notes"],
       "required_refs": ["notes:principles/scenario-team-purpose.md", "scenario:HARD_RULES.md"],
-      "capabilities": ["scenario_build", "availability_review", "repo_scoped_change", "report"],
+      "capabilities": [
+        "scenario_build", "availability_review", "repo_scoped_change", "report", "candidate_propose"
+      ],
       "forbidden": ["unreviewed_asset_promotion", "controller_secret", "cross_repo_write_without_mail"],
       "identity_status": "runtime_verified",
       "ack_status": "acknowledged"
@@ -63,7 +70,9 @@
       "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_rpg_bot"},
       "repo_ids": ["rpg_game", "notes"],
       "required_refs": ["notes:L0-agent-boot.md", "rpg_game:project-rules"],
-      "capabilities": ["rpg_design", "rpg_implementation", "repo_scoped_change", "report"],
+      "capabilities": [
+        "rpg_design", "rpg_implementation", "repo_scoped_change", "report", "candidate_propose"
+      ],
       "forbidden": ["cross_repo_write_without_mail", "invent_completion"],
       "identity_status": "runtime_verified",
       "ack_status": "acknowledged"
@@ -79,7 +88,9 @@
       "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_trader_bot"},
       "repo_ids": ["autotrader", "notes"],
       "required_refs": ["notes:L0-agent-boot.md", "autotrader:project-rules"],
-      "capabilities": ["trader_design", "trader_implementation", "repo_scoped_change", "report"],
+      "capabilities": [
+        "trader_design", "trader_implementation", "repo_scoped_change", "report", "candidate_propose"
+      ],
       "forbidden": ["cross_repo_write_without_mail", "invent_completion"],
       "identity_status": "runtime_verified",
       "ack_status": "acknowledged"
@@ -95,7 +106,7 @@
       "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_audit_bot"},
       "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board"],
       "required_refs": ["notes:principles/audit-watchdog-foundation.md"],
-      "capabilities": ["read_only_audit", "cross_repo_compare", "report"],
+      "capabilities": ["read_only_audit", "cross_repo_compare", "report", "candidate_audit"],
       "forbidden": ["repo_write", "state_transition", "self_approval"],
       "identity_status": "runtime_verified",
       "ack_status": "acknowledged"
@@ -111,7 +122,10 @@
       "transport": {"kind": "codex_desktop", "address": "local"},
       "repo_ids": ["notes", "scenario"],
       "required_refs": ["notes:projects/agent-ops/README.md", "scenario:AGENTS.md"],
-      "capabilities": ["issue_mail", "controller_review", "local_tools", "git_integration", "user_dialogue"],
+      "capabilities": [
+        "issue_mail", "controller_review", "local_tools", "git_integration", "user_dialogue",
+        "candidate_review"
+      ],
       "forbidden": ["silent_long_wait", "unreviewed_worker_join", "credential_in_git"],
       "identity_status": "current_session_verified",
       "ack_status": "acknowledged"

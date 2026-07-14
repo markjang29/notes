@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/schemas/agent-mail-v2.schema.json",
+  "title": "Agent Mail v2",
+  "description": "Direct Telegram, delegated, scheduled, and candidate-only work contracts.",
+  "$defs": {
+    "actor_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "safe_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "not": {
+        "pattern": "((^|[^A-Za-z0-9])[A-Za-z]:[\\\\/]|^/|^file:|[?&](token|key|secret|signature|credential)=|[Hh][Tt][Tt][Pp][Ss]?://[^\\s]*[?#])"
+      }
+    },
+    "nullable_safe_ref": {
+      "oneOf": [
+        {"$ref": "#/$defs/safe_ref"},
+        {"type": "null"}
+      ]
+    },
+    "mail_id": {
+      "type": "string",
+      "pattern": "^mail-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"
+    },
+    "nullable_mail_id": {
+      "type": ["string", "null"],
+      "pattern": "^mail-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"
+    },
+    "event_id": {
+      "type": "string",
+      "pattern": "^evt-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"
+    },
+    "nullable_event_id": {
+      "type": ["string", "null"],
+      "pattern": "^evt-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"
+    },
+    "work_order": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema", "mail_id", "thread_id", "from_actor", "to_actor", "controller_actor",
+        "request_origin", "intent", "result_disposition", "parent_mail_id", "schedule_ref",
+        "subject", "issued_at", "priority", "repo_id", "input_commit", "attempt",
+        "supersedes_mail_id", "packet_digest", "required_capabilities", "required_skill_refs",
+        "read_scope", "write_scope", "forbidden", "dependencies", "done_criteria",
+        "approval_policy", "idempotency_key"
+      ],
+      "properties": {
+        "schema": {"const": "agent-mail-work-order-v2"},
+        "mail_id": {"$ref": "#/$defs/mail_id"},
+        "thread_id": {"type": "string", "pattern": "^thread-[a-z0-9-]{3,96}$"},
+        "from_actor": {"$ref": "#/$defs/actor_id"},
+        "to_actor": {"$ref": "#/$defs/actor_id"},
+        "controller_actor": {"$ref": "#/$defs/actor_id"},
+        "request_origin": {
+          "enum": ["controller", "director_telegram", "scheduled", "delegated"]
+        },
+        "intent": {"enum": ["execute", "analyze", "ideate"]},
+        "result_disposition": {
+          "enum": ["reviewed_output", "report_only", "candidate_only"]
+        },
+        "parent_mail_id": {"$ref": "#/$defs/nullable_mail_id"},
+        "schedule_ref": {"$ref": "#/$defs/nullable_safe_ref"},
+        "subject": {"type": "string", "minLength": 1, "maxLength": 160},
+        "issued_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": ["string", "null"], "format": "date-time"},
+        "priority": {"enum": ["low", "normal", "high", "urgent"]},
+        "repo_id": {"type": ["string", "null"], "pattern": "^[a-z][a-z0-9_.-]{1,63}$"},
+        "input_commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+        "attempt": {"type": "integer", "minimum": 1},
+        "supersedes_mail_id": {"$ref": "#/$defs/nullable_mail_id"},
+        "packet_digest": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "required_capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]{1,63}$"},
+          "uniqueItems": true
+        },
+        "required_skill_refs": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/safe_ref"},
+          "uniqueItems": true
+        },
+        "read_scope": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/safe_ref"},
+          "uniqueItems": true
+        },
+        "write_scope": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/safe_ref"},
+          "uniqueItems": true
+        },
+        "forbidden": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/safe_ref"},
+          "uniqueItems": true
+        },
+        "done_criteria": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "approval_policy": {"enum": ["none", "controller_review", "user_approval"]},
+        "idempotency_key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{3,127}$"
+        },
+        "reply_channel": {"type": ["string", "null"], "maxLength": 160}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"request_origin": {"const": "director_telegram"}},
+            "required": ["request_origin"]
+          },
+          "then": {"properties": {"from_actor": {"const": "director"}}}
+        },
+        {
+          "if": {
+            "properties": {"request_origin": {"const": "scheduled"}},
+            "required": ["request_origin"]
+          },
+          "then": {"properties": {"schedule_ref": {"$ref": "#/$defs/safe_ref"}}}
+        },
+        {
+          "if": {
+            "properties": {"request_origin": {"const": "delegated"}},
+            "required": ["request_origin"]
+          },
+          "then": {"properties": {"parent_mail_id": {"$ref": "#/$defs/mail_id"}}}
+        },
+        {
+          "if": {
+            "properties": {"result_disposition": {"const": "candidate_only"}},
+            "required": ["result_disposition"]
+          },
+          "then": {
+            "properties": {
+              "intent": {"enum": ["analyze", "ideate"]},
+              "write_scope": {"maxItems": 0},
+              "approval_policy": {"const": "controller_review"},
+              "forbidden": {
+                "allOf": [
+                  {"contains": {"const": "auto_implement"}},
+                  {"contains": {"const": "auto_promote"}},
+                  {"contains": {"const": "repo_write"}},
+                  {"contains": {"const": "external_side_effect"}}
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema", "event_id", "mail_id", "actor_id", "event_type", "created_at",
+        "attempt", "idempotency_key", "work_order_digest", "packet_digest",
+        "sequence", "previous_event_id", "binding_refs", "summary", "evidence_refs",
+        "output_commit", "receipt_ref", "retry_condition", "user_action_required"
+      ],
+      "properties": {
+        "schema": {"const": "agent-mail-event-v2"},
+        "event_id": {"$ref": "#/$defs/event_id"},
+        "mail_id": {"$ref": "#/$defs/mail_id"},
+        "actor_id": {"$ref": "#/$defs/actor_id"},
+        "event_type": {
+          "enum": [
+            "queued", "claimed", "acknowledged", "in_progress", "progress",
+            "question", "submitted", "verified", "closed", "blocked", "failed", "cancelled"
+          ]
+        },
+        "created_at": {"type": "string", "format": "date-time"},
+        "attempt": {"type": "integer", "minimum": 1},
+        "idempotency_key": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{3,127}$"
+        },
+        "work_order_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "packet_digest": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "sequence": {"type": "integer", "minimum": 1},
+        "previous_event_id": {"$ref": "#/$defs/nullable_event_id"},
+        "binding_refs": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/safe_ref"},
+          "uniqueItems": true
+        },
+        "summary": {"type": "string", "minLength": 1, "maxLength": 2000},
+        "evidence_refs": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/safe_ref"},
+          "uniqueItems": true
+        },
+        "output_commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+        "receipt_ref": {"$ref": "#/$defs/nullable_safe_ref"},
+        "retry_condition": {"type": ["string", "null"], "maxLength": 1000},
+        "user_action_required": {"type": "boolean"},
+        "usage": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "source": {"type": "string", "maxLength": 40},
+            "input_tokens": {"type": "integer", "minimum": 0},
+            "output_tokens": {"type": "integer", "minimum": 0},
+            "total_tokens": {"type": "integer", "minimum": 0},
+            "wall_seconds": {"type": "number", "minimum": 0}
+          }
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {"$ref": "#/$defs/work_order"},
+    {"$ref": "#/$defs/event"}
+  ]
+}

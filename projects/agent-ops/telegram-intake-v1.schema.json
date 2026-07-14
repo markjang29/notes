@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/schemas/agent-mail-telegram-intake-v1.schema.json",
+  "title": "Agent Mail Telegram Intake v1",
+  "description": "A sanitized, durable intake created from an authenticated director message.",
+  "$defs": {
+    "actor_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$"
+    },
+    "nullable_mail_id": {
+      "type": ["string", "null"],
+      "pattern": "^mail-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"
+    },
+    "nullable_digest": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nullable_text": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "maxLength": 1000
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "intake_id", "requester_actor", "target_actor", "source_kind",
+    "received_at", "request_summary", "status", "clarification_question",
+    "normalized_mail_id", "idempotency_key", "transport_receipt_digest",
+    "content_safety"
+  ],
+  "properties": {
+    "schema": {"const": "agent-mail-telegram-intake-v1"},
+    "intake_id": {
+      "type": "string",
+      "pattern": "^intake-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"
+    },
+    "requester_actor": {"const": "director"},
+    "target_actor": {"$ref": "#/$defs/actor_id"},
+    "source_kind": {"const": "telegram_direct"},
+    "received_at": {"type": "string", "format": "date-time"},
+    "request_summary": {"type": "string", "minLength": 1, "maxLength": 4000},
+    "status": {
+      "enum": ["received", "needs_clarification", "normalized", "cancelled", "rejected_sensitive"]
+    },
+    "clarification_question": {"$ref": "#/$defs/nullable_text"},
+    "normalized_mail_id": {"$ref": "#/$defs/nullable_mail_id"},
+    "idempotency_key": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{3,127}$"
+    },
+    "transport_receipt_digest": {"$ref": "#/$defs/nullable_digest"},
+    "content_safety": {"enum": ["sanitized", "rejected_sensitive"]}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"status": {"const": "normalized"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "normalized_mail_id": {
+            "type": "string",
+            "pattern": "^mail-[0-9]{8}T[0-9]{6}Z-[a-z0-9-]+$"
+          },
+          "clarification_question": {"type": "null"},
+          "content_safety": {"const": "sanitized"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"status": {"const": "needs_clarification"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "clarification_question": {"type": "string", "minLength": 1, "maxLength": 1000},
+          "normalized_mail_id": {"type": "null"},
+          "content_safety": {"const": "sanitized"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"status": {"const": "rejected_sensitive"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "normalized_mail_id": {"type": "null"},
+          "content_safety": {"const": "rejected_sensitive"}
+        }
+      }
+    }
+  ]
+}
