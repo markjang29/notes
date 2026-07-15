@@ -34,8 +34,8 @@ input 285,060, cache-read 1,007,360, output 105,712 tokens였다. 요금이나 q
 
 - 01:00 `aws-scenario`: 후보 최대 1건
 - 01:05 `aws-rpg`: 후보 최대 1건
-- 01:10 `aws-trader`: 후보 최대 1건
-- 07:00 `aws-manager`: 세 actor receipt와 pending 후보만 통합
+- `aws-trader`: 2026-07-16 이사님 직접 지시로 별도 재개 전까지 운영 동결, schedule 없음
+- 07:00 `aws-manager`: 두 actor receipt와 pending 후보만 통합
 - `aws-audit`: 야간·아침 schedule 없음
 
 각 lead는 180초·read-only tool 4회·reviewed source 1개·800자 receipt, manager는
@@ -52,7 +52,7 @@ ACK, candidate 또는 no-candidate receipt, 종료 상태를 확인하고 이상
 - R4 transactional mailbox는 아직 없다. 직접 Telegram 작업과 scheduled receipt는 durable
   mail/event가 아니라 임시 transport evidence다.
 - R4.5 immutable candidate/run store가 아직 없어 approval-board는 임시 표시판이다.
-- lead 3개와 morning curator의 첫 실제 bounded 왕복은 다음 schedule 실행 뒤 검증해야 한다.
+- active lead 2개와 morning curator의 첫 실제 bounded 왕복은 다음 schedule 실행 뒤 검증해야 한다.
 - Cokacdir service가 bot token을 process argument로 넘겨 같은 OS 사용자의 process listing에
   노출될 수 있다. token을 Git에는 기록하지 않았지만, BotFather rotation과 process argument가
   아닌 restricted credential loading으로 이전해야 한다.

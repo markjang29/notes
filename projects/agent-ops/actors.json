@@ -1,7 +1,7 @@
 {
   "schema": "agent-registry-v1",
-  "version": 4,
-  "updated_at": "2026-07-16T00:37:43+09:00",
+  "version": 5,
+  "updated_at": "2026-07-16T08:24:00+09:00",
   "authority": "notes/projects/agent-ops/actors.json",
   "actors": [
     {
@@ -107,7 +107,12 @@
       "persona": "거래 시스템 작업을 안전 경계 안에서 구현하고 운영 증거를 제출하는 trader 팀장",
       "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_trader_bot"},
       "repo_ids": ["autotrader", "notes"],
-      "required_refs": ["notes:L0-agent-boot.md", "notes:principles/git-first-project-truth.md", "autotrader:project-rules"],
+      "required_refs": [
+        "notes:L0-agent-boot.md",
+        "notes:principles/git-first-project-truth.md",
+        "notes:projects/agent-ops/holds/2026-07-16-aws-trader-director-hold.md",
+        "autotrader:project-rules"
+      ],
       "capabilities": [
         "trader_design", "trader_implementation", "repo_scoped_change", "report", "candidate_propose"
       ],

@@ -1,7 +1,7 @@
 ---
 title: 야간 아이디어 후보 운영 v1
 status: rollout
-updated: 2026-07-15
+updated: 2026-07-16
 authority: projects/agent-ops/overnight-ideation-v1.md
 ---
 
@@ -9,7 +9,7 @@ authority: projects/agent-ops/overnight-ideation-v1.md
 
 ## 목적과 경계
 
-야간 작업의 목적은 시나리오, RPG, 거래 프로젝트에서 다음 검토 가치가 있는 아이디어를
+야간 작업의 목적은 시나리오와 RPG 프로젝트에서 다음 검토 가치가 있는 아이디어를
 발견해 아침 후보함에 쌓는 것이다. 야간 작업은 제품 구현, 저장소 변경, 전략 채택 또는
 자산 승격이 아니다.
 
@@ -22,8 +22,10 @@ mailbox에만 기록하며 project Git에는 쓰지 않는다. 기존 usable 검
 
 - 생성 시작 기본값: 매일 01:00 KST부터 actor별 순차 시작
 - 아침 브리프 기본값: 매일 07:00 KST
-- 대상: `aws-scenario`, `aws-rpg`, `aws-trader`
-- 초기 운영 한도: actor별 최대 1건, 전체 최대 3건
+- 대상: `aws-scenario`, `aws-rpg`
+- 운영 동결: `aws-trader`는 `holds/2026-07-16-aws-trader-director-hold.md`에 따라 별도 재개
+  지시 전까지 schedule, 위임, 후보 생성과 아침 브리프에서 제외한다.
+- 초기 운영 한도: actor별 최대 1건, 전체 최대 2건
 - 한 actor에는 동시에 열린 야간 mail을 하나만 둔다.
 - 각 실행은 `overnight-ideas:<KST-date>:<actor-id>` idempotency key를 사용한다.
 
@@ -54,7 +56,7 @@ R4 전환 전에는 controller가 검토한 고정 packet을 Cokacdir schedule a
 세션에 직접 전달할 수 있다. 이는 manager가 lead를 가장하는 것이 아니며 durable mail 발행
 완료로도 세지 않는다. actor는 ID를 만들지 않고 `[CANDIDATE PENDING <actor-id>]`로 시작하는
 sanitized 임시 receipt 또는 `[NO CANDIDATE <actor-id>]`만 남긴다. manager의 아침 브리프는
-정확히 등록된 세 actor schedule의 최신 receipt와 approval-board의 pending 항목만 읽는다.
+정확히 등록된 두 actor schedule의 최신 receipt와 approval-board의 pending 항목만 읽는다.
 다른 chat history나 저장소를 뒤져 receipt를 재구성하지 않는다. Windows Codex가 R4.5에
 materialize하기 전까지 이 결과는 임시 증거다.
 
