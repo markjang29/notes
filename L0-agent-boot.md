@@ -1,7 +1,7 @@
 ---
 title: L0 Agent Boot
-date: 2026-07-06
-status: v1
+date: 2026-07-16
+status: v2
 tags:
   - boot
   - agent
@@ -44,14 +44,15 @@ tags:
 긴 문서 전체 재독 금지.
 
 1. `L0-agent-boot.md`
-2. `onboarding.md`
-3. 자기 프로젝트 사칙
-4. `work-queue.md`
-5. 필요 시 세부 문서
+2. `agent-rules.md`와 `principles/git-first-project-truth.md`
+3. `onboarding.md`
+4. 자기 프로젝트 사칙
+5. `work-queue.md`
+6. 필요 시 세부 문서
 
 ## 4. 보존 원칙
 
-중요 정보는 Git/notes에 보존한다.
+중요 정보는 해당 프로젝트 Git 또는 Notes Git에 commit·push하여 보존한다.
 
 - `.md` 산출물
 - ADR
@@ -60,6 +61,7 @@ tags:
 - 결정 근거
 
 세션 클리어 전 Git 미반영을 확인한다.
+Notion은 보고 화면일 뿐 정본이나 유일한 사본으로 사용하지 않는다.
 
 ## 5. 컨텍스트 원칙
 

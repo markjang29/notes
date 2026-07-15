@@ -3,7 +3,7 @@
 > **이 문서는 모든 머신(Linux 서버 / Windows)의 에이전트가 공유하는 표준 운영 규칙이다.**
 > 각 머신은 이 내용을 자기 `~/.claude/CLAUDE.md` 로 미러링해서 사용한다.
 > 경로(`/home/ubuntu/...`, `/akl0hdys` 등)는 Linux 서버 기준 — Windows 에이전트는 자기 환경 경로로 치환.
-> Last reviewed: 2026-06-26 · 원본: Linux 서버 `/home/ubuntu/.claude/CLAUDE.md`
+> Last reviewed: 2026-07-16 · 원본: Linux 서버 `/home/ubuntu/.claude/CLAUDE.md`
 
 ## HOW YOU WORK HERE
 - Linux (Ubuntu 24.04, AWS EC2) + Claude Code via cokacdir/Telegram. 한국어 사용자 → 한국어 응답.
@@ -16,6 +16,14 @@
 - **notes 라우팅:** 장기 원칙→`principles/`, 결정/트레이드오프(ADR)→`decisions/`, 세션 암묵지→`memory/`, 사용자 판단기준→`personas/`, 프로젝트별 실행규칙→`project-rules/`. 루트 `agent-rules.md`=어떻게 / `principles/ai-dev-신념.md`=왜. 충돌 시 전자는 실행 절차, 후자는 판단 기준으로 해석.
 - 복구入口: memory (`@/home/ubuntu/.claude/projects/-home-ubuntu--cokacdir-workspace-akl0hdys/memory/MEMORY.md`) + `@/home/ubuntu/notes` + `/akl0hdys`
 - **메모리 canonical source:** 쓰기 저장소 = Obsidian `@/home/ubuntu/notes`(`automemorydirectory`로 자동메모리 일원화). 읽기 복구入口 = `.../memory/MEMORY.md` 인덱스 + `@/home/ubuntu/notes` + `/akl0hdys`. (`.claude` 메모리는 인덱스/복구용, Obsidian이 canonical.)
+
+## SOURCE OF TRUTH AND REPORTING
+
+- 공통 사칙 원문은 `principles/git-first-project-truth.md`다.
+- 제품 아이디어·결정·우선순위·설계·검증 현황은 commit되고 공유된 프로젝트 Git 또는 Notes Git만 정본이다.
+- Notion은 이사님용 보고 투영이다. Git full commit과 exact ref가 없는 내용을 작성·유지하거나 상태를 승격하지 않는다.
+- Notion 작업은 `project-rules/notion-reporting.md`를 따르며, 불일치 시 Git이 이기고 해당 투영을 즉시 제거·정정한다.
+- Git 근거 없는 Notion 내용을 발견한 agent는 보고·repo 권한을 fail-closed하고 이사님 재허가 전까지 신규 투영을 중단한다.
 
 ## AGENT RULES
 - 충분한 정보가 있으면 행동. 진짜 모호할 때만 물어본다 (Telegram은 비대화형).

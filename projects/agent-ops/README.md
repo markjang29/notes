@@ -24,6 +24,17 @@ updated: 2026-07-15
 - 사용자 알림·승인·장애 우회: Telegram
 - 쿠키·token·Cokacdir key·session ID·lease 원문: Git과 메일 본문 금지
 
+## Git-first 보고 불변 규칙
+
+공통 사칙은 `notes:principles/git-first-project-truth.md`다. 프로젝트 아이디어·결정·우선순위·
+검증 현황은 해당 프로젝트 Git 또는 Notes Git의 commit이 먼저다. Notion과 기타 dashboard는
+이사님이 읽기 쉬운 투영일 뿐이며, full commit과 exact ref 없이 내용을 만들거나 상태를
+승격할 수 없다. worker 제출, Telegram 대화, mail receipt는 Git 정본을 대체하지 않는다.
+
+controller는 보고 전에 repo, full commit, exact refs, source status, push 여부를 확인한다.
+Git에 없는 Notion 내용을 발견하면 투영을 제거·중단하고 해당 actor의 repo/reporting 권한을
+fail-closed한다. 상세 절차는 `notes:project-rules/notion-reporting.md`를 따른다.
+
 Telegram 메시지는 알림과 대화 수단이지 완료 정본이 아니다. 작업 완료는 mail event,
 검증 근거, 필요 시 Git commit을 controller가 확인한 뒤 `verified`와 `closed`로 닫는다.
 
