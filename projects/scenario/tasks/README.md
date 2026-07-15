@@ -46,6 +46,7 @@ last_reviewed: 2026-07-16
 | ID | 작은 작업 | 상태 | 완료조건 |
 |---|---|---|---|
 | AUTO-01 | Arca sync 비활성·예약 CLI 모델/버전 실패 복구 | queued | disabled 원인, 지원 모델/runner, 재실행 receipt 또는 exact blocker |
+| LOGIN-01 | Arca 원격 QR 로그인 재발 방지 | done | markjang29/scenario@ab2f3d669cb9d395cb491216a9ec54da7eab570b |
 
 ## 현재 WIP
 
