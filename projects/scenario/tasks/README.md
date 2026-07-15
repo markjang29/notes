@@ -6,6 +6,26 @@ last_reviewed: 2026-07-16
 
 # Scenario 소형 작업 보드
 
+## 업무 목표와 현재 판정
+
+이 문서가 Windows Codex의 단일 실행 큐다. 새 질문이나 기술 문제가 생겨도 아래 `현재 WIP`를
+임의로 바꾸지 않는다. 새 일은 큐에 넣고, 사용자가 우선순위를 바꾸거나 현재 WIP가 terminal로
+닫힌 뒤에만 다음 카드로 이동한다.
+
+| KPI | 2026-07-16 현재 | 통과 기준 |
+|---|---|---|
+| Arca 일일 수집 | terminal `0/1`; 설정값 35와 실제 처리량 사이에 큰 간극 | 우선 오늘 1건 terminal, 이후 warm-path 3건 계측으로 일일 목표 재산정 |
+| ZCode 실제 배정 | 성공 `0건`; live probe HTTP 429 | quota 복구 뒤 frozen read-only packet 1건 ACK·RESULT·Codex 검수 |
+| 예약 실행 | 일일 task 활성, sync task 비활성; 최근 자동 완결 증거 없음 | `AUTO-01` 재실행 receipt 또는 exact blocker |
+| 단건 소요시간 | 단계별 계측 없음 | `OPS-01`~`OPS-05`로 실제·대기·LLM 시간 분리 |
+| Matrix↔RISU 연속성 | C0 설계만 완료; 구현·benchmark 증거 없음 | C1 usage recipes 뒤 8개 continuity gate 측정 |
+| 관리 화면 | Git 업무판은 이 문서; Notion은 commit 기반 투영 | Git commit/path가 있는 상태만 Notion에 표시 |
+
+제품의 장기 목표는 검증된 Arca 자산을 Matrix 코어에 넣어 세계·캐릭터·페르소나·서사를
+재현 가능하게 조립하고, 같은 캐릭터의 여러 세계선 경험을 본 캐릭터로 합성할 수 있는 공장을
+만드는 것이다. Notion과 웹은 이 Git 정본을 사람이 읽고 결정하기 쉽게 보여주는 화면이지
+별도 아이디어 저장소가 아니다.
+
 ## 운영 규칙
 
 - WIP는 항상 1개다.
@@ -31,10 +51,29 @@ last_reviewed: 2026-07-16
 
 | ID | 작업 | 상태 | 담당 | 완료조건 |
 |---|---|---|---|---|
-| ZC-02a | 초과·불완전 후반 응답이 있어도 핵심 결과·usage 보존 | done | Codex | 실제 로그 replay + 전체 31 tests + Git push |
+| ARCA-DAY-01 | 오늘 Arca 게시글 한 건 완결 | in_progress | 별도 Codex task `Arca 오늘 1건` | fresh login/gate/lease부터 Git push까지 terminal receipt, 또는 정확한 gate blocker |
 
-다음 후보는 `ZC-02b`다. `safe_auto` worker는 lease와 exact 완료조건을 확인한 뒤 착수하고,
-10분 checkpoint 또는 terminal receipt에서 보고한다.
+첫 체크포인트는 시작 후 10분이다. 메인 대화는 사용자 창구와 우선순위 controller로 남고,
+수집 실행은 별도 task가 맡는다. 일반 시간당 `factory-steward`는 우선순위 복구가 끝날 때까지
+일시정지했다.
+
+## 다음 실행 순서
+
+| 순서 | ID | 이유 | 시작 조건 |
+|---|---|---|---|
+| 1 | AUTO-01 | 하루 0건 재발을 막는 예약·sync 복구 | `ARCA-DAY-01` terminal 뒤 |
+| 2 | OPS-01→OPS-05 | 같은 시행착오와 장시간 무응답을 시간·실패 fingerprint로 차단 | AUTO-01 receipt 뒤 |
+| 3 | LEG-01→LEG-06 | 레거시 분류와 신규/레거시 균형을 실제 terminal pilot로 검증 | 계측 최소 계약 뒤 |
+| 4 | ZC-02b 검수→ZC-02c | ZCode가 아닌 Codex 제출물을 먼저 검수하고, 429 복구 뒤 실제 ZCode packet 실행 | bridge 단일 probe 성공 뒤 |
+| 5 | PY-01→PY-06 | 새 노트북에서도 같은 실행 구조가 돌도록 표준화 | 수집 warm path를 깨지 않는 범위 |
+| 6 | MX-01→MX-08 | RISU-like 연속성, Genome, 멀티버스 코어를 증거 기반으로 개발 | reviewed 수집 recipe 확보 뒤 |
+| 7 | RPG-01→RPG-08 | Matrix 코어를 사용하는 RPG Maker형 Studio 구성 | Matrix 최소 schema/replay 뒤 |
+| 8 | NOTE-03→NOTE-05 | handoff·주간 KPI·Notion 투영 유지 | Git 변경과 함께 계속 |
+| 주말 | AWS-01 | AWS→미니PC/Telegram 운영 비용·구조 결정 | 2026-07-18 리마인드 뒤 사용자 결정 |
+
+승인보드·Director Console 추가 기능, AWS actor ACK 경로의 추가 드릴다운, 멀티버스 후보의
+즉시 구현은 위 큐를 밀어내지 않는다. 별도 blocker/idea 카드로 보존하고 해당 순서가 왔을 때
+다룬다.
 
 ## ZCode 권한·분업
 
@@ -42,7 +81,7 @@ last_reviewed: 2026-07-16
 |---|---|---|---|
 | ZC-01 | 현 bridge 권한 제한 근거 감사 | done | 단일 writer·secret 경계와 실패 재현 기록 |
 | ZC-02a | receipt 핵심 결과·usage salvage | done | 알 수 없는 후반 필드는 폐기하고 신뢰 필드·usage 보존 |
-| ZC-02b | 입력 절대경로 오탐 최소 fixture | queued | 문서 예시 경로는 안전하게 정규화하고 실제 로컬 경로는 차단 |
+| ZC-02b | 입력 절대경로 오탐 최소 fixture | review | 별도 Codex 제출 `52d9f1f`의 diff·tests를 controller가 독립 검수; local ZCode 작업으로 계산 금지 |
 | ZC-02c | bridge 단계·heartbeat 표시 | queued | 30초 heartbeat와 stage/elapsed/timeout 가시화 |
 | ZC-03 | raw shell 대신 controller allowlist check 설계 | queued | 명령 문자열 없이 check ID만 허용하는 계약 |
 | ZC-04 | 격리 폴더 read/grep 실험 | queued | repo·환경변수·절대경로 탈출이 불가능함을 테스트 |
