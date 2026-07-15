@@ -1,7 +1,7 @@
 ---
 title: Scenario 소형 작업 보드
 status: active
-last_reviewed: 2026-07-14
+last_reviewed: 2026-07-16
 ---
 
 # Scenario 소형 작업 보드
@@ -16,6 +16,8 @@ last_reviewed: 2026-07-14
 - 단순 ZCode 작업은 60초 soft deadline, 180초 hard timeout, 30초 사용자 heartbeat를 적용한다.
 - 모든 작업은 10분에 체크포인트를 만들고, 15분 초과 예상 시 이사님 동의 전에는 계속하지 않는다.
 - 카드가 끝날 때마다 이사님께 결과·다음 카드·막힘을 중간보고한다.
+- `autonomous-operations.md`의 `safe_auto` 카드는 별도 task/예약 worker가 사용자 재지시 없이
+  착수할 수 있다. 제품 결정 gate와 승격은 계속 사용자 판단을 요구한다.
 
 상태: `queued / in_progress / review / done / deferred / blocked`
 
@@ -25,7 +27,8 @@ last_reviewed: 2026-07-14
 |---|---|---|---|---|
 | ZC-02a | 초과·불완전 후반 응답이 있어도 핵심 결과·usage 보존 | done | Codex | 실제 로그 replay + 전체 31 tests + Git push |
 
-다음 후보는 `ZC-02b`이며 중간보고 전에는 착수하지 않는다.
+다음 후보는 `ZC-02b`다. `safe_auto` worker는 lease와 exact 완료조건을 확인한 뒤 착수하고,
+10분 checkpoint 또는 terminal receipt에서 보고한다.
 
 ## ZCode 권한·분업
 
