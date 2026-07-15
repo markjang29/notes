@@ -21,6 +21,12 @@ last_reviewed: 2026-07-16
 
 상태: `queued / in_progress / review / done / deferred / blocked`
 
+## 0. 자율 실행 인프라
+
+| ID | 작은 작업 | 상태 | 완료조건 |
+|---|---|---|---|
+| AUTO-01 | Arca sync 비활성·예약 CLI 모델/버전 실패 복구 | queued | disabled 원인, 지원 모델/runner, 재실행 receipt 또는 exact blocker |
+
 ## 현재 WIP
 
 | ID | 작업 | 상태 | 담당 | 완료조건 |

@@ -74,12 +74,13 @@ reviewed, usable, deployed 상태를 주장하지 않는다.
 ## 초기 safe-auto 후보
 
 1. `ZC-02b` 입력 절대경로 오탐 최소 fixture
-2. `ZC-02c` bridge 단계·heartbeat 표시
-3. `OPS-01` stage event 계약
-4. `PY-01` import·entrypoint·dependency inventory
-5. `MX-04` 시간·자산 사용 ledger
-6. `NOTE-03` 현재 handoff 자동 갱신 후보
-7. `NOTE-05` 주간 완료/소요시간 review
+2. `AUTO-01` Arca sync 비활성·예약 CLI 모델/버전 실패 복구
+3. `ZC-02c` bridge 단계·heartbeat 표시
+4. `OPS-01` stage event 계약
+5. `PY-01` import·entrypoint·dependency inventory
+6. `MX-04` 시간·자산 사용 ledger
+7. `NOTE-03` 현재 handoff 자동 갱신 후보
+8. `NOTE-05` 주간 완료/소요시간 review
 
 위 순서는 제품 우선순위 변경이 아니라 안전한 기술 backlog의 기본 순서다. 선행조건이나
 working tree 충돌이 있으면 이유를 receipt에 남기고 다음 eligible 카드로 이동한다.
