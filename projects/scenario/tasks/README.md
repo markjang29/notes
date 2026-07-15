@@ -28,13 +28,17 @@ last_reviewed: 2026-07-16
 
 ## 운영 규칙
 
-- WIP는 항상 1개다.
+- WIP는 lane별 1개, 전체 최대 3개다. 같은 repo의 의미 변경 writer는 항상 1개만 둔다.
+- 메인 대화는 사용자 창구와 controller로 남기고, 실행·검수는 별도 task가 맡는다.
 - 한 카드는 0.5~2 인일 안에 검증 가능한 결과를 만든다.
 - 구현 전 입력·완료조건·rollback을 적고, 완료 후 증거와 소요시간을 기록한다.
 - ZCode는 먼저 작은 read-only 패킷으로 통과한 작업 유형에만 사용한다.
 - 실패한 ZCode 패킷을 같은 형태로 반복 호출하지 않는다.
 - 단순 ZCode 작업은 60초 soft deadline, 180초 hard timeout, 30초 사용자 heartbeat를 적용한다.
-- 모든 작업은 10분에 체크포인트를 만들고, 15분 초과 예상 시 이사님 동의 전에는 계속하지 않는다.
+- 모든 작업은 10분에 체크포인트를 만든다. 진전과 안전한 다음 단계가 있으면 사용자 재지시 없이 계속한다.
+- 제품 결정·비용/권한 확대·로그인/비밀·비가역 변경만 사용자에게 멈춰 묻는다.
+- 같은 기술 실패가 2회 반복되면 해당 카드만 보류하고 다음 독립 safe 카드로 이동한다.
+- quota는 실제 telemetry 또는 `429`/usage-limit로만 판정한다. 한 token pool이 막히면 허가된 다른 pool의 독립 작업은 계속한다.
 - 카드가 끝날 때마다 이사님께 결과·다음 카드·막힘을 중간보고한다.
 - `autonomous-operations.md`의 `safe_auto` 카드는 별도 task/예약 worker가 사용자 재지시 없이
   착수할 수 있다. 제품 결정 gate와 승격은 계속 사용자 판단을 요구한다.
@@ -45,35 +49,39 @@ last_reviewed: 2026-07-16
 
 | ID | 작은 작업 | 상태 | 완료조건 |
 |---|---|---|---|
+| LOGIN-01 | Arca 원격 QR 로그인 재발 방지 제출물 검수·통합 | review | worker commit `ab2f3d669cb9d395cb491216a9ec54da7eab570b` 독립 검수, authoritative branch 통합·설치 receipt |
+| AUTO-CTRL-01 | 목표 큐 자동 연속 controller | queued | terminal 뒤 다음 eligible 카드 자동 선택, decision/quota/global blocker만 정지, Git receipt |
 | AUTO-01 | Arca sync 비활성·예약 CLI 모델/버전 실패 복구 | queued | disabled 원인, 지원 모델/runner, 재실행 receipt 또는 exact blocker |
 
 ## 현재 WIP
 
 | ID | 작업 | 상태 | 담당 | 완료조건 |
 |---|---|---|---|---|
-| ARCA-DAY-01 | 오늘 Arca 게시글 한 건 완결 | in_progress | 별도 Codex task `Arca 오늘 1건` | fresh login/gate/lease부터 Git push까지 terminal receipt, 또는 정확한 gate blocker |
+| ARCA-DAY-01 | 기존 open unit `176786718` 한 건 완결 | in_progress | 별도 Codex task `Arca 오늘 1건` | stale lease 정리, fresh login/gate, partial diff 검수부터 Git push까지 terminal receipt |
 
-첫 체크포인트는 시작 후 10분이다. 메인 대화는 사용자 창구와 우선순위 controller로 남고,
-수집 실행은 별도 task가 맡는다. 일반 시간당 `factory-steward`는 우선순위 복구가 끝날 때까지
-일시정지했다.
+신규 글은 고르지 않는다. 중단됐던 동일 건을 먼저 종결한다. 현재 실제 Arca 인증은 통과했지만
+실행 직전 protected target을 다시 검증한다. 일반 시간당 `factory-steward`는
+`AUTO-CTRL-01`이 검증될 때까지 일시정지한다.
 
 ## 다음 실행 순서
 
 | 순서 | ID | 이유 | 시작 조건 |
 |---|---|---|---|
-| 1 | AUTO-01 | 하루 0건 재발을 막는 예약·sync 복구 | `ARCA-DAY-01` terminal 뒤 |
-| 2 | OPS-01→OPS-05 | 같은 시행착오와 장시간 무응답을 시간·실패 fingerprint로 차단 | AUTO-01 receipt 뒤 |
-| 3 | LEG-01→LEG-06 | 레거시 분류와 신규/레거시 균형을 실제 terminal pilot로 검증 | 계측 최소 계약 뒤 |
-| 4 | ZC-02b 검수→ZC-02c | ZCode가 아닌 Codex 제출물을 먼저 검수하고, 429 복구 뒤 실제 ZCode packet 실행 | bridge 단일 probe 성공 뒤 |
-| 5 | PY-01→PY-06 | 새 노트북에서도 같은 실행 구조가 돌도록 표준화 | 수집 warm path를 깨지 않는 범위 |
-| 6 | MX-01→MX-08 | RISU-like 연속성, Genome, 멀티버스 코어를 증거 기반으로 개발 | reviewed 수집 recipe 확보 뒤 |
-| 7 | RPG-01→RPG-08 | Matrix 코어를 사용하는 RPG Maker형 Studio 구성 | Matrix 최소 schema/replay 뒤 |
-| 8 | NOTE-03→NOTE-05 | handoff·주간 KPI·Notion 투영 유지 | Git 변경과 함께 계속 |
+| 1 | LOGIN-01 | 방금 제출된 QR 개선을 worker 완료 주장과 분리해 검수·설치 | `ARCA-DAY-01` terminal 또는 독립 read-only 검수 가능 시 |
+| 2 | AUTO-CTRL-01 | 사용자가 다시 말하지 않아도 목표 큐를 이어 가기 | LOGIN-01 review 뒤 |
+| 3 | AUTO-01 | 재부팅 후 설정 서비스·sync·예약을 복구해 하루 0건 재발 방지 | controller 계약 고정 뒤 |
+| 4 | OPS-01→OPS-05 | 같은 시행착오와 장시간 무응답을 시간·실패 fingerprint로 차단 | AUTO-01 receipt 뒤 |
+| 5 | LEG-01→LEG-06 | 레거시 분류와 신규/레거시 균형을 실제 terminal pilot로 검증 | 계측 최소 계약 뒤 |
+| 6 | ZC-02b 검수→ZC-02c | Codex 제출물 검수 후, 429가 풀리면 실제 ZCode packet 1건 실행 | bridge 단일 probe 성공 뒤 |
+| 7 | PY-01→PY-06 | 새 노트북에서도 같은 실행 구조가 돌도록 표준화 | 수집 warm path를 깨지 않는 범위 |
+| 8 | MX-01→MX-08 | RISU-like 연속성, Genome, 멀티버스 코어를 증거 기반으로 개발 | reviewed 수집 recipe 확보 뒤 |
+| 9 | RPG-01→RPG-08 | Matrix 코어를 사용하는 RPG Maker형 Studio 구성 | Matrix 최소 schema/replay 뒤 |
+| 10 | NOTE-03→NOTE-05 | handoff·주간 KPI·Notion 투영 유지 | Git 변경과 함께 계속 |
 | 주말 | AWS-01 | AWS→미니PC/Telegram 운영 비용·구조 결정 | 2026-07-18 리마인드 뒤 사용자 결정 |
 
-승인보드·Director Console 추가 기능, AWS actor ACK 경로의 추가 드릴다운, 멀티버스 후보의
-즉시 구현은 위 큐를 밀어내지 않는다. 별도 blocker/idea 카드로 보존하고 해당 순서가 왔을 때
-다룬다.
+승인보드·Director Console 추가 기능, Tailscale 접근 화면 보강, AWS actor ACK 경로의 추가
+드릴다운, 멀티버스 후보의 즉시 구현은 위 큐를 밀어내지 않는다. 별도 blocker/idea 카드로
+보존하고 해당 순서가 왔을 때 다룬다. 현재 사용자 결정을 기다리는 카드는 없다.
 
 ## ZCode 권한·분업
 
