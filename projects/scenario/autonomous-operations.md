@@ -49,11 +49,104 @@ reviewed, usable, deployed 상태를 주장하지 않는다.
 |---|---|---|---|
 | `factory-steward` | Windows Codex 경량 worker | 매시간 | Git 작업 보드에서 `safe_auto` 1개 선택, 최대 12분/도구 8회, WIP 1 |
 | `morning-idea-audit` | Windows Codex audit | 매일 07:10 KST | AWS 야간 후보·receipt·중복·소유권 관제 |
-| `overnight-ideas` | AWS Claude client + Z.AI pool | 01:00~07:00 KST | scenario/RPG/trader 후보 생성과 manager 브리프; 후보만, 구현 금지 |
+| `overnight-ideas` | AWS Claude client + Z.AI pool | 01:00~07:00 KST | scenario/RPG 후보 생성과 manager 브리프; 후보만, 구현 금지. trader는 director hold |
 | `arca-daily` | Windows collection controller | 매일 승인 시각 | fresh login preflight와 lifecycle gate 뒤 단건 완결 |
 
 로컬 예약 작업은 PC가 켜져 있고 Codex desktop이 실행 중일 때만 동작한다. 항상 켜진 실행이
 필요한 역할은 AWS actor에 남기되, Git 정본과 agent-mail receipt를 통해 검증한다.
+
+## 시간축과 상위 목표
+
+모든 작업은 `지금 문제`만 보지 않고 아래 시간 지평 중 하나에 연결한다. 하위 작업이 상위 목표를
+지연시키면 기술적으로 흥미로워도 중단·우회·재배정한다.
+
+| 목표 ID | 시간 지평 | 마감 | 검증할 결과 |
+|---|---|---|---|
+| `H-TODAY-20260716` | 오늘 | 2026-07-16 18:00 KST | Arca 1건 terminal, ZCode bounded packet ACK·RESULT·검수 1건, 자동 연속 controller 최소 구현·receipt |
+| `H-7D-20260723` | 7일 | 2026-07-23 18:00 KST | 재부팅·로그인 해제·quota 분리 복구, warm-path 3건 계측, 신규/레거시 균형 기준 확정 |
+| `H-30D-20260815` | 30일 | 2026-08-15 18:00 KST | Git 정본 기반 관리 화면, RISU-like continuity C1 benchmark, Matrix 멀티버스 최소 vertical slice |
+| `H-90D-20261014` | 90일 | 2026-10-14 18:00 KST | 반복 가능한 세계·캐릭터·페르소나·서사 공장과 RPG Studio형 소비 흐름의 end-to-end 검증 |
+
+날짜는 희망 표시가 아니라 검증 deadline이다. 매일 실제 처리량과 blocker를 반영해 예상 완료일을
+다시 계산하고, 늦어질 때는 `원래 마감 / 현재 예상 / 지연 원인 / 회복 행동`을 함께 기록한다.
+
+모든 실행 카드와 receipt에는 아래 기계 판독 필드를 둔다. 시각은 중복 문자열을 만들지 않고
+`+09:00` offset이 포함된 ISO 8601 한 값으로 저장하며, 경과시간은 정수 초로만 누적한다.
+
+- `created_at`, `started_at`, `last_evidence_at`
+- `next_checkpoint_at`, `soft_deadline_at`, `hard_deadline_at`
+- `finished_at` 또는 `blocked_at`
+- `active_elapsed_seconds`, `waiting_elapsed_seconds`, `estimated_finish_at`
+- `horizon_ids`: 연결된 오늘·7일·30일·90일 목표 ID 배열
+
+아직 발생하지 않은 시각은 `null`이고, `estimated_finish_at`은 근거가 생기기 전에는 추정하지 않고
+`null`로 둔다. 재시작 뒤 경과시간은 wall clock 차감이 아니라 마지막 durable event까지 누적된
+값에서 이어 간다. `in_progress`인데 `last_evidence_at` 이후 20분이 지나면 카드 상태를 임의로
+바꾸지 않고 `health=stalled`를 파생 판정한다. 이후 30분 안에 우회·재배정·명시적 blocker 중
+하나를 선택한다.
+
+## 관제자 운영 루프
+
+`windows-codex`의 첫 번째 책임은 개별 기술 문제를 오래 붙잡는 것이 아니라 전체 목표를 계속
+움직이는 것이다. 메인 대화는 사용자 응답·우선순위·배정·검수 상태를 다루는 관제 전용 창구로
+유지하고, 긴 구현·수집·검수와 의미 변경 writer는 별도 worker에 맡긴다.
+
+1. 매일 08:30 KST 또는 당일 첫 활성 시점에 전일 terminal 결과, hold, 실제 인증·quota 상태,
+   오늘의 결과 목표 최대 3개, 담당자, 완료조건, 예상 완료시각, 다음 checkpoint를 먼저 발표한다.
+2. 전체 WIP는 최대 3개, repo별 의미 변경 writer는 1개다. 새 질문은 큐에 보존하되 현재 WIP를
+   몰래 교체하지 않는다.
+3. 실행 시작 10분 안에 첫 증거를 만든다. 20분 동안 새 증거가 없으면 `stalled`로 판정하고,
+   30분 안에 우회·재배정·명시적 blocker 중 하나를 선택한다. 같은 실패를 두 번 반복하지 않는다.
+4. 작업 중에는 10분 checkpoint 또는 terminal 직후에 `현재 시각 / 경과 / 새 증거 / 다음 행동 /
+   예상 완료 / 사용자 행동 필요 여부`를 짧게 보고한다.
+5. 사용자의 결정이 필요한 카드만 멈춘다. 로그인·비밀·새 비용·권한 확대·비가역 변경·제품
+   방향 선택 외의 기술 문제는 안전 범위에서 자동 복구하거나 다른 독립 카드로 넘어간다.
+6. `done`은 worker의 말이 아니라 commit/path, test, runtime receipt, controller 검수로만 닫는다.
+   `claimed`, Telegram 전달, 승인보드 accepted는 완료 증거가 아니다.
+7. 새 세션이나 재부팅 뒤에는 Git 작업 보드, actor registry, open mail의 마지막 durable event를
+   먼저 읽고 이어서 실행한다. 대화 기억만으로 상태나 담당을 재구성하지 않는다.
+
+### 자동 controller 상태 전이
+
+```text
+idle -> selecting -> claimed -> acknowledged -> in_progress -> submitted
+  ^                                                               |
+  +--- closed <- verified <- controller_review <-------------------+
+```
+
+- `claimed`: router/controller가 실행권을 잡은 상태일 뿐 worker 수신 확인이 아니다. 담당 actor가
+  정체·범위·금지·완료조건을 확인해 `acknowledged`한 뒤에만 `in_progress`로 간다.
+- `controller_review`: 내부 관제 단계이며 mail event 이름이 아니다. controller만 검수 뒤
+  `verified`, `closed`를 순서대로 기록한다.
+- `verified/closed`: runtime lease를 반납하고 바로 다음 eligible 카드를 고른다.
+- `submitted`: worker terminal일 뿐 카드 완료가 아니다. controller 검수 전에는 `done`으로 넘기지 않는다.
+- `technical_failure`: 실패 fingerprint와 attempt를 기록한다. 같은 fingerprint가 두 번이면 그 카드만
+  보류하고 다음 독립 safe 카드를 고른다.
+- `decision_required`: exact 질문 하나를 남기고 멈춘다.
+- `quota_exhausted`: 실제 429/usage-limit가 난 pool만 막고 다른 pool의 eligible 카드는 계속한다.
+  모든 eligible 카드가 같은 막힌 pool을 요구할 때만 전체 실행을 멈춘다.
+- `global_blocker`: actor registry·queue Git commit·event chain·controller lease의 무결성을 확인할 수
+  없을 때 fail closed한다. 단일 카드의 테스트 실패나 도구 오류는 global blocker가 아니다.
+
+예약 중복은 Task Scheduler `IgnoreNew`와 runtime controller lease로 막고, repo별 의미 변경 writer는
+1개만 허용한다. Arca 수집은 이 로컬 lease로 대체하지 않고 기존 AWS device lease와 lifecycle gate를
+추가로 통과한다. 과거 대화의 승인 질문이나 승인보드 `accepted`는 재개 근거가 아니다. 결정 대기는
+현재 queue commit, 카드 ID, attempt, input commit이 모두 일치할 때만 유효하며 하나라도 달라지면
+`stale`로 무시한다. 자동 worker는 `approval=never`로 실행하고, 권한·sandbox 실패는 사용자 승인
+질문이 아니라 `technical_failure`로 분류한다.
+
+### 상태·quota 사실성 규칙
+
+- 로그인, lease, 서비스, quota 판정에는 15분 TTL을 적용한다. 그보다 오래된 값은 `unknown`이며
+  실행 직전 해당 경로만 다시 확인한다.
+- AWS Claude client가 쓰는 Z.AI pool, Windows Codex pool, 로컬 ZCode pool은 별개다. 한 pool의
+  429로 다른 pool을 중지하지 않는다.
+- provider가 남은 비율·reset 시각을 주지 않으면 추정하지 않는다. live probe는 그 호출의 성공과
+  실제 사용량만 증명한다.
+- Codex는 설계·통합·controller review, 로컬 ZCode는 frozen deterministic 분석, AWS scenario/RPG는
+  장기 아이디어·프로젝트별 독립 업무에 우선 배정한다. trader는 director가 해제할 때까지 배정하지 않는다.
+- Git이 정본이며 Notion·웹·Telegram은 그 정본의 읽기·결정·알림 화면이다. 화면에만 존재하는
+  결정이나 완료 상태는 인정하지 않는다.
 
 ## factory-steward 한 회 실행 계약
 

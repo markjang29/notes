@@ -15,7 +15,7 @@ last_reviewed: 2026-07-16
 | KPI | 2026-07-16 현재 | 통과 기준 |
 |---|---|---|
 | Arca 일일 수집 | terminal `0/1`; 설정값 35와 실제 처리량 사이에 큰 간극 | 우선 오늘 1건 terminal, 이후 warm-path 3건 계측으로 일일 목표 재산정 |
-| ZCode 실제 배정 | 성공 `0건`; live probe HTTP 429 | quota 복구 뒤 frozen read-only packet 1건 ACK·RESULT·Codex 검수 |
+| ZCode 실제 배정 | 실제 작업 성공 `0건`; 08:45 live probe 정상(2,618 tokens), 08:52 frozen packet은 snapshot 절대경로 탐지에서 모델 호출 전 차단(사용량 0) | `ZC-02b` 검수로 오탐을 먼저 닫고 frozen read-only packet 1건 ACK·RESULT·Codex 검수; 잔여 quota는 추정 금지 |
 | 예약 실행 | 일일 task 활성, sync task 비활성; 최근 자동 완결 증거 없음 | `AUTO-01` 재실행 receipt 또는 exact blocker |
 | 단건 소요시간 | 단계별 계측 없음 | `OPS-01`~`OPS-05`로 실제·대기·LLM 시간 분리 |
 | Matrix↔RISU 연속성 | C0 설계만 완료; 구현·benchmark 증거 없음 | C1 usage recipes 뒤 8개 continuity gate 측정 |
@@ -45,6 +45,30 @@ last_reviewed: 2026-07-16
 
 상태: `queued / in_progress / review / done / deferred / blocked`
 
+## 2026-07-16 관제 배치 — 08:39 KST
+
+오늘의 운영 목표는 `설명`이 아니라 **Arca terminal 1건 + 자동 연속 실행 기반 확보**다.
+메인 대화의 `windows-codex`는 관제·사용자 응답을 유지하고 아래 실행선을 별도 worker에 배정한다.
+
+| 시간대 | 실행선 | 담당 | 상태 | 오늘 완료조건 |
+|---|---|---|---|---|
+| 08:39~terminal | `ARCA-DAY-01` | 내부 실행 worker / `windows-codex` 검수 | in_progress | `176786718` AWS 결과 회수·보정, lifecycle exit 0, tests, scoped commit·push, lease release |
+| 08:39~09:30 | `LOGIN-01` 독립 검수 | 내부 read-only reviewer | in_progress | worker commit의 보안·이식성·테스트 증거 판정과 merge 전제 제출; Arca writer 종료 전 write 금지 |
+| 08:39~10:00 | `AUTO-CTRL-01` 구현 입력 | 내부 read-only designer | in_progress | terminal→다음 카드 state machine, 정지 gate, 파일·테스트·rollback의 0.5~2시간 구현 packet |
+| Arca terminal 직후 | `LOGIN-01` 통합 | `windows-codex` 단일 writer | queued | 검수 통과분만 authoritative main에 통합·설치·재현 receipt |
+| LOGIN-01 뒤 | `AUTO-CTRL-01` 구현 | 별도 Codex worker / controller review | queued | 안전 카드 자동 연속 실행과 decision/quota/global blocker 정지 테스트 |
+| 오후 1차 | `AUTO-01` | 별도 Codex worker | queued | 재부팅 후 control service·sync·일일 예약 실제 재실행 receipt |
+| 오후 2차 | `OPS-01`~`OPS-02` | 별도 Codex worker | queued | stage event schema·writer·중복 실패 차단의 최소 vertical slice |
+
+관제 체크포인트는 09:00, 09:30 및 각 terminal 직후다. 한 실행선이 기술 실패를 두 번 반복하면
+그 카드만 보류하고 다른 독립 safe 카드로 이동한다. `aws-trader`는 director hold다. 로컬 ZCode는
+08:45 live bridge probe가 정상 통과했지만, 08:52 frozen schema-review packet은 입력 snapshot의
+절대경로 탐지에서 모델 호출 전에 차단됐다. 같은 packet을 반복하지 않고 `ZC-02b` controller 검수로
+오탐을 먼저 닫는다. 이 실패는 429나 ZCode 결과가 아니며 추가 사용량은 0이다. AWS actor의 Z.AI
+429와 로컬 ZCode 상태를 합치지 않고, 한 번의 probe로 잔여 5시간 quota도 추정하지 않는다. 오늘
+첫 Arca가 terminal이고 controller가 정상일 때만 두 번째 수집의 preflight를 검토하며, 열린 단위를
+추가로 만들지는 않는다.
+
 ## 0. 자율 실행 인프라
 
 | ID | 작은 작업 | 상태 | 완료조건 |
@@ -72,7 +96,7 @@ last_reviewed: 2026-07-16
 | 3 | AUTO-01 | 재부팅 후 설정 서비스·sync·예약을 복구해 하루 0건 재발 방지 | controller 계약 고정 뒤 |
 | 4 | OPS-01→OPS-05 | 같은 시행착오와 장시간 무응답을 시간·실패 fingerprint로 차단 | AUTO-01 receipt 뒤 |
 | 5 | LEG-01→LEG-06 | 레거시 분류와 신규/레거시 균형을 실제 terminal pilot로 검증 | 계측 최소 계약 뒤 |
-| 6 | ZC-02b 검수→ZC-02c | Codex 제출물 검수 후, 429가 풀리면 실제 ZCode packet 1건 실행 | bridge 단일 probe 성공 뒤 |
+| 6 | ZC-02b 검수→ZC-02c | Codex 제출물 검수 후 실제 ZCode packet 1건 실행 | 08:52 frozen packet snapshot 오탐 재현; `ZC-02b` 검수·통합 뒤 |
 | 7 | PY-01→PY-06 | 새 노트북에서도 같은 실행 구조가 돌도록 표준화 | 수집 warm path를 깨지 않는 범위 |
 | 8 | MX-01→MX-08 | RISU-like 연속성, Genome, 멀티버스 코어를 증거 기반으로 개발 | reviewed 수집 recipe 확보 뒤 |
 | 9 | RPG-01→RPG-08 | Matrix 코어를 사용하는 RPG Maker형 Studio 구성 | Matrix 최소 schema/replay 뒤 |
