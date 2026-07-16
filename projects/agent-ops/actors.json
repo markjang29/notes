@@ -1,7 +1,7 @@
 {
   "schema": "agent-registry-v1",
-  "version": 5,
-  "updated_at": "2026-07-16T08:24:00+09:00",
+  "version": 6,
+  "updated_at": "2026-07-16T10:36:50+09:00",
   "authority": "notes/projects/agent-ops/actors.json",
   "actors": [
     {
@@ -154,9 +154,12 @@
       "required_refs": ["notes:principles/git-first-project-truth.md", "notes:projects/agent-ops/README.md", "scenario:AGENTS.md"],
       "capabilities": [
         "issue_mail", "controller_review", "local_tools", "git_integration", "user_dialogue",
-        "candidate_review"
+        "candidate_review", "thread_orchestration", "checkpoint_recovery"
       ],
-      "forbidden": ["silent_long_wait", "unreviewed_worker_join", "credential_in_git"],
+      "forbidden": [
+        "silent_long_wait", "unreviewed_worker_join", "credential_in_git",
+        "main_thread_long_execution", "untracked_worker"
+      ],
       "identity_status": "current_session_verified",
       "ack_status": "acknowledged"
     },

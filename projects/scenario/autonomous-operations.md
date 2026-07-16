@@ -10,8 +10,8 @@ controller: windows-codex
 ## 목적
 
 사용자가 대화 창에 새 지시를 쓰지 않아도, 이미 승인된 제품 방향 안의 안전한 작업은 작은
-단위로 계속 진행한다. 메인 대화는 관제와 의사결정 창구로 남기고, 구현·검사 작업은 별도
-task 또는 예약 worker가 수행한다.
+단위로 계속 진행한다. 메인 대화는 director 대화, 우선순위, 분해·배정, 관제, controller 검수와
+close만 담당한다. 구현·수집 작업은 별도 task 또는 예약 worker가 수행한다.
 
 자율 운영은 토큰을 소진하기 위한 장치가 아니다. Git에 등록된 가치 있는 작업을 우선순위대로
 진행하고, 더 할 안전한 일이 없거나 결정 gate에 닿으면 no-op/blocked receipt를 남긴다.
@@ -44,6 +44,12 @@ reviewed, usable, deployed 상태를 주장하지 않는다.
 원칙적으로 사용자 판단 사유가 아니다. 승인된 범위 안에서 진단·수정·재검증을 계속한다.
 
 ## 실행 구조
+
+30분 이상 걸릴 것으로 보이거나 독립 commit·문서·분석 보고서가 생기는 작업은 사용자에게
+보이는 별도 Codex task로 만든다. 짧은 읽기 전용 검사와 결정적 검증만 bounded subagent 또는
+ZCode에 맡길 수 있으며, 이 경우에도 메인 화면에 `owner`, `state`, `deadline`,
+`last_evidence`, `next_action`을 투영한다. 내부 실행 여부와 관계없이 메인 task의
+`windows-codex`가 controller 책임을 유지한다.
 
 | lane | 실행자/토큰 풀 | 주기 | 역할 |
 |---|---|---|---|
@@ -81,22 +87,25 @@ reviewed, usable, deployed 상태를 주장하지 않는다.
 
 아직 발생하지 않은 시각은 `null`이고, `estimated_finish_at`은 근거가 생기기 전에는 추정하지 않고
 `null`로 둔다. 재시작 뒤 경과시간은 wall clock 차감이 아니라 마지막 durable event까지 누적된
-값에서 이어 간다. `in_progress`인데 `last_evidence_at` 이후 20분이 지나면 카드 상태를 임의로
-바꾸지 않고 `health=stalled`를 파생 판정한다. 이후 30분 안에 우회·재배정·명시적 blocker 중
-하나를 선택한다.
+값에서 이어 간다. ACK는 완료 증거가 아니라 SLA 시작점이다. 담당 actor의 `acknowledged` 뒤
+실행 시작 시각부터 10분 안에 first evidence가 없으면 deadline miss를 기록하고, 20분까지 새
+durable evidence가 없으면 카드 상태를 임의로 바꾸지 않은 채 `health=stalled`를 파생 판정한다.
+30분까지 회복되지 않으면 controller가 기존 writer를 fence하고 checkpoint부터 `auto_reroute`한다.
 
 ## 관제자 운영 루프
 
 `windows-codex`의 첫 번째 책임은 개별 기술 문제를 오래 붙잡는 것이 아니라 전체 목표를 계속
-움직이는 것이다. 메인 대화는 사용자 응답·우선순위·배정·검수 상태를 다루는 관제 전용 창구로
-유지하고, 긴 구현·수집·검수와 의미 변경 writer는 별도 worker에 맡긴다.
+움직이는 것이다. 메인 대화는 director 대화·우선순위·분해·배정·모니터·controller 검수·close를
+다루는 관제 전용 창구로 유지한다. 30분 이상 또는 독립 산출물이 있는 구현·수집은 사용자에게
+보이는 별도 Codex task에 맡긴다.
 
 1. 매일 08:30 KST 또는 당일 첫 활성 시점에 전일 terminal 결과, hold, 실제 인증·quota 상태,
    오늘의 결과 목표 최대 3개, 담당자, 완료조건, 예상 완료시각, 다음 checkpoint를 먼저 발표한다.
 2. 전체 WIP는 최대 3개, repo별 의미 변경 writer는 1개다. 새 질문은 큐에 보존하되 현재 WIP를
    몰래 교체하지 않는다.
-3. 실행 시작 10분 안에 첫 증거를 만든다. 20분 동안 새 증거가 없으면 `stalled`로 판정하고,
-   30분 안에 우회·재배정·명시적 blocker 중 하나를 선택한다. 같은 실패를 두 번 반복하지 않는다.
+3. ACK/실행 시작은 SLA 시작점이다. 10분 안에 첫 증거를 만들고, 시작점부터 20분까지 새
+   durable evidence가 없으면 `stalled`, 30분까지 회복되지 않으면 `auto_reroute`한다. 같은
+   실패를 두 번 반복하지 않는다.
 4. 작업 중에는 10분 checkpoint 또는 terminal 직후에 `현재 시각 / 경과 / 새 증거 / 다음 행동 /
    예상 완료 / 사용자 행동 필요 여부`를 짧게 보고한다.
 5. 사용자의 결정이 필요한 카드만 멈춘다. 로그인·비밀·새 비용·권한 확대·비가역 변경·제품
@@ -105,6 +114,8 @@ reviewed, usable, deployed 상태를 주장하지 않는다.
    `claimed`, Telegram 전달, 승인보드 accepted는 완료 증거가 아니다.
 7. 새 세션이나 재부팅 뒤에는 Git 작업 보드, actor registry, open mail의 마지막 durable event를
    먼저 읽고 이어서 실행한다. 대화 기억만으로 상태나 담당을 재구성하지 않는다.
+8. 모든 별도 task와 bounded worker packet에는 논리 repo, full input commit, exact read/write
+   scope, done criteria, approval policy, stable idempotency key와 attempt를 둔다.
 
 ### 자동 controller 상태 전이
 
@@ -125,6 +136,9 @@ idle -> selecting -> claimed -> acknowledged -> in_progress -> submitted
 - `decision_required`: exact 질문 하나를 남기고 멈춘다.
 - `quota_exhausted`: 실제 429/usage-limit가 난 pool만 막고 다른 pool의 eligible 카드는 계속한다.
   모든 eligible 카드가 같은 막힌 pool을 요구할 때만 전체 실행을 멈춘다.
+- `capacity/session/route/thread/quota failure`: checkpoint의 input commit/ref, last evidence,
+  idempotency, attempt, writer lease/fence와 next action을 보존한다. 이전 writer를 종료하거나
+  fence한 뒤 capability-compatible route에서 재개하며, 같은 작업을 새 key로 중복 실행하지 않는다.
 - `global_blocker`: actor registry·queue Git commit·event chain·controller lease의 무결성을 확인할 수
   없을 때 fail closed한다. 단일 카드의 테스트 실패나 도구 오류는 global blocker가 아니다.
 

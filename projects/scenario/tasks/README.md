@@ -29,7 +29,12 @@ last_reviewed: 2026-07-16
 ## 운영 규칙
 
 - WIP는 lane별 1개, 전체 최대 3개다. 같은 repo의 의미 변경 writer는 항상 1개만 둔다.
-- 메인 대화는 사용자 창구와 controller로 남기고, 실행·검수는 별도 task가 맡는다.
+- 메인 대화는 director 대화·우선순위·분해·배정·모니터·controller 검수·close만 맡는다.
+- 30분 이상 또는 독립 산출물이 있는 실행은 사용자에게 보이는 별도 Codex task가 맡는다.
+- 짧은 읽기 전용 검사는 bounded subagent/ZCode를 쓸 수 있지만 메인 화면에
+  `owner/state/deadline/last_evidence/next_action`을 투영한다.
+- 모든 별도 task/packet은 exact repo, full input commit, read/write scope, done criteria,
+  approval policy, stable idempotency key와 attempt를 가진다.
 - 한 카드는 0.5~2 인일 안에 검증 가능한 결과를 만든다.
 - 구현 전 입력·완료조건·rollback을 적고, 완료 후 증거와 소요시간을 기록한다.
 - ZCode는 먼저 작은 read-only 패킷으로 통과한 작업 유형에만 사용한다.
@@ -194,10 +199,12 @@ target/terminal, active workers, verified outputs, decision queue와 각 task의
 
 | ID | 상태 | owner | SLA / 완료조건 |
 |---|---|---|---|
-| AUTO-ROUTE-01 | queued (DCON projection 계약 확정) | `windows-codex` controller; 실행은 capability-compatible fallback worker | ACK 2분, first evidence 10분, 20분 무증거=`stalled`, 30분=`auto_reroute`; durable checkpoint/input commit/idempotency를 보존하고 duplicate writer 없이 resume; 동일 fingerprint 2회면 route 변경 또는 park 뒤 다른 safe lane 계속 |
+| AUTO-ROUTE-01 | queued (DCON projection 계약 확정) | `windows-codex` controller; 실행은 capability-compatible fallback worker | ACK는 SLA 시작점; first evidence 10분, 시작점부터 20분 무증거=`stalled`, 30분=`auto_reroute`; durable checkpoint/input commit/idempotency를 보존하고 duplicate writer 없이 resume; 동일 fingerprint 2회면 route 변경 또는 park 뒤 다른 safe lane 계속 |
 
 - 모델 capacity, session crash, route missing, thread slot, quota 오류는 controller 내부 incident다.
   가능한 route가 남아 있는 동안 director blocker나 `action_required`로 올리지 않는다.
+- 해당 오류는 checkpoint의 exact repo/input commit/scope/done criteria/idempotency와 last evidence를
+  보존한 채 자동 재개한다. 재배정 전에 이전 writer를 종료하거나 fence해 중복 writer를 막는다.
 - checkpoint에는 job ID, immutable input commit/ref, last durable evidence, idempotency key, writer
   lease/fencing token과 재개 가능한 next action을 남긴다. fallback은 기존 lease가 종료되거나 fence된 뒤에만 쓴다.
 - Director Console 기본 UI는 `owner`, `current_route`, `last_evidence`, `next_retry`, `ETA`만 표시한다.
