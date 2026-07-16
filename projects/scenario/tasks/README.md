@@ -87,6 +87,88 @@ last_reviewed: 2026-07-16
 실행 직전 protected target을 다시 검증한다. 일반 시간당 `factory-steward`는
 `AUTO-CTRL-01`이 검증될 때까지 일시정지한다.
 
+## P0 투영 복구 카드
+
+| ID | 작업 | 상태 | 담당 | 완료조건 |
+|---|---|---|---|---|
+| BOARD-ARCA-01 | usable 검증본을 승인 후보 보드에 전문·당일 증거와 함께 투영 | review (원인·계획, 구현/배포 전) | 별도 Codex task / `windows-codex` controller review | post `176786718`, asset `jpg_characterai_176786718_mirka`, request `req-20260716084811-b48d34`, result commit `11374f5f709f62bda17e937d75fbc537adc3a706`, terminal commit `f6143041fd630d6677d6acef4013c2739e3f641d`, deliverable `deliverables/2026-07-14-post176786718-availability.md`를 한 projection으로 결합; 전문 표시; 기존 pending 후보와 중복 없는 backfill; API/UI/재실행 테스트 |
+
+### BOARD-ARCA-01 검토 근거와 구현 경계
+
+- `requests.json`의 usable 자동화 레인과 `decisions.json`의 아이디어 승인 레인은 분리돼 있고,
+  현재 `tools/availability_post_publish.py`는 전자만 PATCH한다. 후자의 usable 부산물 등록은
+  `docs/scenario-idea-keep-workflow.md`에도 아직 수동/향후 자동화로 적혀 있다.
+- 오늘 요청은 `completed`지만 기존 Mirka 승인 후보는 2026-07-15 복구 카드뿐이다. 그 카드의
+  `script`는 318자 발췌이고, 검증 정본은 위 exact commit의 411줄 deliverable이다.
+- `/requests` 전문 URL은 구조화된 `deliverable` ref가 아니라 `created_at` 날짜와 제목/본문의
+  첫 숫자를 조합한다. 따라서 오늘 요청은 존재하지 않는
+  `2026-07-16-post176786718-availability.html`을 찾고, 실제 2026-07-14 전문을 연결하지 못한다.
+- 현 deliverable parser는 Mirka 문서에서 `asset_id=ingest`, 정정 request ID만 오인 추출하고
+  verdict/result/input commit을 회수하지 못한다. 제목·날짜·자유문 regex를 투영 계약으로 쓰지 않는다.
+- 구현은 `repo_id`, full `result_commit`, full `terminal_commit`, exact repo-relative
+  `deliverable_ref`, `request_id`, `source_post_id`, `asset_id`, verdict와 terminal day를 필수로 받는
+  구조화 projection을 추가한다. 같은 projection key 재실행은 no-op이며, 같은 pending 후보의 새
+  terminal 증거는 history에 결합한다. 이미 결정된 카드의 내용이 달라지면 기존 결정을 덮지 않고
+  명시적 revision 후보를 만든다.
+- 전문은 exact commit/path에서 읽고 commit 존재·경로 allowlist·내용 hash를 검증한다. 승인보드의
+  `accepted`나 짧은 `result` 문자열은 completion/provenance가 아니다. backfill은 dry-run diff,
+  1회 apply, 2회차 no-op, 후보 수 불변, 전문 hash 일치, 실제 인증 API와 모바일 UI 확인까지 통과해야 한다.
+- live approval-board는 현재 dirty tree이고 remote가 없다. controller가 정본 repo/remote와 현재
+  dirty 변경의 소유권을 먼저 정한 뒤에만 코드 수정·backfill·service restart를 허용한다.
+
+### 연결 카드 — Director Console 작업판·quota telemetry
+
+`DCON-WORKBOARD-01`은 현재 대화 작업판과 같은 필드를 Git/mail 근거에서 투영한다. 공식 Arca
+target/terminal, active workers, verified outputs, decision queue와 각 task의
+`id/title/owner/state/verified_steps/deadline/last_evidence/next_action/blocker`를 표시하고,
+`today/7d/30d/90d` horizon을 둔다. work order/event/receipt와 full commit/exact ref가 없는 값은
+`unknown` 또는 `stale`로 표시하며 임의 진척 퍼센트를 만들지 않는다. 10분마다 machine truth를
+재투영하되 source event 시각과 stale 상태를 함께 보인다.
+
+`DCON-QUOTA-01`은 작업 진행률과 분리된 provider pool telemetry다. 2026-07-16 09:40 KST
+사용자 screenshot 관측값은 아래와 같으며, 자동 수집 증거가 생기기 전에는 live 값으로 부르지 않는다.
+
+| pool | 관측값 | source / freshness |
+|---|---|---|
+| `openai.codex.weekly` | 42% remaining | user screenshot, observed 09:40 KST |
+| `openai.codex.spark` | 100% remaining | user screenshot, observed 09:40 KST |
+| `zai.glm.5h` | 8% used | user screenshot, observed 09:40 KST; provider 화면 약 10분 지연 표기 |
+| `zai.glm.weekly` | 89% used; reset 2026-07-18 19:15 KST | user screenshot, observed 09:40 KST; provider 화면 약 10분 지연 표기 |
+| `zai.web.monthly` | 38% used | user screenshot, observed 09:40 KST; provider 화면 약 10분 지연 표기 |
+
+- OpenAI는 공식 Codex app-server의 `account/rateLimits/read`와
+  `rateLimitsByLimitId`를 사용해 provider가 반환한 bucket만 분리 수집한다.
+  `account/usage/read` 활동량과 plan quota를 섞지 않는다.
+- Z.AI는 공식 `glm-plan-usage` plugin의 1회 query 경로만 후보로 삼는다. controller 환경에서
+  machine-readable quota가 재현되기 전에는 scheduled 지원으로 승격하지 않고
+  `unsupported`와 마지막 관측값을 유지한다. UI scraping, cookie 저장, 비공식 endpoint 재구현은 금지한다.
+- 공급자 사용량 조회는 하루 최대 2회, 08:30 KST와 20:30 KST만 실행한다. runtime `429`는 즉시
+  해당 pool event로 기록하되 account usage endpoint/UI를 추가 poll하지 않는다.
+- 각 pool은 `source`, `observed_at`, `stale`, `next_check`, provider reset을 표시한다. 다음 예약
+  조회가 실패하면 이전 값을 그대로 live처럼 보이지 않고 stale로 전환하며 사용자에게 screenshot을
+  반복 요청하지 않는다. provider가 주지 않은 remaining 값은 추정하지 않는다.
+
+읽기 전용 검토 기준의 후속 구현 명세는 다음으로 고정한다.
+
+- schema: `usable-projection-v1`(source/result/terminal/deliverable/idempotency),
+  `director-snapshot-v1`(Arca/worker/output/decision/task/horizon),
+  `quota-observation-v1`(pool/value/source/observed/stale/next-check/reset).
+- approval-board routes: `POST /api/projections/usable`,
+  `GET /api/candidates/{candidate_id}/artifact`, `GET /api/director-snapshot`, `GET /director`.
+  기존 `GET /api/requests`, `GET /api/decisions`, `/`, `/requests`는 호환 유지한다.
+- approval-board files: `main.py`, `models.py`, `projection_store.py`, `director_snapshot.py`,
+  `quota_collectors.py`, `templates/index.html`, `templates/director.html`,
+  `tools/backfill_usable_candidates.py`, `tests/test_usable_projection.py`,
+  `tests/test_director_snapshot.py`, `tests/test_quota_collectors.py`, `README.md`.
+- scenario files: `tools/project_usable_candidate.py`, `tools/availability_post_publish.py`,
+  `.github/workflows/project-usable-candidate.yml`, `tests/test_project_usable_candidate.py`,
+  `docs/scenario-idea-keep-workflow.md`. terminal commit push 뒤 projector를 호출하고 workflow replay는
+  같은 idempotency key로 no-op이어야 한다.
+- 필수 tests: malformed/short SHA·경로 탈출·non-usable·미종결 거부, pending upsert/decided revision,
+  동일 payload 2회 no-op, concurrent atomic write, 전문 commit/path/hash 일치, 오늘 Mirka backfill
+  golden fixture, authenticated API/UI, 10분 stale, horizon 분류, provider pool 분리, 429 no-extra-poll,
+  08:30/20:30 외 조회 금지, credential/log redaction.
+
 ## 다음 실행 순서
 
 | 순서 | ID | 이유 | 시작 조건 |
