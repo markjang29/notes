@@ -169,11 +169,50 @@ target/terminal, active workers, verified outputs, decision queue와 각 task의
   golden fixture, authenticated API/UI, 10분 stale, horizon 분류, provider pool 분리, 429 no-extra-poll,
   08:30/20:30 외 조회 금지, credential/log redaction.
 
+### OPS-RECUR-01 — 누락·결함 close gate
+
+`BOARD-ARCA-01`부터 결함이나 누락은 아래 증거 묶음이 모두 controller 검증을 통과하기 전에는
+`closed`로 전환하지 않는다. worker의 `submitted`, 승인보드의 `accepted`, 한 번의 성공 응답은
+종결 증거가 아니다.
+
+| 필수 근거 | BOARD usable 누락에 적용할 최소 증거 |
+|---|---|
+| incident evidence | 요청·후보·전문 API/UI의 누락을 같은 관측시각과 exact ID로 재현 |
+| impact inventory | 영향받은 요청·후보·artifact·화면·자동화 실행 목록과 영향/비영향 경계 |
+| idempotent backfill | dry-run diff → 1회 apply → 2회차 no-op → 후보 수·전문 hash 검증 |
+| root cause / invariant | requests/decisions 분리와 날짜·제목 regex 원인을 기록하고 structured exact-ref만 허용 |
+| automated guard | projection schema, commit/path allowlist, atomic upsert, 중복·결정불변성 검사 |
+| deterministic regression | Mirka golden fixture로 API·모바일 UI·전문 hash를 반복 재현 |
+| monitoring / reconciliation | 10분 projection reconciliation에서 terminal usable과 후보/전문 불일치를 경보 |
+| owner / deadline | implementer, controller, 제출 시각, controller 검증 시각을 분리 기록 |
+| controller verification | exact commit에서 독립 테스트·실화면 확인 후에만 verified/closed event 기록 |
+
+전 프로젝트 공통 close-gate 정착은 `OPS-RECUR-01` 후속 카드로 유지한다. 이 규칙은 현재 웹 MVP의
+순서를 밀어내지 않지만, 해당 MVP의 task serializer와 audit drilldown이 위 필드를 잃지 않아야 한다.
+
+### AUTO-ROUTE-01 — worker failure 무인 복구
+
+| ID | 상태 | owner | SLA / 완료조건 |
+|---|---|---|---|
+| AUTO-ROUTE-01 | queued (DCON projection 계약 확정) | `windows-codex` controller; 실행은 capability-compatible fallback worker | ACK 2분, first evidence 10분, 20분 무증거=`stalled`, 30분=`auto_reroute`; durable checkpoint/input commit/idempotency를 보존하고 duplicate writer 없이 resume; 동일 fingerprint 2회면 route 변경 또는 park 뒤 다른 safe lane 계속 |
+
+- 모델 capacity, session crash, route missing, thread slot, quota 오류는 controller 내부 incident다.
+  가능한 route가 남아 있는 동안 director blocker나 `action_required`로 올리지 않는다.
+- checkpoint에는 job ID, immutable input commit/ref, last durable evidence, idempotency key, writer
+  lease/fencing token과 재개 가능한 next action을 남긴다. fallback은 기존 lease가 종료되거나 fence된 뒤에만 쓴다.
+- Director Console 기본 UI는 `owner`, `current_route`, `last_evidence`, `next_retry`, `ETA`만 표시한다.
+  fingerprint, crash/capacity/session 상세는 권한 있는 audit drilldown에만 남긴다.
+- 모든 capability-compatible route가 소진됐거나 사용자 의미 결정을 요구하는 gate일 때만
+  `action_required`를 만든다. route 변경 중에도 독립적인 safe lane은 계속 진행한다.
+- 결정적 회귀는 crash-before-ACK, crash-after-checkpoint, duplicate resume, 동일 fingerprint 2회,
+  route exhaustion을 가상 시계로 재현하고, 단일 terminal output·중복 writer 0·SLA 전이·audit redaction을 검증한다.
+
 ## 다음 실행 순서
 
 | 순서 | ID | 이유 | 시작 조건 |
 |---|---|---|---|
 | 1 | LOGIN-01 | 방금 제출된 QR 개선을 worker 완료 주장과 분리해 검수·설치 | `ARCA-DAY-01` terminal 또는 독립 read-only 검수 가능 시 |
+| 병행 P0 | AUTO-ROUTE-01 | worker failure를 director 개입 없이 checkpoint부터 안전 재개 | DCON read-model 계약과 writer fencing 불변식 확정 뒤 |
 | 2 | AUTO-CTRL-01 | 사용자가 다시 말하지 않아도 목표 큐를 이어 가기 | LOGIN-01 review 뒤 |
 | 3 | AUTO-01 | 재부팅 후 설정 서비스·sync·예약을 복구해 하루 0건 재발 방지 | controller 계약 고정 뒤 |
 | 4 | OPS-01→OPS-05 | 같은 시행착오와 장시간 무응답을 시간·실패 fingerprint로 차단 | AUTO-01 receipt 뒤 |
