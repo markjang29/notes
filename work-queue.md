@@ -17,6 +17,13 @@ Scenario의 질문·방향·우선순위는
 `projects/scenario/README.md`와 `projects/scenario/roadmap.md`를 우선한다.
 실행 상태는 scenario repo의 `catalog/asset_lifecycle.ndjson`을 직접 확인한다.
 
+## 매니저 크론/알람 원칙 (07-12 사고 반영)
+
+★ 타 봇 key + 그룹 chat(`--chat -N`)으로 cron 예약을 등록할 때는 **`--once` 단발만 허용, recurring(반복 cron) 금지**. recurring이 정말 필요하면 매니저 본인 key + 라우터(`scripts/request_router_poll.py`) 경유만.
+
+- 사유: (i) recurring은 빈 폴링이라도 매 틱 LLM 토큰을 태운다; (ii) **07-04 결함 회귀** — 타 봇 key recurring은 no-op·자기송신 결함으로 진단·fix된 바 있다(`decisions/2026-07-04-manager-cron-key-fix.md`); (iii) 대상 봇이 그룹에서 추방/휴면이면 placeholder 송신이 실패하고, cokacdir 5초 스케줄러 틱이 `last_run` 갱신을 생략해 due 잔존 → **5초 간격 재발사 폭발**(07-12 220회 Forbidden 사고).
+- 예외: 팀장 봇을 한 번 깨워 세션 기동시키는 용도는 `--once` 단발로 허용(`projects/scenario/docs/aws-request-bridge.md` 준수 — 세션 기동 확인 후 보고).
+
 ## 이사님 결정 — scenario repo freeze (07-12 KST, 이사님 직접)
 
 ★ 이사님 직접 확인(07-12): **scenario repo 리뉴얼(갈아엎기) 전까지 일체 수정 금지(freeze)**. 리뉴얼 룰 통보 시 새 룰 따름. 상세 · 크론 백업 → `decisions/2026-07-12-scenario-repo-freeze.md`.

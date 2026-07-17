@@ -27,6 +27,8 @@ key 매핑:
 - `c5bb2c97036d3741` → `heav_lnx_rpg_bot` — RPG 팀장
 - `c6a54f44dab7dfe7` → `heav_lnx_scenario_bot` — 시나리오 팀장
 - `e802e57aacbe8f8b` → `heav_lnx_trader_bot` — trader 팀장
+- `35f990a62d4c4f51` → `heav_lnx_codex_dev_1_bot` — Codex 개발 1
+- `6aaabd2328f22b4d` → `heav_lnx_codex_dev_2_bot` — Codex 개발 2
 
 정체 미확정 시 결정·발판·보고 금지. "정체 확인 중"으로만 응답한다.
 
@@ -102,4 +104,3 @@ key 매핑:
 - 충분한 정보가 있으면 행동.
 - 진짜 모호할 때만 묻는다.
 - 의도 왜곡/국소 처리 감지 시 목표 재진술 → 원안/변경점 분리 → 진행 중단 또는 확인.
-
