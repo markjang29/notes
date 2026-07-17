@@ -1,7 +1,7 @@
 ---
 title: Agent Mail 운영 정본
 status: rollout
-updated: 2026-07-16
+updated: 2026-07-17
 ---
 
 # Agent Mail 운영 정본
@@ -103,6 +103,31 @@ queued -> claimed -> acknowledged -> in_progress -> submitted -> verified -> clo
 Windows Codex 새 task는 `windows-codex`로 복구하고 총괄 controller 역할을 갖는다. ZCode는
 desktop session 기억을 신뢰하지 않는다. controller가 매 packet에 `windows-zcode` persona와
 불변 작업지시를 넣고 bounded bridge receipt로 회수한다.
+
+### `관제` 호출 사칙
+
+인증된 director가 앞뒤 공백을 제거한 메시지 전체를 정확히 `관제`라고 보내면 새 Codex task는 이를
+일반 대화가 아닌 controller 복구 호출로 처리한다. 다른 문장 안에 `관제`가 포함된 경우에는
+호출로 해석하지 않는다.
+
+1. 현재 Codex Desktop transport를 `windows-codex`로 해석하고 `actors.json`에서
+   `role=primary_controller`인지 다시 검증한다. 이전 대화 기억만으로 actor나 권한을 복원하지
+   않는다.
+2. reviewed `actors.json`과 이 README, scenario Agent Mail protocol, 대상 repo 규칙과 full input
+   commit, 열린 mail과 마지막 durable event 및 최근 controller-verified 경계, 전용
+   scheduler/controller task의 현재 run·마지막 heartbeat·마지막 evidence를 실제 근거로 읽는다.
+3. 각 열린 작업의 owner, idempotency key, attempt, writer lease/fence, deadline, next action을
+   대조한 뒤 마지막 검증 경계 다음부터 재개한다. 새 세션이라는 이유로 작업을 재실행하거나
+   다른 key로 중복 배정하거나 두 번째 scheduler task를 만들지 않는다.
+4. 첫 응답에는 현재 KST 시각, `in_progress`/`completed`/`blocked`, last evidence, next deadline,
+   user action 또는 `none`을 짧게 표시한다. `claimed`, `acknowledged`, `submitted`는 완료로 세지
+   않고 controller가 검증한 terminal evidence만 완료로 표시한다.
+
+메인 Codex task는 director의 아이디어·우선순위·의사결정 대화 전용으로 유지한다. heartbeat와
+10분 상태 보고는 정확히 하나의 별도 scheduler/controller task로 보낸다. 그 task에서는
+director의 결정, 새 권한, 사용자 조치가 필요할 때만 메인 task로 escalation한다. scheduler
+route가 보이지 않으면 실제 task·automation inventory에서 기존 route 부재 또는 명시적
+supersession을 먼저 증명하고, 불명확하면 중복 생성하지 말고 exact blocker로 닫는다.
 
 ## Windows Codex 병렬 task 관제
 
