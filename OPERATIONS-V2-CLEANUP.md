@@ -187,6 +187,7 @@ decisions/                프로젝트 간 살아 있는 결정만
 - `pre-ops-v2-head-20260727`: 정리 전 clean `HEAD` 보호 태그
 - `pre-ops-v2-working-20260727`: 기존 사용자 변경과 승인된 v2 초안을 담은 별도 synthetic commit 보호 태그
 - 검증된 로컬 Git bundle: 두 태그와 전체 도달 이력을 포함하며 Notes 작업트리 밖에 보존
+- `codex/ops-v2-prep`: v2 준비 파일만 담은 원격 공유 브랜치. 기존 사용자 dirty 변경은 포함하지 않음
 - `ops/migration-v2-manifest.json`: 기준 커밋의 tracked 150개를 중복·누락 없이 분류
 - `ops/SHADOW-PROBE.md`: Windows·ZCode·AWS 무변경 시험과 실제 포인터 차단 조건
 

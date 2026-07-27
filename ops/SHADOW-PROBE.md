@@ -60,7 +60,8 @@ authority: OPERATING.md
 - 등록 5개만 메모리에서 선택한 shadow 시험은 5/5, 10 scope PASS
 - settings 직렬화 결과는 시험 전후 동일하며 미등록 2개도 보존됨
 - AWS Notes는 로컬 commit 1개와 원격 commit 1개가 갈라져 있고 기존 dirty 로그가 있으므로 reset·checkout·clean 금지
-- 신규 v2 파일이 아직 공유 Git object가 아니므로 AWS의 기존 `git show` 방식으로는 소비할 수 없음
+- v2 준비 파일은 `codex/ops-v2-prep` 브랜치의 공유 Git object로 push됐고 AWS의 원격 조회도 성공함
+- 다만 기존 소비자는 `origin/main`만 읽고 AWS Notes는 이미 diverged·dirty 상태이므로 fetch·checkout 없이 새 object를 소비할 수 없음
 
 ## 실제 포인터 전환 전에 바꿀 소스
 
@@ -122,7 +123,7 @@ private runtime binding
 
 ## 남은 차단 조건
 
-1. v2 파일을 공유 가능한 Git object로 만들기
+1. AWS 작업트리를 건드리지 않고 v2 준비 commit을 안전하게 pin·소비할 방식 확정
 2. AWS의 갈라진 Notes commit과 dirty 로그를 보존한 채 통합 방법 결정
 3. dual-reader와 미등록 runtime bot 보존 테스트 구현
 4. 프로젝트별 `WORK.md` 도입안 작성
