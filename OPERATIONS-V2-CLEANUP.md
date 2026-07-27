@@ -45,7 +45,10 @@ decisions/                프로젝트 간 살아 있는 결정만
 ```
 
 프로젝트 전문 규칙·현황·작업·테스트는 각 프로젝트 Git의 `README.md`, `STATUS.md`, `WORK.md`에 둔다.
-전환 중에만 `ops/migration-v2-manifest.json`, `ops/SHADOW-PROBE.md`, `ops/WORK-TEMPLATE.md`를 두고, 프로젝트별 `WORK.md` 도입과 전환 검수 뒤 최소 운영방침에 병합하거나 삭제한다.
+전환 중에만 `ops/migration-v2-manifest.json`, `ops/worktree-cleanup-manifest.json`,
+`ops/runtime-baseline-anchor.json`, `ops/evidence/`, `ops/SHADOW-PROBE.md`,
+`ops/WORK-TEMPLATE.md`를 두고, 프로젝트별 `WORK.md` 도입과 전환 검수 뒤 최소
+운영방침에 병합하거나 삭제한다.
 
 ## 4. 우선순위별 분류
 
@@ -142,6 +145,21 @@ decisions/                프로젝트 간 살아 있는 결정만
 | `healthcheck-deployment-checklist.md` | 완료·중단된 도입 체크리스트 |
 | 루트의 2026-06-25 서버·샌드박스 세팅 문서 | 현행 환경 검증 없이 사용하기 위험한 역사 기록 |
 
+### Git worktree 볼륨
+
+Scenario 계열 worktree를 최신 `origin/main` 기준으로 다시 측정했다.
+
+- 등록 worktree 49개, cache 제외 약 1.62GB
+- clean이고 결과가 `origin/main` 또는 원격 ref에 남은 정리 후보 33개, 약 1.02GB
+- dirty 또는 원격에 보존되지 않은 보호 대상 16개, 약 0.60GB
+- 현재 v2 검증 worktree는 별도 `active-current-task`로 보호
+
+정확한 HEAD·branch·dirty 수·원격 보존 여부·크기와 경로 alias는
+`ops/worktree-cleanup-manifest.json`에 둔다. 이 목록은 삭제 허가가 아니다. 실행 직전에
+fetch, status, 원격 ref, 사용 중인 process, 실제 경로를 다시 확인하고, 통과한 exact
+worktree만 `git worktree remove`로 제거한다. 강제 제거, branch 삭제와 raw recursive
+filesystem 삭제는 금지한다.
+
 ## 5. 삭제 전 확인해야 할 의존성
 
 - AWS Cokacdir 부팅 지시가 `L0-agent-boot.md`, `onboarding.md`, `org-structure.md`, `actors.json`을 참조한다.
@@ -161,7 +179,7 @@ decisions/                프로젝트 간 살아 있는 결정만
 
 ## 6. 권장 실행 단계
 
-### A. 현재 단계 — 초안
+### A. 최초 단계 — 초안
 
 - `OPERATING.md`와 이 조사표 작성
 - 기존 dirty 파일 보호
@@ -187,9 +205,13 @@ decisions/                프로젝트 간 살아 있는 결정만
 
 - `pre-ops-v2-head-20260727`: 정리 전 clean `HEAD` 보호 태그
 - `pre-ops-v2-working-20260727`: 기존 사용자 변경과 승인된 v2 초안을 담은 별도 synthetic commit 보호 태그
-- 검증된 로컬 Git bundle: 두 태그와 전체 도달 이력을 포함하며 Notes 작업트리 밖에 보존
+- 검증된 로컬 Git bundle: 두 태그와 전체 도달 이력을 포함하며 Notes 작업트리 밖에 보존.
+  크기·SHA-256·ref·complete-history 검증은
+  `ops/evidence/pre-ops-v2-bundle-receipt.json`에 기록
 - `codex/ops-v2-prep`: v2 준비 파일만 담은 원격 공유 브랜치. 기존 사용자 dirty 변경은 포함하지 않음
 - `ops/migration-v2-manifest.json`: 기준 커밋의 tracked 150개를 중복·누락 없이 분류
+- `ops/worktree-cleanup-manifest.json`: Scenario worktree 49개의 보존·정리 후보와 삭제 전 재검증 조건
+- `ops/runtime-baseline-anchor.json`: private AWS runtime baseline의 salted public commitment
 - `ops/SHADOW-PROBE.md`: Windows·ZCode·AWS 무변경 시험과 실제 포인터 차단 조건
 
 ### D. 후속 Director 결정

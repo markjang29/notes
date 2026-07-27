@@ -1,0 +1,30 @@
+{
+  "schema": "ops-v2-local-bundle-receipt-v1",
+  "verified_at": "2026-07-27T06:37:16.7111275Z",
+  "artifact": {
+    "path_alias": "<user>/notes-snapshots/pre-ops-v2-20260727.bundle",
+    "bytes": 625917,
+    "sha256": "e84e84abdea8a06973acfc346a61fef0c472d02152f0008cb355a95bb03bd4b6"
+  },
+  "verification": {
+    "command": "git bundle verify <resolved-artifact-path>",
+    "result": "valid-complete-history",
+    "object_hash_algorithm": "sha1",
+    "refs": [
+      {
+        "ref": "refs/tags/pre-ops-v2-head-20260727",
+        "object_id": "941fbb6de494c3c7ca889dddc58b3356644077f6",
+        "object_type": "tag",
+        "peeled_commit": "b5c6559285d9fc589224ef201c04d9d5305adf3e"
+      },
+      {
+        "ref": "refs/tags/pre-ops-v2-working-20260727",
+        "object_id": "48ad306e171cc916e8437b7942c03521ce6b63d1",
+        "object_type": "tag",
+        "peeled_commit": "e29874c47eeb00a1c2a6a1c42e1a5fb7523f0ff5"
+      }
+    ]
+  },
+  "scope": "pre-ops-v2 Notes tracked history plus the preserved working snapshot commit",
+  "cutover_authority": false
+}

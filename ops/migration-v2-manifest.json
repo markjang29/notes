@@ -38,8 +38,11 @@
     "OPERATIONS-V2-CLEANUP.md",
     "ops/BOOT.md",
     "ops/registry.json",
+    "ops/runtime-baseline-anchor.json",
     "ops/SHADOW-PROBE.md",
-    "ops/migration-v2-manifest.json"
+    "ops/migration-v2-manifest.json",
+    "ops/worktree-cleanup-manifest.json",
+    "ops/evidence/pre-ops-v2-bundle-receipt.json"
   ],
   "protected_untracked_at_baseline": [
     {

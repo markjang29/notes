@@ -80,7 +80,9 @@ authority: OPERATING.md
 }
 ```
 
-`base_commit`은 실제 발령 시 검증한 전체 40자 커밋으로 바꾼다.
+`base_commit`은 실제 발령 시 검증한 전체 40자 커밋으로 바꾼다. 문자열 모양만 맞거나
+로컬에 commit 객체가 있는 것만으로는 부족하며, canonical remote의 실제
+default-branch tip과 정확히 일치해야 한다.
 예시의 all-zero 커밋과 일반 `repo_id`는 의도적인 무효 placeholder이므로 그대로는 발령 검사를 통과하지 않는다.
 `expires_at`의 `task-end`는 작업이 `done`·`cancelled`가 되거나 Director가 회수하는 즉시 만료된다는 뜻이다.
 `executor_ref`에는 세션 ID, 키, Telegram chat ID 또는 접근 URL을 쓰지 않는다.
@@ -88,3 +90,7 @@ authority: OPERATING.md
 파일이 있으면 먼저 전체 문서의 형식·필수 필드와 `task_id` 유일성을 검사한다. 빠진 필드, 깨진 형식 또는 ID 중복이 있으면 `막힘`으로 끝낸다.
 다른 실행자의 정상 종료·만료 기록은 문서 전체를 막지 않는다. 정상 문서에 현재 실행자와 일치하는 활성 계약이 없으면 읽기 전용으로 끝낸다.
 현재 실행자와 일치하는 후보끼리 충돌하거나 그 활성 계약이 이미 만료됐을 때만 `막힘`으로 끝낸다.
+현재 실행자의 계약이 `blocked`이면 이를 역할 없음으로 숨기지 않고 위 다섯 항목과 함께 `막힘`으로 보여준다.
+`reviewer`는 `director` 또는 현재 작업자와 다른 등록 executor만 허용한다.
+문서는 UTF-8 8MiB·JSON 깊이 64를 넘을 수 없고 duplicate key, 비정상 숫자와 알려진
+credential 형식이 있으면 원문 값을 출력하지 않고 차단한다.
