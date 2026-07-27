@@ -1,0 +1,454 @@
+{
+  "schema": "ops-registry-v2",
+  "version": 1,
+  "status": "shadow-only",
+  "updated_at": "2026-07-27",
+  "authority": {
+    "policy_ref": "OPERATING.md",
+    "boot_ref": "ops/BOOT.md",
+    "director_principal": "director",
+    "assignment_ref": "<target-repository>/WORK.md",
+    "runtime_binding": "private runtime manifest outside Git"
+  },
+  "roles": [
+    {
+      "role_id": "operations-pm",
+      "responsibilities": [
+        "사용자 의도 추적",
+        "작업 분해와 WIP 관리",
+        "쉬운 상태 보고와 결정 카드",
+        "인계와 통합안 제안"
+      ],
+      "grants": [
+        "analyze",
+        "report",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push",
+        "work_plan",
+        "request_decision"
+      ],
+      "prohibitions": [
+        "infer_director_approval",
+        "assign_role_without_delegation",
+        "silent_scope_expansion",
+        "self_approval"
+      ]
+    },
+    {
+      "role_id": "project-lead",
+      "responsibilities": [
+        "지정 프로젝트의 설계와 구현 계획",
+        "작업 통합과 테스트 제출",
+        "프로젝트 현황과 위험 관리"
+      ],
+      "grants": [
+        "analyze",
+        "report",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push",
+        "test",
+        "work_plan",
+        "request_decision",
+        "integration_proposal"
+      ],
+      "prohibitions": [
+        "change_other_project_priority",
+        "self_approve_director_experience",
+        "deploy_without_assignment"
+      ]
+    },
+    {
+      "role_id": "worker",
+      "responsibilities": [
+        "작업 계약 범위 구현",
+        "테스트와 증거 제출",
+        "인계 가능한 체크포인트 유지"
+      ],
+      "grants": [
+        "analyze",
+        "report",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push",
+        "test"
+      ],
+      "prohibitions": [
+        "write_outside_assignment",
+        "invent_completion",
+        "self_approval"
+      ]
+    },
+    {
+      "role_id": "reviewer",
+      "responsibilities": [
+        "요구사항과 diff 비교",
+        "Git 기준점과 테스트 증거 검증",
+        "완료 주장과 사용자 의도 반영 여부 감사"
+      ],
+      "grants": [
+        "analyze",
+        "report",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push",
+        "test",
+        "verify"
+      ],
+      "prohibitions": [
+        "self_review",
+        "invent_director_decision",
+        "modify_product_outside_review_scope"
+      ]
+    },
+    {
+      "role_id": "collection-operator",
+      "responsibilities": [
+        "로그인과 다운로드",
+        "출처와 해시 기록",
+        "원본 보호와 승인된 파싱"
+      ],
+      "grants": [
+        "analyze",
+        "report",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push",
+        "source_access",
+        "download",
+        "hash",
+        "protected_store",
+        "parse"
+      ],
+      "prohibitions": [
+        "auto_promote_asset",
+        "decide_product_adoption",
+        "commit_private_source",
+        "commit_credentials"
+      ]
+    },
+    {
+      "role_id": "infrastructure-operator",
+      "responsibilities": [
+        "서버와 런타임 점검",
+        "배포와 백업",
+        "서비스 검증과 롤백"
+      ],
+      "grants": [
+        "analyze",
+        "report",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push",
+        "test",
+        "runtime_inspect",
+        "runtime_change",
+        "backup",
+        "rollback"
+      ],
+      "prohibitions": [
+        "change_product_direction",
+        "commit_credentials",
+        "destructive_change_without_approval"
+      ]
+    }
+  ],
+  "environments": [
+    {
+      "environment_id": "windows-codex-desktop",
+      "kind": "windows-desktop",
+      "supports": [
+        "analyze",
+        "report",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push",
+        "test",
+        "work_plan",
+        "request_decision",
+        "integration_proposal",
+        "verify",
+        "source_access",
+        "download",
+        "hash",
+        "protected_store",
+        "parse",
+        "runtime_inspect",
+        "runtime_change",
+        "backup",
+        "rollback"
+      ],
+      "hard_limits": [
+        "interactive_login_may_require_director",
+        "not_always_online"
+      ]
+    },
+    {
+      "environment_id": "windows-zcode-desktop",
+      "kind": "windows-desktop",
+      "supports": [
+        "analyze",
+        "report",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push",
+        "test",
+        "work_plan",
+        "request_decision",
+        "integration_proposal",
+        "verify"
+      ],
+      "hard_limits": [
+        "source_access",
+        "runtime_change",
+        "runtime_secret_access",
+        "aws_control"
+      ]
+    },
+    {
+      "environment_id": "aws-cokacdir",
+      "kind": "linux-server",
+      "supports": [
+        "analyze",
+        "report",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push",
+        "test",
+        "work_plan",
+        "request_decision",
+        "integration_proposal",
+        "verify",
+        "runtime_inspect",
+        "runtime_change",
+        "backup",
+        "rollback"
+      ],
+      "hard_limits": [
+        "windows_desktop",
+        "implicit_live_source_login"
+      ]
+    }
+  ],
+  "executors": [
+    {
+      "executor_ref": "windows-codex",
+      "kind": "agent-session-route",
+      "environment_id": "windows-codex-desktop",
+      "route_ref": "runtime:windows/codex",
+      "readiness": "v2-probe-required"
+    },
+    {
+      "executor_ref": "windows-zcode",
+      "kind": "agent-session-route",
+      "environment_id": "windows-zcode-desktop",
+      "route_ref": "runtime:windows/zcode",
+      "readiness": "v2-probe-required"
+    },
+    {
+      "executor_ref": "aws-executor-01",
+      "kind": "agent-session-route",
+      "environment_id": "aws-cokacdir",
+      "route_ref": "runtime:aws/cokacdir/01",
+      "readiness": "v2-probe-required"
+    },
+    {
+      "executor_ref": "aws-executor-02",
+      "kind": "agent-session-route",
+      "environment_id": "aws-cokacdir",
+      "route_ref": "runtime:aws/cokacdir/02",
+      "readiness": "v2-probe-required"
+    },
+    {
+      "executor_ref": "aws-executor-03",
+      "kind": "agent-session-route",
+      "environment_id": "aws-cokacdir",
+      "route_ref": "runtime:aws/cokacdir/03",
+      "readiness": "v2-probe-required"
+    },
+    {
+      "executor_ref": "aws-executor-04",
+      "kind": "agent-session-route",
+      "environment_id": "aws-cokacdir",
+      "route_ref": "runtime:aws/cokacdir/04",
+      "readiness": "v2-probe-required"
+    },
+    {
+      "executor_ref": "aws-executor-05",
+      "kind": "agent-session-route",
+      "environment_id": "aws-cokacdir",
+      "route_ref": "runtime:aws/cokacdir/05",
+      "readiness": "v2-probe-required"
+    }
+  ],
+  "repositories": [
+    {
+      "repo_id": "notes",
+      "canonical_remote": "https://github.com/markjang29/notes.git",
+      "default_branch": "main",
+      "truth_scope": "공통 운영방침과 프로젝트 간 결정",
+      "authority_state": "canonical",
+      "write_gate": "assignment-required"
+    },
+    {
+      "repo_id": "scenario",
+      "canonical_remote": "https://github.com/markjang29/scenario.git",
+      "default_branch": "main",
+      "truth_scope": "출처, 검토 자산, Scenario 규칙과 파이프라인",
+      "authority_state": "canonical",
+      "write_gate": "assignment-required"
+    },
+    {
+      "repo_id": "rpg_game",
+      "canonical_remote": "https://github.com/markjang29/rpg_game.git",
+      "default_branch": "main",
+      "truth_scope": "RPG 설계, 코드, 테스트와 사용자 채택 상태",
+      "authority_state": "canonical",
+      "write_gate": "assignment-required"
+    },
+    {
+      "repo_id": "autotrader",
+      "canonical_remote": "https://github.com/markjang29/autotrader.git",
+      "default_branch": "main",
+      "truth_scope": "거래 시스템 규칙, 코드, 검증과 운영 상태",
+      "authority_state": "canonical",
+      "write_gate": "assignment-required-and-hold-clear"
+    },
+    {
+      "repo_id": "matrix",
+      "canonical_remote": "https://github.com/markjang29/matrix.git",
+      "default_branch": "main",
+      "truth_scope": "Matrix 정본 후보 A",
+      "canonical_slot": "matrix",
+      "authority_state": "candidate",
+      "write_gate": "frozen-pending-director-decision"
+    },
+    {
+      "repo_id": "matrix-living-drama",
+      "canonical_remote": "https://github.com/markjang29/matrix-living-drama.git",
+      "default_branch": "main",
+      "truth_scope": "Matrix 정본 후보 B",
+      "canonical_slot": "matrix",
+      "authority_state": "candidate",
+      "write_gate": "frozen-pending-director-decision"
+    },
+    {
+      "repo_id": "approval-board",
+      "canonical_remote": null,
+      "default_branch": null,
+      "truth_scope": "구형 wake/status bridge이며 완료 정본이 아님",
+      "authority_state": "noncanonical",
+      "write_gate": "transition-only"
+    }
+  ],
+  "assignment_contract": {
+    "authority": "director",
+    "record": "target-repository:WORK.md",
+    "registry_grants_authority": false,
+    "one_writer_per_task": true,
+    "expires_with_task": true,
+    "delegation_requires_explicit_grant": true,
+    "runtime_capability_revalidation": true,
+    "required_fields": [
+      "task_id",
+      "role_id",
+      "executor_ref",
+      "assigned_by",
+      "objective",
+      "project",
+      "repo_id",
+      "base_commit",
+      "branch",
+      "allowed",
+      "read_scope",
+      "write_scope",
+      "forbidden",
+      "done_when",
+      "evidence_required",
+      "test_plan",
+      "reviewer",
+      "expires_at"
+    ],
+    "effective_access": {
+      "all_must_allow": [
+        "role.grants",
+        "environment.supports",
+        "WORK.allowed"
+      ],
+      "deny_overrides": [
+        "role.prohibitions",
+        "environment.hard_limits",
+        "WORK.forbidden"
+      ],
+      "repository_gate_must_pass": true
+    },
+    "lifecycle": [
+      "assigned",
+      "working",
+      "review",
+      "done",
+      "blocked",
+      "cancelled"
+    ]
+  },
+  "user_statuses": [
+    "결정 필요",
+    "직접 테스트 필요",
+    "반영 완료",
+    "막힘"
+  ],
+  "transition": {
+    "mode": "shadow-only",
+    "legacy_registry_ref": "projects/agent-ops/actors.json",
+    "legacy_boot_ref": "projects/agent-ops/cokacdir-boot-v2.md",
+    "legacy_actor_aliases": {
+      "windows-codex": "windows-codex",
+      "windows-zcode": "windows-zcode",
+      "aws-manager": "aws-executor-01",
+      "aws-scenario": "aws-executor-02",
+      "aws-rpg": "aws-executor-03",
+      "aws-trader": "aws-executor-04",
+      "aws-audit": "aws-executor-05"
+    },
+    "activation_blockers": [
+      {
+        "blocker_id": "aws-trader-hold-scope",
+        "state": "director-mapping-required",
+        "rule": "Preserve no-execute until the legacy hold is mapped to an executor, repository, or both."
+      },
+      {
+        "blocker_id": "matrix-canon",
+        "state": "director-decision-required",
+        "rule": "Do not assign new Matrix writes until one canonical repository is selected."
+      }
+    ],
+    "cutover_gates": [
+      "Director approves the exact runtime pointer diff.",
+      "Windows, AWS, and ZCode resolve the same executor and assignment without writes.",
+      "Every active project hold and WIP is represented in its target repository.",
+      "Rollback to the pre-ops-v2 snapshot is verified."
+    ],
+    "forbidden_until_cutover": [
+      "delete legacy registry or schemas",
+      "assign production work from this shadow registry",
+      "restart automation",
+      "rotate credentials",
+      "rewrite Git history"
+    ],
+    "remove_after_cutover": [
+      "legacy_actor_aliases",
+      "legacy_registry_ref",
+      "legacy_boot_ref"
+    ]
+  }
+}

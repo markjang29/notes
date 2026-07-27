@@ -1,0 +1,552 @@
+{
+  "schema": "ops-migration-v2-manifest",
+  "version": 1,
+  "status": "proposal-no-delete",
+  "generated_at": "2026-07-27",
+  "base_commit": "b5c6559285d9fc589224ef201c04d9d5305adf3e",
+  "summary": {
+    "baseline_tracked_files": 150,
+    "baseline_tracked_bytes": 1153911,
+    "phase_counts": {
+      "P0": 9,
+      "P1": 29,
+      "P2": 48,
+      "P3": 61,
+      "protected": 3
+    },
+    "phase_bytes": {
+      "P0": 177536,
+      "P1": 135424,
+      "P2": 239066,
+      "P3": 596646,
+      "protected": 5239
+    },
+    "conditional_source_removal": {
+      "files": 147,
+      "bytes": 1148672,
+      "percent": 99.55,
+      "condition": "P1 merge and P2 migration are verified at their destinations"
+    },
+    "history_only_deletion": {
+      "bytes": 773285,
+      "percent": 67.01,
+      "condition": "all live pointers are removed and recovery snapshot is verified"
+    }
+  },
+  "prep_files": [
+    "OPERATING.md",
+    "OPERATIONS-V2-CLEANUP.md",
+    "ops/BOOT.md",
+    "ops/registry.json",
+    "ops/SHADOW-PROBE.md",
+    "ops/migration-v2-manifest.json"
+  ],
+  "protected_untracked_at_baseline": [
+    {
+      "path": "projects/agent-ops/scheduled-codex-guardrails-2026-07-17.md",
+      "reason": "existing user file with active scheduler safety rules"
+    }
+  ],
+  "protected": [
+    {
+      "path": "decisions/2026-07-12-scenario-repo-freeze.md",
+      "action": "keep",
+      "reason": "existing user modification and live Scenario authorization boundary"
+    },
+    {
+      "path": "projects/agent-ops/holds/2026-07-16-aws-trader-director-hold.md",
+      "action": "keep-until-director-maps-scope",
+      "reason": "active Director no-execute order"
+    },
+    {
+      "path": "persona.md",
+      "action": "keep-as-merge-destination",
+      "reason": "single human-readable Director preference authority"
+    }
+  ],
+  "groups": [
+    {
+      "id": "P0-1",
+      "phase": "P0",
+      "action": "merge-then-delete",
+      "destination": [
+        "OPERATING.md",
+        "ops/registry.json"
+      ],
+      "dependencies": [
+        "runtime pointers switched",
+        "Windows/AWS/ZCode shadow probes pass",
+        "opaque route values classified"
+      ],
+      "paths": [
+        "L0-agent-boot.md",
+        "onboarding.md",
+        "policy-reread-pending.md"
+      ]
+    },
+    {
+      "id": "P0-2",
+      "phase": "P0",
+      "action": "delete-after-security-decision",
+      "destination": [
+        "Git history",
+        "restricted backup outside Git only if Director requires it"
+      ],
+      "dependencies": [
+        "opaque route values classified and rotated if authoritative",
+        "working snapshot verified",
+        "Git history rewrite decided separately"
+      ],
+      "paths": [
+        "chat-backups/heav_lnx_bot/last-session.md",
+        "chat-backups/heav_lnx_rpg_bot/last-session.md",
+        "chat-backups/heav_lnx_scenario_bot/last-session.md",
+        "chat-backups/heav_lnx_trader_bot/last-session.md"
+      ]
+    },
+    {
+      "id": "P0-3",
+      "phase": "P0",
+      "action": "merge-minimum-then-delete",
+      "destination": [
+        "persona.md"
+      ],
+      "dependencies": [
+        "access details classified",
+        "only non-sensitive user constraints retained"
+      ],
+      "paths": [
+        "memory/user-access-context.md"
+      ]
+    },
+    {
+      "id": "P0-4",
+      "phase": "P0",
+      "action": "migrate",
+      "destination": [
+        "future ops-runtime repository"
+      ],
+      "dependencies": [
+        "ops runtime authority selected",
+        "runtime values externalized",
+        "server pointer dry-run passes"
+      ],
+      "paths": [
+        "setup/server/chat-log-backup.py"
+      ]
+    },
+    {
+      "id": "P1-1",
+      "phase": "P1",
+      "action": "merge-then-delete",
+      "destination": [
+        "OPERATING.md"
+      ],
+      "dependencies": [
+        "new policy pointers verified"
+      ],
+      "paths": [
+        "agent-rules.md",
+        "principles/git-first-project-truth.md",
+        "principles/context-budget.md",
+        "principles/audit-watchdog-foundation.md",
+        "project-rules/notion-reporting.md",
+        "change-deployment-checklist-template.md",
+        "projects/agent-ops/token-budget-routing-v1.md"
+      ]
+    },
+    {
+      "id": "P1-2",
+      "phase": "P1",
+      "action": "migrate-or-delete",
+      "destination": [
+        "target project STATUS.md",
+        "target project WORK.md"
+      ],
+      "dependencies": [
+        "active and pending facts reconciled per project"
+      ],
+      "paths": [
+        "org-structure.md",
+        "onboarding-new-lead-laptop.md",
+        "work-queue.md",
+        "work-archive.md",
+        "decisions/2026-06-26-org-telegram-group.md"
+      ]
+    },
+    {
+      "id": "P1-3",
+      "phase": "P1",
+      "action": "replace-then-delete",
+      "destination": [
+        "ops/registry.json"
+      ],
+      "dependencies": [
+        "role/executor/environment/repository separation validated",
+        "all runtime consumers switched"
+      ],
+      "paths": [
+        "projects/agent-ops/actors.json"
+      ]
+    },
+    {
+      "id": "P1-4",
+      "phase": "P1",
+      "action": "replace-then-delete",
+      "destination": [
+        "OPERATING.md",
+        "ops/registry.json",
+        "target project WORK.md"
+      ],
+      "dependencies": [
+        "Agent Mail adapter or replacement contract validated",
+        "skill pointers synchronized",
+        "all routes pass no-op smoke test"
+      ],
+      "paths": [
+        "projects/agent-ops/README.md",
+        "projects/agent-ops/cokacdir-boot-v2.md",
+        "projects/agent-ops/idea-candidate-v1.schema.json",
+        "projects/agent-ops/mail-v2.schema.json",
+        "projects/agent-ops/overnight-ideation-v1.md",
+        "projects/agent-ops/shared-git-access.md",
+        "projects/agent-ops/telegram-intake-v1.schema.json",
+        "decisions/2026-07-14-agent-mail-v1.md",
+        "decisions/2026-07-15-direct-telegram-and-night-candidates.md"
+      ]
+    },
+    {
+      "id": "P1-5",
+      "phase": "P1",
+      "action": "delete",
+      "destination": [
+        "Git history"
+      ],
+      "dependencies": [
+        "legacy bridge and v1 schema consumers equal zero"
+      ],
+      "paths": [
+        "projects/agent-ops/mail-v1.schema.json",
+        "projects/agent-ops/cokacdir-boot-v1.md",
+        "projects/agent-ops/identity-probe.md",
+        "projects/agent-ops/legacy-relay-v1.md"
+      ]
+    },
+    {
+      "id": "P1-6",
+      "phase": "P1",
+      "action": "delete",
+      "destination": [
+        "Git history"
+      ],
+      "dependencies": [
+        "current deployment state verified",
+        "working snapshot verified"
+      ],
+      "paths": [
+        "projects/agent-ops/deployments/2026-07-14-cokacdir-boot-v1.md",
+        "projects/agent-ops/deployments/2026-07-14-cokacdir-registry-refresh-v1.md",
+        "projects/agent-ops/deployments/2026-07-15-direct-and-night-candidates-v1.md"
+      ]
+    },
+    {
+      "id": "P2-1",
+      "phase": "P2",
+      "action": "migrate",
+      "destination": [
+        "scenario repository charter/design"
+      ],
+      "dependencies": [
+        "Scenario freeze conditions preserved",
+        "destination parity reviewed"
+      ],
+      "paths": [
+        "principles/scenario-team-purpose.md",
+        "principles/scenario-resources.md",
+        "project-rules/scenario-autopoietic-narrative-system.md"
+      ]
+    },
+    {
+      "id": "P2-2",
+      "phase": "P2",
+      "action": "migrate",
+      "destination": [
+        "scenario repository README.md",
+        "scenario repository STATUS.md",
+        "scenario repository WORK.md"
+      ],
+      "dependencies": [
+        "destination commit pushed",
+        "content parity reviewed"
+      ],
+      "paths": [
+        "projects/scenario/README.md",
+        "projects/scenario/autonomous-operations.md",
+        "projects/scenario/handoffs/current.md",
+        "projects/scenario/inbox.md",
+        "projects/scenario/matrix-risu-continuity-roadmap.md",
+        "projects/scenario/reviews/2026-07-14-zcode-permission-audit.md",
+        "projects/scenario/roadmap.md",
+        "projects/scenario/tasks/README.md"
+      ]
+    },
+    {
+      "id": "P2-3",
+      "phase": "P2",
+      "action": "migrate",
+      "destination": [
+        "scenario repository provenance and decisions"
+      ],
+      "dependencies": [
+        "destination commit pushed",
+        "Scenario authorization boundary reviewed"
+      ],
+      "paths": [
+        "memory/arca-collector-handoff.md",
+        "memory/scenario-asset-pipeline.md",
+        "memory/scenario-asset-pipeline-2026-07-06.md",
+        "decisions/2026-07-04-scenario-pivot-rpg-driven.md"
+      ]
+    },
+    {
+      "id": "P2-4",
+      "phase": "P2",
+      "action": "migrate",
+      "destination": [
+        "rpg_game STATUS.md",
+        "rpg_game docs/decisions",
+        "rpg_game docs/meetings"
+      ],
+      "dependencies": [
+        "open RPG Git source gap reconciled and closed",
+        "destination commit pushed"
+      ],
+      "paths": [
+        "meetings/2026-06-26-rpg-walking-rpg-ideation.md",
+        "meetings/2026-07-01-rpg-color-dye-stamina-revision.md",
+        "meetings/2026-07-01-rpg-parry-demo-and-module-architecture.md",
+        "meetings/2026-07-02-rpg-reasoning-parry-signature.md",
+        "decisions/2026-06-27-rpg-engine-adr-draft.md",
+        "decisions/2026-07-01-godot-engine-and-module-prototype-architecture.md",
+        "decisions/2026-07-03-walk-to-play-principle-flip.md",
+        "checkpoints/checkpoint-rpg-git-source-gap-2026-07-16.md"
+      ]
+    },
+    {
+      "id": "P2-5",
+      "phase": "P2",
+      "action": "keep-until-unhold-then-migrate",
+      "destination": [
+        "autotrader repository decisions"
+      ],
+      "dependencies": [
+        "Director maps or releases the active Trader hold"
+      ],
+      "paths": [
+        "decisions/2026-06-26-autotrader-backtest-stack.md"
+      ]
+    },
+    {
+      "id": "P2-6",
+      "phase": "P2",
+      "action": "migrate",
+      "destination": [
+        "future ops-runtime or skill canonical repository"
+      ],
+      "dependencies": [
+        "destination repository selected",
+        "live pointers inventoried",
+        "runtime values externalized"
+      ],
+      "paths": [
+        "project-rules/codex-skill-components.md",
+        "setup/server/context-meter.sh",
+        "setup/server/ctx-evac.sh",
+        "setup/server/zai-fallback-proxy.js",
+        "setup/server/zai-proxy.service",
+        "setup/windows/ONBOARDING-PROMPT.md",
+        "setup/windows/README.md",
+        "setup/windows/setup-windows.ps1",
+        "setup/windows/setup-wsl.sh",
+        "setup/windows/skills/memory-tick/SKILL.md",
+        "setup/windows/skills/memory-tick/stop-hook-throttle.sh",
+        "setup/windows/skills/token-report.sh",
+        "decisions/2026-07-01-zai-fallback-proxy.md",
+        "decisions/2026-07-02-port-allocation-policy.md",
+        "decisions/2026-07-03-ctx-evac-skill.md"
+      ]
+    },
+    {
+      "id": "P2-7",
+      "phase": "P2",
+      "action": "merge-then-delete",
+      "destination": [
+        "persona.md",
+        "OPERATING.md"
+      ],
+      "dependencies": [
+        "semantic diff reviewed",
+        "remaining links validated"
+      ],
+      "paths": [
+        "personas/markjang29.md",
+        "personas/README.md",
+        "principles/ai-dev-신념.md",
+        "principles/README.md",
+        "principles/references.md",
+        "memory/README.md",
+        "project-rules/README.md",
+        "decisions/README.md",
+        "decisions/ADR-template.md"
+      ]
+    },
+    {
+      "id": "P3-1",
+      "phase": "P3",
+      "action": "delete",
+      "destination": [
+        "Git history"
+      ],
+      "dependencies": [
+        "working snapshot verified",
+        "live pointers equal zero"
+      ],
+      "paths": [
+        ".reviews/codex-context-budget-20260626.md",
+        ".reviews/codex-onboarding-20260626.md",
+        ".reviews/exit-ratio-research-20260702-01.md",
+        ".reviews/ideation-infra-20260626-01.md",
+        ".reviews/ideation-market-20260626-01.md",
+        ".reviews/ideation-risk-20260626-01.md",
+        ".reviews/ideation-strategy-20260626-01.md",
+        ".reviews/raoer-algo-20260626-01.md",
+        ".reviews/raoer-compare-20260626-01.md",
+        ".reviews/recovery-redesign-codex.md",
+        ".reviews/recovery-redesign-optimistic.md",
+        ".reviews/recovery-redesign-pessimistic.md",
+        ".reviews/seminar-raoer-20260626-01.md",
+        ".reviews/session-reaper.cron.log",
+        ".reviews/session-reaper.log",
+        ".reviews/walking-rpg-codex-20260626-01.md",
+        ".reviews/walking-rpg-market-20260626-01.md",
+        ".reviews/walking-rpg-narrative-20260626-01.md",
+        ".reviews/walking-rpg-skeptic-20260626-01.md",
+        ".reviews/walking-rpg-skeptic-web-20260626-01.md",
+        ".reviews/walking-rpg-social-20260626-01.md",
+        ".reviews/walking-rpg-user-enthusiast-20260626-01.md"
+      ]
+    },
+    {
+      "id": "P3-2",
+      "phase": "P3",
+      "action": "delete",
+      "destination": [
+        "Git history"
+      ],
+      "dependencies": [
+        "working snapshot verified"
+      ],
+      "paths": [
+        ".tool-results/2026-07-03_142513-context-defense-report.md"
+      ]
+    },
+    {
+      "id": "P3-3",
+      "phase": "P3",
+      "action": "delete",
+      "destination": [
+        "Git history"
+      ],
+      "dependencies": [
+        "current environment not dependent on historical setup notes"
+      ],
+      "paths": [
+        "2026-06-25-AWS-Claude-Code-서버-세팅.md",
+        "2026-06-25-Codex-샌드박스-설정.md"
+      ]
+    },
+    {
+      "id": "P3-4",
+      "phase": "P3",
+      "action": "delete",
+      "destination": [
+        "Git history"
+      ],
+      "dependencies": [
+        "open RPG checkpoint remains in P2-4",
+        "live recovery pointers equal zero"
+      ],
+      "paths": [
+        "checkpoints/checkpoint-chat-log-backup-2026-07-07.md",
+        "checkpoints/checkpoint-ctx-evac-false-positive-2026-07-06_1632.md",
+        "checkpoints/checkpoint-doc-cleanup-l0-2026-07-06.md",
+        "checkpoints/checkpoint-duplicate-cron-fix-2026-07-05_0100.md",
+        "checkpoints/checkpoint-git-health-2026-07-05_0100.md",
+        "checkpoints/checkpoint-git-health-2026-07-06_0100.md",
+        "checkpoints/checkpoint-glm-context-limit-investigation-2026-07-07.md",
+        "checkpoints/checkpoint-manager-2026-07-03_142742.md",
+        "checkpoints/checkpoint-manager-2026-07-03_150246.md",
+        "checkpoints/checkpoint-manager-2026-07-04_011526.md",
+        "checkpoints/checkpoint-manager-2026-07-04_070151.md",
+        "checkpoints/checkpoint-manager-2026-07-04_070247.md",
+        "checkpoints/checkpoint-manager-2026-07-04_105732.md",
+        "checkpoints/checkpoint-manager-2026-07-06_002100.md",
+        "checkpoints/checkpoint-manager-2026-07-06_070200.md",
+        "checkpoints/checkpoint-manager-2026-07-06_160241.md",
+        "checkpoints/checkpoint-night-assign-2026-07-06_0100.md",
+        "checkpoints/checkpoint-night-assign-2026-07-09_0100.md",
+        "checkpoints/checkpoint-recovery-gate-l1-wording-fix-2026-07-06.md",
+        "checkpoints/checkpoint-rpg-context-limit-2026-07-07.md",
+        "checkpoints/checkpoint-rpg-scenario-simultaneous-529-2026-07-08.md",
+        "checkpoints/checkpoint-scenario-529-overload-2026-07-08.md",
+        "checkpoints/checkpoint-scenario-context-limit-2026-07-07.md",
+        "checkpoints/checkpoint-scenario-identity-routing-fix-2026-07-06.md",
+        "checkpoints/checkpoint-server-cleanup-2026-07-06.md",
+        "checkpoints/checkpoint-zai-1m-conditional-fallback-2026-07-07.md"
+      ]
+    },
+    {
+      "id": "P3-5",
+      "phase": "P3",
+      "action": "delete",
+      "destination": [
+        "Git history"
+      ],
+      "dependencies": [
+        "old recovery and schedule pointers equal zero",
+        "opaque route values classified"
+      ],
+      "paths": [
+        "decisions/2026-06-26-quota-checkpoint-resume.md",
+        "decisions/2026-06-26-recovery-gate-hook.md",
+        "decisions/2026-06-30-recovery-gate-bundle-shrink.md",
+        "decisions/2026-06-30-session-reaper.md",
+        "decisions/2026-07-01-recovery-bundle-l1-l2.md",
+        "decisions/2026-07-04-manager-cron-key-fix.md"
+      ]
+    },
+    {
+      "id": "P3-6",
+      "phase": "P3",
+      "action": "delete",
+      "destination": [
+        "Git history"
+      ],
+      "dependencies": [
+        "live manager recovery pointers equal zero"
+      ],
+      "paths": [
+        "emergency-manager.md",
+        "healthcheck-deployment-checklist.md",
+        "manager-survival-fixes-applied.md",
+        "manager-survival-implementation-8d.md"
+      ]
+    }
+  ],
+  "approval_gates": {
+    "delete_permitted": false,
+    "runtime_value_change_permitted": false,
+    "history_rewrite_permitted": false,
+    "next_decision_required": "Director approval of exact migration and deletion diff"
+  }
+}
