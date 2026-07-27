@@ -1,0 +1,117 @@
+{
+  "schema": "ops-v2-native-session-bootstrap-receipt-v1",
+  "observed_at": "2026-07-27T14:30:25.0819168Z",
+  "status": "report-only-native-session-complete",
+  "actual_cutover_applied": false,
+  "deletions_applied": false,
+  "private_fields_emitted": 0,
+  "sources": {
+    "notes_registry": {
+      "ref": "refs/tags/ops-v2-runtime-anchor-20260727-v1",
+      "commit": "07abbc413679e363755b5e31c64c21ef8d88e3dd",
+      "object_path": "ops/registry.json",
+      "object_mode": "100644",
+      "blob_sha": "f3f427fd313fa5266b5885d53177079d01f7ff59"
+    },
+    "scenario_adapter": {
+      "ref": "refs/heads/codex/ops-v2-dual-reader",
+      "commit": "05769557f327986cc20d88c5bc695b684f52a46d"
+    },
+    "scenario_pilot": {
+      "ref": "refs/heads/codex/ops-v2-report-only-pilot",
+      "commit": "cd1e11816c1c2bd73bfc70248aa2a360f78429bc",
+      "base_commit": "2eda5f5020b04d3cdf06e957663c84a507e1ac70",
+      "work_path": "WORK.md",
+      "work_mode": "100644",
+      "work_blob_sha": "b10d962841c5e7cc1a5a6bb450ca913bb3812012"
+    }
+  },
+  "session_binding": {
+    "status": "shadow-bound",
+    "reason": "shadow-mode-no-authority",
+    "task_id": "scenario-report-only-pilot-01",
+    "role_id": "worker",
+    "executor_ref": "aws-executor-02",
+    "repo_id": "scenario",
+    "decision_sha256": "25e106891d567725b0ac74513932edb216426f274be39e882922cb814ee41272",
+    "instruction_sha256": "8d62437bc5428c824abb2072eac49a50cdbd1ec07f9d60a8390842becb5d93ad",
+    "effective_access": {
+      "allowed": [],
+      "read_scope": [],
+      "write_scope": [],
+      "authority_granted": false,
+      "production_write_authorized": false
+    }
+  },
+  "verification": {
+    "registry_evidence": "verified",
+    "remote_evidence": "verified",
+    "work_source_evidence": "verified",
+    "evidence_assertions_passed": 18,
+    "tests": {
+      "total": 243,
+      "passed": 239,
+      "skipped": 4,
+      "failed": 0
+    },
+    "lint": "pass",
+    "skill_mirror": "pass",
+    "skill_lock": "pass",
+    "security_review": {
+      "p0": 0,
+      "unresolved_p1": 0
+    }
+  },
+  "aws": {
+    "managed_skill_install": {
+      "codex_surface": "current",
+      "claude_surface": "current",
+      "managed_check_after_execution": "pass",
+      "runtime_bytecode_cache_created": false
+    },
+    "credential_boundary": {
+      "source": "inherited-read-only-descriptor",
+      "dedicated_high_descriptor_used": true,
+      "mode": "0600",
+      "owner_and_single_link_verified": true,
+      "identity_bytes_and_offset_rechecked": true,
+      "credential_store_mutated": false
+    },
+    "negative_probes": {
+      "missing_credential_fail_closed": true,
+      "stale_base_commit_fail_closed": true,
+      "stale_base_error_code": "base_commit_not_remote_tip"
+    },
+    "preservation": {
+      "settings_files_unchanged": 3,
+      "service_files_unchanged": true,
+      "service_state_unchanged": true,
+      "existing_repositories_unchanged": 10,
+      "temporary_checkout_removed": true,
+      "temporary_local_bundles_removed": true
+    },
+    "cache_recovery": {
+      "deleted": 0,
+      "quarantined_surface": "codex",
+      "quarantined_files": 8,
+      "reason": "preserve pre-fix interpreter cache without treating it as managed source"
+    }
+  },
+  "windows": {
+    "managed_skill_adoption_applied": false,
+    "reason": "existing user targets are unmanaged and were preserved"
+  },
+  "deferred": [
+    "production authority evaluator activation",
+    "settings apply and service transition",
+    "main merge",
+    "legacy deletion and volume cleanup",
+    "Windows descriptor-backed private Git runtime"
+  ],
+  "non_blocking_follow_up": [
+    "Classify extreme malformed HTTP numeric fields more precisely while preserving safe failure.",
+    "Keep production launchers on a dedicated high-numbered inherited credential descriptor."
+  ],
+  "production_authority_granted": false,
+  "cutover_authority": false
+}

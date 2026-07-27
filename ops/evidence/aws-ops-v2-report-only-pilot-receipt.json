@@ -36,6 +36,7 @@
       "production_write_authorized": false
     },
     "external_remote_tip_proof": {
+      "source_key": "scenario_pilot",
       "advertised_match": true,
       "authority_source": false
     },
