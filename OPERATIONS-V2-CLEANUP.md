@@ -39,12 +39,13 @@ approved_at: 2026-07-27
 OPERATING.md              공통 운영방침
 ops/BOOT.md               세션이 읽는 최소 부팅 진입점
 ops/registry.json         역할·실행자·저장소를 서로 분리한 레지스트리
+ops/WORK-TEMPLATE.md      전환 중 사용할 프로젝트 발령장 형식
 persona.md                Director의 현재 소통·판단 기준 한 개
 decisions/                프로젝트 간 살아 있는 결정만
 ```
 
 프로젝트 전문 규칙·현황·작업·테스트는 각 프로젝트 Git의 `README.md`, `STATUS.md`, `WORK.md`에 둔다.
-전환 중에만 `ops/migration-v2-manifest.json`과 `ops/SHADOW-PROBE.md`를 두고, 전환 종료와 검수 뒤 삭제한다.
+전환 중에만 `ops/migration-v2-manifest.json`, `ops/SHADOW-PROBE.md`, `ops/WORK-TEMPLATE.md`를 두고, 프로젝트별 `WORK.md` 도입과 전환 검수 뒤 최소 운영방침에 병합하거나 삭제한다.
 
 ## 4. 우선순위별 분류
 

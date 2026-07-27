@@ -59,6 +59,8 @@ Director가 역할 부여
 
 ```yaml
 task_id: 작업 식별자
+state: assigned | working | review | done | blocked | cancelled
+director_attention: none | 결정 필요 | 직접 테스트 필요 | 반영 완료 | 막힘
 role_id: 역할 이름
 executor_ref: 현재 세션 또는 실행자의 표시용 별칭
 assigned_by: director
@@ -71,6 +73,8 @@ allowed: 허용 행동
 read_scope: 읽기 범위
 write_scope: 쓰기 범위
 forbidden: 금지 범위
+required_refs: 반드시 읽을 프로젝트 규칙
+preconditions: 시작 전에 충족할 조건
 done_when: 관찰 가능한 완료조건
 evidence_required: 제출할 증거
 test_plan: 테스트 방법
@@ -80,6 +84,7 @@ expires_at: 작업 종료 또는 명시 시점
 
 `executor_ref`에는 비밀 세션 ID나 접근 키를 쓰지 않는다. 한 작업의 작성자는 한 명으로 두고, 역할 권한은 작업 종료·만료·회수와 함께 끝난다.
 실제 역할 부여 기록의 정본은 대상 프로젝트의 `WORK.md`에 둔다. Notes나 Telegram에 같은 임명 상태를 복제하지 않는다.
+형식은 `ops/WORK-TEMPLATE.md`를 사용한다. Director는 `objective`, `director_attention`, `forbidden`, `done_when`, `test_plan` 다섯 항목만 먼저 읽어도 된다.
 
 ## 3. 기본 역할 예시
 

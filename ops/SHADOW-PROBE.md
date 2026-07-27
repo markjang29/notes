@@ -1,11 +1,11 @@
 ---
-title: 운영체계 v2 무변경 전환 시험
+title: 운영체계 v2 무변경 전환 시험과 dual-reader 준비
 date: 2026-07-27
-status: completed-no-write
+status: dual-reader-prepared-no-runtime-apply
 authority: OPERATING.md
 ---
 
-# 운영체계 v2 무변경 전환 시험
+# 운영체계 v2 무변경 전환 시험과 dual-reader 준비
 
 ## 결론
 
@@ -15,7 +15,8 @@ authority: OPERATING.md
 | Windows ZCode | PASS — `WORK.md`가 없어 의도대로 읽기 전용 | 차단 |
 | AWS Cokacdir | 등록 경로 5/5, chat scope 10개 alias 해석 PASS | 차단 |
 
-시험 중 파일·서비스·세션 설정을 수정하지 않았고 서비스 중지·재시작도 하지 않았다.
+초기 shadow probe에서는 파일·서비스·세션 설정을 수정하지 않았고 서비스 중지·재시작도 하지 않았다.
+이번 준비 단계에서는 검토용 Git 브랜치의 reader·테스트·운영 문서만 추가했고, 사용자 설치 skill과 runtime 설정은 수정하지 않았다.
 `ops/registry.json`은 계속 `shadow-only`이며 실제 작업 권한을 만들지 않는다.
 
 ## 공통 검증
@@ -27,6 +28,26 @@ authority: OPERATING.md
 - Agent Mail 민감정보 검사기로 registry와 migration manifest 모두 PASS
 - 구형 Agent Mail baseline: registry 검사 PASS, 단위 테스트 23/23, boot installer 테스트 7/7 PASS
 - 구형 검사기에 새 registry를 직접 넣었을 때 `agent-registry-v1` 불일치로 거부됨. 예상된 결과이며 dual-reader가 필요함
+
+## dual-reader 준비 결과
+
+- Scenario 최신 원격 `main`에서 격리 브랜치 `codex/ops-v2-dual-reader`와 별도 clean worktree를 만들었다. 기존 dirty Scenario 작업 폴더는 수정하지 않았다.
+- 새 reader는 v1을 v2에서 합성하지 않는다. 기존 v1을 Agent Mail 권한 정본으로 그대로 두고, v1 actor와 v2 executor·environment·repository가 모순 없이 대응하는지만 읽기 전용 보고서로 만든다.
+- 실제 Notes 입력의 정적 대조는 `shadow-static-valid`: legacy actor 8, Director principal 1, executor mapping 7/7, repository 7, 누락 0, 오류 0이다.
+- runtime binding 없이 성공 상태를 `shadow-static-valid`로 제한했다. private runtime manifest가 모두 일치한 경우에만 `shadow-parity-valid`가 될 수 있다.
+- runtime route 검사를 강제하면 현재는 `runtime_bindings_required`로 차단된다. 따라서 AWS·Windows·ZCode 실제 경로 일치는 아직 완료로 표시하지 않는다.
+- 잘못된 권한 필드, 역할·실행자 재결합, 손상된 중첩 타입, 저장소 누락·원격 변조·기본 브랜치 변조, hold·Matrix blocker 제거를 모두 실패 처리한다.
+- 신규 reader 테스트 21/21, 기존 Agent Mail 테스트 23/23, boot installer 테스트 7/7 PASS
+- repository 내부 Claude mirror와 skill lock만 공식 sync했다. 사용자 설치 skill, Cokacdir 설정, 서비스와 세션은 변경하지 않았다.
+- 이번 실행에서는 안정적으로 재사용할 SSH 접속 별칭을 확인하지 못해 새 reader의 AWS Python 실행은 반복하지 않았다. 위 AWS 5/5·10 scope 결과는 앞선 실제 무변경 probe의 증거이며, 새 reader의 `runtime_parity`는 의도대로 `not-checked`다.
+
+## WORK 발령 형식 준비
+
+- `ops/WORK-TEMPLATE.md`에 22개 필드의 기계 가독 계약을 정의했다.
+- Director는 `objective`, `director_attention`, `forbidden`, `done_when`, `test_plan` 다섯 항목만 먼저 읽으면 된다.
+- `WORK.md` 파일 없음 또는 정상 문서에 현재 실행자 계약 없음은 읽기 전용이다.
+- 형식 손상·필드 누락·`task_id` 중복은 문서 오류로 차단하고, 만료·충돌은 현재 실행자 후보에 한해 차단한다.
+- 템플릿을 실제 프로젝트에 배치하거나 역할을 발령하지는 않았다.
 
 ## Windows
 
@@ -125,8 +146,8 @@ private runtime binding
 
 1. AWS 작업트리를 건드리지 않고 v2 준비 commit을 안전하게 pin·소비할 방식 확정
 2. AWS의 갈라진 Notes commit과 dirty 로그를 보존한 채 통합 방법 결정
-3. dual-reader와 미등록 runtime bot 보존 테스트 구현
-4. 프로젝트별 `WORK.md` 도입안 작성
+3. private runtime manifest를 만들고 dual-reader의 실제 route parity를 AWS·Windows·ZCode에서 검증
+4. 프로젝트별 `WORK.md`를 실제 배치하기 전 현재 WIP·hold를 대조하고 Director 발령을 받기
 5. Matrix 정본 결정
 6. 기존 Trader hold가 executor·repository 중 어디에 적용되는지 Director 결정
 

@@ -361,6 +361,8 @@
     "runtime_capability_revalidation": true,
     "required_fields": [
       "task_id",
+      "state",
+      "director_attention",
       "role_id",
       "executor_ref",
       "assigned_by",
@@ -373,12 +375,56 @@
       "read_scope",
       "write_scope",
       "forbidden",
+      "required_refs",
+      "preconditions",
       "done_when",
       "evidence_required",
       "test_plan",
       "reviewer",
       "expires_at"
     ],
+    "field_rules": {
+      "state": {
+        "allowed": [
+          "assigned",
+          "working",
+          "review",
+          "done",
+          "blocked",
+          "cancelled"
+        ]
+      },
+      "director_attention": {
+        "allowed_ref": "director_attention_values"
+      },
+      "assigned_by": {
+        "default_required": "director",
+        "delegation_requires_explicit_grant": true
+      },
+      "role_id": {
+        "must_reference": "roles.role_id"
+      },
+      "executor_ref": {
+        "must_reference": "executors.executor_ref"
+      },
+      "repo_id": {
+        "must_reference": "repositories.repo_id"
+      },
+      "base_commit": {
+        "pattern": "^[0-9a-f]{40}$",
+        "must_exist_in_target_repository": true,
+        "all_zero_forbidden": true
+      },
+      "branch": {
+        "write_assignment_must_not_use_default_branch": true
+      },
+      "expires_at": {
+        "allowed_forms": [
+          "RFC3339 date-time with timezone",
+          "task-end"
+        ]
+      }
+    },
     "effective_access": {
       "all_must_allow": [
         "role.grants",
@@ -402,6 +448,13 @@
     ]
   },
   "user_statuses": [
+    "결정 필요",
+    "직접 테스트 필요",
+    "반영 완료",
+    "막힘"
+  ],
+  "director_attention_values": [
+    "none",
     "결정 필요",
     "직접 테스트 필요",
     "반영 완료",
