@@ -15,7 +15,7 @@
     },
     "scenario_adapter": {
       "ref": "refs/heads/codex/ops-v2-dual-reader",
-      "commit": "05769557f327986cc20d88c5bc695b684f52a46d"
+      "commit": "cb22000c67c7a175208db49b19e3e5ffcbcc4177"
     },
     "scenario_pilot": {
       "ref": "refs/heads/codex/ops-v2-report-only-pilot",
