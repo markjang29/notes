@@ -1,7 +1,7 @@
 ---
 title: 운영체계 v2 무변경 검증과 전환 준비
 date: 2026-07-27
-status: trust-anchor-prepared-final-aws-reprobe-pending
+status: hardened-shadow-verified-no-runtime-apply
 authority: OPERATING.md
 ---
 
@@ -13,11 +13,12 @@ authority: OPERATING.md
 |---|---|---|
 | Windows Codex | 실제 `WORK.md` 없음, 역할·권한 없이 읽기 전용 | 차단 |
 | Windows ZCode | 실제 `WORK.md` 없음, 역할·권한 없이 읽기 전용 | 차단 |
-| AWS Cokacdir | 5+2 private baseline 캡처 완료, 고정 Git anchor 재검증 대기 | 차단 |
+| AWS Cokacdir | 고정 Git 기준으로 `5/10/2`, 설정 무변경, 서비스 연속성을 최종 검증 | 차단 |
 | 구형 파일·worktree | 삭제 전 목록과 보호 규칙만 준비 | 삭제 안 함 |
 
-이번 단계는 코드·테스트·증거와 삭제 전 목록만 준비한다. 사용자 설치 skill, Cokacdir 설정,
-서비스, 세션, 기존 dirty 작업, `main` 포인터는 변경하지 않는다.
+이번 단계는 코드·테스트·증거와 삭제 전 목록을 준비하고 실제 AWS에서 무변경 검증까지
+마쳤다. 사용자 설치 skill, Cokacdir 설정, 서비스, 세션, 기존 dirty 작업, `main` 포인터는
+변경하지 않았다.
 `ops/registry.json`은 계속 `shadow-only`이며 실제 작업 권한을 만들지 않는다.
 
 ## 준비한 안전장치
@@ -30,13 +31,16 @@ authority: OPERATING.md
   원격 ref와 full commit을 확인하고, 임시 bare Git 저장소에서 exact
   `100644 ops/registry.json` blob만 읽는다.
 - 대상 저장소의 정확한 Git 최상위 `WORK.md`만 인정한다. 외부 파일, 하위 경로, symlink,
-  Windows reparse와 비정규 파일은 차단한다.
+  Windows reparse, hardlink와 비정규 파일은 차단한다. 검사와 읽기 사이에 파일이
+  교체되는 경우도 `O_NOFOLLOW` file descriptor와 inode 결속으로 차단한다.
 - `base_commit`은 대상 저장소에 존재하는 것만으로 부족하다. canonical remote의 실제
   default-branch tip과 정확히 일치해야 한다.
 - 8MiB 초과, 깊이 64 초과, duplicate JSON key, `NaN`·`Infinity`, 형식 손상,
   필드 누락, `task_id` 중복, 만료·충돌, 잘못된 reviewer와 self-review를 차단한다.
 - 문서 앞 설명과 JSON 전체에서 알려진 credential 형식을 검사하고, 오류 출력에 원문 값을
   반사하지 않는다.
+- 모든 Git 조회는 caller가 주입한 `GIT_*` 환경과 외부 Git 설정을 제거하고, 입력 prompt와
+  임의 hook 실행을 막는다.
 - shadow 상태에서는 계산 가능한 교집합을 증거로만 남긴다. 실제 `allowed`, read scope,
   write scope와 production authority는 모두 빈 값이다.
 
@@ -46,7 +50,8 @@ authority: OPERATING.md
   분리하며, 등록 대상 chat scope 분포는 `3/2/2/2/1`, 총 10개다.
 - actor→executor→route 대응과 actor별 chat scope fingerprint를 exact 비교한다.
 - 검증기는 caller가 넘긴 settings 객체나 before/after hash를 믿지 않는다. 고정된 실제
-  settings 파일을 regular file·owner·mode·inode/device에 결속해 직접 두 번 읽는다.
+  settings 파일을 regular file·owner·mode·single-link·inode/device에 결속해 직접 두 번
+  읽는다.
 - private baseline에는 256-bit salt, scope fingerprint와 settings 원본 hash를 둔다.
   Windows private 파일은 `<user>/.codex/ops-v2-runtime-baseline.private.json`에 두고,
   현재 사용자·SYSTEM·Administrators만 접근하도록 상속 없는 ACL을 적용했다.
@@ -84,11 +89,28 @@ authority: OPERATING.md
 - 기존 settings 원본 hash가 앞선 같은 세션의 읽기 전용 관측과 일치하는 경우에만 private
   baseline을 캡처했다.
 - settings 원문과 private baseline은 화면·Git·일반 로그에 출력하지 않았다.
-- public anchor를 고정한 Notes Git object와 Scenario 실행 commit이 아직 확정 전이므로,
-  이 문서에서는 최종 `shadow-valid` receipt를 주장하지 않는다.
-- 최종 단계는 immutable Notes tag를 만든 뒤 AWS 임시 디렉터리에서 그 exact object와
-  committed Scenario reader를 사용해 다시 검사하고, 서비스·settings 무변경 receipt를
-  남기는 것이다.
+- Notes immutable tag의 peeled commit과 Scenario
+  `codex/ops-v2-dual-reader`의 exact commit을 원격 광고값과 대조한 뒤, AWS 임시
+  디렉터리에서만 checkout해 검증했다.
+- 첫 private Scenario fetch는 외부 Git 설정 차단 때문에 안전하게 중단됐다. 서버의 기존
+  credential store가 owner-only regular single-link 파일임을 확인한 뒤, 그 파일을
+  읽기 전용으로 명시한 임시 fetch만 다시 수행했다. Git 설정은 변경하지 않았다.
+- 최종 판정은 `shadow-valid`, baseline commitment·settings 경로 결속·검사 중 무변경은
+  모두 참이고, 등록 actor 5·chat scope 10·보존 대상 2·mutation 0이다.
+- Cokacdir service는 검사 전후 모두 `active`이고 process identity가 같았다. 재시작하지
+  않았고 기존 AWS Scenario HEAD·dirty 상태도 동일했다.
+- AWS Scenario에는 `WORK.md`가 없어 `read-only / work-missing`이며, 허용 행동과
+  read/write scope는 모두 비어 있다.
+- 임시 checkout은 검사 직후 제거했다. 공개 결과는
+  `ops/evidence/aws-runtime-shadow-receipt.json`에만 남겼다.
+
+## 검증 결과
+
+- Agent Mail·WORK·runtime 검증 125개와 skill sync 검증 21개, 총 146개를 실행했다.
+- 143개는 통과했고, Windows 환경에서 생성할 수 없는 symlink와 POSIX mode 관련 3개는
+  명시적으로 skip됐다.
+- Ruff, canonical/mirror/lock 정합성 검사와 `git diff --check`가 모두 통과했다.
+- 세 차례 독립 감사에서 마지막 보완까지 반영한 뒤 잔여 P0/P1은 0건으로 판정됐다.
 
 ## Git 보호 대상
 
@@ -122,17 +144,15 @@ authority: OPERATING.md
 tag object·peeled commit과 `git bundle verify`의 complete-history 결과가 있다.
 이 bundle과 receipt 검증이 실패하면 cutover를 시작하지 않는다.
 
-## 최종 전환 전 남은 조건
+## Director 결정이 남은 항목
 
-1. public anchor를 포함한 Notes commit에 immutable 원격 tag를 만들고 Scenario reader가
-   그 tag·commit을 코드로 고정하기
-2. committed reader와 Git 밖 private baseline으로 AWS 최종 무변경 probe를 다시 실행하고
-   비밀 없는 receipt 남기기
-3. 기존 user skill을 유지할지, 백업 후 managed target으로 adoption할지 Director 결정
-4. 프로젝트별 `WORK.md`를 실제 배치하기 전 현재 WIP·hold와 대조하고 Director 발령 받기
-5. Matrix 정본 결정
-6. Trader hold가 executor와 repository 중 어디에 적용되는지 Director 결정
-7. worktree 33개 실제 삭제 여부를 별도 승인받기
+1. 기존 user skill을 그대로 유지할지, 백업 후 managed target으로 adoption할지 결정
+2. 프로젝트별 `WORK.md`를 실제 배치하기 전 현재 WIP·hold와 대조하고 역할 발령
+3. Matrix 정본 결정
+4. Trader hold가 executor와 repository 중 어디에 적용되는지 결정
+5. AWS·로컬의 diverged commit, dirty 파일과 local-only WIP를 정본에 통합·보존·폐기할지 결정
+6. 정리 후보 worktree 33개를 실제 삭제할지 별도 승인
 
-이 조건과 별도 승인이 끝나기 전에는 runtime 포인터 저장, 서비스 재시작, `main` 병합,
-구형 파일 또는 worktree 삭제를 하지 않는다.
+이 결정과 별도 승인이 끝나기 전에는 runtime 포인터 저장, 서비스 재시작, `main` 병합,
+구형 파일 또는 worktree 삭제를 하지 않는다. 이번 `shadow-valid`는 전환 허가가 아니라,
+안전하게 전환할 수 있는 준비가 검증됐다는 뜻이다.

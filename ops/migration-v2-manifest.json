@@ -42,7 +42,8 @@
     "ops/SHADOW-PROBE.md",
     "ops/migration-v2-manifest.json",
     "ops/worktree-cleanup-manifest.json",
-    "ops/evidence/pre-ops-v2-bundle-receipt.json"
+    "ops/evidence/pre-ops-v2-bundle-receipt.json",
+    "ops/evidence/aws-runtime-shadow-receipt.json"
   ],
   "protected_untracked_at_baseline": [
     {

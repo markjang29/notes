@@ -1,0 +1,55 @@
+{
+  "schema": "ops-runtime-shadow-receipt-v2",
+  "observed_at": "2026-07-27T07:57:27Z",
+  "status": "shadow-valid",
+  "actual_cutover_applied": false,
+  "scenario_source": {
+    "ref": "refs/heads/codex/ops-v2-dual-reader",
+    "commit": "8387cc3d7b62fcf0f5d7cb9b35894b1f5e8a92a7",
+    "advertised_match": true
+  },
+  "notes_source": {
+    "ref": "refs/tags/ops-v2-runtime-anchor-20260727-v1",
+    "commit": "07abbc413679e363755b5e31c64c21ef8d88e3dd",
+    "verified_by_runtime": true,
+    "source_paths": [
+      "projects/agent-ops/actors.json",
+      "ops/registry.json",
+      "ops/runtime-baseline-anchor.json"
+    ]
+  },
+  "trust": {
+    "baseline_id": "rb-0128c36f49cccca08b56c6ba47ba5433",
+    "commitment_match": true,
+    "path_binding": true,
+    "unchanged_during_probe": true
+  },
+  "counts": {
+    "registered_actors": 5,
+    "registered_chat_scopes": 10,
+    "preserved_extras": 2
+  },
+  "mutation_count": 0,
+  "private_fields_emitted": 0,
+  "work_contract": {
+    "executor_ref": "aws-executor-02",
+    "status": "read-only",
+    "reason": "work-missing",
+    "authority_granted": false,
+    "production_write_authorized": false,
+    "allowed": [],
+    "read_scope": [],
+    "write_scope": []
+  },
+  "service": {
+    "active_before": true,
+    "active_after": true,
+    "identity_unchanged": true
+  },
+  "preservation": {
+    "runtime_settings_written": false,
+    "service_restarted": false,
+    "existing_aws_repositories_touched": false,
+    "temporary_checkout_removed": true
+  }
+}
