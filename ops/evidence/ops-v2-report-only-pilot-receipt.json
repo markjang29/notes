@@ -1,0 +1,100 @@
+{
+  "schema": "ops-v2-report-only-pilot-receipt-v1",
+  "observed_at": "2026-07-27T10:39:41.7728985Z",
+  "status": "report-only-pilot-complete",
+  "actual_cutover_applied": false,
+  "sources": {
+    "notes": {
+      "ref": "refs/tags/ops-v2-runtime-anchor-20260727-v1",
+      "commit": "07abbc413679e363755b5e31c64c21ef8d88e3dd"
+    },
+    "scenario_adapter": {
+      "ref": "refs/heads/codex/ops-v2-dual-reader",
+      "commit": "62a14ec19fc2c057ff28377e58dae6fe5d515016"
+    },
+    "scenario_pilot": {
+      "ref": "refs/heads/codex/ops-v2-report-only-pilot",
+      "commit": "eb416e17efa3cb9c754ac019da3f62fddf96a3eb",
+      "base_commit": "b88f7173f3526527fb0bf79dd439321e9d11396f"
+    }
+  },
+  "work_contract": {
+    "task_id": "scenario-report-only-pilot-01",
+    "role_id": "worker",
+    "executor_ref": "aws-executor-02",
+    "computed_intersection": [
+      "analyze",
+      "repo_read",
+      "report"
+    ],
+    "production_evaluator": {
+      "status": "blocked",
+      "error_code": "base_commit_unverified",
+      "authority_granted": false,
+      "production_write_authorized": false
+    },
+    "external_remote_tip_proof": {
+      "advertised_match": true,
+      "authority_source": false
+    },
+    "shadow_result": {
+      "status": "shadow-read-only",
+      "reason": "shadow-mode-no-authority",
+      "allowed": [],
+      "read_scope": [],
+      "write_scope": []
+    }
+  },
+  "verification": {
+    "tests": {
+      "total": 181,
+      "passed": 177,
+      "skipped": 4,
+      "failed": 0
+    },
+    "lint": "pass",
+    "skill_mirror": "pass",
+    "skill_diff_check": "pass"
+  },
+  "aws": {
+    "managed_skill_install": {
+      "codex_surface": "managed",
+      "claude_surface": "managed",
+      "source_content_match": true,
+      "adoption_receipts_created": false
+    },
+    "boot_adapter_dry_run": {
+      "status": "dry-run-valid",
+      "registered_actors": 5,
+      "registered_chat_scopes": 10,
+      "preserved_extras": 2,
+      "mutation_plan_count": 10,
+      "settings_changed_if_applied": true,
+      "applied": false,
+      "backup_created": false,
+      "rollback_performed": false,
+      "error_codes": []
+    },
+    "preservation": {
+      "runtime_settings_unchanged": true,
+      "service_unchanged": true,
+      "service_active": true,
+      "service_running": true,
+      "live_repository_unchanged": true,
+      "credential_store_unchanged": true,
+      "temporary_checkout_removed": true
+    }
+  },
+  "windows": {
+    "managed_skill_adoption_applied": false,
+    "reason": "secure_get_only_private_git_boundary_not_implemented"
+  },
+  "deferred": [
+    "code-pinned native get-only private Git verification",
+    "private runtime binding and launcher",
+    "production authority evaluator activation",
+    "settings apply and service transition",
+    "deletion and legacy cleanup"
+  ],
+  "production_authority_granted": false
+}
