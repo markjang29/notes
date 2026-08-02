@@ -23,6 +23,9 @@ authority: OPERATING.md
 한 프로젝트에는 진행 중인 주 작업 한 건과 선택적인 독립 실험 한 건만 둔다.
 끝난 작업은 `state`를 `done` 또는 `cancelled`로 바꾸고, 역할 권한도 함께 끝낸다.
 
+Director에게 제출하는 답변이 산출물인 작업은 `required_refs`에 `ops/ANSWER-CERTIFICATION.md`를,
+`evidence_required`에 필요한 인증 등급과 근거를 적는다. 새 필드를 임의로 추가하지 않는다.
+
 ## 기계가 읽는 계약
 
 실제 프로젝트의 `WORK.md`에는 아래처럼 `ops-work-v2` JSON 블록 하나를 둔다.

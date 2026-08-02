@@ -2,10 +2,11 @@
   "schema": "ops-registry-v2",
   "version": 1,
   "status": "shadow-only",
-  "updated_at": "2026-07-27",
+  "updated_at": "2026-08-02",
   "authority": {
     "policy_ref": "OPERATING.md",
     "boot_ref": "ops/BOOT.md",
+    "answer_certification_ref": "ops/ANSWER-CERTIFICATION.md",
     "director_principal": "director",
     "assignment_ref": "<target-repository>/WORK.md",
     "runtime_binding": "private runtime manifest outside Git"

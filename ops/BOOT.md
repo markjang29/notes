@@ -12,7 +12,7 @@ authority: OPERATING.md
 
 ## 시작 순서
 
-1. `OPERATING.md`와 `ops/registry.json`을 읽는다.
+1. `OPERATING.md`, `ops/ANSWER-CERTIFICATION.md`와 `ops/registry.json`을 읽는다.
 2. 실제 transport와 비공개 runtime manifest로 자신의 `executor_ref`만 확인한다.
 3. 대상 프로젝트의 `AGENTS.md`·프로젝트 규칙·`WORK.md`를 읽는다.
 4. `WORK.md` 파일 자체가 없으면 역할이 없는 상태다. 오류가 아니라 읽기 전용 현황 확인으로 끝낸다.
@@ -21,6 +21,7 @@ authority: OPERATING.md
 7. 현재 실행자와 일치하는 후보끼리 충돌하거나 활성 후보가 이미 만료됐으면 `막힘`으로 끝낸다. 통과한 계약에만 `role.grants ∩ environment.supports ∩ WORK.allowed`를 적용하고 역할·환경·작업의 금지는 항상 우선한다. 기준 커밋, 읽기·쓰기 범위와 저장소 gate도 함께 대조한다.
 8. 검증을 모두 통과한 경우에만 `executor_ref / role_id / task_id / objective / repo_id / base_commit / allowed / forbidden / done_when / test_plan / expires_at`을 짧게 확인하고 시작한다.
 9. 기존 dirty 변경이 쓰기 범위와 겹치면 쓰기를 중단하고 `막힘`으로 보고한다. 읽기 전용 shadow probe는 dirty 상태를 보존한 채 수행할 수 있다.
+10. Director에게 답할 때 중요한 주장마다 실제 인증 수준을 표시한다. 질문과 답변 인증은 실행 권한을 만들지 않는다.
 
 production 판정기는 임의 로컬 `ops/registry.json`을 받지 않는다. Scenario 코드에 검토
 후 고정한 Notes 원격 ref·full commit의 exact Git blob만 임시 bare 저장소에서 읽고,
@@ -32,6 +33,7 @@ production 판정기는 임의 로컬 `ops/registry.json`을 받지 않는다. S
 - 역할은 현재 `WORK.md` 작업 계약에서만 생기고 작업 종료·만료·회수와 함께 끝난다.
 - 한 작업의 작성자는 한 명이다. 독립 검수가 필요하면 별도 reviewer를 둔다.
 - Telegram은 알림·질문·깨우기 수단이며 완료 정본이 아니다.
+- 사용자 질문은 실행 요청과 구분한다. 실행 요청도 현재 작업 계약의 허용 범위를 넓히지 않는다.
 - 제품 지식과 완료 상태는 대상 프로젝트 Git, 공통 운영은 Notes Git이 정본이다.
 - 키·쿠키·세션 ID·chat ID·절대경로·private runtime binding을 Git이나 작업 계약에 기록하지 않는다.
 - 승인된 `gitignore` 원자료는 보호 영역에 두고 Git에는 해시·출처·manifest만 기록한다.
