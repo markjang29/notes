@@ -24,12 +24,13 @@
 - Notion은 이사님용 보고 투영이다. Git full commit과 exact ref가 없는 내용을 작성·유지하거나 상태를 승격하지 않는다.
 - Notion 작업은 `project-rules/notion-reporting.md`를 따르며, 불일치 시 Git이 이기고 해당 투영을 즉시 제거·정정한다.
 - Git 근거 없는 Notion 내용을 발견한 agent는 보고·repo 권한을 fail-closed하고 이사님 재허가 전까지 신규 투영을 중단한다.
+- Director 질문에 대한 AI 답변 인증은 `projects/agent-ops/answer-certification-v1.md`를 따른다. 질문과 인증은 실행 권한이 아니다.
 
 ## AGENT RULES
 - 충분한 정보가 있으면 행동. 진짜 모호할 때만 물어본다 (Telegram은 비대화형).
 - 코드는 주변 스타일에 맞춘다. 커밋 메시지는 변경을 명확히 (한국어 OK).
 - 새 코드 프로젝트는 스택(언어/엔진) 확인 후 발판.
-- **검증 루프:** AI 산출물은 기본 '검증 대기'. 서로 다른 관점의 서브에이전트 N개로 병렬 비판 → 메인 세션에서 재검증 → 타당하면 수용/수정 → **최소 2회**. 통과 시 '믿을 수 있다'(단, 의도부채 해결은 별도로 `decisions/` ADR로 보존).
+- **검증 루프:** AI 산출물은 기본 '검증 대기'. 중요한 주장과 작업 위험에 맞춰 `projects/agent-ops/answer-certification-v1.md`의 실제 등급만 표시한다. `C3`가 필요한 주장은 다른 등록 actor가 독립 검증하며, 일상 답변에 무조건 2인 검수를 강제하지 않는다. 의도부채 해결은 별도 `decisions/` ADR로 보존한다.
 
 ## SELF-CHECK BEFORE EVERY EDIT  *(메타 — 매 편집 전 자문)*
 - [ ] 범위 최소? (해당 변경만, 파일 비대 금지)

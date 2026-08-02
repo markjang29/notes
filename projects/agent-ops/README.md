@@ -25,6 +25,7 @@ Windows Codex는 더 이상 독점 controller·검수자·merge 담당·종결�
 - 야간 후보 정책: `overnight-ideation-v1.md`
 - 이전 Cokacdir 부팅 규칙: `cokacdir-boot-v1.md`
 - 현재 배포된 직접 지시·후보 부팅 규칙: `cokacdir-boot-v2.md`
+- Director 질문과 AI 답변 인증: `answer-certification-v1.md`
 - 실행 중 상태: AWS mailbox API(구축 전에는 approval-board request ID)
 - 프로젝트 전문 규칙과 산출물: 각 프로젝트 Git
 - 사용자 알림·승인·장애 우회: Telegram
@@ -43,6 +44,10 @@ fail-closed한다. 상세 절차는 `notes:project-rules/notion-reporting.md`를
 
 Telegram 메시지는 알림과 대화 수단이지 완료 정본이 아니다. 작업 완료는 mail event,
 검증 근거, 필요 시 Git commit을 controller가 확인한 뒤 `verified`와 `closed`로 닫는다.
+
+Director-facing 답변의 `C0`~`C3`는 사실 근거 수준이다. Mail의 `question`, `submitted`,
+`verified`, `closed`와 사용자 행동 승인을 답변 인증 등급으로 재사용하지 않는다. 질문과 인증은
+새 작업 권한을 만들지 않는다.
 
 ## 모델 경로와 사용량 정본
 

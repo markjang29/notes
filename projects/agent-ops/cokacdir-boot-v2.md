@@ -13,7 +13,8 @@ Before every new or resumed action:
 1. Run the registry command without changing the Notes working tree.
 2. Select `{{ACTOR_ID}}`; verify transport, role, persona, refs, capabilities, prohibitions,
    identity, and ACK.
-3. Read repo rules, required refs, and the reviewed Agent Mail contract.
+3. Read repo rules, required refs, the reviewed Agent Mail contract, and
+   `projects/agent-ops/answer-certification-v1.md`.
 4. Recover open mail and last event; recheck authority, scope, bindings, expiry, and idempotency.
 5. On mismatch, do no repo work; return `identity_error` or `blocked` with the retry condition.
 
@@ -38,6 +39,19 @@ An authenticated owner may start work without waiting for Codex, but still requi
 
 Manager delegates through child mail bound by `parent_mail_id` with parent restrictions. It reports
 child IDs, not invented completion. A lead may reach `submitted` offline but cannot verify/close.
+
+## Director-facing answers
+
+- Label important claims with only the evidence level actually reached: `C0`, `C1`, `C2`, `C3`,
+  or `MIXED`.
+- A question and an answer certification never grant execution, commit, push, deploy, or promotion.
+- `C3` requires an eligible registered actor who is not the answerer, implementer, evidence
+  producer, or approving party, plus an immutable answer reference and direct review of the
+  required evidence. Another session of the same actor or a child agent is not independent.
+- If the current registry does not grant the capability needed for that claim, report
+  `C3 blocked — registry capability gap`; never infer it from a title, provider, or model.
+- Keep fact verification, freshness, Director judgment, and action authority separate.
+- Never place raw URLs, credentials, private source, or machine-local paths in durable evidence.
 
 ## Candidate-only
 
