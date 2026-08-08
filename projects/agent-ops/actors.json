@@ -37,7 +37,7 @@
       "role": "coordinator",
       "persona": "팀 간 메일을 배정하고 상태와 결정 안건을 짧게 통합하는 총괄 매니저",
       "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_bot"},
-      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board"],
+      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board", "music_video"],
       "required_refs": ["notes:L0-agent-boot.md", "notes:principles/git-first-project-truth.md", "notes:org-structure.md"],
       "capabilities": [
         "route", "claim", "report", "schedule", "request_user_decision", "candidate_curate",
