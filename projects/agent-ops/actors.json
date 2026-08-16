@@ -1,7 +1,7 @@
 {
   "schema": "agent-registry-v1",
   "version": 7,
-  "updated_at": "2026-07-19T23:35:00+09:00",
+  "updated_at": "2026-08-16T22:10:00+09:00",
   "authority": "notes/projects/agent-ops/actors.json",
   "actors": [
     {
@@ -12,12 +12,25 @@
       "providers": [],
       "role": "final_approver",
       "persona": "방향, 취향, 비용, 공개와 권한 확대의 최종 결정자",
-      "transport": {"kind": "telegram", "address": "owner"},
-      "repo_ids": ["notes"],
-      "required_refs": ["notes:persona.md"],
+      "transport": {
+        "kind": "telegram",
+        "address": "owner"
+      },
+      "repo_ids": [
+        "notes"
+      ],
+      "required_refs": [
+        "notes:persona.md"
+      ],
       "capabilities": [
-        "approve", "prioritize", "cancel", "rename_persona", "issue_mail",
-        "approve_candidate", "hold_candidate", "discard_candidate"
+        "approve",
+        "prioritize",
+        "cancel",
+        "rename_persona",
+        "issue_mail",
+        "approve_candidate",
+        "hold_candidate",
+        "discard_candidate"
       ],
       "forbidden": [],
       "identity_status": "accepted_source",
@@ -28,22 +41,54 @@
       "display_name": "매니저",
       "kind": "agent",
       "location": "aws",
-      "providers": ["claude", "z.ai"],
+      "providers": [
+        "claude",
+        "z.ai"
+      ],
       "runtime_accounting": {
         "client_surface": "claude",
         "usage_pool": "z.ai",
         "usage_source": "runtime_measured_only"
       },
       "role": "coordinator",
-      "persona": "팀 간 메일을 배정하고 상태와 결정 안건을 짧게 통합하는 총괄 매니저",
-      "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_bot"},
-      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board", "music_video"],
-      "required_refs": ["notes:L0-agent-boot.md", "notes:principles/git-first-project-truth.md", "notes:org-structure.md"],
-      "capabilities": [
-        "route", "claim", "report", "schedule", "request_user_decision", "candidate_curate",
-        "repo_read", "repo_write", "git_commit", "git_push"
+      "persona": "팀 간 메일을 배정하고 상태와 결정 안건을 짧게 통합하는 총괄 매니저. 2026-08-16 이사님 지시로 Windows/Codex 종료 이후 LIVING-DRAMA-OS 통합 작업자를 겸한다",
+      "transport": {
+        "kind": "cokacdir_telegram",
+        "address": "@heav_lnx_bot"
+      },
+      "repo_ids": [
+        "notes",
+        "scenario",
+        "rpg_game",
+        "autotrader",
+        "approval-board",
+        "music_video",
+        "matrix_asset_agent",
+        "matrix",
+        "matrix_zcode",
+        "matrix_codex"
       ],
-      "forbidden": ["silent_project_implementation", "invent_completion"],
+      "required_refs": [
+        "notes:L0-agent-boot.md",
+        "notes:principles/git-first-project-truth.md",
+        "notes:org-structure.md"
+      ],
+      "capabilities": [
+        "route",
+        "claim",
+        "report",
+        "schedule",
+        "request_user_decision",
+        "candidate_curate",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
+      ],
+      "forbidden": [
+        "silent_project_implementation",
+        "invent_completion"
+      ],
       "identity_status": "runtime_verified",
       "ack_status": "acknowledged"
     },
@@ -52,7 +97,10 @@
       "display_name": "scenario 팀장",
       "kind": "agent",
       "location": "aws",
-      "providers": ["claude", "z.ai"],
+      "providers": [
+        "claude",
+        "z.ai"
+      ],
       "runtime_accounting": {
         "client_surface": "claude",
         "usage_pool": "z.ai",
@@ -60,14 +108,37 @@
       },
       "role": "scenario_project_lead",
       "persona": "검토된 RISU 자산을 근거로 세계·인물·서사를 만들고 실행 가능성을 검증하는 시나리오 팀장",
-      "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_scenario_bot"},
-      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board"],
-      "required_refs": ["notes:principles/git-first-project-truth.md", "notes:principles/scenario-team-purpose.md", "scenario:HARD_RULES.md"],
-      "capabilities": [
-        "scenario_build", "availability_review", "repo_scoped_change", "report", "candidate_propose",
-        "repo_read", "repo_write", "git_commit", "git_push"
+      "transport": {
+        "kind": "cokacdir_telegram",
+        "address": "@heav_lnx_scenario_bot"
+      },
+      "repo_ids": [
+        "notes",
+        "scenario",
+        "rpg_game",
+        "autotrader",
+        "approval-board"
       ],
-      "forbidden": ["unreviewed_asset_promotion", "controller_secret"],
+      "required_refs": [
+        "notes:principles/git-first-project-truth.md",
+        "notes:principles/scenario-team-purpose.md",
+        "scenario:HARD_RULES.md"
+      ],
+      "capabilities": [
+        "scenario_build",
+        "availability_review",
+        "repo_scoped_change",
+        "report",
+        "candidate_propose",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
+      ],
+      "forbidden": [
+        "unreviewed_asset_promotion",
+        "controller_secret"
+      ],
       "identity_status": "runtime_verified",
       "ack_status": "acknowledged"
     },
@@ -76,7 +147,10 @@
       "display_name": "rpg 팀장",
       "kind": "agent",
       "location": "aws",
-      "providers": ["claude", "z.ai"],
+      "providers": [
+        "claude",
+        "z.ai"
+      ],
       "runtime_accounting": {
         "client_surface": "claude",
         "usage_pool": "z.ai",
@@ -84,14 +158,36 @@
       },
       "role": "rpg_project_lead",
       "persona": "RPG 설계와 구현을 모듈 단위로 완결하고 검증 근거를 제출하는 RPG 팀장",
-      "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_rpg_bot"},
-      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board"],
-      "required_refs": ["notes:L0-agent-boot.md", "notes:principles/git-first-project-truth.md", "rpg_game:project-rules"],
-      "capabilities": [
-        "rpg_design", "rpg_implementation", "repo_scoped_change", "report", "candidate_propose",
-        "repo_read", "repo_write", "git_commit", "git_push"
+      "transport": {
+        "kind": "cokacdir_telegram",
+        "address": "@heav_lnx_rpg_bot"
+      },
+      "repo_ids": [
+        "notes",
+        "scenario",
+        "rpg_game",
+        "autotrader",
+        "approval-board"
       ],
-      "forbidden": ["invent_completion"],
+      "required_refs": [
+        "notes:L0-agent-boot.md",
+        "notes:principles/git-first-project-truth.md",
+        "rpg_game:project-rules"
+      ],
+      "capabilities": [
+        "rpg_design",
+        "rpg_implementation",
+        "repo_scoped_change",
+        "report",
+        "candidate_propose",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
+      ],
+      "forbidden": [
+        "invent_completion"
+      ],
       "identity_status": "runtime_verified",
       "ack_status": "acknowledged"
     },
@@ -100,7 +196,10 @@
       "display_name": "trader 팀장",
       "kind": "agent",
       "location": "aws",
-      "providers": ["claude", "z.ai"],
+      "providers": [
+        "claude",
+        "z.ai"
+      ],
       "runtime_accounting": {
         "client_surface": "claude",
         "usage_pool": "z.ai",
@@ -108,8 +207,17 @@
       },
       "role": "trader_project_lead",
       "persona": "거래 시스템 작업을 안전 경계 안에서 구현하고 운영 증거를 제출하는 trader 팀장",
-      "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_trader_bot"},
-      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board"],
+      "transport": {
+        "kind": "cokacdir_telegram",
+        "address": "@heav_lnx_trader_bot"
+      },
+      "repo_ids": [
+        "notes",
+        "scenario",
+        "rpg_game",
+        "autotrader",
+        "approval-board"
+      ],
       "required_refs": [
         "notes:L0-agent-boot.md",
         "notes:principles/git-first-project-truth.md",
@@ -117,10 +225,19 @@
         "autotrader:project-rules"
       ],
       "capabilities": [
-        "trader_design", "trader_implementation", "repo_scoped_change", "report", "candidate_propose",
-        "repo_read", "repo_write", "git_commit", "git_push"
+        "trader_design",
+        "trader_implementation",
+        "repo_scoped_change",
+        "report",
+        "candidate_propose",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
       ],
-      "forbidden": ["invent_completion"],
+      "forbidden": [
+        "invent_completion"
+      ],
       "identity_status": "runtime_verified",
       "ack_status": "acknowledged"
     },
@@ -129,7 +246,9 @@
       "display_name": "감사 CODEX",
       "kind": "agent",
       "location": "aws",
-      "providers": ["codex"],
+      "providers": [
+        "codex"
+      ],
       "runtime_accounting": {
         "client_surface": "codex",
         "usage_pool": "codex",
@@ -137,11 +256,35 @@
       },
       "role": "shared_git_auditor",
       "persona": "다른 팀의 주장과 실제 근거를 분리해 확인하고 수정 없이 위험을 보고하는 독립 감사관",
-      "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_audit_bot"},
-      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board"],
-      "required_refs": ["notes:principles/git-first-project-truth.md", "notes:principles/audit-watchdog-foundation.md"],
-      "capabilities": ["read_only_audit", "cross_repo_compare", "report", "candidate_audit", "repo_read", "repo_write", "git_commit", "git_push"],
-      "forbidden": ["state_transition", "self_approval"],
+      "transport": {
+        "kind": "cokacdir_telegram",
+        "address": "@heav_lnx_audit_bot"
+      },
+      "repo_ids": [
+        "notes",
+        "scenario",
+        "rpg_game",
+        "autotrader",
+        "approval-board"
+      ],
+      "required_refs": [
+        "notes:principles/git-first-project-truth.md",
+        "notes:principles/audit-watchdog-foundation.md"
+      ],
+      "capabilities": [
+        "read_only_audit",
+        "cross_repo_compare",
+        "report",
+        "candidate_audit",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
+      ],
+      "forbidden": [
+        "state_transition",
+        "self_approval"
+      ],
       "identity_status": "runtime_verified",
       "ack_status": "acknowledged"
     },
@@ -150,22 +293,49 @@
       "display_name": "관제 CODEX",
       "kind": "agent",
       "location": "windows",
-      "providers": ["codex"],
+      "providers": [
+        "codex"
+      ],
       "role": "shared_git_coordinator",
       "persona": "작업을 작게 분해해 적임자에게 배정하고, 침묵 없이 진행을 알리며, 결과를 끝까지 검수하는 관제관",
-      "transport": {"kind": "codex_desktop", "address": "local"},
-      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board"],
-      "required_refs": ["notes:principles/git-first-project-truth.md", "notes:projects/agent-ops/README.md", "scenario:AGENTS.md"],
+      "transport": {
+        "kind": "codex_desktop",
+        "address": "local"
+      },
+      "repo_ids": [
+        "notes",
+        "scenario",
+        "rpg_game",
+        "autotrader",
+        "approval-board"
+      ],
+      "required_refs": [
+        "notes:principles/git-first-project-truth.md",
+        "notes:projects/agent-ops/README.md",
+        "scenario:AGENTS.md"
+      ],
       "capabilities": [
-        "issue_mail", "controller_review", "local_tools", "git_integration", "user_dialogue",
-        "candidate_review", "thread_orchestration", "checkpoint_recovery",
-        "repo_read", "repo_write", "git_commit", "git_push"
+        "issue_mail",
+        "controller_review",
+        "local_tools",
+        "git_integration",
+        "user_dialogue",
+        "candidate_review",
+        "thread_orchestration",
+        "checkpoint_recovery",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
       ],
       "forbidden": [
-        "silent_long_wait", "unreviewed_worker_join", "credential_in_git",
-        "main_thread_long_execution", "untracked_worker"
+        "silent_long_wait",
+        "unreviewed_worker_join",
+        "credential_in_git",
+        "main_thread_long_execution",
+        "untracked_worker"
       ],
-      "identity_status": "current_session_verified",
+      "identity_status": "retired_2026-08-16_subscription_ended",
       "ack_status": "acknowledged"
     },
     {
@@ -173,15 +343,42 @@
       "display_name": "검증원 Z",
       "kind": "agent",
       "location": "windows",
-      "providers": ["zcode"],
+      "providers": [
+        "zcode"
+      ],
       "role": "shared_git_worker",
       "persona": "불변 입력을 빠르게 비교하고 근거와 기계적 제안을 되돌려주는 정밀 검증원",
-      "transport": {"kind": "zcode_bridge", "address": "local:one-shot"},
-      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board"],
-      "required_refs": ["notes:principles/git-first-project-truth.md", "scenario:.agents/skills/arca-collection/references/portable-worker-contract.md"],
-      "capabilities": ["frozen_analysis", "schema_review", "duplicate_review", "exact_file_proposal", "repo_read", "repo_write", "git_commit", "git_push"],
-      "forbidden": ["live_login", "controller_secret", "aws_control"],
-      "identity_status": "runtime_verified",
+      "transport": {
+        "kind": "zcode_bridge",
+        "address": "local:one-shot"
+      },
+      "repo_ids": [
+        "notes",
+        "scenario",
+        "rpg_game",
+        "autotrader",
+        "approval-board"
+      ],
+      "required_refs": [
+        "notes:principles/git-first-project-truth.md",
+        "scenario:.agents/skills/arca-collection/references/portable-worker-contract.md"
+      ],
+      "capabilities": [
+        "frozen_analysis",
+        "schema_review",
+        "duplicate_review",
+        "exact_file_proposal",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
+      ],
+      "forbidden": [
+        "live_login",
+        "controller_secret",
+        "aws_control"
+      ],
+      "identity_status": "retired_2026-08-16_subscription_ended",
       "ack_status": "acknowledged"
     }
   ]
