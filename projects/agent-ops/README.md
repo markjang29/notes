@@ -6,6 +6,12 @@ updated: 2026-07-16
 
 # Agent Mail 운영 정본
 
+## 공유 Git 권한
+
+Windows Codex는 더 이상 독점 controller·검수자·merge 담당·종결자가 아니다. 등록된 모든
+에이전트는 `shared-git-access.md`와 `actors.json`에 따라 모든 등록 저장소에서 직접 작업할
+수 있다. controller 지정은 선택 사항이며 해당 작업에만 적용된다.
+
 이 디렉터리는 프로젝트별 지식을 한곳에 복사하지 않는다. 대신 모든 에이전트가 공통으로
 사용할 논리 정체성, 메일형 작업지시 계약, 세션 복구 순서와 rollout 상태만 관리한다.
 
@@ -100,14 +106,14 @@ queued -> claimed -> acknowledged -> in_progress -> submitted -> verified -> clo
 5. 정체가 없거나 충돌하면 작업하지 않고 `identity_error`를 회신한다.
 6. 이전 결과를 다시 실행하지 말고 마지막 검증된 event 다음부터 재개한다.
 
-Windows Codex 새 task는 `windows-codex`로 복구하고 총괄 controller 역할을 갖는다. ZCode는
-desktop session 기억을 신뢰하지 않는다. controller가 매 packet에 `windows-zcode` persona와
-불변 작업지시를 넣고 bounded bridge receipt로 회수한다.
+Windows Codex 새 task는 `windows-codex`로 복구하되 독점 controller 권한을 되살리지 않는다.
+ZCode 역시 `windows-zcode`로 복구하며, 등록된 모든 저장소에서 직접 작업·commit·push할 수
+있다. 세션 기억은 권한 근거가 아니며 현재 registry와 저장소 규칙을 다시 읽는다.
 
 ## Windows Codex 병렬 task 관제
 
-메인 Codex task는 director와의 대화, 목표·우선순위 관리, 작업 분해·배정, 상태 관제,
-controller 검수와 `verified`/`closed` 기록만 담당한다. 30분 이상 걸릴 것으로 보이거나 독립
+메인 Codex task는 요청받았을 때 director와의 대화, 목표·우선순위 관리, 작업 분해·배정,
+상태 관제를 맡을 수 있지만 다른 actor의 Git 작업·검수·종결을 독점하지 않는다. 30분 이상 걸릴 것으로 보이거나 독립
 commit·문서·분석 보고서 등 별도 산출물이 있는 실행은 사용자에게 보이는 별도 Codex task로
 만든다. 메인 task가 그 실행을 직접 오래 수행하거나 사용자에게 보이지 않는 worker로 대체하지
 않는다.
@@ -126,9 +132,9 @@ controller는 계속 registry와 work order로 결정한다.
 
 ACK는 완료 증거가 아니라 SLA의 시작점이다. 담당 actor가 `acknowledged`하고 실행을 시작한
 시각부터 10분 안에 first evidence를 남긴다. 20분까지 새 durable evidence가 없으면
-`health=stalled`, 30분까지 회복되지 않으면 controller가 `auto_reroute`한다. worker는
-`submitted`에서 멈추고, 메인 controller가 exact commit·scope·done criteria를 독립 검증한 뒤
-`verified`, `closed`를 순서대로 기록한다.
+`health=stalled`, 30분까지 회복되지 않으면 담당 coordinator가 `auto_reroute`할 수 있다.
+`controller_review` 작업은 `submitted`에서 멈추고 지정 reviewer가 검수한다. 검수가 필요 없는
+`approval_policy=none` 작업은 담당 actor가 동일 기준을 확인한 뒤 `verified`, `closed`를 기록한다.
 
 capacity, session crash, route missing, thread slot, quota 오류는 사용자 의미 결정이 아니라
 controller 복구 사건이다. checkpoint의 full input commit, exact refs, last durable evidence,
@@ -147,21 +153,21 @@ owner message
   -> sanitized durable intake
   -> clarification or Agent Mail v2 work order
   -> target ACK -> work -> submitted
-  -> windows-codex verified -> closed
+  -> configured review policy -> verified -> closed
 ```
 
 - bot route는 정확히 한 `to_actor`를 결정한다.
 - 불명확한 지시는 `needs_clarification`으로 보존하고 한 가지 질문 뒤 실행을 멈춘다.
-- 정규화된 mail은 `from_actor=director`, `request_origin=director_telegram`,
-  `controller_actor=windows-codex`를 사용한다.
-- Windows Codex가 오프라인이어도 target은 `submitted`까지 진행할 수 있다. worker와 팀장은
-  스스로 `verified` 또는 `closed`를 기록하지 않는다.
+- 정규화된 mail은 `from_actor=director`, `request_origin=director_telegram`을 사용한다. 별도
+  검수가 필요하면 어떤 capable actor든 `controller_actor`가 될 수 있고, 필요 없으면 target
+  자신을 지정하고 `approval_policy=none`을 사용한다.
+- Windows Codex의 온라인 여부는 target의 직접 Git 작업 권한과 무관하다.
 - manager가 일을 나누면 child mail은 `request_origin=delegated`와 `parent_mail_id`로 원 지시를
   연결한다.
 - 직접 지시는 actor capability, repo 규칙, exact scope, commit, login·lease gate 또는 상시
   금지를 확대하지 않는다.
-- R4가 없을 때 `[DIRECT PENDING <actor>]` 회신은 임시 증거일 뿐이다. `windows-codex`가 복귀
-  후 sanitized transport receipt digest를 idempotency key에 묶어 intake, mail, candidate를
+- R4가 없을 때 `[DIRECT PENDING <actor>]` 회신은 임시 증거일 뿐이다. 지정된 Git-capable actor가
+  sanitized transport receipt digest를 idempotency key에 묶어 intake, mail, candidate를
   정확히 한 번 정본화한다. 대상 actor는 가짜 ID를 만들거나 스스로 backfill하지 않는다.
 
 ## 아이디어 후보 생명주기
