@@ -3,6 +3,19 @@
 > 매니저(`@heav_lnx_bot`) 전관. 활성 작업·대기 결정·다음 스텝만 유지한다.
 > 과거 상세는 Git 이력, `work-archive.md`, checkpoints를 본다.
 
+## ★ Matrix 통합 후임 (2026-08-16)
+
+- 담당 actor: `aws-manager`
+- 교대 결정: `decisions/2026-08-16-matrix-successor-handoff.md`
+- 전체 정본: `matrix_asset_agent` 최신 main의 `collaboration/MATRIX-SUCCESSOR-HANDOFF.md`
+- 현재 카드: `NEXT-001` 동일조건 Codex/ZCODE/RISU 품질시험
+- Clear는 대화 컨텍스트만 지울 수 있다는 뜻이며, 제품 완료나 서비스 정상 판정이 아니다.
+- 아래 한 문장으로 새 세션을 시작한다.
+
+```text
+너는 Matrix 통합 후임이다. matrix_asset_agent 최신 main의 collaboration/MATRIX-SUCCESSOR-HANDOFF.md를 전부 읽고 [MATRIX-SUCCESSOR-CERT]를 출력한 뒤, 문서에 적힌 전체 Git의 최신 origin/main과 역할 경계를 재검증하고 NEXT-001부터 작은 카드로 실행·검사·commit·push·보고하라.
+```
+
 ## 최상위 원칙
 
 - 이사님 최종 결정.

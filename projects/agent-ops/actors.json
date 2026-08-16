@@ -1,7 +1,7 @@
 {
   "schema": "agent-registry-v1",
-  "version": 7,
-  "updated_at": "2026-08-16T22:10:00+09:00",
+  "version": 8,
+  "updated_at": "2026-08-16T22:31:00+09:00",
   "authority": "notes/projects/agent-ops/actors.json",
   "actors": [
     {
@@ -66,12 +66,15 @@
         "matrix_asset_agent",
         "matrix",
         "matrix_zcode",
-        "matrix_codex"
+        "matrix_codex",
+        "matrix-engine",
+        "matrix-living-drama"
       ],
       "required_refs": [
         "notes:L0-agent-boot.md",
         "notes:principles/git-first-project-truth.md",
-        "notes:org-structure.md"
+        "notes:org-structure.md",
+        "matrix_asset_agent:collaboration/MATRIX-SUCCESSOR-HANDOFF.md"
       ],
       "capabilities": [
         "route",
@@ -302,40 +305,23 @@
         "kind": "codex_desktop",
         "address": "local"
       },
-      "repo_ids": [
-        "notes",
-        "scenario",
-        "rpg_game",
-        "autotrader",
-        "approval-board"
-      ],
+      "availability_status": "retired_2026-08-16_subscription_ended",
+      "repo_ids": [],
       "required_refs": [
         "notes:principles/git-first-project-truth.md",
         "notes:projects/agent-ops/README.md",
         "scenario:AGENTS.md"
       ],
-      "capabilities": [
-        "issue_mail",
-        "controller_review",
-        "local_tools",
-        "git_integration",
-        "user_dialogue",
-        "candidate_review",
-        "thread_orchestration",
-        "checkpoint_recovery",
-        "repo_read",
-        "repo_write",
-        "git_commit",
-        "git_push"
-      ],
+      "capabilities": [],
       "forbidden": [
         "silent_long_wait",
         "unreviewed_worker_join",
         "credential_in_git",
         "main_thread_long_execution",
-        "untracked_worker"
+        "untracked_worker",
+        "new_work"
       ],
-      "identity_status": "retired_2026-08-16_subscription_ended",
+      "identity_status": "runtime_verified",
       "ack_status": "acknowledged"
     },
     {
@@ -352,33 +338,20 @@
         "kind": "zcode_bridge",
         "address": "local:one-shot"
       },
-      "repo_ids": [
-        "notes",
-        "scenario",
-        "rpg_game",
-        "autotrader",
-        "approval-board"
-      ],
+      "availability_status": "retired_2026-08-16_subscription_ended",
+      "repo_ids": [],
       "required_refs": [
         "notes:principles/git-first-project-truth.md",
         "scenario:.agents/skills/arca-collection/references/portable-worker-contract.md"
       ],
-      "capabilities": [
-        "frozen_analysis",
-        "schema_review",
-        "duplicate_review",
-        "exact_file_proposal",
-        "repo_read",
-        "repo_write",
-        "git_commit",
-        "git_push"
-      ],
+      "capabilities": [],
       "forbidden": [
         "live_login",
         "controller_secret",
-        "aws_control"
+        "aws_control",
+        "new_work"
       ],
-      "identity_status": "retired_2026-08-16_subscription_ended",
+      "identity_status": "runtime_verified",
       "ack_status": "acknowledged"
     }
   ]
