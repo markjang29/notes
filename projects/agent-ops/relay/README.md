@@ -21,7 +21,23 @@ Jira 프로젝트 `RELAY` (heavenlyiris-matrix.atlassian.net, free plan)와 연�
 | 5 구현 | `relay:5-구현` | 커밋(티켓키 포함) + 테스트 | `templates/5-impl.md` | 자동 검증 |
 | 6 코드리뷰 | `relay:6-코드리뷰` | review (승인/반려+사유) | `templates/6-review.md` | 해당 팀장 |
 
+## 저장소 지도 — "Git에 넣는다"의 구체적 의미 (2026-08-20 확정)
+
+| 무엇을 | 어디에 | 비고 |
+|---|---|---|
+| 요구사항·단계·상태 | **Jira RELAY** | 아티팩트 파일은 안 올림(링크만) |
+| Relay 규칙·공지문·조직 정본(actors.json)·티켓 아티팩트(`relay/tickets/<키>/`) | **notes-registry** (github: markjang29/notes) | 조직 운영의 정본. 로컬 `/home/ubuntu/deploy/notes-registry` |
+| 자산 ADR·매니페스트·소스유닛·검증 로그·자산 도구(워크벤치 등)·태그 사전 | **matrix_asset_agent** (github: markjang29/matrix_asset_agent) | **작업 사본은 `/home/ubuntu/projects/matrix_asset_agent` 하나만** — `/home/ubuntu/matrix_asset_agent`는 같은 원격의 읽기 참조용. 이중 커밋 금지 |
+| 시나리오 산출물·소설 자산화 | **scenario** (github: markjang29/scenario) | |
+| 승인보드 코드·decisions.json | **approval-board** (로컬 `/home/ubuntu/projects/approval-board`, 원격 없음) | 서버 장애 시 코드 유실 위험 — 원격 달아둘 것(향후 과제) |
+| RPG·autotrader 도메인 | **rpg_game / autotrader** (github: markjang29/*) | |
+| 대용량 원본·이미지 | **구글 드라이브** (COLD CAS / VISUAL-REF, ADR-0006) | Git 아님. Git엔 SHA stub만 |
+| 실행 트레이스 | **LangSmith** (relay-observability) | Git 아님 |
+
+규칙: 커밋 메시지에 RELAY 티켓 키 포함. 어느 repo인지 애매하면 notes-registry의 relay/tickets/에 넣고 티켓 코멘트로 연결 — 나중에 정본 repo로 이동(이동 이력 커밋).
+
 ## 규칙
+
 
 - **아이디어 → Jira 선행 원칙 (이사님 2026-08-20 결정)**: 이사님이 아이디어·요구를 주면
   어떤 봇이든 개발 착수 전에 반드시 먼저 RELAY 요구사항 티켓(라벨 `relay:1-확보` +
