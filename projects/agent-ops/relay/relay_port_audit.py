@@ -229,6 +229,9 @@ def main() -> int:
             )
             if prev_sig == sig:
                 deduped = True
+            # 위반이 감소했거나 그대로면 재발행하지 않고, 새로 생긴 위반만 알린다.
+            if set(sig) <= set(prev_sig):
+                deduped = True
             break
         lines = [
             f"- {v['port']} pid={v['pid']} ({v['verdict']}): {'; '.join(v['reasons'])}"
