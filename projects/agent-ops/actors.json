@@ -1,7 +1,7 @@
 {
   "schema": "agent-registry-v1",
-  "version": 7,
-  "updated_at": "2026-07-19T23:35:00+09:00",
+  "version": 8,
+  "updated_at": "2026-08-19T11:30:00+09:00",
   "authority": "notes/projects/agent-ops/actors.json",
   "actors": [
     {
@@ -12,23 +12,44 @@
       "providers": [],
       "role": "final_approver",
       "persona": "방향, 취향, 비용, 공개와 권한 확대의 최종 결정자",
-      "transport": {"kind": "telegram", "address": "owner"},
-      "repo_ids": ["notes"],
-      "required_refs": ["notes:persona.md"],
+      "transport": {
+        "kind": "telegram",
+        "address": "owner"
+      },
+      "repo_ids": [
+        "notes"
+      ],
+      "required_refs": [
+        "notes:persona.md"
+      ],
       "capabilities": [
-        "approve", "prioritize", "cancel", "rename_persona", "issue_mail",
-        "approve_candidate", "hold_candidate", "discard_candidate"
+        "approve",
+        "prioritize",
+        "cancel",
+        "rename_persona",
+        "issue_mail",
+        "approve_candidate",
+        "hold_candidate",
+        "discard_candidate"
       ],
       "forbidden": [],
       "identity_status": "accepted_source",
-      "ack_status": "not_required"
+      "ack_status": "not_required",
+      "jira": {
+        "project": "RELAY",
+        "component": "(없음 — director는 component 밖, 최종 승인자)",
+        "relay_stages": "4-설계검토 승인, 최종 종료"
+      }
     },
     {
       "actor_id": "aws-manager",
       "display_name": "매니저",
       "kind": "agent",
       "location": "aws",
-      "providers": ["claude", "z.ai"],
+      "providers": [
+        "claude",
+        "z.ai"
+      ],
       "runtime_accounting": {
         "client_surface": "claude",
         "usage_pool": "z.ai",
@@ -36,23 +57,56 @@
       },
       "role": "coordinator",
       "persona": "팀 간 메일을 배정하고 상태와 결정 안건을 짧게 통합하는 총괄 매니저",
-      "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_bot"},
-      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board", "music_video"],
-      "required_refs": ["notes:L0-agent-boot.md", "notes:principles/git-first-project-truth.md", "notes:org-structure.md"],
-      "capabilities": [
-        "route", "claim", "report", "schedule", "request_user_decision", "candidate_curate",
-        "repo_read", "repo_write", "git_commit", "git_push"
+      "transport": {
+        "kind": "cokacdir_telegram",
+        "address": "@heav_lnx_bot"
+      },
+      "repo_ids": [
+        "notes",
+        "scenario",
+        "rpg_game",
+        "autotrader",
+        "approval-board",
+        "music_video"
       ],
-      "forbidden": ["silent_project_implementation", "invent_completion"],
+      "required_refs": [
+        "notes:L0-agent-boot.md",
+        "notes:principles/git-first-project-truth.md",
+        "notes:org-structure.md"
+      ],
+      "capabilities": [
+        "route",
+        "claim",
+        "report",
+        "schedule",
+        "request_user_decision",
+        "candidate_curate",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
+      ],
+      "forbidden": [
+        "silent_project_implementation",
+        "invent_completion"
+      ],
       "identity_status": "runtime_verified",
-      "ack_status": "acknowledged"
+      "ack_status": "acknowledged",
+      "jira": {
+        "project": "RELAY",
+        "component": "bot:manager",
+        "relay_stages": "1-확보, 게이트 운영"
+      }
     },
     {
       "actor_id": "aws-scenario",
       "display_name": "scenario 팀장",
       "kind": "agent",
       "location": "aws",
-      "providers": ["claude", "z.ai"],
+      "providers": [
+        "claude",
+        "z.ai"
+      ],
       "runtime_accounting": {
         "client_surface": "claude",
         "usage_pool": "z.ai",
@@ -60,23 +114,54 @@
       },
       "role": "scenario_project_lead",
       "persona": "검토된 RISU 자산을 근거로 세계·인물·서사를 만들고 실행 가능성을 검증하는 시나리오 팀장",
-      "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_scenario_bot"},
-      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board"],
-      "required_refs": ["notes:principles/git-first-project-truth.md", "notes:principles/scenario-team-purpose.md", "scenario:HARD_RULES.md"],
-      "capabilities": [
-        "scenario_build", "availability_review", "repo_scoped_change", "report", "candidate_propose",
-        "repo_read", "repo_write", "git_commit", "git_push"
+      "transport": {
+        "kind": "cokacdir_telegram",
+        "address": "@heav_lnx_scenario_bot"
+      },
+      "repo_ids": [
+        "notes",
+        "scenario",
+        "rpg_game",
+        "autotrader",
+        "approval-board"
       ],
-      "forbidden": ["unreviewed_asset_promotion", "controller_secret"],
+      "required_refs": [
+        "notes:principles/git-first-project-truth.md",
+        "notes:principles/scenario-team-purpose.md",
+        "scenario:HARD_RULES.md"
+      ],
+      "capabilities": [
+        "scenario_build",
+        "availability_review",
+        "repo_scoped_change",
+        "report",
+        "candidate_propose",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
+      ],
+      "forbidden": [
+        "unreviewed_asset_promotion",
+        "controller_secret"
+      ],
       "identity_status": "runtime_verified",
-      "ack_status": "acknowledged"
+      "ack_status": "acknowledged",
+      "jira": {
+        "project": "RELAY",
+        "component": "bot:scenario",
+        "relay_stages": "2-정제/4-설계검토"
+      }
     },
     {
       "actor_id": "aws-rpg",
       "display_name": "rpg 팀장",
       "kind": "agent",
       "location": "aws",
-      "providers": ["claude", "z.ai"],
+      "providers": [
+        "claude",
+        "z.ai"
+      ],
       "runtime_accounting": {
         "client_surface": "claude",
         "usage_pool": "z.ai",
@@ -84,23 +169,53 @@
       },
       "role": "rpg_project_lead",
       "persona": "RPG 설계와 구현을 모듈 단위로 완결하고 검증 근거를 제출하는 RPG 팀장",
-      "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_rpg_bot"},
-      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board"],
-      "required_refs": ["notes:L0-agent-boot.md", "notes:principles/git-first-project-truth.md", "rpg_game:project-rules"],
-      "capabilities": [
-        "rpg_design", "rpg_implementation", "repo_scoped_change", "report", "candidate_propose",
-        "repo_read", "repo_write", "git_commit", "git_push"
+      "transport": {
+        "kind": "cokacdir_telegram",
+        "address": "@heav_lnx_rpg_bot"
+      },
+      "repo_ids": [
+        "notes",
+        "scenario",
+        "rpg_game",
+        "autotrader",
+        "approval-board"
       ],
-      "forbidden": ["invent_completion"],
+      "required_refs": [
+        "notes:L0-agent-boot.md",
+        "notes:principles/git-first-project-truth.md",
+        "rpg_game:project-rules"
+      ],
+      "capabilities": [
+        "rpg_design",
+        "rpg_implementation",
+        "repo_scoped_change",
+        "report",
+        "candidate_propose",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
+      ],
+      "forbidden": [
+        "invent_completion"
+      ],
       "identity_status": "runtime_verified",
-      "ack_status": "acknowledged"
+      "ack_status": "acknowledged",
+      "jira": {
+        "project": "RELAY",
+        "component": "bot:rpg",
+        "relay_stages": "2-정제/4-설계검토"
+      }
     },
     {
       "actor_id": "aws-trader",
       "display_name": "trader 팀장",
       "kind": "agent",
       "location": "aws",
-      "providers": ["claude", "z.ai"],
+      "providers": [
+        "claude",
+        "z.ai"
+      ],
       "runtime_accounting": {
         "client_surface": "claude",
         "usage_pool": "z.ai",
@@ -108,8 +223,17 @@
       },
       "role": "trader_project_lead",
       "persona": "거래 시스템 작업을 안전 경계 안에서 구현하고 운영 증거를 제출하는 trader 팀장",
-      "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_trader_bot"},
-      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board"],
+      "transport": {
+        "kind": "cokacdir_telegram",
+        "address": "@heav_lnx_trader_bot"
+      },
+      "repo_ids": [
+        "notes",
+        "scenario",
+        "rpg_game",
+        "autotrader",
+        "approval-board"
+      ],
       "required_refs": [
         "notes:L0-agent-boot.md",
         "notes:principles/git-first-project-truth.md",
@@ -117,19 +241,35 @@
         "autotrader:project-rules"
       ],
       "capabilities": [
-        "trader_design", "trader_implementation", "repo_scoped_change", "report", "candidate_propose",
-        "repo_read", "repo_write", "git_commit", "git_push"
+        "trader_design",
+        "trader_implementation",
+        "repo_scoped_change",
+        "report",
+        "candidate_propose",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
       ],
-      "forbidden": ["invent_completion"],
+      "forbidden": [
+        "invent_completion"
+      ],
       "identity_status": "runtime_verified",
-      "ack_status": "acknowledged"
+      "ack_status": "acknowledged",
+      "jira": {
+        "project": "RELAY",
+        "component": "bot:trader",
+        "relay_stages": "(pause)"
+      }
     },
     {
       "actor_id": "aws-audit",
       "display_name": "감사 CODEX",
       "kind": "agent",
       "location": "aws",
-      "providers": ["codex"],
+      "providers": [
+        "codex"
+      ],
       "runtime_accounting": {
         "client_surface": "codex",
         "usage_pool": "codex",
@@ -137,52 +277,300 @@
       },
       "role": "shared_git_auditor",
       "persona": "다른 팀의 주장과 실제 근거를 분리해 확인하고 수정 없이 위험을 보고하는 독립 감사관",
-      "transport": {"kind": "cokacdir_telegram", "address": "@heav_lnx_audit_bot"},
-      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board"],
-      "required_refs": ["notes:principles/git-first-project-truth.md", "notes:principles/audit-watchdog-foundation.md"],
-      "capabilities": ["read_only_audit", "cross_repo_compare", "report", "candidate_audit", "repo_read", "repo_write", "git_commit", "git_push"],
-      "forbidden": ["state_transition", "self_approval"],
+      "transport": {
+        "kind": "cokacdir_telegram",
+        "address": "@heav_lnx_audit_bot"
+      },
+      "repo_ids": [
+        "notes",
+        "scenario",
+        "rpg_game",
+        "autotrader",
+        "approval-board"
+      ],
+      "required_refs": [
+        "notes:principles/git-first-project-truth.md",
+        "notes:principles/audit-watchdog-foundation.md"
+      ],
+      "capabilities": [
+        "read_only_audit",
+        "cross_repo_compare",
+        "report",
+        "candidate_audit",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
+      ],
+      "forbidden": [
+        "state_transition",
+        "self_approval"
+      ],
       "identity_status": "runtime_verified",
-      "ack_status": "acknowledged"
+      "ack_status": "acknowledged",
+      "jira": {
+        "project": "RELAY",
+        "component": "bot:audit",
+        "relay_stages": "3-영향성검토"
+      }
     },
     {
       "actor_id": "windows-codex",
       "display_name": "관제 CODEX",
       "kind": "agent",
       "location": "windows",
-      "providers": ["codex"],
+      "providers": [
+        "codex"
+      ],
       "role": "shared_git_coordinator",
       "persona": "작업을 작게 분해해 적임자에게 배정하고, 침묵 없이 진행을 알리며, 결과를 끝까지 검수하는 관제관",
-      "transport": {"kind": "codex_desktop", "address": "local"},
-      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board"],
-      "required_refs": ["notes:principles/git-first-project-truth.md", "notes:projects/agent-ops/README.md", "scenario:AGENTS.md"],
+      "transport": {
+        "kind": "codex_desktop",
+        "address": "local"
+      },
+      "repo_ids": [
+        "notes",
+        "scenario",
+        "rpg_game",
+        "autotrader",
+        "approval-board"
+      ],
+      "required_refs": [
+        "notes:principles/git-first-project-truth.md",
+        "notes:projects/agent-ops/README.md",
+        "scenario:AGENTS.md"
+      ],
       "capabilities": [
-        "issue_mail", "controller_review", "local_tools", "git_integration", "user_dialogue",
-        "candidate_review", "thread_orchestration", "checkpoint_recovery",
-        "repo_read", "repo_write", "git_commit", "git_push"
+        "issue_mail",
+        "controller_review",
+        "local_tools",
+        "git_integration",
+        "user_dialogue",
+        "candidate_review",
+        "thread_orchestration",
+        "checkpoint_recovery",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
       ],
       "forbidden": [
-        "silent_long_wait", "unreviewed_worker_join", "credential_in_git",
-        "main_thread_long_execution", "untracked_worker"
+        "silent_long_wait",
+        "unreviewed_worker_join",
+        "credential_in_git",
+        "main_thread_long_execution",
+        "untracked_worker"
       ],
       "identity_status": "current_session_verified",
-      "ack_status": "acknowledged"
+      "ack_status": "acknowledged",
+      "jira": {
+        "project": "RELAY",
+        "component": "bot:manager(관제 겸)",
+        "relay_stages": "6-코드리뷰 조율"
+      }
     },
     {
       "actor_id": "windows-zcode",
       "display_name": "검증원 Z",
       "kind": "agent",
       "location": "windows",
-      "providers": ["zcode"],
+      "providers": [
+        "zcode"
+      ],
       "role": "shared_git_worker",
       "persona": "불변 입력을 빠르게 비교하고 근거와 기계적 제안을 되돌려주는 정밀 검증원",
-      "transport": {"kind": "zcode_bridge", "address": "local:one-shot"},
-      "repo_ids": ["notes", "scenario", "rpg_game", "autotrader", "approval-board"],
-      "required_refs": ["notes:principles/git-first-project-truth.md", "scenario:.agents/skills/arca-collection/references/portable-worker-contract.md"],
-      "capabilities": ["frozen_analysis", "schema_review", "duplicate_review", "exact_file_proposal", "repo_read", "repo_write", "git_commit", "git_push"],
-      "forbidden": ["live_login", "controller_secret", "aws_control"],
+      "transport": {
+        "kind": "zcode_bridge",
+        "address": "local:one-shot"
+      },
+      "repo_ids": [
+        "notes",
+        "scenario",
+        "rpg_game",
+        "autotrader",
+        "approval-board"
+      ],
+      "required_refs": [
+        "notes:principles/git-first-project-truth.md",
+        "scenario:.agents/skills/arca-collection/references/portable-worker-contract.md"
+      ],
+      "capabilities": [
+        "frozen_analysis",
+        "schema_review",
+        "duplicate_review",
+        "exact_file_proposal",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
+      ],
+      "forbidden": [
+        "live_login",
+        "controller_secret",
+        "aws_control"
+      ],
       "identity_status": "runtime_verified",
-      "ack_status": "acknowledged"
+      "ack_status": "acknowledged",
+      "jira": {
+        "project": "RELAY",
+        "component": "bot:zcode",
+        "relay_stages": "5-구현+계측"
+      }
+    },
+    {
+      "actor_id": "aws-asset-agent",
+      "display_name": "asset_agent",
+      "kind": "agent",
+      "location": "aws",
+      "providers": [
+        "z.ai"
+      ],
+      "role": "asset_pipeline_worker",
+      "persona": "RISU 자산을 native harness로 분해하고 sha256 대장과 후보를 제출하는 자산 파이프라인 작업자",
+      "transport": {
+        "kind": "cokacdir_telegram",
+        "address": "@heav_lnx_asset_agent_bot"
+      },
+      "repo_ids": [
+        "notes",
+        "matrix_asset_agent",
+        "approval-board"
+      ],
+      "required_refs": [
+        "notes:projects/agent-ops/relay/README.md"
+      ],
+      "capabilities": [
+        "asset_intake",
+        "asset_parse",
+        "report",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
+      ],
+      "forbidden": [
+        "auto_promotion",
+        "nsfw_arbitrary_judgement"
+      ],
+      "jira": {
+        "project": "RELAY",
+        "component": "bot:asset_agent",
+        "relay_stages": "5-구현"
+      }
+    },
+    {
+      "actor_id": "aws-arcade",
+      "display_name": "arcade",
+      "kind": "agent",
+      "location": "aws",
+      "providers": [
+        "z.ai"
+      ],
+      "role": "arcade_dev_worker",
+      "persona": "Arcade(8004) 서비스를 개발하고 검증하는 작업자",
+      "transport": {
+        "kind": "cokacdir_telegram",
+        "address": "@heav_lnx_arcade_bot"
+      },
+      "repo_ids": [
+        "notes",
+        "approval-board"
+      ],
+      "required_refs": [
+        "notes:projects/agent-ops/relay/README.md"
+      ],
+      "capabilities": [
+        "arcade_dev",
+        "report",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
+      ],
+      "forbidden": [
+        "invent_completion"
+      ],
+      "jira": {
+        "project": "RELAY",
+        "component": "bot:arcade",
+        "relay_stages": "5-구현"
+      }
+    },
+    {
+      "actor_id": "aws-novel-col",
+      "display_name": "novel_col",
+      "kind": "agent",
+      "location": "aws",
+      "providers": [
+        "z.ai"
+      ],
+      "role": "novel_collector",
+      "persona": "소설을 수집해 matrix_asset_agent 입고 형식으로 넘기는 수집 작업자",
+      "transport": {
+        "kind": "cokacdir_telegram",
+        "address": "@heav_lnx_novel_col_bot"
+      },
+      "repo_ids": [
+        "notes",
+        "matrix_asset_agent",
+        "approval-board"
+      ],
+      "required_refs": [
+        "notes:projects/agent-ops/relay/README.md"
+      ],
+      "capabilities": [
+        "novel_collect",
+        "report",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push"
+      ],
+      "forbidden": [
+        "inject_all_916",
+        "summary_canonicalization"
+      ],
+      "jira": {
+        "project": "RELAY",
+        "component": "bot:novel_col",
+        "relay_stages": "5-구현"
+      }
+    },
+    {
+      "actor_id": "aws-codex-dev",
+      "display_name": "codex_dev 1/2",
+      "kind": "agent",
+      "location": "aws",
+      "providers": [
+        "codex"
+      ],
+      "role": "code_reviewer",
+      "persona": "커밋 범위를 근거로 승인/반려와 사유를 내는 코드 리뷰어",
+      "transport": {
+        "kind": "cokacdir_telegram",
+        "address": "@heav_lnx_codex_dev_1/2_bot"
+      },
+      "repo_ids": [
+        "notes",
+        "approval-board"
+      ],
+      "required_refs": [
+        "notes:projects/agent-ops/relay/README.md"
+      ],
+      "capabilities": [
+        "code_review",
+        "review_verdict",
+        "repo_read"
+      ],
+      "forbidden": [
+        "approval_without_rationale",
+        "self_review"
+      ],
+      "jira": {
+        "project": "RELAY",
+        "component": "bot:codex_dev_1|bot:codex_dev_2",
+        "relay_stages": "6-코드리뷰"
+      }
     }
   ]
 }
