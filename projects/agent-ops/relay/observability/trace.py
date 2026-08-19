@@ -52,11 +52,8 @@ def relay_trace(*, name="bot-call", inputs=None, jira_ticket, relay_stage, bot_i
     if not all([jira_ticket, relay_stage, bot_id]):
         raise ValueError(f"relay_trace 필수 메타데이터 누락: {REQUIRED}")
 
-    class Box:
-        inputs = inputs
-        result = None
-
-    box = Box()
+    import types
+    box = types.SimpleNamespace(inputs=inputs, result=None)
     started = datetime.now(timezone.utc)
     error = None
     try:
