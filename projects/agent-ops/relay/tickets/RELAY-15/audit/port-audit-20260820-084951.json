@@ -1,0 +1,194 @@
+{
+  "schema": "relay-port-audit-v1",
+  "ticket": "RELAY-15",
+  "ran_at_kst": "2026-08-20T08:49:51+09:00",
+  "listening_ports": [
+    8003,
+    8004,
+    8005,
+    8006,
+    8008,
+    8009,
+    8010,
+    8011,
+    8012,
+    8013,
+    8015,
+    8020
+  ],
+  "total_findings": 14,
+  "violations": [
+    {
+      "port": 8003,
+      "pid": "1449356",
+      "cmd": "/home/ubuntu/.venvs/autotrader/bin/python -m uvicorn app:app --host 0.0.0.0 --port 8003 ",
+      "env_ticket": null,
+      "registry_ticket": null,
+      "verdict": "pending_registration",
+      "reasons": [
+        "레지스트리 pending — 등록 티켓 미완료",
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    },
+    {
+      "port": 8004,
+      "pid": "2449075",
+      "cmd": "/usr/bin/python3 /home/ubuntu/matrix_asset_agent/tools/arcade_playable_server.py ",
+      "env_ticket": null,
+      "registry_ticket": null,
+      "verdict": "pending_registration",
+      "reasons": [
+        "레지스트리 pending — 등록 티켓 미완료",
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    },
+    {
+      "port": 8005,
+      "pid": "2934908",
+      "cmd": "/home/ubuntu/projects/approval-board/venv/bin/python3 /home/ubuntu/projects/approval-board/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8005 ",
+      "env_ticket": null,
+      "registry_ticket": "RELAY-18",
+      "verdict": "env_missing",
+      "reasons": [
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    },
+    {
+      "port": 8006,
+      "pid": "1555221",
+      "cmd": "/home/ubuntu/projects/approval-board/venv/bin/python /home/ubuntu/releases/scenario/current/tools/scenario-generator/backend/run_automation_settings.py ",
+      "env_ticket": null,
+      "registry_ticket": null,
+      "verdict": "pending_registration",
+      "reasons": [
+        "레지스트리 pending — 등록 티켓 미완료",
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    },
+    {
+      "port": 8008,
+      "pid": "1022421",
+      "cmd": "/usr/bin/python3 -B -m matrix_candidate --matrix-repo /home/ubuntu/matrix-candidate/input-matrix --scenario-repo /home/ubuntu/matrix-candidate/input-scenario --runtime-dir /home/ub",
+      "env_ticket": null,
+      "registry_ticket": null,
+      "verdict": "pending_registration",
+      "reasons": [
+        "레지스트리 pending — 등록 티켓 미완료",
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    },
+    {
+      "port": 8009,
+      "pid": "2811963",
+      "cmd": "/home/ubuntu/apps/rpg-game-01/.venv/bin/python3 /home/ubuntu/apps/rpg-game-01/.venv/bin/gunicorn --workers 2 --bind 0.0.0.0:8009 --access-logfile - --error-logfile - web.app:app ",
+      "env_ticket": null,
+      "registry_ticket": null,
+      "verdict": "pending_registration",
+      "reasons": [
+        "레지스트리 pending — 등록 티켓 미완료",
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    },
+    {
+      "port": 8009,
+      "pid": "1449434",
+      "cmd": "/home/ubuntu/apps/rpg-game-01/.venv/bin/python3 /home/ubuntu/apps/rpg-game-01/.venv/bin/gunicorn --workers 2 --bind 0.0.0.0:8009 --access-logfile - --error-logfile - web.app:app ",
+      "env_ticket": null,
+      "registry_ticket": null,
+      "verdict": "pending_registration",
+      "reasons": [
+        "레지스트리 pending — 등록 티켓 미완료",
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    },
+    {
+      "port": 8009,
+      "pid": "1449362",
+      "cmd": "/home/ubuntu/apps/rpg-game-01/.venv/bin/python3 /home/ubuntu/apps/rpg-game-01/.venv/bin/gunicorn --workers 2 --bind 0.0.0.0:8009 --access-logfile - --error-logfile - web.app:app ",
+      "env_ticket": null,
+      "registry_ticket": null,
+      "verdict": "pending_registration",
+      "reasons": [
+        "레지스트리 pending — 등록 티켓 미완료",
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    },
+    {
+      "port": 8010,
+      "pid": "2681345",
+      "cmd": "/home/ubuntu/matrix-web-venv/bin/python -m matrix.web --host 0.0.0.0 --port 8010 ",
+      "env_ticket": null,
+      "registry_ticket": null,
+      "verdict": "pending_registration",
+      "reasons": [
+        "레지스트리 pending — 등록 티켓 미완료",
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    },
+    {
+      "port": 8011,
+      "pid": "2456640",
+      "cmd": "/usr/bin/python3 /home/ubuntu/matrix_zcode/service/cli_server.py ",
+      "env_ticket": null,
+      "registry_ticket": "RELAY-12",
+      "verdict": "env_missing",
+      "reasons": [
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    },
+    {
+      "port": 8012,
+      "pid": "2647472",
+      "cmd": "/usr/bin/python3 -B -m matrix_codex.web --host 0.0.0.0 --port 8012 --db /home/ubuntu/matrix_codex/runtime/matrix-codex.sqlite3 --scenario-repo /home/ubuntu/matrix_codex/input-scena",
+      "env_ticket": null,
+      "registry_ticket": "RELAY-17",
+      "verdict": "env_missing",
+      "reasons": [
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    },
+    {
+      "port": 8013,
+      "pid": "2801584",
+      "cmd": "/home/ubuntu/risu/PocketRisu-v1.9.0-linux-x64/bin/node /home/ubuntu/risu/PocketRisu-v1.9.0-linux-x64/server/node/server.cjs ",
+      "env_ticket": null,
+      "registry_ticket": "RELAY-1",
+      "verdict": "env_missing",
+      "reasons": [
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    },
+    {
+      "port": 8015,
+      "pid": "2927180",
+      "cmd": "/usr/bin/python3 /home/ubuntu/projects/matrix_asset_agent/tools/workbench_web.py ",
+      "env_ticket": null,
+      "registry_ticket": "RELAY-8",
+      "verdict": "env_missing",
+      "reasons": [
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    },
+    {
+      "port": 8020,
+      "pid": "2263252",
+      "cmd": "/usr/bin/python3 server.py --port 8020 ",
+      "env_ticket": null,
+      "registry_ticket": null,
+      "verdict": "pending_registration",
+      "reasons": [
+        "레지스트리 pending — 등록 티켓 미완료",
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    }
+  ],
+  "jira_checked": {
+    "RELAY-18": true,
+    "RELAY-12": true,
+    "RELAY-17": true,
+    "RELAY-1": true,
+    "RELAY-8": true
+  },
+  "board_token_available": true,
+  "board_card_id": "req-20260820084952-66c4a3"
+}
