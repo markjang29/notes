@@ -2,149 +2,103 @@
 
 > 매니저(`@heav_lnx_bot`) 전관. 활성 작업·대기 결정·다음 스텝만 유지한다.
 > 과거 상세는 Git 이력, `work-archive.md`, checkpoints를 본다.
+> **2026-08-16 갱신**: 07-12 정지 이후 5주 공백 반영(Windows 종료, Matrix 통합 후임 인계,
+> zcode 클라이언트 승계). 07-10~07-12 야간 사이클·승인보드 상세는 `work-archive.md`
+> '2026-08-16 아카이브' 섹션으로 이동.
 
-## 최상위 원칙
+## ★ Matrix 통합 후임 (2026-08-16)
 
-- 이사님 최종 결정.
-- 팀장은 자기 산출물만. 통합·우선순위·ops는 매니저 전관.
-- 중요한 `.md`/ADR/checkpoint/work-queue 변경은 Git 보존 후 세션 클리어.
-- 긴 문서 전체 재독 금지. 필요한 부분만 읽는다.
+- 담당 actor: `aws-manager`
+- 교대 결정: `decisions/2026-08-16-matrix-successor-handoff.md`
+- 전체 정본: `matrix_asset_agent` 최신 main의 `collaboration/MATRIX-SUCCESSOR-HANDOFF.md`
+- 현재 카드: `NEXT-001` 동일조건 Codex/ZCODE/RISU 품질시험
+- Clear는 대화 컨텍스트만 지울 수 있다는 뜻이며, 제품 완료나 서비스 정상 판정이 아니다.
+- 아래 한 문장으로 새 세션을 시작한다.
 
-## ★ Scenario 현재 정본 (2026-07-14)
+```text
+너는 Matrix 통합 후임이다. matrix_asset_agent 최신 main의 collaboration/MATRIX-SUCCESSOR-HANDOFF.md를 전부 읽고 [MATRIX-SUCCESSOR-CERT]를 출력한 뒤, 문서에 적힌 전체 Git의 최신 origin/main과 역할 경계를 재검증하고 NEXT-001부터 작은 카드로 실행·검사·commit·push·보고하라.
+```
 
-아래의 과거 freeze·야간 배정·110558063 진행 문구는 역사 기록이며 현재 상태가 아니다.
-Scenario의 질문·방향·우선순위는
-`projects/scenario/README.md`와 `projects/scenario/roadmap.md`를 우선한다.
-실행 상태는 scenario repo의 `catalog/asset_lifecycle.ndjson`을 직접 확인한다.
+## 조직 현황 (2026-08-16, actors.json v8)
 
-## 이사님 결정 — scenario repo freeze (07-12 KST, 이사님 직접)
+- Windows Codex·ZCode 구독 종료(08-16). 신규 **zcode 클라이언트**(telegram-zcode-bridge 구동)가
+  승계자로 활동 중.
+- zcode 클라이언트가 이어받음:
+  - Windows 자산 수집 파이프라인(아카 수집/다운로드/디코딩/중복제거 → `matrix_asset_agent` 입고).
+    노하우 정본은 Windows 인수인계 문서 `handover-2026-08-16.md`, 이식 착수 예정.
+  - 매니저가 직접 실행 금지라 비어있던 '직접 실행 작업자' 역할(예: 8011 ZCODE 서비스 복구).
+  - 팀장 봇이 content policy로 blocked 남긴 기계적 처리(성인 픽션 포함 소설 수집·가공·카탈로그) 이관.
+    정책 유지: NSFW를 이유로 버리지 않고 동일 provenance/security/quality gate.
+- 매니저(`@heav_lnx_bot`): 조율·배정·보고 전관 + **LIVING-DRAMA-OS(Matrix) 통합 작업자 겸직**.
+  repo 범위에 matrix 7종(`matrix_asset_agent`/`scenario`/`matrix`/`matrix_zcode`/`matrix_codex`/
+  `matrix-engine`/`matrix-living-drama`) + `music_video`(08-08 추가) 포함.
+- `aws-trader`: 07-16 이사님 지시로 pause. 재개는 이사님 결정.
+- 퇴역 windows-codex/windows-zcode 잔여 권한(크론·approval-board 클라이언트 토큰·시스템 프롬프트)
+  감사: 08-16 감사봇 의뢰 진행 중(아래 대기 결정 #3).
 
-★ 이사님 직접 확인(07-12): **scenario repo 리뉴얼(갈아엎기) 전까지 일체 수정 금지(freeze)**. 리뉴얼 룰 통보 시 새 룰 따름. 상세 · 크론 백업 → `decisions/2026-07-12-scenario-repo-freeze.md`.
+## Matrix 다음 카드 (NEXT-001~005; 정본은 handoff 문서)
 
-- 매니저 방침: **scenario 야간 배정 사이클 전면 중단** (리뉴얼 룰 통보 전까지). RPG·autotrader 정상.
-- `0FC5A6F0`(시나리오 야간) → 팀장 제거 완료. `C9804825`(08:00 시나리오팀 창작 리포트) → 매니저 제거, 리뉴얼 후 재등록.
-- `2D8F5150`(01:00 3팀 공통 배정)은 유지 — 본 섹션 읽고 scenario 제외 처리. 아래 07-12 밤 배정(라인 하단)의 scenario 과제는 모두 **freeze로 무효**.
-- 미커밋 잔류(`drafts/d1`, `d2`, `OVERNIGHT_2026-07-12.md`): 보존, 조치 없음. scenario 봇·매니저 git 조작 금지.
-- 재개 조건: 이사님 리뉴얼 룰 통보.
+1. **NEXT-001 동일조건 품질시험** — 같은 모델·요청·온도·출력 예산 고정, 8011/8012/RISU를
+   첫 장면·10턴·20턴·재개로 비교. 실행 결과 없이 승자 선언 금지.
+2. NEXT-002 사건 코어 흡수 결정 — `matrix-engine` vs `matrix-living-drama` event schema/reducer/
+   checkpoint/replay 비교 → 8012 command bus·SQLite 경계 안에서 수렴. donor 재구현 금지.
+3. NEXT-003 reviewed 시츄에이션 10개 — 사람 승인 후 같은 release ID로 8011·8012에 공급.
+4. NEXT-004 자율 감독·연출 통합 — living-drama 자율 충돌 결정을 8012 사건 원장 앞단에 결합.
+5. NEXT-005 제품 영수증·관찰자 UI — 20턴 종료/재개, 동일 checkpoint 두 분기, 사건 누출 0,
+   state digest 일치 검증.
 
-★ **해제됨 (07-12 17:23 KST, 이사님 승인 "프리즈 전면 해제해")**. 코덱스 제안 리뉴얼 룰 7조 확정 적용 — reviewed 자산만 사용 / fragment ID·입력커밋·기여 기록 / `.extract`·`catalog/index.json`·crawler후보·`needs_review` 입력금지 / 게시물완결 / 보정재실행 / `usable`·`usable_with_changes`·`not_usable` 판정 / 생성물·검증근거·한국어해설 Git커밋. `ee11cc` running → 시나리오팀장 전달(msg_20260712_172300_5ca2ef60). 시나리오팀 야간 배정 사이클 재개 가능.
+## 크론/스케줄 현황 (07-20 이사님 '스케쥴 다 제거' 이후)
 
-## 인바운드 작업요청 창구 (07-12 신설, approval-board 포트 8005)
+- cokacdir 반복 스케줄 3건(감사 09:10 `D6CA2473` / RPG 01:05 `AB3904F8` / scenario 01:00
+  `57F08AB6`) 제거 후 **재등록 없음** → 일일 감사·야간 배정·아침 브리프 자동 기동 없음.
+- 시스템 crontab 3건은 보존: request_router_poll(매분, approval-board 인바운드 폴백) /
+  session-reaper(*/30) / chat-log-backup(매시 :05).
+- ★원칙 유지(07-12 사고 반영): 타 봇 key + 그룹 chat recurring cron 금지. 대상 봇 깨우기는
+  `--once` 단발만. recurring이 필요하면 매니저 본인 key + 라우터 경유만.
 
-외부 Codex/ZCODE → AWS 봇 작업요청. 원장 `requests.json`(Git), 클라이언트 토큰 `clients.json`(gitignore). 이사님 웹 `/requests`. 라우터: webhook(POST 즉시) + 1분 cron 폴백(A36A9120) + claim 잠금(멱등). commits: 509e857/74622a7/31c56ab. 코덱스 루프(게시물 110558063) 단계1(라우터)·2(룰확정) 완료, 단계3(ee11cc 실행) 진행 중.
+## 인바운드 작업요청 창구 (07-12 신설, approval-board 8005)
 
-## 이사님 결정 — 승인 보드 (07-10 18:57–59 KST)
-
-★ 이사님이 승인 보드(http://13.125.131.126:8005)에서 직접 결정. `decisions.json` 반영됨.
-
-- **RPG 야간 결과 push → 보류**. 코멘트(원문): "그 대본이 뭔지 사이트에서 볼 수 있게 표현 해주세요" → 매니저가 보드 카드에 실제 대본(§2.5 한 호흡 + Miss) 임베드 완료. 이사님 대본 확인 후 재결정 대기.
-- **scenario 자산(Rio·Ji-Won) 사용 → 반려** ★정책 수립. 코멘트(원문): "캐릭터에 대해서 제가 공감하고 알고있는 캐릭터가 아니면 부가설명 필요해요. 처음 봤는데 부가설명 없이 표현이 안되는 캐릭터는 사용 금지요." → 시나리오팀 통보 + 사칙 5.1 강화(모르는 자산 사용 시 부가설명 동반 의무화).
-- **scenario 야간 결과 push → 반려** (자산 반려에 연동).
-- **autotrader WIP-adr / autotrader push → 대기** (이사님 미결정, 보드에 pending 유지).
-
-## 야간 자율 배정 — 현재 사이클 (07-11 01:00 KST, 배정 완료)
-
-★ 이사님 07-09 재정의(유지): 야간 자율 = **리서치·draft·설계 프레임워크** (WIP 팀당 2건 한도). **show-don't-tell(체감 우선)** — 기존 WIP를 한 단계 구체화.
-금지(아침 승인 필수): 전략 채택 · commit/push · 외부 송신 · 실거래. 시나리오팀 추가: 컨펌 전 디벨롭/구현·새 자산 사용 금지(사칙 5.1).
-
-### 07-10 밤 결과 (취합 완료 → 07-11 배정 기반)
-- **RPG**: 1턴 감각(히트스톱·파열음·촉각)+Miss/Good 실패 재도전 루프 완성. 2번째 씬 턴1·3 대본+수치 정합, 세 턴 감정 곡선. 양호. 부족: 풀 1판 경험(오프닝~결말) 미완, 패링 손맛 인터페이스 미첨.
-- **autotrader**: 2008/2020/2022 세 시나리오 실측 딥다이브 완성, WS-A +134%/MDD−21% 명확, 한계 솔직 인식. 양호. 부족: 통합 "나침반" 미정형, WS+재진입 완전형 미탐색.
-- **scenario**: Rio DISCOVER→ASSEMBLE 딜레마(tampered 시줄)·Ji-Won identity_kernel 불변핵 3상황 체감. 양호(d1/d2 +80/+88 = 07-10 밤 산출, 반려 18:57 이전이라 유효). ⚠ **이사님 07-10 반려**(Rio·Ji-Won 자산 사용 금지·부가설명 없는 사용 금지) → 07-11 밤부터 사칙 5.1 강화 적용.
-
-### 07-11 밤 배정 (각 repo `OVERNIGHT_2026-07-11.md` + 선행 `--message`)
-⚠ **중복 트리거 사고**(07-08 유사): 선행 세션(01:02)이 `--message`로 07-10 복사형 배정 송신, 본 세션(01:00)이 07-10 밤 결과 반영 repo 파일 작성. **repo `OVERNIGHT_2026-07-11.md`(07-10 결과 반영)을 정본 제안** — `--message` 배정은 07-10 결과 미반영·scenario ② 중복. 07:00 이사님 결정.
-- **RPG** (2건): ① DRAFT 1턴 — 패링 손맛 인터페이스(입력→히트스톱→감각) 한 호흡 ② 2번째 씬 — 보스전 풀 1판 플레이스루 대본(오프닝→3턴→결말).
-- **autotrader** (2건): ① strategy-instance — 세 시나리오→"전략 선택 나침반"(의사결정 트리/매트릭스, 전략 채택 아님) ② weight-slide — WS/exit/하이브리드 3-way 비교(2020 코로나, 트레이드오프 숫자). ★예산외 WIP-adr 추가 작업 금지.
-- **scenario** (2건, 보수·사칙 정위치): ① d1(Rio) — **이사님용 부가설명 블록**(PROVENANCE+캐릭터 배경, 장면 수정 없이 메타 보강만) ② d2(Ji-Won) — 부가설명 블록 + 가상제품 사칙 정위치("추상 예시, 컨펌 후 실제 적용" 명시). **★Rio·Ji-Won 디벨롭·창작 확장·새 자산 금지**.
-
-### 07-12 밤 배정 (01:02 KST, `--message` 송신 완료 — 3팀장 수신)
-★이사님 07-09 재정의 유지(리서치·draft·설계, WIP 2건, show-don't-tell). push/전략채택/외부송신/실거래 금지.
-**★★07-11 밤 배정 과제 3팀 전체 미수행**(repo에 07-11 01:18 이후 산출 commit 없음 → 07:00 최우선 안건 #1). 07-11 밤 과제를 사실상 재배정.
-- **RPG** (2건, 재전달): ① 1턴 패링 손맛 인터페이스(입력→히트스톱→감각) 한 호흡 draft ② 2번째 씬 풀 1판 플레이스루 대본(오프닝→3턴→결말).
-- **autotrader** (2건, 재전달): ① strategy-instance 세 시나리오→'전략 선택 나침반'(의사결정 트리, 전략 채택 아님) ② weight-slide WS/exit/하이브리드 3-way 비교(2020 코로나 숫자). ★예산외 WIP-adr 작업 금지 유지.
-- **scenario** (2건, 재전달·보수): ① d1(Rio) 부가설명 블록(PROVENANCE+배경, 장면 수정 없이 메타 보강) ② d2(Ji-Won) 부가설명 + 가상제품 사칙 정위치. ★새 자산·디벨롭 금지 유지. 배정 과제를 자율 ops보다 우선 요청(07-11 새벽 크롤링 ops 우선시한 정위치).
-
-### ★ 07:00 아침 브리프 취합 안건 (cron `88C5A226` 매일 07:00 KST)
-1. **★★ 07-11 밤 배정 과제 3팀 전체 미수행** — RPG/autotrader/scenario 모두 repo에 07-11 01:18 이후 산출 commit 없음. 팀장 세션 미실행 또는 commit 누락 의심. 원인 파악 + 07-12 밤 재배정 효력 확인. ★최우선.
-2. **★ 07-11 밤 중복 트리거 사고 보고** — 두 매니저 세션 동시 배정(01:02 + 01:18). repo 파일 정본 처리. 재발 방지(cron 중복 감지 후보).
-   - **★★ 07-12 밤 동일 재발** — 선행(01:02, commit `071d402` 정본) + 본 세션(01:04~05). 선행은 '07-11 미수행→재배정', 본 세션은 '다음 단계'로 방향 충돌. 본 세션이 선행에 양보: 3팀 정정 송신(01:08) + repo `OVERNIGHT_2026-07-12.md` 3개 보류(경고 라인 추가). ★재발 방지(cron 중복 감지 락) 긴급 — 2연속 밤 동일 패턴.
-3. **07-10 밤 결과 push** — 이사님 확인 후 (★ 07-08 지시 유지). RPG 대본 사이트 표현(07-10 이사님 요청)은 매니저 보드 카드 처리(완료).
-4. **autotrader 예산외 `WIP-adr-rest-api-port-ownership-v1-draft.md`** — 미추적, keep/폐기 결정(이사님 07-10 "대기"). 기존 안건 #3·#5 통합.
-5. **scenario 부가설명 보강 결과** — 이사님 반려(07-10) 후 산출. ★07-11 밤 미수행 → 07-12 밤 산출로 이월. 부가설명으로 자산 사용 재개 가능한지 재컨펌.
-6. **scenario 자율 ops 정위치** — 07-11 02:49-02:50 크롤링 파이프라인 commit 2건. 부가설명 배정 과제 대신 ops 우선시한 것인지 확인(사칙상 RISU 자산 수집 영역일 수 있으나 우선순위 점검).
-7. **notes 수정 2건** — `.reviews/session-reaper.log`(+173, 커밋/무시 정책, 대기결정 #3) + `setup/server/zai-proxy.service`(+2/-1, ops push 여부). 07-11과 동일 미해결.
-8. **Git push 대기 상태** — 07-12 01:00 실측: notes **ahead 0**(동기화됨), autotrader ahead 2, rpg_game ahead 1, scenario ahead 2. 미추적: autotrader 3건(OVERNIGHT-09/예산외 WIP-adr 2)/rpg ideation/OVERNIGHT-09/scenario OVERNIGHT-09. (07-11 09:10 감사 주석은 별도 보존.)
-
-#### 09:10 감사 실측 주석 (2026-07-11 KST)
-
-- `notes`: `origin/main` 대비 ahead 3, 로컬 수정 2건(`.reviews/session-reaper.log`, `setup/server/zai-proxy.service`).
-- `autotrader`: ahead 2, 로컬 WIP/야간 draft 미반영 4건.
-- `rpg_game`: ahead 1, 로컬 미추적 `ideation/OVERNIGHT_2026-07-09.md`.
-- `scenario`: ahead 2, 로컬 draft 수정 2건 + 미추적 `OVERNIGHT_2026-07-09.md`.
-- 해석: 07:00 안건의 repo 수/ ahead 수는 작성 시점 관측값으로 보존하고, 현재 기준 판단은 이 09:10 실측값을 우선한다.
-
-#### 09:10 감사 실측 주석 (2026-07-12 KST)
-
-- `notes`: `origin/main` 대비 ahead 2, 로컬 수정 2건(`.reviews/session-reaper.log`, `setup/server/zai-proxy.service`). `zai-proxy.service`는 실제 user service와 동일한 `STANDARD_FALLBACK_MAX_BYTES=614400` 보존 변경으로 확인. `.reviews/session-reaper.log`는 자동 로그라 커밋/무시 정책 결정 전 보류.
-- `autotrader`: ahead 2, 로컬 변경/미추적 7건. 07-12 WIP 2건은 `commit 금지` 문구를 담은 야간 draft, `WIP-adr-rest-api-port-ownership`은 이사님 대기 안건, 나머지는 07-09/07-12 야간 산출 보존 후보.
-- `rpg_game`: ahead 1, 로컬 미추적 6건. 07-12 정본 재배정 산출 2건(`DRAFT-parry...`, `WIP-second-battle-full-match-script`)과 취소된 01:05 보류 draft 2건이 섞여 있어 이사님 처분 전 push 금지.
-- `scenario`: ahead 2, 로컬 draft 수정 2건 + 미추적 `OVERNIGHT_2026-07-09.md`, `OVERNIGHT_2026-07-12.md`. Rio/Ji-Won 부가설명·사칙 정위치 보강이나 07-10 반려 미해제 상태라 이사님 재컨펌 전 push 금지.
-- 해석: 2연속 야간 중복 트리거로 선행 01:02 정본과 01:04~05 보류 산출이 혼재. 팀장 repo는 기계적 push 금지, 매니저가 정본/보류/폐기 분류 후 승인 보드 또는 이사님 확인 필요.
-
-> 과거 사이클 상세는 Git 이력·`work-archive.md`·각 repo `OVERNIGHT_*.md` 참조.
+외부 Codex/ZCODE → AWS 봇 작업요청. 원장 `requests.json`(Git), 클라이언트 토큰
+`clients.json`(gitignore). 이사님 웹 `/requests`. webhook(POST 즉시) + 1분 cron 폴백 +
+claim 잠금(멱등). 메일형 작업지시 계약(Agent Mail v2)은 `projects/agent-ops/` 참조.
 
 ## 활성 작업
 
-### 1. 시나리오팀 — RISU 기반 창작 체계
+### 1. Matrix 통합 후임 — NEXT-001 (최우선)
 
-★ **FREEZE (07-12 이사님 직접 지시)** — 리뉴얼(갈아엎기) 전까지 일체 수정 금지. 배정·창작·git 조작 전면 중단, 리뉴얼 룰 통보 시까지 대기. 위 'scenario repo freeze' 결정 · `decisions/2026-07-12-scenario-repo-freeze.md` 참조.
+- 각 repo 최신 `origin/main`·`AGENTS.md` 재검증 후 `[MATRIX-SUCCESSOR-CERT]` 출력 → NEXT-001 실행.
+- 절대 금지(요약): 후보 무작위 prompt 주입, 모델 요약을 사건 정본으로 저장, 미검토 candidate
+  runtime 사용, 매 tick LLM 호출, donor 미독 재구현, 근거 없는 완료 보고.
 
-- 사칙: `principles/scenario-team-purpose.md`
-- 존재 이유: RISU 자산 기반 창작 스튜디오. 창작은 자유, 디벨롭은 이사님 컨펌 후.
-- 현재 쟁점:
-  - scenario-generator v5 재설계 흐름 확인
-  - RisuAI 실제 데이터 구조 이해 부족 보완
-  - 컨펌 없는 구현/디벨롭 방지
-- 다음:
-  - 시나리오팀 자기 정체 재인증
-  - `scenario-team-purpose.md` 기준 작업 재정렬
-  - 큰 소스 읽기는 요약/파일분리
+### 2. zcode 클라이언트 이관 조율
 
-### 2. RPG — Reasoning-Parry / Godot
+- 파이프라인 이식 착수 지원, 팀장 blocked 작업 이관 창구(승인 보드 경유) 운영.
+- 매니저는 배정·조율·입고 관점만; 이식 실행은 zcode 클라이언트.
 
-- 엔진: Godot 확정.
-- 시그니처: 참모 추론 × 지휘관 결정 × 패막 손맛.
-- 다음:
-  - 시나리오팀 산출이 RPG 요구와 맞는지 클라이언트 관점 검토.
+### 3. RPG — Reasoning-Parry / Godot
 
-### 3. autotrader — 백테스트/대시보드
+- 엔진: Godot 확정. 산출은 repo Git 기준. (07-12 감사 실측: ahead 1 + 미추적 다수 — push 보류)
 
-- 스택: FastAPI + 기존 pandas 백테스트 + Oracle 23ai.
-- 대시보드: Streamlit 8002 + 80.
-- 포트 정정:
-  - 8003 = 시나리오팀 scenario-generator backend
-  - autotrader REST API는 미기동/포트 미확정
-- 다음:
-  - autotrader REST API 포트/소유 재정리 필요 시 ADR 갱신.
+### 4. autotrader — 백테스트/대시보드 (pause)
 
-### 4. 매니저/감사/복구
+- 스택: FastAPI + pandas 백테스트 + Oracle 23ai. 대시보드 Streamlit 8002.
+- 07-16 이사님 지시로 actor pause. 재개 대기.
 
-- 감사봇: Codex 감사 봇 1개. Claude 매니저/팀장 감시.
-- 일일 감사: `B7C51FA3` 매일 09:10 (`10 9 * * *`).
-- ctx-evac:
-  - Stop 훅 JSON 오탐 수정 완료
-  - 실제 `API Error: context window limit`는 별도 장애로 취급
-- recovery-gate:
-  - L1 문구 명확화 완료
-  - L0 도입 후 L0 + current-work-state 주입으로 단순화 예정
+### 5. scenario
+
+- 정본: `projects/scenario/README.md`·`roadmap.md`, 실행 상태는 repo `catalog/asset_lifecycle.ndjson`.
+- 07-12 freeze는 해제됨(17:23, 리뉴얼 룰 7조 확정).
+- 운영 경계(Matrix handoff 지도): 원본 lifecycle=`matrix_asset_agent`, publication=`scenario`,
+  의미 정본=`matrix`.
 
 ## 대기 결정
 
-1. 대청소 후 recovery gate L0 적용 범위 확정.
-2. recovery-gate `DISABLE` 제거 여부.
-3. `.reviews/session-reaper.log` 커밋/무시 정책.
-4. scenario-generator 방향 컨펌 여부.
+1. 야간 배정·일일 감사·아침 브리프 크론 재등록 여부 — 이사님.
+2. autotrader 재개 시점 — 이사님.
+3. 퇴역 actor(windows-codex/windows-zcode) 잔여 권한 처분 — 감사 결과 수신 후.
+4. 07-12 감사 실측 push 잔류(notes 로컬 수정 2건, autotrader ahead 2, rpg ahead 1, scenario
+   ahead 2 + 미추적 산출) 분류·처분.
+5. `.reviews/session-reaper.log` 커밋/무시 정책.
 
 ## 세션 클리어 전 체크
 
@@ -153,6 +107,7 @@ git -C ~/notes status --short
 git -C ~/projects/scenario status --short
 git -C ~/projects/rpg_game status --short
 git -C ~/projects/autotrader status --short
+git -C ~/projects/matrix_asset_agent status --short
 ```
 
 필요 시:

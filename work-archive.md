@@ -34,3 +34,51 @@
 - 매니저 사칙 인증 완료. 팀장 3명 repo 바인딩(rpg_game·autotrader·scenario).
 - 핸들 `_bot` 접미사 수정(commit bc4d04b).
 - 이슈: 병렬 검색 과다 → search -429/529 → ADR 대응.
+
+## 2026-08-16 아카이브 (work-queue 5주치 공백 정리)
+
+work-queue가 07-12에 정지한 뒤의 공백 기록. 07-10~07-12 승인보드·야간 사이클 상세를
+여기로 옮겼다. 현재 상태는 `work-queue.md`(2026-08-16)를 우선한다.
+
+### 07-10 이사님 승인 보드 결정 (18:57–59 KST)
+
+- RPG 야간 결과 push → 보류("그 대본이 뭔지 사이트에서 볼 수 있게 표현해주세요" →
+  매니저가 보드 카드에 §2.5 한 호흡 + Miss 임베드 완료, 재결정 대기).
+- scenario 자산(Rio·Ji-Won) 사용 → 반려. 정책: "처음 봤는데 부가설명 없이 표현이 안되는
+  캐릭터는 사용 금지" → 사칙 5.1 강화(모르는 자산 부가설명 동반 의무화).
+- scenario 야간 결과 push → 반려(자산 반려 연동).
+- autotrader WIP-adr / push → 대기(미결정).
+
+### 07-11 밤 배정 (07-10 결과 반영, 중복 트리거 사고 포함)
+
+- 01:02 선행 세션이 `--message`로 07-10 복사형 배정 송신, 01:00 본 세션이 repo 파일 작성.
+  repo `OVERNIGHT_2026-07-11.md`를 정본 제안 → 07:00 이사님 결정.
+- RPG: ① 1턴 패링 손맛 인터페이스 draft ② 2번째 씬 풀 1판 플레이스루 대본.
+- autotrader: ① 세 시나리오→전략 선택 나침반(의사결정 트리) ② WS/exit/하이브리드 3-way 비교.
+- scenario: ① d1(Rio) 부가설명 블록 ② d2(Ji-Won) 부가설명 + 가상제품 사칙 정위치.
+  ★Rio·Ji-Won 디벨롭·창작 확장·새 자산 금지.
+
+### 07-12 밤 배정 + 중복 트리거 재발
+
+- 07-11 밤 과제 3팀 전체 미수행 → 재배정. 선행(01:02, commit `071d402` 정본) + 본 세션(01:04~05)
+  방향 충돌 → 본 세션이 양보, 3팀 정정 송신 + repo `OVERNIGHT_2026-07-12.md` 3개 보류.
+- 재발 방지(cron 중복 감지 락)가 긴급 안건이었으나 07-20 크론 전면 제거로 사실상 무산.
+- 07-12 09:10 감사 실측: notes ahead 2(+로컬 수정 2건), autotrader ahead 2(+7건), rpg_game
+  ahead 1(+6건), scenario ahead 2(+미추적 다수). 팀장 repo 기계적 push 금지, 정본/보류/폐기
+  분류 후 이사님 확인 필요 — **08-16 현재까지 미처리, 대기 결정 #4로 이월**.
+
+### 07-12 scenario freeze → 해제
+
+- 07-12 freeze(리뉴얼 전 수정 금지) → 같은 날 17:23 이사님 승인 "프리즈 전면 해제"로 해제.
+  리뉴얼 룰 7조 확정: reviewed 자산만 사용 / fragment ID·입력커밋·기여 기록 / `.extract`·
+  `catalog/index.json`·crawler후보·`needs_review` 입력금지 / 게시물완결 / 보정재실행 /
+  `usable`·`usable_with_changes`·`not_usable` 판정 / 산출·검증근거·한국어해설 Git커밋.
+
+### 07-16 이후 조직 변동
+
+- 07-16: `aws-trader` pause(이사님 지시). Agent Mail v1 registry 성립(07-14) → v2 rollout.
+- 07-19: 공유 Git 접근 전 에이전트 복원(`b5c6559`).
+- 08-08: `music_video` 저장소 매니저 범위 추가(`8af5683`).
+- 08-16: Windows Codex·ZCode 구독 종료. Matrix 통합 후임 = `aws-manager`
+  (`decisions/2026-08-16-matrix-successor-handoff.md`). actors.json v8에서 windows-codex/
+  windows-zcode는 아직 `runtime_verified` 잔존 → 감사 안건(잔여 권한 처분).
