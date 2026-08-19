@@ -91,3 +91,14 @@ stage: 2-정제 (초안 — manager 승인 대기)
 - 좌우 2패널(조합/아웃풋) + 하단 판정 바 — 기존 publication workbench
   4패널 구조와 같은 디자인 언어
 - 잠긴 자산화 버튼: "사람 승인 receipt 필요" 툴팁 (기존과 동일)
+
+---
+update: 2026-08-19 (방향 전환 — arcade)
+
+director 결정으로 검증 워크벤치는 아케이드 확장이 아니라 **독립 웹 8015**
+(RELAY-9, matrix-workbench + MongoDB)로 간다. 본 spec의 아케이드 확장안은
+**폐기**. 승인 게이트·read-only·헤더 마스킹 등 보안 원칙은 8015에도
+그대로 적용되어야 한다 (이식 요구사항으로 남김).
+
+arcade는 RELAY-8 범위에서 빠지고 아케이드 본연 작업(데이터 재연결·30셋
+동결 해제)로 복귀. 실사 데이터는 workbench MongoDB에서 읽는다.
