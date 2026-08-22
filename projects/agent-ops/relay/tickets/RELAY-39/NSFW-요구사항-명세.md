@@ -8,16 +8,15 @@
 - 수집 자산(works 완결 체크리스트·RISU 카탈로그) 중 성인向け 로어북/소설이 다수. 현재 스튜디오(v3)는 SFW 전용(`DEFAULT_NEG` 고정)이라 이들 자산의 원격표현이 불가.
 - 목표: 성인용 이미지를 **별도 카테고리·별도 저장소·별도 승인 절차**로 분리 생성 — SFW 파이프라인과 물리 분리.
 
-## 2. 기능 요구사항 (FR)
+## 2. 기능 요구사항 (FR) — 2026-08-23 이사님 수정: 나이인증·접근통제 제거, 토글만
 
-- **FR-1 연령 게이트**: `app/nsfw_config.json`(`enabled: false` 기본) + UI 토글. `false`면 NSFW 탭·프리셋·API 전부 비활성(403). 토글 ON은 세션 단위 + 설정 파일 양쪽.
+- **FR-1 NSFW 토글**: `app/nsfw_config.json`(`enabled: false` 기본) + UI 토글. `false`면 NSFW 탭·프리셋·API 전부 비활성(403). **연령 인증·IP 화이트리스트·PIN 없음.**
 - **FR-2 카테고리 필드**: 생성 요청에 `category: "sfw"|"nsfw"` (manifest 스키마 v1→v1.1, 후방호환 기본 sfw).
 - **FR-3 프리셋 물리 분리**: NSFW 태그 사전·negative 프리셋은 별도 파일 `app/nsfw_presets.json` — SFW 사전 코드와 같은 파일에 두지 않는다.
 - **FR-4 저장소 분리**: 로컬 `/home/ubuntu/nai_out/studio_nsfw/`, 구글드라이브 `소설자산이미지/NSFW/<배치>/`. SFW 폴더에 한 파일도 섞이지 않게 업로드 경로를 생성 시점에 분기.
 - **FR-5 카탈로그 분리**: 스튜디오 카탈로그는 NSFW 토글 ON일 때만 별도 섹션("🔒 NSFW") 표시. 정적 카탈로그(`web_catalog.html`)에는 미포함.
-- **FR-6 파라미터 프리셋**: NAI `negative_prompt`에서 성인 차단 태그를 제거하는 별도 NSFW negative 프리셋 + 페티시 태그 사전(카테고리별: 컨셉 의상/구도/표정 등) — 전부 `nsfw_presets.json`에서 관리, 코드 하드코딩 금지.
+- **FR-6 파라미터 프리셋**: NAI `negative_prompt`에서 성인 차단 태그를 제거하는 별도 NSFW negative 프리셋 + **이미지 카테고리 태그 사전 7종(works/catalog 자산 기반 — 인수인계서 §4.2 표 참조: 의상·코스튬/장소·상황/포즈·구도/액세서리·도구/신체·체형/분위기·조명/관계·상호작용)** — 전부 `nsfw_presets.json`에서 관리, 코드 하드코딩 금지.
 - **FR-7 감사 로그**: NSFW 생성은 manifest `provenance`에 `"category":"nsfw"` 명시 + 생성 로그 별도 파일(`nsfw_generation.log`).
-- **FR-8 접근 제한**: 8016 NSFW API는 화이트리스트 IP(사내망)만. `X-Forwarded-For` 검증 또는 별도 포트.
 
 ## 3. 정책 요구사항 (POL)
 
