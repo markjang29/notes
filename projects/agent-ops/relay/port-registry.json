@@ -37,6 +37,12 @@
       "service": "matrix-workbench.service",
       "ticket": "RELAY-8",
       "note": "지시서 지정, env 주입 완료(2026-08-20, drop-in relay-ticket.conf)"
+    },
+    {
+      "port": 8017,
+      "service": "rpg-asset-workbench (nohup 프로토타입)",
+      "ticket": "RELAY-36",
+      "note": "2026-08-22 이사님 지시 프로토타입 스파이크. env RELAY_TICKET 주입(systemd 아님). 정식 채택 시 systemd 유닛 전환 필수"
     }
   ],
   "pending_registration": [
