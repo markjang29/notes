@@ -1,14 +1,15 @@
-# NSFW 카테고리 구현 인수인계서 (RELAY-39 → 구현 담당 봇)
+# NSFW 카테고리 구현 인수인계서 (RELAY-39 → 구현 담당 봇, 티켓번호 RELAY-41)
 
 > 2026-08-23 · 작성: novel_col (RELAY-39 담당) · 승인: 이사님
 > **이 문서 하나로 구현이 가능하게 쓴 자립형 명세.** 원본 요구사항: 같은 폴더 `NSFW-요구사항-명세.md`
+> ⚠ RELAY-40은 RPG 팀 조사 티켓이 선점(2026-08-23) — NSFW 구현 티켓은 **RELAY-41**.
 
 ---
 
 ## 0. 이 문서를 받은 봇에게 (반드시 먼저 읽을 것)
 
 1. 당신의 임무: **소설 자산 이미지 스튜디오에 NSFW 생성 카테고리·토글을 구현**한다. SFW 파이프라인은 절대 건드리지 않는다.
-2. 절차: ①`git pull` ②Jira 티켓 등록(RELAY-40, 없으면 신규) ③구현 ④검증(§5) ⑤pre-push 게이트 통과 커밋·push ⑥notes에 구현기록 ⑦이사님 Telegram 보고.
+2. 절차: ①`git pull` ②티켓 확보 — **Jira가 응답하면** `RELAY-41` 등록, **Jira 불가(404 등)면 RPG 봇 선례(2026-08-23)대로 notes `relay/tickets/RELAY-41/1-req.md`에 `jira: RELAY-41` 헤더를 남기고 로컬 폴더를 정본으로 작업** (Jira 복구 시 역동기화) ③구현 ④검증(§5) ⑤pre-push 게이트 통과 커밋·push ⑥notes에 구현기록 ⑦이사님 Telegram 보고.
 3. **금지 (NEVER)**: `review_status` 자동 `reviewed` 부여(이사님만 가능) · 시크릿/토큰 Git 반입 · PNG 바이너리 Git 반입 · SFW 매니페스트/드라이브 폴더에 NSFW 파일 혼입 · 미성년·실존 인물 묘사 태그 허용.
 4. 모호하면 구현 추측으로 때우지 말고 **중단하고 이사님께 질문**. (단, §6 열린 질문에 이미 있는 것은 이사님 결정 대기 목록임)
 
@@ -116,7 +117,7 @@ BLOCKED = ["loli", "shota", "child", "minor", "underage", "school uniform child"
 5. **SFW 무결성**: 생성 후 SFW 카탈로그 UI·`web_catalog.html`에 NSFW 이미지 없음 확인
 6. `render_test.js`에 ①토글 off 기본 상태 ②NSFW 섹션 미표시 케이스 추가 (실생성 없이 검증 가능한 범위)
 7. 증거 이미지 이사님 Telegram 전송: `cokacdir --sendfile <경로> --chat <이사님 chat> --key <봇 키>`
-8. notes `relay/tickets/RELAY-40/5-impl.md` 구현기록 + git push + Jira 댓글
+8. notes `relay/tickets/RELAY-41/5-impl.md` 구현기록 + git push + Jira 댓글(가능 시)
 
 ## 6. 열린 질문 (구현 착수 전 이사님 결정 필요)
 
