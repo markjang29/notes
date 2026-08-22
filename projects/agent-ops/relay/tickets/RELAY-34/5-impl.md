@@ -11,3 +11,7 @@
 - spec 대비 이탈 및 사유:
   - 원천: novel_assets 34작품 완결 components 중 시각 특징 뚜렷한 캐릭터/세계 선별
   - PNG 바이너리는 Git 미반입(용량) — prompts 정본(batch1/batch2 JSON)만 커밋, 이미지는 이사님 승인 시 구글 드라이브 알피지 저장고로
+
+## 업로드 (2026-08-22 이사님 승인)
+- 위치: `matrix-upload:RPG저장고/NAI_캐릭터디자인_1차/` (10종 전체, 15.5MiB)
+- 원격 메모: matrix-upload가 rclone 공유 client_id 사용 중 — 2026년 중 폐기 예정 NOTICE. 전용 client_id 발급 필요할 수 있음(매니저 안건).
