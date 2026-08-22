@@ -21,9 +21,16 @@
 ### 4) NSFW — 요구사항 명세만 작성 (구현 없음, 이사님 지시 옵션)
 - `NSFW-요구사항-명세.md` — FR 8건·POL 4건·스키마 v1.1·구현 규모·열린 질문 3건. 승인 시 RELAY-40로 분리 구현.
 
-### 5) 아카라이브 참고자료 조사 (슬쩍 찾아봐)
-- 직접 fetch는 403 차단 — 검색 스니펫으로 확인. 핵심 노하우(주체 태그 1girl/1boy 고정 + 시드 재현)는 **우리 일관성 3원칙과 동일 맥락** → 크로스체크 통과, 전면 개편 불필요.
-- 참고: arca.live NAI 기본 위키 · [NovelAI 활용 A to Z](https://arca.live/b/webfiction/166306114) · rupicat NAI V3 대량생성 무료 사용기
+### 5) 아카라이브 참고자료 — 서버 내 크롤링본 채굴 (이사님 지적)
+- **이미 크롤링되어 있었음** (`scenario/.extract/`): 🔦라이트보드 NAI 모듈 2.1.1~2.9(9종) + [라이트보드] NAI/ComfyUI 매뉴얼 PDF(아카 characterai 채널, 조회 1만). WebFetch 403만 보고 놓친 것을 이사님이 지적 → 크롤링본 기반으로 전환.
+- **채굴→반영 (v3.1)**:
+  - `[Quality]` 부스트 → QUALITY 프리셋에 `boost` 필드 (best quality, amazing quality, very aesthetic, masterpiece, detailed shading) — 조립 규칙 **v1.1**: `boost + core + scene_layer`, manifest `render.quality_boost` 기록, README·build_web.py 동시 갱신.
+  - `[Negative]` 가중치 목록 → DEFAULT_NEG 강화 (worst quality, bad quality, unfinished, unclear fingertips, multiple views, monochrome, greyscale, sketch, flat color, 3d, realistic, nsfw).
+  - `[Angle]` 3분할 → 씬 템플릿 12종에 앵글 태그 보강 (from below/cowboy shot/wide shot 등) + 태그 사전에 '앵글·프레이밍' 카테고리.
+  - NAI 액션 태그 `mutual#`/`source#`/`target#` → 태그 사전 '상호작용' 카테고리.
+  - 태그 작성 규칙(Frozen Moment·Danbooru 표준·이름 금지·구체>포괄) → README 3-1절로 표준화.
+- **보류**: `artist:` 화풍 태그 10종 프리셋([Author] 블록)은 NAI v4 전용 — 우리 v3 파이프라인에 비적용. 원본은 `.extract/modules/🔦라이트보드 NAI 2.9.json` lorebook 프리셋1~10에 보존.
+- 아티스트 프리셋 카탈로그: 같은 폴더 `아티스트-프리셋-카탈로그.md` 참조.
 
 ## 검증 (기능실행검수 — RELAY-37)
 
