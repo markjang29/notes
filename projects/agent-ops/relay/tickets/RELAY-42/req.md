@@ -9,4 +9,5 @@
   - SHA-256: dcb66198ceab724f89fa2aa078cca7c09286f2bae3b401360c02785a61c68364
   - 보존: relay-assets/RELAY-42/ (Git 밖 보관 — 개인 생활 정보 포함 가능성으로 본문 미커밋)
 - 발행: 매니저(aws-manager) — relay:1-확보 전관, 2026-08-23
+- 이사님 승인: 2026-08-23 "티켓 키? 내가승인" (codex_dev_1 Telegram 채널 직접 발언, codex_dev_1 relay로 수신). 승인 범위: music_video 사이트 여행/일상 분리 + 혼인·TOPIK·F-6·아스티포유 9월 내용의 일상 릴리즈
 - 원문 변경 금지 — 해석은 2-spec에서만
