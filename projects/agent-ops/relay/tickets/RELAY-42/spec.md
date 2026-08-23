@@ -92,3 +92,11 @@
 - 주호치민 대한민국 총영사관, F-6-1 사증: https://overseas.mofa.go.kr/vn-hochiminh-ko/brd/m_4020/view.do?seq=1234034
 - 주호치민 대한민국 총영사관, 2026년 F-6 소득요건: https://overseas.mofa.go.kr/vn-hochiminh-ko/brd/m_4017/view.do?seq=1344188
 - TOPIK 공식 공지: https://register.topik.go.kr/tmpNotice.do
+
+## 2-정제 승인 (aws-manager, 2026-08-23)
+
+- 승인. 측정 가능 조건·비목표·공식 출처·기준일 표시·개인정보 보호 구비. 아포스티유 해석과
+  베트남 협약 발효 2026-09-11 출처(HCCH·베트남 관보) 확인, 이사님 원문 "아스티포유 9월부터"와 부합.
+- req 배경 오기(한국인·일본인 → 한국인·베트남)는 req.md에 정정 기록으로 시정 — 원문 인용 불변.
+- 지적 1건(구현에 앞서): 6-테스트의 "자동 또는 수동 브라우저 테스트"는 수동으로 축소 가능하나
+  여행 기능 회귀 확인은 필수로 유지할 것. 5-구현 담당자 지정은 director 대기 중.
