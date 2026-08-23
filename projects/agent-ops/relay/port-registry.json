@@ -1,7 +1,7 @@
 {
   "schema": "relay-port-registry-v1",
   "ticket": "RELAY-15",
-  "updated_at": "2026-08-20T08:57:00+09:00",
+  "updated_at": "2026-08-23T09:20:00+09:00",
   "policy": {
     "scan_cron_kst": "10 9 * * *",
     "check": "8000-8099번대 리스닝 포트 스캔 → 프로세스 환경변수 RELAY_TICKET 확인 → 티켓이 없거나 Jira RELAY 프로젝트에 존재하지 않으면 무단 운행으로 승인보드 카드 발행",
@@ -40,9 +40,9 @@
     },
     {
       "port": 8017,
-      "service": "rpg-asset-workbench (nohup 프로토타입)",
+      "service": "rpg-asset-workbench (전용 유닛 전환 전 — nohup 프로토타입, cwd rpg_game/tools/asset_workbench)",
       "ticket": "RELAY-36",
-      "note": "2026-08-22 이사님 지시 프로토타입 스파이크. env RELAY_TICKET 주입(systemd 아님). 정식 채택 시 systemd 유닛 전환 필수"
+      "note": "사후등록 2026-08-23(카드 req-20260823091004-3aeef2): env RELAY_TICKET=RELAY-36 확인 + Jira RELAY-36 실재 검증(HTTP 200, 2026-08-22 생성) + 이사님 사용 중(rpg36 접속링크). 2026-08-22 이사님 지시 프로토타입 스파이크. 정식 채택 시 전용 user 유닛 + EnvironmentFile 전환 필수(RPG 팀 숙제)"
     }
   ],
   "pending_registration": [
