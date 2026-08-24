@@ -1,7 +1,7 @@
 {
   "schema": "relay-port-registry-v1",
   "ticket": "RELAY-15",
-  "updated_at": "2026-08-23T09:20:00+09:00",
+  "updated_at": "2026-08-24T09:17:44+09:00",
   "policy": {
     "scan_cron_kst": "10 9 * * *",
     "check": "8000-8099번대 리스닝 포트 스캔 → 프로세스 환경변수 RELAY_TICKET 확인 → 티켓이 없거나 Jira RELAY 프로젝트에 존재하지 않으면 무단 운행으로 승인보드 카드 발행",
@@ -9,10 +9,46 @@
   },
   "registered": [
     {
+      "port": 8003,
+      "service": "scenario-generator.service",
+      "ticket": "RELAY-43",
+      "note": "사후등록 2026-08-24(카드 req-20260824091005-319049): RISU 자산 실험실(시나리오 README 서비스표 이사님용). env 주입 완료(system drop-in relay-ticket.conf)."
+    },
+    {
+      "port": 8004,
+      "service": "arcade-playable.service (user)",
+      "ticket": "RELAY-44",
+      "note": "사후등록 2026-08-24: 아케이드 플레이어블 웹(matrix_asset_agent archmap-fleet, 카나리 운영 중). env 주입 완료(user drop-in)."
+    },
+    {
       "port": 8005,
       "service": "approval-board.service",
       "ticket": "RELAY-18",
       "note": "소급등록 2026-08-20, env 주입 완료(2026-08-20, drop-in relay-ticket.conf)"
+    },
+    {
+      "port": 8006,
+      "service": "automation-settings.service",
+      "ticket": "RELAY-45",
+      "note": "사후등록 2026-08-24: 아카라이브 수집 자동화 설정·수집현황 대시보드. 종전 '(systemd 미등록 프로세스)' 표기 정정 — 실제 system 유닛. env 주입 완료."
+    },
+    {
+      "port": 8008,
+      "service": "matrix-candidate.service (user)",
+      "ticket": "RELAY-46",
+      "note": "사후등록 2026-08-24: Matrix Living Drama 관찰자 세계 runner(LIVING-DRAMA-OS 워크오더 생존, HTTP 트래픽은 7일 0). env 주입 완료(user drop-in)."
+    },
+    {
+      "port": 8009,
+      "service": "rpg-game-8009.service",
+      "ticket": "RELAY-47",
+      "note": "사후등록 2026-08-24: RPG GAME 01 플레이어블 프로토타입(gunicorn workers 2). env 주입 완료."
+    },
+    {
+      "port": 8010,
+      "service": "matrix-web.service",
+      "ticket": "RELAY-48",
+      "note": "사후등록 2026-08-24: matrix-engine matrix.web(7일 178요청). P-7 렌즈 완료 후 기능 재검토 예정(PORTAL 통폐합안). env 주입 완료."
     },
     {
       "port": 8011,
@@ -39,54 +75,23 @@
       "note": "지시서 지정, env 주입 완료(2026-08-20, drop-in relay-ticket.conf)"
     },
     {
+      "port": 8016,
+      "service": "novel-assets-image-studio (crontab @reboot)",
+      "ticket": "RELAY-35",
+      "note": "신규등록 2026-08-24: 소설 자산 이미지 스튜디오(main.py에 RELAY-35·8016 명시, novel_col). @reboot 크론탭에 RELAY_TICKET 추가 + 재기동으로 env 주입. 정식 채택 시 user 유닛 전환 권고."
+    },
+    {
       "port": 8017,
       "service": "rpg-asset-workbench (전용 유닛 전환 전 — nohup 프로토타입, cwd rpg_game/tools/asset_workbench)",
       "ticket": "RELAY-36",
       "note": "사후등록 2026-08-23(카드 req-20260823091004-3aeef2): env RELAY_TICKET=RELAY-36 확인 + Jira RELAY-36 실재 검증(HTTP 200, 2026-08-22 생성) + 이사님 사용 중(rpg36 접속링크). 2026-08-22 이사님 지시 프로토타입 스파이크. 정식 채택 시 전용 user 유닛 + EnvironmentFile 전환 필수(RPG 팀 숙제)"
-    }
-  ],
-  "pending_registration": [
-    {
-      "port": 8003,
-      "service": "scenario-generator.service",
-      "owner_hint": "autotrader venv로 기동된 Scenario Generator v5",
-      "status": "미등록 — 소유 봇 확정 필요"
-    },
-    {
-      "port": 8004,
-      "service": "arcade-playable.service (user)",
-      "owner_hint": "matrix_asset_agent/tools/arcade_playable_server.py",
-      "status": "미등록 — 소유 봇 확정 필요"
-    },
-    {
-      "port": 8006,
-      "service": "(systemd 미등록 프로세스)",
-      "owner_hint": "approval-board venv / releases/scenario/current/tools/scenario-gen*",
-      "status": "미등록 — 소유 봇 확정 필요"
-    },
-    {
-      "port": 8008,
-      "service": "matrix-candidate.service (user)",
-      "owner_hint": "matrix_candidate 모듈",
-      "status": "미등록 — 소유 봇 확정 필요"
-    },
-    {
-      "port": 8009,
-      "service": "rpg-game-8009.service",
-      "owner_hint": "RPG GAME 01 플레이어블 프로토타입",
-      "status": "미등록 — 소유 봇 확정 필요"
-    },
-    {
-      "port": 8010,
-      "service": "matrix-web.service",
-      "owner_hint": "matrix.web 모듈",
-      "status": "미등록 — 소유 봇 확정 필요"
     },
     {
       "port": 8020,
       "service": "music-video.service",
-      "owner_hint": "Aloha music video call sheet 웹앱",
-      "status": "미등록 — 소유 봇 확정 필요"
+      "ticket": "RELAY-42",
+      "note": "사후등록 2026-08-24: Aloha music video 콜시트 웹앱(RELAY-42 진행 중 — 어제 3-영향성검토 통과). env 주입 완료."
     }
-  ]
+  ],
+  "pending_registration": []
 }
