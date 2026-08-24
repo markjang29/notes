@@ -16,3 +16,19 @@
 - 선행 경로: 동일 요지가 2026-08-24 09:37 zcode 경유로 RELAY-49 발행(bot:zcode, SE 설계 담당). 본 req는 매니저 수령 원문 전문 보강이며 설계 정본은 zcode, 매니저는 조직화(위치 인식·공통 가이드·담당 지정)·게이트 운영 담당.
 - 파이프라인 단계(원문): 리수 프리셋 세팅 → 검증 → 승인(승인보드) → 매트릭스화(구상 필요) → 아케이드 재테스트 → 이미지 붙이기 → 매트릭스 코어 디벨롭 → CLI·AGENT·하네스화 → 수익화 작품(RPG·신규 소설)
 - 원문 변경 금지 — 해석은 2-spec에서만
+
+## 추가 지시 (2026-08-24 13:10경, 매니저 채널) — 4단계 매트릭스 정의 원문
+
+"4단계 매트릭스에 대한 정의를 git 에서 좀 찾아봐 이것도 버전이 너무 많음
+내생각은 cli 기반의 클로드코드같은 하네스였으면해 아래 내용들이 포함된 수준높은?
+CLI 자체 제작
+주요특징 Interactive REPL 모드, prompt 실행 모두, 내장도구, RAG, MCP, LSP 통합, Devops, 세션관리, 자동 컨텍스트 관리, 에러 복구
+Triage 노드가 direct simple complex 3단계 분류
+Hierachicalplannet 가 명시적 다단계 계획 수립
+verifier 노드가 결과를 별도 검증
+검증, 자기반성 — verifier 노드가 결과 별도 검증, reflection 노드가 10가지 실패 패턴 감지및 전략조정
+다중관점 — debate 노드가 process critic resolver 3역할 토론
+Memory bank 가 작업 경험을 벡터 저장및 회상
+ToolLearningSystem 이 패턴 학습 후 도구 추천
+Contextmanagwr 가 토큰 최적화를 능동적으로 관리
+IterationGuarf 가 최대 반복 횟수 제한"
