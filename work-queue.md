@@ -122,6 +122,9 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
 - SE 정본 = zcode(RELAY-49), 매니저 = 조직화·게이트. 공통 가이드: notes-registry relay/site-integration-guide-2026-08-24.md (a386af2)
 - 통합 홈 허브: 8018 (RELAY-50, zcode)
 - **방향 결정(이사님 08-24 승인)**: 4단계 매트릭스화=자산 캡슐화 / 7단계 매트릭스 코어=CLI 클로드코드류 하네스(REPL·RAG·MCP·LSP + 노드 9종 스위치형: Triage direct/simple/complex 관문). 뼈대=matrix_codex 재사용. 원문·결정: relay/tickets/RELAY-49/req.md (a294bc0)
-- 8봇 위치 인식 공지 완료, ACK: asset_agent·novel_col 수령(2/8) — 잔여 audit·arcade·rpg·scenario·codex_dev_1/2
-- RELAY-42(music_video 일상 페이지) 6-코드리뷰 중(codex_dev_2) — 사이트 운영 중 8020/#daily, 이사님 피드백 반영 99c8796 반영 완료
+- 8봇 위치 인식 공지 완료, ACK: asset_agent·novel_col 수령(2/8) — 잔여 6봇(audit·arcade·rpg·scenario·
+  codex_dev_1/2)에 08-24 19:40 관제그룹으로 ACK 재요청 발송, 회신 대기
+- RELAY-42(music_video 일상 페이지) 재검토 **반려 유지** 확정(notes 4871304 review.md — 미해결 1~3 +
+  추가 5~7: v1→v2 마이그레이션·카드별 출처·KO/EN/VI seed). 08-24 19:40 codex_dev_1에 수정 착수 지시
+  전달. 사이트는 운영 중 8020/#daily(99c8796)
 - 대기: zcode에 하네스 설계 반영 지시(매니저→zcode 직통 없음, 이사님 채팅 붙여넣기 필요), 페르소나 324개(RELAY-1) 승인 타이밍
