@@ -32,3 +32,13 @@ Memory bank 가 작업 경험을 벡터 저장및 회상
 ToolLearningSystem 이 패턴 학습 후 도구 추천
 Contextmanagwr 가 토큰 최적화를 능동적으로 관리
 IterationGuarf 가 최대 반복 횟수 제한"
+
+## 방향 결정 (이사님 2026-08-24 승인 "ㅇㅇ")
+
+1. 용어 분리 확정: 4단계 "매트릭스화" = 자산 캡슐화(승인 자산 → 매트릭스 정본 캡슐) /
+   7단계 "매트릭스 코어" = CLI 클로드코드류 하네스(이사님 구상 — REPL·RAG·MCP·LSP·내장도구·세션·컨텍스트·에러복구 + 노드 9종).
+2. 노드 9종(Triage/HierarchicalPlanner/Verifier/Reflection/Debate/MemoryBank/ToolLearningSystem/ContextManager/IterationGuard)은
+   스위치형 도입 — direct/simple은 단일 경로, complex만 전체 노드 가동. Triage 3단계 분류가 첫 관문.
+3. 하네스 뼈대는 matrix_codex(CLI 본체·command bus·MATRIX.md 하네스 원칙) 재사용.
+4. 기존 "단일 에이전트+얇은 하네스" 원칙과의 긴장은 성장 단계 차로 판정 — 스위치형으로 조화.
+5. 설계 반영: zcode(SE)가 RELAY-49 spec에 상기 구상 통합. 8018 통합 홈에 7단계 정의 갱신.
