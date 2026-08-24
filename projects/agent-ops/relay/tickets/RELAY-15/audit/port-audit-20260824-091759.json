@@ -1,0 +1,40 @@
+{
+  "schema": "relay-port-audit-v1",
+  "ticket": "RELAY-15",
+  "ran_at_kst": "2026-08-24T09:17:59+09:00",
+  "listening_ports": [
+    8003,
+    8004,
+    8005,
+    8006,
+    8008,
+    8009,
+    8010,
+    8011,
+    8012,
+    8013,
+    8015,
+    8016,
+    8017,
+    8020
+  ],
+  "total_findings": 16,
+  "violations": [],
+  "jira_checked": {
+    "RELAY-43": true,
+    "RELAY-44": true,
+    "RELAY-18": true,
+    "RELAY-45": true,
+    "RELAY-46": true,
+    "RELAY-47": true,
+    "RELAY-48": true,
+    "RELAY-12": true,
+    "RELAY-17": true,
+    "RELAY-1": true,
+    "RELAY-8": true,
+    "RELAY-35": true,
+    "RELAY-36": true,
+    "RELAY-42": true
+  },
+  "board_token_available": true
+}
