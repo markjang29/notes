@@ -1,7 +1,7 @@
 {
   "schema": "relay-port-registry-v1",
   "ticket": "RELAY-15",
-  "updated_at": "2026-08-24T09:17:44+09:00",
+  "updated_at": "2026-08-25T09:13:30+09:00",
   "policy": {
     "scan_cron_kst": "10 9 * * *",
     "check": "8000-8099번대 리스닝 포트 스캔 → 프로세스 환경변수 RELAY_TICKET 확인 → 티켓이 없거나 Jira RELAY 프로젝트에 존재하지 않으면 무단 운행으로 승인보드 카드 발행",
@@ -85,6 +85,12 @@
       "service": "rpg-asset-workbench (전용 유닛 전환 전 — nohup 프로토타입, cwd rpg_game/tools/asset_workbench)",
       "ticket": "RELAY-36",
       "note": "사후등록 2026-08-23(카드 req-20260823091004-3aeef2): env RELAY_TICKET=RELAY-36 확인 + Jira RELAY-36 실재 검증(HTTP 200, 2026-08-22 생성) + 이사님 사용 중(rpg36 접속링크). 2026-08-22 이사님 지시 프로토타입 스파이크. 정식 채택 시 전용 user 유닛 + EnvironmentFile 전환 필수(RPG 팀 숙제)"
+    },
+    {
+      "port": 8018,
+      "service": "matrix-home (nohup 프로토타입 — telegram-zcode-bridge 자식 프로세스, cwd matrix-home)",
+      "ticket": "RELAY-50",
+      "note": "사후등록 2026-08-25(카드 req-20260825091007-792321): MATRIX 통합 홈 — 7단계 파이프라인 현황·사이트 허브(Flask, novelweb venv, 방화벽 개방 실측). env RELAY_TICKET=RELAY-50 확인 + Jira RELAY-50 실재 검증(HTTP 200, 'MATRIX 통합 홈 (8018)'). 브리지가 spawn한 nohup 프로세스로 재부팅 시 미생존 — 정식 채택 시 user 유닛 전환 권고."
     },
     {
       "port": 8020,
