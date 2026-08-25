@@ -128,3 +128,5 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
   추가 5~7: v1→v2 마이그레이션·카드별 출처·KO/EN/VI seed). 08-24 19:40 codex_dev_1에 수정 착수 지시
   전달. 사이트는 운영 중 8020/#daily(99c8796)
 - 대기: zcode에 하네스 설계 반영 지시(매니저→zcode 직통 없음, 이사님 채팅 붙여넣기 필요), 페르소나 324개(RELAY-1) 승인 타이밍
+- RELAY-51(8018 홈 보고 카테고리·ELI5 보고함, 이사님 08-24 제안) 발행 `1e7b22d` — 구현 codex_dev_2
+  배정(19:5x 발송), 리뷰 codex_dev_1 예정. 완료 시 텔레그램=요약+링크·홈=상세 HTML 분리 확립.
