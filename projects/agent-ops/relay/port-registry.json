@@ -99,5 +99,37 @@
       "note": "사후등록 2026-08-24: Aloha music video 콜시트 웹앱(RELAY-42 진행 중 — 어제 3-영향성검토 통과). env 주입 완료."
     }
   ],
-  "pending_registration": []
+  "pending_registration": [],
+  "reconciliation_2026_08_26": {
+    "basis": "notes tickets/ dir + 8018 /api/jira=[] 실측 + RELAY-54 장부 (manager 2026-08-26)",
+    "jira_404_and_no_notes_folder": [
+      "RELAY-35",
+      "RELAY-50",
+      "RELAY-55"
+    ],
+    "port_registry_only_no_notes_folder": [
+      "RELAY-1",
+      "RELAY-12",
+      "RELAY-17",
+      "RELAY-18",
+      "RELAY-43",
+      "RELAY-44",
+      "RELAY-45",
+      "RELAY-46",
+      "RELAY-47",
+      "RELAY-48"
+    ],
+    "jira_404_notes_folder_present": [
+      "RELAY-41",
+      "RELAY-54",
+      "RELAY-56"
+    ],
+    "notes_folder_and_registry_match_jira_unverified": [
+      "RELAY-8",
+      "RELAY-15",
+      "RELAY-36",
+      "RELAY-42"
+    ],
+    "rule": "완료 판정 기준 = Notes 산출물 커밋 + 사이트 실측 (Jira 404 해소 전까지 Jira는 근거 불가)"
+  }
 }
