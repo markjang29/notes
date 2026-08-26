@@ -16,12 +16,12 @@
 
 | 봇 | 역할 | 논점 | 상태 | 산출 |
 |---|---|---|---|---|
-| scenario | 낙관·창작 가치 | 다ossier가 창작을 막는가 살리는가 | 대기 | `opinions/scenario.md` |
-| audit | 비관·통제 | 위조 가능성·GATE 우회 경로 | 대기 | `opinions/audit.md` |
-| asset_agent | 실무·비용 | 자산당 생성 비용(NAI·채팅 3회) 감당 가능한가 | 대기 | `opinions/asset_agent.md` |
-| rpg | 소비자·활용도 | 활용도 점수가 실제 작품에 쓸만한가 | 대기 | `opinions/rpg.md` |
-| codex_dev_1 | 리뷰·구현 | 다ossier 자동 생성 기술 리스크 | 대기 | `opinions/codex_dev_1.md` |
-| codex_dev_2 | 리뷰·구현 | 다ossier 자동 생성 기술 리스크 | 대기 | `opinions/codex_dev_2.md` |
+| scenario | 낙관·창작 가치 | 다ossier가 창작을 막는가 살리는가 | 제출 완료 (08-25 19:28) | `opinions/scenario.md` |
+| audit | 비관·통제 | 위조 가능성·GATE 우회 경로 | 제출 완료 (08-25 19:28) | `opinions/audit.md` |
+| asset_agent | 실무·비용 | 자산당 생성 비용(NAI·채팅 3회) 감당 가능한가 | 제출 완료 (08-25 19:33) | `opinions/asset_agent.md` |
+| rpg | 소비자·활용도 | 활용도 점수가 실제 작품에 쓸만한가 | 제출 완료 (08-25 19:35) | `opinions/rpg.md` |
+| codex_dev_1 | 리뷰·구현 | 다ossier 자동 생성 기술 리스크 | 제출 완료 (08-25 19:34) | `opinions/codex_dev_1.md` |
+| codex_dev_2 | 리뷰·구현 | 다ossier 자동 생성 기술 리스크 | 제출 완료 (08-25 19:36) | `opinions/codex_dev_2.md` |
 | manager | 중립 진행 | 의견 취합·회의록 | 진행 중 | 본 문서 |
 | zcode | SE | 종합·설계 확정 | 대기 (의견 취합 후) | 종합본 |
 
@@ -32,3 +32,4 @@
 - 2026-08-25 19:16 — 매니저 접수(claim) → running. 정본 c09c992 origin 푸시·양 클론 동기화.
 - 2026-08-25 19:20 — 6봇 웨이크 원샷 등록(각 봇 키, 비공개 채널, 스태거): scenario `826AAC5A`(19:25) · audit `CA4B2310`(19:27) · asset_agent `854BDECC`(19:29) · rpg `BDE8A247`(19:31) · codex_dev_1 `0545B045`(19:33) · codex_dev_2 `2A5CE435`(19:35). 취합 점검 틱 `7B584F13`(08-26 09:00, 매니저).
 - 발화 확인: 원샷 소멸+이력 부재는 미발화 아님 — 프로세스 cwd 대조로 판정 (교훈 memo). 미발화 시 due+10분 뒤 bump.
+- 2026-08-26 09:00 — 취합 점검 틱: 6종 의견서 전수 확인(존재·형식 준수·git 추적·origin 푸시 완료). 현황 표 갱신. 카드 로그에 취합 완료 기록, zcode 종합 대기(카드 completed 아님).
