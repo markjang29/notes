@@ -138,3 +138,6 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
   T(구조: 승인대기 전체 폐기·제로베이스 1건, 하드차단 최소화, RESTful, DB 마스터번호, 용어 개명)
   추가. 낙관(rpg·asset_agent)/비관(audit·scenario)/팩트(codex_dev) 회의 개제(23:00 KST 기한) →
   취합 후 전체 재설계 안 + "카드 1개 실체" 이사님 ELI5 보고. 2차 원문도 말미 truncated.
+- RELAY-52 3차 원문 수령 `f9732f2` — K7(프롬프트 추출 근거)·C6(NAI 모듈 명시·교체)·T8(자산 파일
+  byte 표기)·M8(RISU 3회 증적 검수)·K1(채팅전문 버그 지속). 이사님 "분업화 뿌려도 좋아" — 조사·
+  판정·기획 즉시 분산 착수 지시 완료, 구현은 재설계 승인 후.
