@@ -139,6 +139,14 @@ Jira, Notes, Git, 실행 사이트, 담당 봇과 한 줄로 맞추기 위한 �
 - 작품 근거문서와 작품 관련 장면 카테고리.
 - 외부에서 전달된 core/scene을 이미지 생성에 쓰는 인터페이스.
 
+#### novel_col 상태 표시 (2026-08-26 실측, commit 기준 8676ae2·147449e·a32562e)
+
+- NAI 프롬프트 JSON 표시: **구현됨** — `/image/<id>` REST(프롬프트·시드·negative·provenance 전체, 라이브 200 확인) + 상세 시트 "📄 생성 JSON 보기" details 토글.
+- 리롤·랜덤·삭제 확인 UX: **구현됨** — 리롤 2종 명확화("같은 장면 다른 테이크"/"NSFW 랜덤다이스"), 삭제 confirm 문구→"삭제 중…"→목록 갱신+`deleted` 필터 tombstone. 최종 실클릭 검증은 render_test.js로 AWS ZCode와 공동 진행.
+- 작품 근거문서·작품 장면 카테고리: **구현됨** — `/api/scene_ideas`(works 기반)+applyIdea 근거 기입, "이 작품의 장면" 섹션, RISU 근거문서 `/api/work/<work>`, a32562e로 채팅 3턴 근거(작품·발췌) scene_basis 보존.
+- 외부 core/scene 인터페이스: **부분구현** — RELAY-54 URL 프리필 `?core=&scene=&entity=` 동작 확인. gap: 공식 API 계약(스키마·문서화) 부재, 고유 장면 단서 보존 테스트 실패(extract_tags — AWS ZCode 담당 구분).
+- RELAY-35·41은 Jira 404 → 완료 처리하지 않고 gap 유지.
+
 ### manager
 
 - Jira 404와 Notes ticket folder 불일치 정리.
