@@ -130,3 +130,7 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
 - 대기: zcode에 하네스 설계 반영 지시(매니저→zcode 직통 없음, 이사님 채팅 붙여넣기 필요), 페르소나 324개(RELAY-1) 승인 타이밍
 - RELAY-51(8018 홈 보고 카테고리·ELI5 보고함, 이사님 08-24 제안) 발행 `1e7b22d` — 구현 codex_dev_2
   배정(19:5x 발송), 리뷰 codex_dev_1 예정. 완료 시 텔레그램=요약+링크·홈=상세 HTML 분리 확립.
+- RELAY-52(이사님 사이트 요구사항 정합성·분류) 발행 `da23d5a` — 원문 verbatim 정본화, 1차 분류
+  (S 스튜디오 결함/미구현·H 홈 연동·P 파이프라인 구조). 토의 진행 중(audit 정합성 리드·asset_agent
+  스튜디오 판정·rpg·scenario 구조 의견, 22:00 KST 기한) → 취합 후 이사님 안건. NSFW(S8·S12)는
+  매니저 직접 담당(이사님 지시). 원문 말미 truncated — 재전송 대기.
