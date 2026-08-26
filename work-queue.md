@@ -134,3 +134,7 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
   (S 스튜디오 결함/미구현·H 홈 연동·P 파이프라인 구조). 토의 진행 중(audit 정합성 리드·asset_agent
   스튜디오 판정·rpg·scenario 구조 의견, 22:00 KST 기한) → 취합 후 이사님 안건. NSFW(S8·S12)는
   매니저 직접 담당(이사님 지시). 원문 말미 truncated — 재전송 대기.
+- RELAY-52 2차 원문 수령 `61201f0` — V(정체성·실측 원칙)·C(카드 실체)·M(실측)·K(채팅·이미지 정합)·
+  T(구조: 승인대기 전체 폐기·제로베이스 1건, 하드차단 최소화, RESTful, DB 마스터번호, 용어 개명)
+  추가. 낙관(rpg·asset_agent)/비관(audit·scenario)/팩트(codex_dev) 회의 개제(23:00 KST 기한) →
+  취합 후 전체 재설계 안 + "카드 1개 실체" 이사님 ELI5 보고. 2차 원문도 말미 truncated.
