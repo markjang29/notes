@@ -101,6 +101,28 @@ def jira_ticket_exists(key: str) -> bool:
         raise
 
 
+def jira_authenticated() -> bool:
+    """토큰 자격증명 사전검증 (GET /rest/api/3/myself).
+
+    비공개 프로젝트는 미인증 이슈 조회에도 404로 응답하므로, 토큰이 죽으면
+    jira_ticket_exists()가 존재하는 티켓까지 '없음'으로 오판한다
+    (2026-08-27 사례: 정상 포트 15건 허위 적발). 404 판정을 신뢰하려면
+    이 검증이 먼저 200이어야 한다.
+    """
+    token = JIRA_TOKEN_PATH.read_text().strip()
+    req = urllib.request.Request(
+        f"{JIRA_BASE}/rest/api/3/myself",
+        headers={"Authorization": "Basic " + _b64(f"{JIRA_USER}:{token}")},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            return resp.status == 200
+    except urllib.error.HTTPError:
+        return False  # 401 등 — 자격증명 확정 실패
+    except urllib.error.URLError:
+        raise
+
+
 def _b64(s: str) -> str:
     import base64
 
@@ -176,15 +198,27 @@ def main() -> int:
             )
 
     # Jira 티켓 존재 검증 (env or registry 티켓이 있는 경우만, 오류 시 fail-closed)
+    # 인증 사전검증 실패(401/도달불가)면 404 오판 위험이 있어 판정 전체 보류.
+    try:
+        jira_auth_ok = jira_authenticated()
+    except Exception as e:
+        print(f"WARN jira auth preflight unreachable: {e}", file=sys.stderr)
+        jira_auth_ok = None  # type: ignore[assignment]
     jira_checked: dict[str, bool] = {}
-    for f in findings:
-        key = f["env_ticket"] or f["registry_ticket"]
-        if key and key.startswith("RELAY-") and key not in jira_checked:
-            try:
-                jira_checked[key] = jira_ticket_exists(key)
-            except Exception as e:  # Jira 접근 불가 → 무단 판정 보류
-                print(f"WARN jira check failed for {key}: {e}", file=sys.stderr)
-                jira_checked[key] = None  # type: ignore[assignment]
+    if jira_auth_ok is not True:
+        print(
+            "WARN jira auth preflight not OK — ticket_invalid 판정 전체 보류",
+            file=sys.stderr,
+        )
+    else:
+        for f in findings:
+            key = f["env_ticket"] or f["registry_ticket"]
+            if key and key.startswith("RELAY-") and key not in jira_checked:
+                try:
+                    jira_checked[key] = jira_ticket_exists(key)
+                except Exception as e:  # Jira 접근 불가 → 무단 판정 보류
+                    print(f"WARN jira check failed for {key}: {e}", file=sys.stderr)
+                    jira_checked[key] = None  # type: ignore[assignment]
     for f in findings:
         key = f["env_ticket"] or f["registry_ticket"]
         if key and jira_checked.get(key) is False:
@@ -203,6 +237,7 @@ def main() -> int:
         "total_findings": len(findings),
         "violations": violations,
         "jira_checked": jira_checked,
+        "jira_auth_ok": jira_auth_ok,
         "board_token_available": board_token_ok,
     }
 
