@@ -89,8 +89,8 @@
     {
       "port": 8018,
       "service": "matrix-home (nohup 프로토타입 — telegram-zcode-bridge 자식 프로세스, cwd matrix-home)",
-      "ticket": "RELAY-50",
-      "note": "사후등록 2026-08-25(카드 req-20260825091007-792321): MATRIX 통합 홈 — 7단계 파이프라인 현황·사이트 허브(Flask, novelweb venv, 방화벽 개방 실측). env RELAY_TICKET=RELAY-50 확인 + Jira RELAY-50 실재 검증(HTTP 200, 'MATRIX 통합 홈 (8018)'). 브리지가 spawn한 nohup 프로세스로 재부팅 시 미생존 — 정식 채택 시 user 유닛 전환 권고."
+      "ticket": "RELAY-57",
+      "note": "사후등록 2026-08-25(카드 req-20260825091007-792321): MATRIX 통합 홈 — 7단계 파이프라인 현황·사이트 허브(Flask, novelweb venv, 방화벽 개방 실측). 원등록 티켓 RELAY-50(Jira 실재 검증 HTTP 200, 'MATRIX 통합 홈 (8018)'). 브리지가 spawn한 nohup 프로세스로 재부팅 시 미생존 — 정식 채택 시 user 유닛 전환 권고. 티켓 갱신 2026-08-28(카드 req-20260828091001-f7b5b0): zcode 클라이언트가 /api/flow 공통 흐름 API 배포 후 RELAY_TICKET=RELAY-57로 재기동(신규 /api/flow·flowstrip 실측 통과) — 운행 티켓을 RELAY-57로 사후등록 갱신."
     },
     {
       "port": 8020,
