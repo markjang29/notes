@@ -1,7 +1,7 @@
 {
   "schema": "relay-port-registry-v1",
   "ticket": "RELAY-15",
-  "updated_at": "2026-08-25T09:13:30+09:00",
+  "updated_at": "2026-08-29T09:13:18+09:00",
   "policy": {
     "scan_cron_kst": "10 9 * * *",
     "check": "8000-8099번대 리스닝 포트 스캔 → 프로세스 환경변수 RELAY_TICKET 확인 → 티켓이 없거나 Jira RELAY 프로젝트에 존재하지 않으면 무단 운행으로 승인보드 카드 발행",
@@ -70,9 +70,9 @@
     },
     {
       "port": 8015,
-      "service": "matrix-workbench.service",
-      "ticket": "RELAY-8",
-      "note": "지시서 지정, env 주입 완료(2026-08-20, drop-in relay-ticket.conf)"
+      "service": "matrix-workbench.service (user)",
+      "ticket": "RELAY-58",
+      "note": "지시서 지정, env 주입 완료(2026-08-20, drop-in relay-ticket.conf). 원등록 티켓 RELAY-8. 티켓 갱신 2026-08-29(카드 req-20260829091001-290d90): zcode 야간 사이클이 RELAY-58(B2 골고루 — 빈바구니 채우기/세트단위 검증, 커밋 8f83615·ec34872) 배포 후 05:00 수동 재기동으로 포트 선점, 유닛은 바인드 실패 루프. 수동 pid 제거 + drop-in RELAY-58 갱신 + 유닛 재기동으로 정상 부팅경로 복귀(무중단, HTTP 200)."
     },
     {
       "port": 8016,
