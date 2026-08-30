@@ -96,9 +96,12 @@ claim 잠금(멱등). 메일형 작업지시 계약(Agent Mail v2)은 `projects/
 1. 야간 배정·일일 감사·아침 브리프 크론 재등록 여부 — 이사님.
 2. autotrader 재개 시점 — 이사님.
 3. 퇴역 actor(windows-codex/windows-zcode) 잔여 권한 처분 — 감사 결과 수신 후.
-4. 07-12 감사 실측 push 잔류(notes 로컬 수정 2건, autotrader ahead 2, rpg ahead 1, scenario
-   ahead 2 + 미추적 산출) 분류·처분.
-5. `.reviews/session-reaper.log` 커밋/무시 정책.
+4. ~~07-12 감사 실측 push 잔류~~ **처리 완료(08-30 이사님 push 지시)** — notes `b566eb3`·autotrader
+   `de7d041`·rpg `6a35f8d`·scenario `f456eac`·matrix-engine `e0ba2ce`·asset_agent `b534c68`·
+   approval-board `e56cfa6`(작업 브랜치). 런타임 산물(.runtime/·director_console.sqlite3·save/·
+   *.bak)은 의도적 미커밋 보류. **원격 없는 로컬 전용 repo 6건(matrix-nexus·matrix-studio 등)은
+   push 불가 — 신규 원격 생성 여부 결정 대기.**
+5. `.reviews/session-reaper.log` 커밋/무시 정책 — 08-30 현시점분은 커밋(`b566eb3`). 반영 정책 결정 계류.
 
 ## 세션 클리어 전 체크
 
