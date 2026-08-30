@@ -116,6 +116,13 @@ git -C ~/projects/matrix_asset_agent status --short
 python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
 ```
 
+## ★ 로컬 서버 마이그레이션 (2026-08-30 수립) — 최상위 신규 트랙
+
+- 정본: `projects/migration/local-server-migration-plan.md` — AWS=IP/게이트웨이 전용,
+  N100 윈도우(백지·온보딩 키트 포함) → 터널 → 서비스 이전 → 로컬 리눅스 개발 본거지.
+- 이사님 결정 대기: 터널 방식·이전 순서·N100 봇 정체·AWS 봇 처지.
+- 봇 공지 완료(08-30). Phase 1 착수는 이사님 지시 후.
+
 ## ★ 사이트 통합 파이프라인 (2026-08-24, RELAY-49) — 현재 활성
 
 - 이사님 지시로 7단계 통합 파이프라인 확립: 1 리수세팅(8013) → 2 검증 → 3 승인(8005) → 4 매트릭스화 → 5 재테스트(8004 아케이드) → 6 이미지(8016) → 7 코어(CLI·AGENT·하네스) → 수익화(RPG 8009·소설)
