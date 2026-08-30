@@ -20,6 +20,7 @@ tags:
 - `c5bb2c97036d3741` → `heav_lnx_rpg_bot` — RPG 팀장
 - `c6a54f44dab7dfe7` → `heav_lnx_scenario_bot` — 시나리오 팀장
 - `e802e57aacbe8f8b` → `heav_lnx_trader_bot` — trader 팀장
+- `08eed194e337b9c5` → `heav_firebat_claude_bot` — N100 에이전트(n100-zcode, actors.json v9 등록·이사님 08-30 승인)
 
 정체 미확정이면 결정·발판·commit/push 금지.
 

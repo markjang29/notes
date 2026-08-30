@@ -1,7 +1,7 @@
 {
   "schema": "agent-registry-v1",
-  "version": 8,
-  "updated_at": "2026-08-19T11:30:00+09:00",
+  "version": 9,
+  "updated_at": "2026-08-30T23:59:00+09:00",
   "authority": "notes/projects/agent-ops/actors.json",
   "actors": [
     {
@@ -570,6 +570,52 @@
         "project": "RELAY",
         "component": "bot:codex_dev_1|bot:codex_dev_2",
         "relay_stages": "6-코드리뷰"
+      }
+    },
+    {
+      "actor_id": "n100-zcode",
+      "display_name": "N100 Zcode",
+      "kind": "agent",
+      "location": "n100-windows",
+      "providers": [
+        "zcode"
+      ],
+      "role": "n100_ops_worker",
+      "persona": "N100 윈도우 서버에서 이사님 직접 지시로 온보딩·마이그레이션 준비를 수행하는 작업자",
+      "transport": {
+        "kind": "telegram",
+        "address": "@heav_firebat_claude_bot (관제그룹 초대 대기)"
+      },
+      "repo_ids": [
+        "notes"
+      ],
+      "required_refs": [
+        "notes:L0-agent-boot.md",
+        "notes:principles/git-first-project-truth.md",
+        "notes:projects/migration/local-server-migration-plan.md"
+      ],
+      "capabilities": [
+        "report",
+        "repo_read",
+        "repo_write",
+        "git_commit",
+        "git_push",
+        "migration_prep",
+        "aws_ssh_readonly"
+      ],
+      "forbidden": [
+        "work_queue_edit",
+        "priority_decision",
+        "team_coordination",
+        "credential_in_git",
+        "unticketed_code_change"
+      ],
+      "identity_status": "director_approved_2026-08-30",
+      "ack_status": "pending_group_invite",
+      "jira": {
+        "project": "RELAY",
+        "component": "n100:zcode",
+        "relay_stages": "5-구현 (이사님 직접 지시 한정)"
       }
     }
   ]
