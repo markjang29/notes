@@ -122,9 +122,13 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
   N100 윈도우(백지·온보딩 키트 포함) → 터널 → 서비스 이전 → 로컬 리눅스 개발 본거지.
 - 이사님 결정 대기: 터널 방식·이전 순서·N100 봇 정체·AWS 봇 처지.
 - 봇 공지 완료(08-30). Phase 1 착수는 이사님 지시 후.
-- **다음 첫 작업(08-30 이사님 지시): AWS 서버 실체 안내서(server-guide) 작성** —
-  서비스×포트×repo×기동법×데이터 위치(mongo 등)×운영 스크립트×보안 경계(키 위치만, 값 금지)를
-  notes에 통합 문서로. N100(파이어뱃) 봇·마이그레이션 Phase 2/3의 필수 자료.
+- **AWS 서버 실체 안내서 작성 완료(08-30, 이사님 지시)** — 정본
+  `projects/migration/aws-server-guide.md` (629f403): 서비스×포트 지도 22건 · 기동법 5계층 ·
+  repo/배포 구조 · 데이터 위치(mongo bind·Oracle volume·Works 93G 등) · 운영 스크립트 ·
+  보안 경계(키 위치만, 값 미기록) · 재검증 체크리스트.
+  주요 발견: 로컬 전용 repo 6건(matrix-nexus·matrix-studio 등, 이전 전 push 필요) · 디스크 87%
+  (Works 93G 병목) · 8021 matrix-studio 미등록 운행 · 8022 등록만 미구동 · Tailscale Funnel 8443
+  공개 중. 다음: 이사님 검토 후 Phase 2(터널) 설계.
 
 ## ★ 사이트 통합 파이프라인 (2026-08-24, RELAY-49) — 현재 활성
 
