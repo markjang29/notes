@@ -41,6 +41,46 @@
 5. 역할 배정은 RELAY 티켓으로만 — 티켓 없는 작업 무효(현행 규칙 동일 적용)
 6. 키/시크릿은 AWS 서버 env 파일처럼 로컬 전용 파일로만(절대 Git 금지)
 
+## Phase 1 상세 — git 설치부터 (윈도우 PowerShell, 복붙 순서)
+
+```powershell
+# ① 관리자 PowerShell 열기 (시작버튼 → "powershell" 우클릭 → 관리자 권한으로 실행)
+
+# ② git 설치 (winget이 없으면 https://git-scm.com/download/win 수동 설치)
+winget install --id Git.Git -e --source winget
+# 설치 후 새 PowerShell 창 열기 (PATH 반영)
+
+# ③ 확인 및 사용자 등록
+git --version
+git config --global user.name "markjang29"
+git config --global user.email "markjang29@users.noreply.github.com"
+
+# ④ notes 클론 (인증창 뜨면 브라우저에서 이사님 GitHub 계정으로 1회 로그인)
+git clone https://github.com/markjang29/notes.git $HOME\notes
+
+# ⑤ 확인
+Test-Path $HOME\notes\L0-agent-boot.md   # True 나오면 성공
+```
+
+비고: 이사님이 직접 하셔도 되고, 아래 "zcode 첫 대화문"을 zcode 채팅에 붙여넣으면
+zcode가 ①~⑤를 스스로 수행하고 결과를 보고합니다.
+
+## zcode 첫 대화문 (이사님이 N100 zcode 채팅에 붙여넣기 — 2026-08-30)
+
+```text
+너는 이제 N100 윈도우 서버의 첫 에이전트다. 이 PC는 아무것도 세팅되지 않은 백지 상태다.
+notes Git의 projects/migration/local-server-migration-plan.md "Phase 1 상세"를 따라 순서대로 수행하라:
+1) 관리자 PowerShell에서 winget install --id Git.Git -e --source winget (winget이 없으면 git-scm.com/download/win 수동 설치)
+2) git config --global user.name "markjang29" · git config --global user.email "markjang29@users.noreply.github.com"
+3) git clone https://github.com/markjang29/notes.git $HOME\notes — 인증창이 뜨면 내 계정으로 로그인할 테니 잠깐 기다려라
+4) 클론한 notes\L0-agent-boot.md를 읽고 정체 확인 절차를 따라 자기 상태를 정리하라
+5) notes\projects\migration\local-server-migration-plan.md 전체를 읽고 "N100 백지 온보딩 키트" 4~6번은
+   매니저/이사님 승인 후 진행할 것이므로 지금은 수행하지 말고 대기하라
+6) 이 채팅에 보고: git 버전 / 클론 성공 여부 / L0와 마이그레이션 계획을 읽고 자기가 이해한 정체와 역할
+금지: 키·시크릿을 아무 파일에 적는 것 / notes에 임의로 커밋·푸시하는 것(지금은 읽기만) /
+모르는 것을 추측으로 진행하는 것(모르면 이 채팅에 질문).
+```
+
 ## 결정 필요 (이사님)
 
 1. 터널 방식 (wireguard / frp / cloudflare tunnel)
