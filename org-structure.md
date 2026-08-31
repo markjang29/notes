@@ -73,7 +73,11 @@ tags:
   arcade · novel_col · codex_dev_1/2 (지시 수신용)
 
 **AWS — 자체 브리지 1기**: `@heav_lnx_zcode_bot` (zcode 클라이언트 다리, cokacdir 밖 —
-`/contextlevel` 없음, 회의방 수신은 TG_ALLOWED_CHATS 추가 필요·브리지 재시작 수반)
+`/contextlevel` 없음). 08-31 매니저 조치 완료: 그룹방에서 @멘션/자기 답장에만 반응하는
+가드 추가(비허용 방 ⛔ 도배 방지) · 재시작 KillMode=process 드롭인으로 8018·8021 생존
+검증 · 소스 내 폐기 토큰 하드코딩 제거. 잔여: 회의방 ID를 `~/zcode-cli/bridge.env`
+TG_ALLOWED_CHATS에 추가 후 재시작(안전 확인됨) — 방 ID는 cokacdir 봇 첫 응답으로 확보.
+그룹 사용법: `@heav_lnx_zcode_bot <지시>` (1:1은 종래대로 아무 텍스트).
 
 **N100 firebat — 3기**: `@heav_firebat_claude_bot`(**발언** — n100-zcode, actors.json v9 등록,
 온보딩·Phase 2/3 이전 주체) · `@heav_firebat_zcode_bot`(미등록 — 우선 전달 0) ·
