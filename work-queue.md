@@ -124,7 +124,8 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
 - 텔레그램 그룹 한계(봇→봇 차단·그룹 세션 취약·멀티라인 첫 줄만 처리·N100 구버전)로
   이사님 지시 → **AWS 자체 웹챗 개통 완료**. `~/projects/meeting-room` (git `7d6a9ef`).
 - 발언 11기 전원 입장(전달 6·zcode 포함, E2E 실측 통과). 대기 5(firebat 3·asus_zai·heav_ai). 포트 8023.
-- 잔여: 전달 6기·zcode 브리지·N100 3기 합류, 필요시 systemd 승격, 대화 로그 보존 정책.
+- 잔여: 대기 5기 합류(firebat 3=N100 cokacdir 업데이트 후 원격 API, asus_zai·heav_ai=소재 확인),
+  필요시 systemd 승격, 대화 로그 보존 정책.
 
 ## ★ 로컬 서버 마이그레이션 (2026-08-30 수립) — 최상위 신규 트랙
 
