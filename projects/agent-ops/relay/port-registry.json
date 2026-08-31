@@ -1,7 +1,7 @@
 {
   "schema": "relay-port-registry-v1",
   "ticket": "RELAY-15",
-  "updated_at": "2026-08-30T13:59:30+09:00",
+  "updated_at": "2026-08-31T09:12:16+09:00",
   "policy": {
     "scan_cron_kst": "10 9 * * *",
     "check": "8000-8099번대 리스닝 포트 스캔 → 프로세스 환경변수 RELAY_TICKET 확인 → 티켓이 없거나 Jira RELAY 프로젝트에 존재하지 않으면 무단 운행으로 승인보드 카드 발행",
@@ -97,6 +97,12 @@
       "service": "music-video.service",
       "ticket": "RELAY-42",
       "note": "사후등록 2026-08-24: Aloha music video 콜시트 웹앱(RELAY-42 진행 중 — 어제 3-영향성검토 통과). env 주입 완료."
+    },
+    {
+      "port": 8021,
+      "service": "matrix-studio (uvicorn 수동 기동 — systemd 미등록, cwd matrix-studio)",
+      "ticket": "RELAY-58",
+      "note": "사후등록 2026-08-31(카드 req-20260831091002-2da522): Matrix Studio v0 FastAPI 통합 API(커밋 811cbeb, 2026-08-30 12:14 기동). 08-30 8022 nexus 신규등록 시 '기존 8021 보존'으로 운행 유지했으나 본포트 등록 누락. env RELAY_TICKET=RELAY-58 확인, HTTP 200."
     },
     {
       "port": 8022,
