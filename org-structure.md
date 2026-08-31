@@ -51,6 +51,42 @@ tags:
 ## 체크리스트
 - [x] 봇 ID: 매니저 `@heav_lnx_bot`, RPG `@heav_lnx_rpg_bot`, trader `@heav_lnx_trader_bot`, 시나리오 `@heav_lnx_scenario_bot`
 - [x] 그룹 채팅 생성 + 봇 초대
-- [ ] BotFather 프라이버시모드 off (각 봇 `/setprivacy` → Disable) — 확인 필요
-- [ ] 그룹에서 `/contextlevel` 설정 (매니저 8 / 팀장 0)
+- [ ] BotFather 프라이버시모드 off (각 봇 `/setprivacy` → Disable) — 2026-08-30 회의 단체방
+      신설로 **전 봇(N100 포함) 대상 재필요**, 변경 후 재초대 (아래 §회의 단체방 규칙 1)
+- [ ] 그룹에서 `/contextlevel` 설정 — 회의 단체방 규칙(발언 8 / 전달 0)으로 적용
 - [x] 본 구조 → ADR `decisions/2026-06-26-org-telegram-group.md`
+
+## 회의 단체방 (2026-08-30 이사님 신설 — 전 봇 초대)
+
+- 하드웨어 전체(AWS·N100) 봇이 한 방에서 회의·조율. cokacdir 그룹챗 운용 규칙 정본은
+  `~/.cokacdir/docs/how-to-use-group-chat.md`.
+
+### 하드웨어별 발언/전달 분류
+
+**AWS (cokacdir 10기)**
+
+- **발언**: 매니저 `@heav_lnx_bot`(진행·통합보고) · rpg `@heav_lnx_rpg_bot` · scenario
+  `@heav_lnx_scenario_bot`(각 현황 보고) · audit `@heav_lnx_audit_bot`(감사 소견)
+- **전달만**: trader `@heav_lnx_trader_bot`(pause — 재개 안건 시에만 발언) · asset_agent ·
+  arcade · novel_col · codex_dev_1/2 (지시 수신용)
+
+**N100 (1기)**
+
+- **발언**: `@heav_firebat_claude_bot` (n100-zcode, actors.json v9 등록) — 온보딩 상태·
+  마이그레이션 Phase 2/3 이전 주체 보고
+
+**Windows**: 부재 (08-16 구독 종료, 배당표 등재만)
+
+### 운용 규칙 (그룹챗 문서 기준)
+
+1. **전제 — BotFather 프라이버시모드 off**: 각 봇 `/setprivacy` → Disable. 변경 후 해당 방에서
+   **재초대**해야 적용. off가 아니면 `;` 프롬프트·일반 메시지를 아예 못 받는다.
+2. **지시는 `@봇이름 내용` 타겟팅이 기본**. `;`는 방 안 전 봇에 동일 지시가 각각 실행되는
+   브로드캐스트(중복 작업·토큰 비용·응답 홍수) — 전체 공지 등 의도적 경우만.
+3. **/contextlevel**: 발언 봇 8(공유 로그 가시 — 다른 봇 발언 인지), 전달 봇 0(토큰 절약).
+   봇별 개별 설정: `@봇이름 /contextlevel N`. 기본값 12.
+4. **/public off 유지**(기본 owner-only) — 이사님 주관 회의 방침.
+5. 봇은 봇별 큐로 **순차 처리** — 동시 즉답 아님.
+6. 공동 작업 규칙 커스터마이즈 가능: `~/.cokacdir/prompt/cowork.md`.
+7. 새 방 ID는 봇이 그 방에서 첫 응답을 해야 bot_settings에 등록된다 — 초대 직후 각 봇을
+   `@봇이름 /contextlevel N` 한 번으로 기상·등록·세팅을 겸한다.
