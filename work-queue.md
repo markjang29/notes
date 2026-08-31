@@ -119,6 +119,13 @@ git -C ~/projects/matrix_asset_agent status --short
 python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
 ```
 
+## ★ 관제 회의방 웹챗 개통 (2026-08-31)
+
+- 텔레그램 그룹 한계(봇→봇 차단·그룹 세션 취약·멀티라인 첫 줄만 처리·N100 구버전)로
+  이사님 지시 → **AWS 자체 웹챗 개통 완료**. `~/projects/meeting-room` (git `7d6a9ef`).
+- 발언 4기(매니저·RPG·시나리오·감사) 참여, E2E 실측 통과. 포트 8023.
+- 잔여: 전달 6기·zcode 브리지·N100 3기 합류, 필요시 systemd 승격, 대화 로그 보존 정책.
+
 ## ★ 로컬 서버 마이그레이션 (2026-08-30 수립) — 최상위 신규 트랙
 
 - 정본: `projects/migration/local-server-migration-plan.md` — AWS=IP/게이트웨이 전용,

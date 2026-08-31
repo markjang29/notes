@@ -65,6 +65,7 @@ tags:
 | 8020 | music-video (일상 페이지) | sys | `~/deploy/music_video` (`server.py`, env `~/.config/music-video/editor.env`) | RELAY-42 | |
 | 8021 | matrix-studio | **nohup** | `~/projects/matrix-studio` (uvicorn `api.main:app`) | (미등록) | telegram-zcode-bridge 자식. **port-registry 미등록 상태로 운행 중** — 포트 감사(09:10) 대상 |
 | 8022 | matrix-nexus (Loadout Workspace) | docker(예정) | `~/projects/matrix-nexus` | RELAY-58 | **등록만 되고 현재 컨테이너 없음(미구동)** |
+| 8023 | 관제 회의방 웹챗 (meeting-room) | nohup uvicorn (08-31 신설) | `~/projects/meeting-room` | — | 이사님↔봇 조직 소통. X-Token 인증, 세션은 `workspaces/<bot>/.session_id` |
 | 8788 | zai-proxy (LLM 폴백 프록시) | usr | `~/scripts/zai-fallback-proxy.js` (node, env `~/.cokacdir/devpass.env`) | — | **127.0.0.1만**. 봇 LLM 라우팅의 관문(§9) |
 
 포트 없는 상주 서비스:
