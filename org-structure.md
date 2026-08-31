@@ -60,6 +60,8 @@ tags:
 
 - 하드웨어 전체(AWS·N100) 봇이 한 방에서 회의·조율. cokacdir 그룹챗 운용 규칙 정본은
   `~/.cokacdir/docs/how-to-use-group-chat.md`.
+- **방 정체(08-31 확정)**: 기존 **관제그룹을 재활용** — 이사님이 전 봇 추가 초대로 회의방
+  편성 완료. 신규 방이 아니므로 방 ID 재확보 불필요.
 
 ### 하드웨어별 발언/전달 분류
 
@@ -75,9 +77,12 @@ tags:
 **AWS — 자체 브리지 1기**: `@heav_lnx_zcode_bot` (zcode 클라이언트 다리, cokacdir 밖 —
 `/contextlevel` 없음). 08-31 매니저 조치 완료: 그룹방에서 @멘션/자기 답장에만 반응하는
 가드 추가(비허용 방 ⛔ 도배 방지) · 재시작 KillMode=process 드롭인으로 8018·8021 생존
-검증 · 소스 내 폐기 토큰 하드코딩 제거. 잔여: 회의방 ID를 `~/zcode-cli/bridge.env`
-TG_ALLOWED_CHATS에 추가 후 재시작(안전 확인됨) — 방 ID는 cokacdir 봇 첫 응답으로 확보.
+검증 · 소스 내 폐기 토큰 하드코딩 제거 · **회의방(관제그룹) 허용 목록 추가·재시작 완료**.
 그룹 사용법: `@heav_lnx_zcode_bot <지시>` (1:1은 종래대로 아무 텍스트).
+
+**AWS 10봇 /contextlevel 서버 직접 세팅 완료(08-31)** — 발언(매니저·rpg·scenario·audit)=8,
+전달(trader·asset_agent·arcade·novel_col·codex_dev_1/2)=0. 매니저가 bot_settings.json에서
+직접 반영(붙여넣기 블록이 첫 줄 봇만 처리되는 문제의 우회). firebat 3기는 N100 쪽 설정.
 
 **N100 firebat — 3기**: `@heav_firebat_claude_bot`(**발언** — n100-zcode, actors.json v9 등록,
 온보딩·Phase 2/3 이전 주체) · `@heav_firebat_zcode_bot`(미등록 — 우선 전달 0) ·
@@ -104,3 +109,7 @@ actors.json v10 등재는 이사님 승인 후 진행.
 6. 공동 작업 규칙 커스터마이즈 가능: `~/.cokacdir/prompt/cowork.md`.
 7. 새 방 ID는 봇이 그 방에서 첫 응답을 해야 bot_settings에 등록된다 — 초대 직후 각 봇을
    `@봇이름 /contextlevel N` 한 번으로 기상·등록·세팅을 겸한다.
+8. **여러 봇 멘션은 봇별로 메시지를 분리**해서 보낸다. 한 메시지에 여러 줄의 @멘션을
+   붙여넣으면 **맨 첫 줄 봇만 처리**되고 나머지는 무시된다(08-31 실측 — 이사님 3회
+   시도 전부 첫 줄 매니저만 적용). 봇→봇 송신은 텔레그램이 차단하므로 기상·설정 명령은
+   반드시 사람 계정이 보내거나, 매니저가 서버(bot_settings)에서 직접 세팅한다.
