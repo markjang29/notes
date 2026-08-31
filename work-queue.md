@@ -125,7 +125,7 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
   이사님 지시 → **AWS 자체 웹챗 개통 완료**. `~/projects/meeting-room` (git `7d6a9ef`).
 - 발언 11기 전원 입장(전달 6·zcode 포함, E2E 실측 통과). 대기 5(firebat 3·asus_zai·heav_ai). 포트 8023.
 - 잔여: 대기 5기 합류(firebat 3=N100 cokacdir 업데이트 후 원격 API, asus_zai·heav_ai=소재 확인),
-  필요시 systemd 승격, 대화 로그 보존 정책.
+  필요시 systemd 승격, 대화 로그 보존 정책. N100 입장 카드 이사님 경유 전달 완료(08-31, 봇 송신 API 개통).
 
 ## ★ 로컬 서버 마이그레이션 (2026-08-30 수립) — 최상위 신규 트랙
 
