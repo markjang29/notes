@@ -63,19 +63,29 @@ tags:
 
 ### 하드웨어별 발언/전달 분류
 
-**AWS (cokacdir 10기)**
+**전체 봇 16기 (BotFather 실측, 이사님 08-31 확인)**
+
+**AWS — cokacdir 10기**
 
 - **발언**: 매니저 `@heav_lnx_bot`(진행·통합보고) · rpg `@heav_lnx_rpg_bot` · scenario
   `@heav_lnx_scenario_bot`(각 현황 보고) · audit `@heav_lnx_audit_bot`(감사 소견)
 - **전달만**: trader `@heav_lnx_trader_bot`(pause — 재개 안건 시에만 발언) · asset_agent ·
   arcade · novel_col · codex_dev_1/2 (지시 수신용)
 
-**N100 (1기)**
+**AWS — 자체 브리지 1기**: `@heav_lnx_zcode_bot` (zcode 클라이언트 다리, cokacdir 밖 —
+`/contextlevel` 없음, 회의방 수신은 TG_ALLOWED_CHATS 추가 필요·브리지 재시작 수반)
 
-- **발언**: `@heav_firebat_claude_bot` (n100-zcode, actors.json v9 등록) — 온보딩 상태·
-  마이그레이션 Phase 2/3 이전 주체 보고
+**N100 firebat — 3기**: `@heav_firebat_claude_bot`(**발언** — n100-zcode, actors.json v9 등록,
+온보딩·Phase 2/3 이전 주체) · `@heav_firebat_zcode_bot`(미등록 — 우선 전달 0) ·
+`@heav_firebat_codex_bot`(미등록 — 우선 전달 0)
 
-**Windows**: 부재 (08-16 구독 종료, 배당표 등재만)
+**기타 2기**: `@heav_asus_zai_bot`(소재·용도 확인 중, 미등록) · `@heav_ai_bot`(레거시 추정,
+미등록)
+
+**배당표 미등재 6기** (firebat_zcode·firebat_codex·asus_zai·heav_ai·lnx_zcode브리지 등) —
+actors.json v10 등재는 이사님 승인 후 진행.
+
+**사람 계정(봇 아님)**: 한 준희 이사님 · 노트북_Zcode 수집기 · 노트북
 
 ### 운용 규칙 (그룹챗 문서 기준)
 
