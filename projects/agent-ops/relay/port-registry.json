@@ -1,7 +1,7 @@
 {
   "schema": "relay-port-registry-v1",
   "ticket": "RELAY-15",
-  "updated_at": "2026-08-31T09:12:16+09:00",
+  "updated_at": "2026-09-01T09:15:33+09:00",
   "policy": {
     "scan_cron_kst": "10 9 * * *",
     "check": "8000-8099번대 리스닝 포트 스캔 → 프로세스 환경변수 RELAY_TICKET 확인 → 티켓이 없거나 Jira RELAY 프로젝트에 존재하지 않으면 무단 운행으로 승인보드 카드 발행",
@@ -109,6 +109,12 @@
       "service": "matrix-nexus-8022 (Docker)",
       "ticket": "RELAY-58",
       "note": "신규등록 2026-08-30: 기존 8021을 보존한 검증 우선 Loadout Workspace. 독립 nexus_* 컬렉션, 후보 사전검증·revision CAS 교체, RELAY_TICKET 환경변수 주입."
+    },
+    {
+      "port": 8023,
+      "service": "meeting-room 관제 회의방 웹챗 (uvicorn 수동 기동 setsid nohup — systemd 미등록, cwd meeting-room)",
+      "ticket": null,
+      "note": "사후등록 2026-09-01(카드 req-20260901091002-384345): 텔레그램 그룹 제약 우회용 관제 회의방 웹챗 — 이사님 직접 지시(2026-08-31)로 개통, 전용 RELAY 티켓 없음(근거: work-queue.md '관제 회의방 웹챗 개통' 항, org-structure.md, aws-server-guide 포트표 티켓 '—'). 발언 11기 입장·E2E 통과, repo HEAD 380f4c8. env RELAY_TICKET 미주입(08-31 13:34 수동기동) — 주입에는 서비스 재시작이 필요해 이사님 승인 전 불개입(RELAY-15 08-27 전례 준용). HTTP 200."
     }
   ],
   "pending_registration": [],
