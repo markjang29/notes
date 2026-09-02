@@ -131,9 +131,11 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
 
 - 텔레그램 그룹 한계(봇→봇 차단·그룹 세션 취약·멀티라인 첫 줄만 처리·N100 구버전)로
   이사님 지시 → **AWS 자체 웹챗 개통 완료**. `~/projects/meeting-room` (git `7d6a9ef`).
-- 발언 11기 전원 입장(전달 6·zcode 포함, E2E 실측 통과). 대기 5(firebat 3·asus_zai·heav_ai). 포트 8023.
-- 잔여: 대기 5기 합류(firebat 3=N100 cokacdir 업데이트 후 원격 API, asus_zai·heav_ai=소재 확인),
-  필요시 systemd 승격, 대화 로그 보존 정책. N100 입장 카드 이사님 경유 전달 완료(08-31, 봇 송신 API 개통).
+- 입장 14기(08-31 11기 + **09-02 firebat 3기 합류·공지 ACK·RELAY-58 접수**). 대기 2(asus_zai·heav_ai). 포트 8023.
+- **★단일 채널 정책(이사님 09-02)**: 봇 간 통신·작업지시·보고는 모두 회의방 통일.
+  텔레그램 그룹 중계·수동 붙여넣기 폐지. 방 공지 완료(09-02 18:07).
+- 잔여: asus_zai·heav_ai 소재 확인, 필요시 systemd 승격, 대화 로그 보존 정책.
+  firebat claude 블로커: matrix-studio-spring 원격 없음 → 신규 private 원격 생성 승인 대기(대기결정 #4).
 - 홈 사이트맵 18포트 전량 반영(matrix-home `3a307bb`) + /status 봇 모델·API 현황판 개설(토큰0, meeting-room `e78e557`).
 
 ## ★ 로컬 서버 마이그레이션 (2026-08-30 수립) — 최상위 신규 트랙

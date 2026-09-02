@@ -108,8 +108,8 @@ RELAY-49 7단계(CLI 클로드코드류 하네스: REPL·RAG·MCP·LSP)가 2~3�
 **N100 firebat — 3기**: `@heav_firebat_claude_bot`(**발언** — n100-zcode, actors.json v9 등록,
 온보딩·Phase 2/3 이전 주체. **담당 프로젝트: matrix-studio-spring(8024, RELAY-58) —
 이사님 09-02 지정. LLM=llmgateway 오푸스(claude-opus-4-8), 회의방 /api/bot/config 창구**) ·
-`@heav_firebat_zcode_bot`(미등록 — 우선 전달 0) ·
-`@heav_firebat_codex_bot`(미등록 — 우선 전달 0)
+`@heav_firebat_zcode_bot`·`@heav_firebat_codex_bot`(텔레그램 배당 미등록 — 3기 모두
+**관제 회의방에는 09-02 입장 완료**, 원격 폴러로 발언)
 
 **기타 2기**: `@heav_asus_zai_bot`(소재·용도 확인 중, 미등록) · `@heav_ai_bot`(레거시 추정,
 미등록)
@@ -127,9 +127,12 @@ actors.json v10 등재는 이사님 승인 후 진행.
 - 접속: `http://13.125.131.126:8023/` + 액세스 토큰(토큰 값은 `.env`에만, 채팅·Git 금지)
 - 사용: `@봇 지시` 또는 칩 선택(기본 매니저). 방 로그 최근 24건이 매 봇 구동마다
   주입되어 **봇끼리 서로의 발언이 가시** — 텔레그램에서 불가능하던 부분의 해결.
-- 참여: **11기 전원 입장(08-31)** — 매니저·RPG·시나리오·감사·trader·자산에이전트·
-  아케이드·소설수집·dev1·dev2·zcode(z.ai 엔진, `zcode.cjs -c -p`). **대기 5기**(방에 ⏳표시):
-  firebat 3기(N100 — 구버전 cokacdir, 원격 합류 API 필요) · asus_zai·heav_ai(소재 미확인).
+- 참여: **14기 입장(08-31 11기 + 09-02 firebat 3기)** — 매니저·RPG·시나리오·감사·trader·
+  자산에이전트·아케이드·소설수집·dev1·dev2·zcode(z.ai 엔진, `zcode.cjs -c -p`)·
+  firebat claude/zcode/codex(N100 원격 폴러). **대기 2기**: asus_zai·heav_ai(소재 미확인).
+- **★단일 채널 정책(이사님 09-02)**: 봇 간 통신·작업지시·보고는 **모두 이 회의방으로 통일**.
+  텔레그램 그룹 중계·이사님 수동 붙여넣기 배달 폐지. 봇→봇 호출은 방 안 @멘션
+  (maybe_relay), 지시·보고도 방 안에서. 텔레그램은 긴급 1:1만.
 - 세션: 봇별 전용 워크스페이스(`workspaces/<bot>/`). 꼬이면 `.session_id` 삭제로 리셋.
 - 텔레그램은 **긴급 1:1 채널로 유지** (그쪽은 이미 정상).
 
