@@ -103,6 +103,9 @@ claim 잠금(멱등). 메일형 작업지시 계약(Agent Mail v2)은 `projects/
    push 불가 — 신규 원격 생성 여부 결정 대기.**
 5. `.reviews/session-reaper.log` 커밋/무시 정책 — 08-30 현시점분은 커밋(`b566eb3`). 반영 정책 결정 계류.
 
+6. codex 폴백망 편입 여부(08-31 실측: codex=OpenAI 직통, zai 8788 폴백망 밖) — 편입 시
+   프록시에 OpenAI 호환 엔드포인트 추가 작업 필요. 이사님 결정.
+
 ## 세션 클리어 전 체크
 
 ```bash
