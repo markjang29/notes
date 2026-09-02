@@ -106,10 +106,10 @@ claim 잠금(멱등). 메일형 작업지시 계약(Agent Mail v2)은 `projects/
 6. codex 폴백망 편입 여부(08-31 실측: codex=OpenAI 직통, zai 8788 폴백망 밖) — 편입 시
    프록시에 OpenAI 호환 엔드포인트 추가 작업 필요. 이사님 결정.
 
-7. matrix-studio-spring(8024) 담당자 지정 — RELAY-58 통합 2차 구현(관통 ID 체인)이 09-01 빌드·
-   09-02 기동됐으나 배정 기록·스택 변경 사유(Spring vs 설계서 Next.js+FastAPI)·README 없음.
-   매니저 실측: 프록시(8021 단일소스)+H2(Postgres모드)+Kafka 조건부·실동작 정상, 기본포트
-   8023→8024 정정 완료(8a0c390). 이사님 결정: 담당 봇 지정 + 설계 문서 정합.
+7. ~~matrix-studio-spring(8024) 담당자 지정~~ **처리 완료(09-02 이사님 지정)** — 담당
+   `n100-zcode`(@heav_firebat_claude_bot). LLM=llmgateway 오푸스(claude-opus-4-8) — 회의방
+   /api/bot/config 창구로 키 서버 상주형 전달(meeting-room c69d39f). 첫 할일 README·전환 사유
+   기록. 정본 relay/tickets/RELAY-58/5-owner-assignment-2026-09-02.md.
 
 ## 세션 클리어 전 체크
 
