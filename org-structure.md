@@ -33,6 +33,11 @@ tags:
 - `/query@봇 <...>` — 특정 봇 쿼리.
 
 ## 토큰/쿼터 관리 (context-budget 연계)
+- **컨텍스트 자동 압축 정책(이사님 09-02 확정)** — 전 봇 기본. claude 계열은
+  `~/.claude/settings.json` env(`CLAUDE_CODE_AUTO_COMPACT_WINDOW=300000`,
+  `CONTEXT_LIMIT_TOKENS=1000000`)이 모든 기동(봇·회의방·인터랙티브 공통)에 상속되어
+  이미 활성. zcode는 CLI 자체 압축, N100 폴러도 동일 정책 준용. 컨텍스트 이유로
+  새 세션을 권장하지 않는다 — 압축 이어가기 기본, 압축 직후 중요 디테일만 재확인.
 - **mention 기반** — 필요한 봇만 깨움, 비활성 봇은 토큰 0.
 - **/contextlevel 확정값:** 매니저 `8` (팀장 활동 가시) / 팀장 `0` (mention 수신만). 그룹에서 `@봇 /contextlevel N` 설정. 운용하며 조정.
 - **수면 batch** — 매니저가 cokacdir cron으로 팀장 task 예약 (5h 쿼터 윈도우 활용).
