@@ -150,6 +150,9 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
 - 이사님 지시로 7단계 통합 파이프라인 확립: 1 리수세팅(8013) → 2 검증 → 3 승인(8005) → 4 매트릭스화 → 5 재테스트(8004 아케이드) → 6 이미지(8016) → 7 코어(CLI·AGENT·하네스) → 수익화(RPG 8009·소설)
 - SE 정본 = zcode(RELAY-49), 매니저 = 조직화·게이트. 공통 가이드: notes-registry relay/site-integration-guide-2026-08-24.md (a386af2)
 - 통합 홈 허브: 8018 (RELAY-50, zcode)
+- **조직 발전 로드맵 확정(이사님 09-02)**: ① 사이트 정합성 구축(현재=RELAY-52) →
+  ② CLI화 → ③ MCP화 → ④ agentic 자율 운영. 정본 org-structure '조직 발전 로드맵'.
+  7단계 코어(REPL·RAG·MCP·LSP)가 ②~③ 구현체.
 - **방향 결정(이사님 08-24 승인)**: 4단계 매트릭스화=자산 캡슐화 / 7단계 매트릭스 코어=CLI 클로드코드류 하네스(REPL·RAG·MCP·LSP + 노드 9종 스위치형: Triage direct/simple/complex 관문). 뼈대=matrix_codex 재사용. 원문·결정: relay/tickets/RELAY-49/req.md (a294bc0)
 - 8봇 위치 인식 공지 완료, ACK: asset_agent·novel_col 수령(2/8) — 잔여 6봇(audit·arcade·rpg·scenario·
   codex_dev_1/2)에 08-24 19:40 관제그룹으로 ACK 재요청 발송, 회신 대기
