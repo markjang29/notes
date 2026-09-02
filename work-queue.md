@@ -99,8 +99,8 @@ claim 잠금(멱등). 메일형 작업지시 계약(Agent Mail v2)은 `projects/
 4. ~~07-12 감사 실측 push 잔류~~ **처리 완료(08-30 이사님 push 지시)** — notes `b566eb3`·autotrader
    `de7d041`·rpg `6a35f8d`·scenario `f456eac`·matrix-engine `e0ba2ce`·asset_agent `b534c68`·
    approval-board `e56cfa6`(작업 브랜치). 런타임 산물(.runtime/·director_console.sqlite3·save/·
-   *.bak)은 의도적 미커밋 보류. **원격 없는 로컬 전용 repo 6건(matrix-nexus·matrix-studio 등)은
-   push 불가 — 신규 원격 생성 여부 결정 대기.**
+   *.bak)은 의도적 미커밋 보류. **원격 없는 로컬 전용 repo 5건(matrix-nexus·matrix-studio 등)은
+   push 불가 — 신규 원격 생성 여부 결정 대기.**(matrix-studio-spring은 원격 이미 존재 — 09-02 push 완료)
 5. `.reviews/session-reaper.log` 커밋/무시 정책 — 08-30 현시점분은 커밋(`b566eb3`). 반영 정책 결정 계류.
 
 6. codex 폴백망 편입 여부(08-31 실측: codex=OpenAI 직통, zai 8788 폴백망 밖) — 편입 시
@@ -135,7 +135,7 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
 - **★단일 채널 정책(이사님 09-02)**: 봇 간 통신·작업지시·보고는 모두 회의방 통일.
   텔레그램 그룹 중계·수동 붙여넣기 폐지. 방 공지 완료(09-02 18:07).
 - 잔여: asus_zai·heav_ai 소재 확인, 필요시 systemd 승격, 대화 로그 보존 정책.
-  firebat claude 블로커: matrix-studio-spring 원격 없음 → 신규 private 원격 생성 승인 대기(대기결정 #4).
+  firebat claude 블로커 해제(09-02): matrix-studio-spring 원격은 이미 존재(비공개 확인) — ahead 1(8a0c390) push 완료, clone URL 방 공지(이사님 승인).
 - 홈 사이트맵 18포트 전량 반영(matrix-home `3a307bb`) + /status 봇 모델·API 현황판 개설(토큰0, meeting-room `e78e557`).
 
 ## ★ 로컬 서버 마이그레이션 (2026-08-30 수립) — 최상위 신규 트랙
