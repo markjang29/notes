@@ -1,7 +1,7 @@
 {
   "schema": "relay-port-registry-v1",
   "ticket": "RELAY-15",
-  "updated_at": "2026-09-01T09:15:33+09:00",
+  "updated_at": "2026-09-02T09:13:15+09:00",
   "policy": {
     "scan_cron_kst": "10 9 * * *",
     "check": "8000-8099번대 리스닝 포트 스캔 → 프로세스 환경변수 RELAY_TICKET 확인 → 티켓이 없거나 Jira RELAY 프로젝트에 존재하지 않으면 무단 운행으로 승인보드 카드 발행",
@@ -115,6 +115,12 @@
       "service": "meeting-room 관제 회의방 웹챗 (uvicorn 수동 기동 setsid nohup — systemd 미등록, cwd meeting-room)",
       "ticket": null,
       "note": "사후등록 2026-09-01(카드 req-20260901091002-384345): 텔레그램 그룹 제약 우회용 관제 회의방 웹챗 — 이사님 직접 지시(2026-08-31)로 개통, 전용 RELAY 티켓 없음(근거: work-queue.md '관제 회의방 웹챗 개통' 항, org-structure.md, aws-server-guide 포트표 티켓 '—'). 발언 11기 입장·E2E 통과, repo HEAD 380f4c8. env RELAY_TICKET 미주입(08-31 13:34 수동기동) — 주입에는 서비스 재시작이 필요해 이사님 승인 전 불개입(RELAY-15 08-27 전례 준용). HTTP 200."
+    },
+    {
+      "port": 8024,
+      "service": "matrix-studio-spring (java -jar 수동 기동 — systemd 미등록, telegram-zcode-bridge.service cgroup 내 기동, cwd matrix-studio-spring)",
+      "ticket": "RELAY-58",
+      "note": "사후등록 2026-09-02(카드 req-20260902091002-b6d732): matrix-studio Spring(Java) 재작성 — zcode가 2026-09-01 15:31 기동, env RELAY_TICKET=RELAY-58 주입(8021 matrix-studio와 동일 티켓). 주의: 프로젝트 디렉터리가 git repo 아님(보존 원칙 gap), 루트 HTTP 500 — 별도 보고."
     }
   ],
   "pending_registration": [],
