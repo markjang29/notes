@@ -103,8 +103,12 @@ claim 잠금(멱등). 메일형 작업지시 계약(Agent Mail v2)은 `projects/
    push 불가 — 신규 원격 생성 여부 결정 대기.**(matrix-studio-spring은 원격 이미 존재 — 09-02 push 완료)
 5. `.reviews/session-reaper.log` 커밋/무시 정책 — 08-30 현시점분은 커밋(`b566eb3`). 반영 정책 결정 계류.
 
-6. codex 폴백망 편입 여부(08-31 실측: codex=OpenAI 직통, zai 8788 폴백망 밖) — 편입 시
-   프록시에 OpenAI 호환 엔드포인트 추가 작업 필요. 이사님 결정.
+6. codex 폴백망 편입 여부 — 09-02 저녁 이사님 확인 요청으로 재실측: 폴백 **미구성 확정**.
+   codex_dev_1/2(models=codex)·audit(codex:gpt-5.5) 전부 OpenAI 직통(구독 로그인, config에
+   provider 없음) — 한도(429) 시 그냥 실패. llmgateway는 OpenAI 호환 창구 보유(실측 200,
+   252모델·gpt-5 계열) → 도착지는 준비됨. 구현: zai 프록시에 OpenAI 포맷 레이어 + codex
+   config 커스텀 provider. 이사님 착수 승인 대기. 그 전 수동 운영: 매니저가 실패 감지 시
+   claude 계열 봇으로 임시 재배정.
 
 7. ~~matrix-studio-spring(8024) 담당자 지정~~ **처리 완료(09-02 이사님 지정)** — 담당
    `n100-zcode`(@heav_firebat_claude_bot). LLM=llmgateway 오푸스(claude-opus-4-8) — 회의방
