@@ -116,8 +116,8 @@ RELAY-49 7단계(CLI 클로드코드류 하네스: REPL·RAG·MCP·LSP)가 2~3�
 **온보딩 정본: `projects/agent-ops/new-bot-onboarding.md`** (git 제로→관제 합류→합류 시험).
 합류 절차: 폴러 연결(§3) → 매니저가 명부 갱신.
 
-**기타 2기**: `@heav_asus_zai_bot`(소재·용도 확인 중, 미등록) · `@heav_ai_bot`(레거시 추정,
-미등록)
+**기타 1기**: `@heav_asus_zai_bot`(소재·용도 확인 중, 미등록) — `@heav_ai_bot`은
+**삭제됨(이사님 09-02)**, 명부에서 제거.
 
 ### 위치별 봇 배치 (09-02 이사님 명명 확정)
 
@@ -130,8 +130,7 @@ RELAY-49 7단계(CLI 클로드코드류 하네스: REPL·RAG·MCP·LSP)가 2~3�
 - **gmwin**(지앰택 윈도우): `heav_gmwin_claude_bot` · `heav_gmwin_zcode_bot` — **2기 신규**
 - **gmlnx**(구 지앰텍, 리눅스): `heav_gmlnx_claude_bot` — **1기 신규**
 - **asus**(노트북): `heav_asus_zai_bot` — **1기**(소재 확인 중)
-- 위치 미확인: `heav_ai_bot`(레거시 추정, asus 추정)
-- 총 **19봇 · 5거점**. 사람 계정: 이사님 · 노트북_Zcode 수집기 · 노트북(asus).
+- 총 **18봇 · 5거점** (`heav_ai_bot` 삭제 반영 — 이사님 09-02). 사람 계정: 이사님 · 노트북_Zcode 수집기 · 노트북(asus).
 
 **배당표 미등재 6기** (firebat_zcode·firebat_codex·asus_zai·heav_ai·lnx_zcode브리지 등) —
 actors.json v10 등재는 이사님 승인 후 진행.
