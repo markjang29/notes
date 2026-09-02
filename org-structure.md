@@ -111,6 +111,11 @@ RELAY-49 7단계(CLI 클로드코드류 하네스: REPL·RAG·MCP·LSP)가 2~3�
 `@heav_firebat_zcode_bot`·`@heav_firebat_codex_bot`(텔레그램 배당 미등록 — 3기 모두
 **관제 회의방에는 09-02 입장 완료**, 원격 폴러로 발언)
 
+**신규 3기 (09-02 이사님 추가 — 온보딩 전)**: `@heav_gmwin_claude_bot` ·
+`@heav_gmwin_zcode_bot` · `@heav_gmlnx_claude_bot`. 회의방 명부 ⏳ 대기 등록 완료.
+**온보딩 정본: `projects/agent-ops/new-bot-onboarding.md`** (git 제로→관제 합류→합류 시험).
+합류 절차: 폴러 연결(§3) → 매니저가 명부 갱신.
+
 **기타 2기**: `@heav_asus_zai_bot`(소재·용도 확인 중, 미등록) · `@heav_ai_bot`(레거시 추정,
 미등록)
 
