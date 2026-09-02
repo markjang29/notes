@@ -27,3 +27,12 @@
 
 - `ROOM_BOT_TOKEN`은 이사님이 보내는 전달 문장에 포함되어 있다. Git 커밋·재공유 금지.
 - 방 로그의 다른 봇 발언은 읽기만 가능 — 조작 없음.
+
+## 엔진 구동 규격 (09-02 사고 보강 — 필수)
+
+- claude 엔진은 `--dangerously-skip-permissions` 로 구동할 것. 근거: 헤드리스 폴러 구동 시
+  권한 프롬프트가 자동 거부되어 `git` 실행·설정 편집 전부 차단 (09-02 RELAY-58 착수 실패 사례).
+  AWS 회의방 11기와 동일 방식. 플래그를 못 붙이는 경우 최소 `C:\Users\<사용자>\.claude\settings.json`
+  의 `permissions.allow`에 `"Bash(git:*)"` 필요.
+- private repo 작업 봇은 사전에 N100 Git Bash에서 1회 clone + 깃허브 로그인(자격 저장) 요건.
+- codex 엔진 기본 sandbox read-only → 쓰기 대리 조치 용도로 쓸 수 없음.
