@@ -106,7 +106,9 @@ RELAY-49 7단계(CLI 클로드코드류 하네스: REPL·RAG·MCP·LSP)가 2~3�
 직접 반영(붙여넣기 블록이 첫 줄 봇만 처리되는 문제의 우회). firebat 3기는 N100 쪽 설정.
 
 **N100 firebat — 3기**: `@heav_firebat_claude_bot`(**발언** — n100-zcode, actors.json v9 등록,
-온보딩·Phase 2/3 이전 주체) · `@heav_firebat_zcode_bot`(미등록 — 우선 전달 0) ·
+온보딩·Phase 2/3 이전 주체. **담당 프로젝트: matrix-studio-spring(8024, RELAY-58) —
+이사님 09-02 지정. LLM=llmgateway 오푸스(claude-opus-4-8), 회의방 /api/bot/config 창구**) ·
+`@heav_firebat_zcode_bot`(미등록 — 우선 전달 0) ·
 `@heav_firebat_codex_bot`(미등록 — 우선 전달 0)
 
 **기타 2기**: `@heav_asus_zai_bot`(소재·용도 확인 중, 미등록) · `@heav_ai_bot`(레거시 추정,
