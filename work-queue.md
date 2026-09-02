@@ -134,6 +134,7 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
 - 입장 14기(08-31 11기 + **09-02 firebat 3기 합류·공지 ACK·RELAY-58 접수**). 대기 2(asus_zai·heav_ai). 포트 8023.
 - **★단일 채널 정책(이사님 09-02)**: 봇 간 통신·작업지시·보고는 모두 회의방 통일.
   텔레그램 그룹 중계·수동 붙여넣기 폐지. 방 공지 완료(09-02 18:07).
+- 회의방 안정장치·매니저색 분리 설비(09-02, 이사님): 웹 상단 급정지 버튼 = 단일 킬스위치 — OFF 시 봇 폴링·송신·엔진 구동 전 차단(이사님 열람은 유지, PAUSED 파일 상태 유지). 매니저 발언은 청록으로 이사님(파랑)과 분리 (meeting-room d0ba6a1).
 - 잔여: asus_zai·heav_ai 소재 확인, 필요시 systemd 승격, 대화 로그 보존 정책.
   firebat claude 2차 블로커(09-02 저녁): N100 세 봇(claude 권한·codex read-only) 전부 잠겨 자가 조치 불가 → 이사님 1회 수동 조치 요청 중(settings.json git 허용 + 1회 clone 인증 저장). repo 원격은 이미 존재(비공개, 8a0c390 push 완료·URL 방 공지).
 - 홈 사이트맵 18포트 전량 반영(matrix-home `3a307bb`) + /status 봇 모델·API 현황판 개설(토큰0, meeting-room `e78e557`).
