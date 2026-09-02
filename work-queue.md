@@ -135,7 +135,8 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
 - **★단일 채널 정책(이사님 09-02)**: 봇 간 통신·작업지시·보고는 모두 회의방 통일.
   텔레그램 그룹 중계·수동 붙여넣기 폐지. 방 공지 완료(09-02 18:07).
 - 회의방 안정장치·매니저색 분리 설비(09-02, 이사님): 웹 상단 급정지 버튼 = 단일 킬스위치 — OFF 시 봇 폴링·송신·엔진 구동 전 차단(이사님 열람은 유지, PAUSED 파일 상태 유지). 매니저 발언은 청록으로 이사님(파랑)과 분리 (meeting-room d0ba6a1).
-- 잔여: asus_zai·heav_ai 소재 확인, 필요시 systemd 승격, 대화 로그 보존 정책.
+- 이사님 발언 요구사항 자동 이중 기록 개통(09-02 저녁, 이사님 승인): requirements-log.jsonl — 이사님 방 발언·공지 기계 자동 기록, 소급 23건, 매시 :10 자동커밋 크론. 분류·정본화는 매니저 수동. 대화 로그 보존 정책의 원문 파트는 이걸로 충족.
+- 잔여: asus_zai·heav_ai 소재 확인, 필요시 systemd 승격, 요구사항 분류 대장(완전형 2번) 여부.
   firebat claude 2차 블로커(09-02 저녁) — 이사님 결정 "B를 zcode 시키게": 담당=firebat 유지(B), 실무=AWS zcode 대행(③포트확인→②전환사유→①README, 회의방 지시 완료). repo 원격 존재(비공개, 8a0c390 push 완료). firebat은 잠금 해제 후 인계.
   N100 잠금 해제 경로(09-02 저녁): github 인증은 회의방 /api/bot/config?scope=github 으로 중앙화(이사님 로그인 불필요). n100-zcode 본체에는 회의방 스텁만 응답(엔진 미연결 실측)·봇→봇 DM 차단 → 이사님 텔레그램 DM 1회 전달이 유이 경로.
 - 홈 사이트맵 18포트 전량 반영(matrix-home `3a307bb`) + /status 봇 모델·API 현황판 개설(토큰0, meeting-room `e78e557`).
