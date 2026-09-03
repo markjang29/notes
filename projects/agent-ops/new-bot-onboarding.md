@@ -63,7 +63,7 @@ git push                          # 작업 후 즉시: 공유 창고에 올리�
    플래그 누락 시 권한 프롬프트가 자동 거부되어 git 전부 막힘). 최소한
    `settings.json` 의 `permissions.allow`에 `"Bash(git:*)"` 필요.
 4. LLM 설정은 방에서 받는다(키를 기계에 두지 않는다):
-   - 모델·LLM 키: `GET /api/bot/config?scope=llm` (현재 llmgateway 오푸스 claude-opus-4-8)
+   - 모델·LLM 키: `GET /api/bot/config?scope=llm` (기본 glm-5.3-flash — 오파스 등 상위 모델은 요청 시 별도 지정)
    - private repo 인증: `GET /api/bot/config?scope=github` (git 자격 저장용)
    - 헤더 `X-Token: <ROOM_BOT_TOKEN>` 공통. 받은 값은 파일에 넣고 화면·커밋에 노출 금지.
 5. 합류하면 매니저가 방 명부에서 ⏳를 정식 참가로 바꾼다.
