@@ -103,7 +103,11 @@ claim 잠금(멱등). 메일형 작업지시 계약(Agent Mail v2)은 `projects/
    push 불가 — 신규 원격 생성 여부 결정 대기.**(matrix-studio-spring은 원격 이미 존재 — 09-02 push 완료)
 5. `.reviews/session-reaper.log` 커밋/무시 정책 — 08-30 현시점분은 커밋(`b566eb3`). 반영 정책 결정 계류.
 
-6. codex 폴백망 편입 여부 — 09-02 저녁 이사님 확인 요청으로 재실측: 폴백 **미구성 확정**.
+6. codex 폴백망·엔진 전환 — **이사님 결정(09-02): GPT 구독 만료일 2026-09-15에 codex 3봇
+   (dev1·dev2·audit)을 glm-5.3-flash로 전환**. 당일 실행 예약 완료(cokacdir --once 크론).
+   전환 내용: bot_settings.json models 오버라이드 제거(claude 기본=glm-5.3-flash 상속) +
+   매니저 그룹채팅 codex 오버라이드 1건 동일 처리 + 전환 후 실측 보고. 기존 실측: 폴백 미구성,
+   llmgateway OpenAI 호환 창구는 준비됨 — 09-15 전까지 codex 유지.
    codex_dev_1/2(models=codex)·audit(codex:gpt-5.5) 전부 OpenAI 직통(구독 로그인, config에
    provider 없음) — 한도(429) 시 그냥 실패. llmgateway는 OpenAI 호환 창구 보유(실측 200,
    252모델·gpt-5 계열) → 도착지는 준비됨. 구현: zai 프록시에 OpenAI 포맷 레이어 + codex
