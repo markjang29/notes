@@ -114,7 +114,7 @@
       "port": 8023,
       "service": "meeting-room 관제 회의방 웹챗 (uvicorn 수동 기동 setsid nohup — systemd 미등록, cwd meeting-room)",
       "ticket": null,
-      "note": "사후등록 2026-09-01(카드 req-20260901091002-384345): 텔레그램 그룹 제약 우회용 관제 회의방 웹챗 — 이사님 직접 지시(2026-08-31)로 개통, 전용 RELAY 티켓 없음(근거: work-queue.md '관제 회의방 웹챗 개통' 항, org-structure.md, aws-server-guide 포트표 티켓 '—'). 발언 11기 입장·E2E 통과, repo HEAD 380f4c8. env RELAY_TICKET 미주입 — 09-03 08:51 heav_ai_bot 명부 작업 중에도 env 없이 재기동돼 3일 연속 env_missing(카드 req-20260903091002-e01d2f). 전용 티켓이 없어 주입값이 정해지지 않음 — 사후 티켓 발행·env 주입 재시작·systemd 승격은 이사님 결정 대기. HTTP 200."
+      "note": "사후등록 2026-09-01(카드 req-20260901091002-384345): 텔레그램 그룹 제약 우회용 관제 회의방 웹챗 — 이사님 직접 지시(2026-08-31)로 개통, 전용 RELAY 티켓 없음(근거: work-queue.md '관제 회의방 웹챗 개통' 항, org-structure.md, aws-server-guide 포트표 티켓 '—'). 발언 11기 입장·E2E 통과, repo HEAD 380f4c8. env RELAY_TICKET 미주입 — 09-03 당일 2회 재기동(08:51 heav_ai_bot 명부 작업, 09:18 색 구분 재배포) 모두 env 누락 실측, 3일 연속 env_missing(카드 req-20260903091002-e01d2f). 전용 티켓이 없어 주입값이 정해지지 않음 — 사후 티켓 발행·env 주입 재시작·systemd 승격은 이사님 결정 대기. HTTP 200."
     },
     {
       "port": 8024,
