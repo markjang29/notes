@@ -148,7 +148,8 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
 - **대시보드 개선 2건 진행(09-03 이사님)** — zcode 배정: ① 맡은 사이트·git 클릭 링크화 ② 봇 기준정보 단일화(notes roster.json = 유일 원장, 회의방·대시보드 동시 반영 → 삭제 즉시 양쪽 소멸). 스킬 실측: AWS 공용 설치 확인 + dev1 로딩 실측·firebat 설치 실측 요청 중.
 - **봇 대시보드(8025) 구현 완료·기동(09-03)**: zcode 커밋 4b6cd9e — 봇카드 5섹션·지라칸반·토큰트렌드·모델표/변경(ACCESS_TOKEN 전용)·모바일 반응형. 매니저 기동·/health 200 확인, 주소 http://13.125.131.126:8025 . 감사 검수 진행 중 → 통과 시 홈 사이트맵 추가. (firebat claude 잠금 해제 확인 — glm-5.3-flash 전환 보고 09-03)
 - **봇 대시보드(8025) v2 구현 착수(09-02 이사님 "진행하자")** — 구현=zcode 배정(설계 v2 §6 순서), 검수=감사 병행. v1 설계: 정본 projects/agent-ops/bot-dashboard-design.md — 위치별 봇 카드(실적 기반 역할 지도)·토큰 트렌드(프록시 로그+usage-log 신설)·사용모델 화면 변경(이사님 토큰 전용 API)·실적 타임라인. 검수=회의방 감사 의뢰 완료 → 통과 후 구현(홈 사이트맵 추가 포함). heav_ai_bot 삭제 반영(총 18봇).
-- 잔여: asus_zai 소재 확인, 필요시 systemd 승격, 요구사항 분류 대장(완전형 2번) 여부.
+- **회의방·대시보드 systemd 승격 완료(09-03)** — firebat의 다운 관측 보고(금일 3회) 계기. meeting-room.service(8023, server:app)·bot-dashboard.service(8025), Restart=always 3초. systemd 승격 잔여 항목 소화. 스킬 실측: dev1 [스킬OK] 통과, firebat 설치 응답 대기.
+- 잔여: asus_zai 소재 확인, 요구사항 분류 대장(완전형 2번) 여부.
   firebat claude 2차 블로커(09-02 저녁) — 이사님 결정 "B를 zcode 시키게": 담당=firebat 유지(B), 실무=AWS zcode 대행(③포트확인→②전환사유→①README, 회의방 지시 완료). repo 원격 존재(비공개, 8a0c390 push 완료). firebat은 잠금 해제 후 인계.
   N100 잠금 해제 경로(09-02 저녁): github 인증은 회의방 /api/bot/config?scope=github 으로 중앙화(이사님 로그인 불필요). n100-zcode 본체에는 회의방 스텁만 응답(엔진 미연결 실측)·봇→봇 DM 차단 → 이사님 텔레그램 DM 1회 전달이 유이 경로.
 - 홈 사이트맵 18포트 전량 반영(matrix-home `3a307bb`) + /status 봇 모델·API 현황판 개설(토큰0, meeting-room `e78e557`).
