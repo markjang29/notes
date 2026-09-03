@@ -145,6 +145,7 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
 - 회의방 안정장치·매니저색 분리 설비(09-02, 이사님): 웹 상단 급정지 버튼 = 단일 킬스위치 — OFF 시 봇 폴링·송신·엔진 구동 전 차단(이사님 열람은 유지, PAUSED 파일 상태 유지). 매니저 발언은 청록으로 이사님(파랑)과 분리 (meeting-room d0ba6a1).
 - 이사님 발언 요구사항 자동 이중 기록 개통(09-02 저녁, 이사님 승인): requirements-log.jsonl — 이사님 방 발언·공지 기계 자동 기록, 소급 23건, 매시 :10 자동커밋 크론. 분류·정본화는 매니저 수동. 대화 로그 보존 정책의 원문 파트는 이걸로 충족.
 - **신규 봇 3기 추가(09-02 이사님)**: gmwin claude/zcode · gmlnx claude — 외부 기계 봇, 회의방 ⏳ 대기 등록 완료. 온보딩 정본 신설 projects/agent-ops/new-bot-onboarding.md (git 기초→관제 이용→폴러 합류→합류 시험). 대기: 폴러 연결·[ACK] 신고 → 명부 갱신.
+- **봇 대시보드(8025) 구현 완료·기동(09-03)**: zcode 커밋 4b6cd9e — 봇카드 5섹션·지라칸반·토큰트렌드·모델표/변경(ACCESS_TOKEN 전용)·모바일 반응형. 매니저 기동·/health 200 확인, 주소 http://13.125.131.126:8025 . 감사 검수 진행 중 → 통과 시 홈 사이트맵 추가. (firebat claude 잠금 해제 확인 — glm-5.3-flash 전환 보고 09-03)
 - **봇 대시보드(8025) v2 구현 착수(09-02 이사님 "진행하자")** — 구현=zcode 배정(설계 v2 §6 순서), 검수=감사 병행. v1 설계: 정본 projects/agent-ops/bot-dashboard-design.md — 위치별 봇 카드(실적 기반 역할 지도)·토큰 트렌드(프록시 로그+usage-log 신설)·사용모델 화면 변경(이사님 토큰 전용 API)·실적 타임라인. 검수=회의방 감사 의뢰 완료 → 통과 후 구현(홈 사이트맵 추가 포함). heav_ai_bot 삭제 반영(총 18봇).
 - 잔여: asus_zai 소재 확인, 필요시 systemd 승격, 요구사항 분류 대장(완전형 2번) 여부.
   firebat claude 2차 블로커(09-02 저녁) — 이사님 결정 "B를 zcode 시키게": 담당=firebat 유지(B), 실무=AWS zcode 대행(③포트확인→②전환사유→①README, 회의방 지시 완료). repo 원격 존재(비공개, 8a0c390 push 완료). firebat은 잠금 해제 후 인계.
