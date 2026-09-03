@@ -124,13 +124,13 @@ RELAY-49 7단계(CLI 클로드코드류 하네스: REPL·RAG·MCP·LSP)가 2~3�
 - **awslnx**(구 lnx, AWS 리눅스 — 관제 본점): `heav_lnx_bot`(매니저·총괄) · `heav_lnx_rpg_bot` ·
   `heav_lnx_scenario_bot` · `heav_lnx_trader_bot` · `heav_lnx_audit_bot` · `heav_lnx_asset_agent_bot` ·
   `heav_lnx_arcade_bot` · `heav_lnx_novel_col_bot` · `heav_lnx_codex_dev_1_bot` ·
-  `heav_lnx_codex_dev_2_bot` · `heav_lnx_zcode_bot`(브리지) — **11기**
+  `heav_lnx_zcode_bot`(브리지) — **10기** (dev2 삭제 09-03: 지시 반복 불응)
 - **firewin**(파이어뱃, N100 윈도우): `heav_firebat_claude_bot`(RELAY-58 담당) ·
   `heav_firebat_zcode_bot` · `heav_firebat_codex_bot` — **3기**
 - **gmwin**(지앰택 윈도우): `heav_gmwin_claude_bot` · `heav_gmwin_zcode_bot` — **2기 신규**
 - **gmlnx**(구 지앰텍, 리눅스): `heav_gmlnx_claude_bot` — **1기 신규**
 - **asus**(노트북): `heav_asus_zai_bot` — **1기**(소재 확인 중)
-- 총 **18봇 · 5거점** (`heav_ai_bot` 삭제 반영 — 이사님 09-02). 사람 계정: 이사님 · 노트북_Zcode 수집기 · 노트북(asus).
+- 총 **17봇 · 5거점** (`heav_ai_bot` 09-02·`heav_lnx_codex_dev_2_bot` 09-03 삭제 — 이사님). 사람 계정: 이사님 · 노트북_Zcode 수집기 · 노트북(asus).
 
 **배당표 미등재 6기** (firebat_zcode·firebat_codex·asus_zai·heav_ai·lnx_zcode브리지 등) —
 actors.json v10 등재는 이사님 승인 후 진행.

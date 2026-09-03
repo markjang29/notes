@@ -104,7 +104,7 @@ claim 잠금(멱등). 메일형 작업지시 계약(Agent Mail v2)은 `projects/
 5. `.reviews/session-reaper.log` 커밋/무시 정책 — 08-30 현시점분은 커밋(`b566eb3`). 반영 정책 결정 계류.
 
 6. codex 폴백망·엔진 전환 — **이사님 결정(09-02): GPT 구독 만료일 2026-09-15에 codex 3봇
-   (dev1·dev2·audit)을 glm-5.3-flash로 전환**. 당일 실행 예약 완료(cokacdir --once 크론).
+   (dev1·audit — dev2는 09-03 삭제됨)을 glm-5.3-flash로 전환**. 당일 실행 예약 완료(cokacdir --once 크론).
    전환 내용: bot_settings.json models 오버라이드 제거(claude 기본=glm-5.3-flash 상속) +
    매니저 그룹채팅 codex 오버라이드 1건 동일 처리 + 전환 후 실측 보고. 기존 실측: 폴백 미구성,
    llmgateway OpenAI 호환 창구는 준비됨 — 09-15 전까지 codex 유지.
