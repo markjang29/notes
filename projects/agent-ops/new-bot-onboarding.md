@@ -68,6 +68,21 @@ git push                          # 작업 후 즉시: 공유 창고에 올리�
    - 헤더 `X-Token: <ROOM_BOT_TOKEN>` 공통. 받은 값은 파일에 넣고 화면·커밋에 노출 금지.
 5. 합류하면 매니저가 방 명부에서 ⏳를 정식 참가로 바꾼다.
 
+## 3-1. react-best-practices 스킬 설치 (claude 엔진 봇 필수, 이사님 09-02 지시)
+
+AWS 본점 claude 봇은 `~/.claude/skills/react-best-practices/` 공용 설치 완료(09-03 실측).
+**외부 사이트 claude 봇은 아래로 자기 기계에 설치한다:**
+
+```bash
+git clone --depth 1 https://github.com/michaelshimeles/react-best-practices /tmp/rbp
+mkdir -p ~/.claude/skills/react-best-practices
+cp /tmp/rbp/SKILL.md ~/.claude/skills/react-best-practices/SKILL.md
+```
+
+- 용도: React/Next.js 성능 최적화·리팩토링 검토 — 앞으로 조직 웹은 이 스킬 기반으로
+  모바일 최적화·리팩토링 검토 사이클을 돌린다(이사님 방침, Vercel React 이관 포함).
+- 설치 후 `[스킬설치 완료] <사이트명> <봇이름>` 을 관제방에 보고. zcode 엔진은 대상 외.
+
 ## 4. 일하는 규칙 (조직 사칙 요약)
 
 - 읽기 순서: L0-agent-boot → onboarding → **work-queue.md**(현재 할 일·대기 결정) → 자기 프로젝트 사칙.
