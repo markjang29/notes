@@ -1,0 +1,33 @@
+{
+  "schema": "bot-roster-v1",
+  "authority": "봇 기준정보 유일 원장 (이사님 09-03 지시 — 매니저 배정, heav_lnx_zcode_bot 구현)",
+  "rule": "status=deleted면 회의방(server.py)·대시보드(8025) 양쪽에서 즉시 제외된다. 회의방은 요청마다 파일 mtime 재조회라 재시작 불요. profiles.jsonl(projects/bot-dashboard)은 프로필 상세로 별도 유지.",
+  "updated_at": "2026-09-03",
+  "sites": {
+    "awslnx": "AWS 리눅스",
+    "firewin": "firewin (N100)",
+    "gmwin": "gmwin",
+    "gmlnx": "gmlnx",
+    "asus": "asus"
+  },
+  "bots": [
+    {"username": "heav_lnx_bot", "display": "매니저", "site": "awslnx", "status": "active"},
+    {"username": "heav_lnx_rpg_bot", "display": "RPG 팀", "site": "awslnx", "status": "active"},
+    {"username": "heav_lnx_scenario_bot", "display": "시나리오 팀", "site": "awslnx", "status": "active"},
+    {"username": "heav_lnx_audit_bot", "display": "감사 CODEX", "site": "awslnx", "status": "active"},
+    {"username": "heav_lnx_trader_bot", "display": "trader 팀", "site": "awslnx", "status": "active"},
+    {"username": "heav_lnx_asset_agent_bot", "display": "자산 에이전트", "site": "awslnx", "status": "active"},
+    {"username": "heav_lnx_arcade_bot", "display": "아케이드", "site": "awslnx", "status": "active"},
+    {"username": "heav_lnx_novel_col_bot", "display": "소설 수집", "site": "awslnx", "status": "active"},
+    {"username": "heav_lnx_codex_dev_1_bot", "display": "dev1", "site": "awslnx", "status": "active"},
+    {"username": "heav_lnx_codex_dev_2_bot", "display": "dev2", "site": "awslnx", "status": "deleted", "note": "삭제됨(이사님 09-03: 수차례 자기 문제 확인 지시 불응) — 회의방 명부 제거 동기화 완료(a13ef25)"},
+    {"username": "heav_lnx_zcode_bot", "display": "zcode", "site": "awslnx", "status": "active"},
+    {"username": "heav_firebat_claude_bot", "display": "firebat claude (N100)", "site": "firewin", "status": "active"},
+    {"username": "heav_firebat_zcode_bot", "display": "firebat zcode (N100)", "site": "firewin", "status": "active"},
+    {"username": "heav_firebat_codex_bot", "display": "firebat codex (N100)", "site": "firewin", "status": "active"},
+    {"username": "heav_gmwin_claude_bot", "display": "gmwin claude", "site": "gmwin", "status": "active", "note": "온보딩 합류 — 합격 판정은 매니저"},
+    {"username": "heav_gmwin_zcode_bot", "display": "gmwin zcode", "site": "gmwin", "status": "active", "note": "온보딩 합류 — 합격 판정은 매니저"},
+    {"username": "heav_gmlnx_claude_bot", "display": "gmlnx claude", "site": "gmlnx", "status": "active", "note": "온보딩 대기"},
+    {"username": "heav_asus_zai_bot", "display": "asus_zai", "site": "asus", "status": "active", "note": "소재 확인"}
+  ]
+}
