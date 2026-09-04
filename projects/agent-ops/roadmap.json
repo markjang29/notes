@@ -1,0 +1,45 @@
+{
+  "updated": "2026-09-04",
+  "owner": "manager",
+  "note": "조직 로드맵 단일 원장 — 대시보드(8025)와 봇이 공동 참조. 상태: done|doing|todo|blocked",
+  "stages": [
+    {
+      "id": "stage-1",
+      "title": "1단계 — 사이트 정합성 구축",
+      "status": "doing",
+      "items": [
+        {"text": "봇 기준정보 단일 원장 roster.json (회의방·대시보드 동시 반영)", "status": "done", "owner": "zcode"},
+        {"text": "봇 대시보드 8025 기동 (봇카드·지라·토큰·모델·공지 패널)", "status": "done", "owner": "zcode"},
+        {"text": "공지 활성 게시판 — 내리기 전까지 전 봇 문맥 주입 + 대시보드 연동", "status": "done", "owner": "manager+zcode"},
+        {"text": "관제 워크스페이스 5축 (의사결정·로드맵·담당업무·스킬·모델설정)", "status": "doing", "owner": "zcode", "adr": "2026-09-04-gwanje-workspace-five-pillars"},
+        {"text": "RELAY 사이트 통합 티켓 정합 (RELAY-52·58 계열)", "status": "doing", "owner": "firebat+zcode"},
+        {"text": "react-best-practices 스킬 전 사이트 claude 설치·실측", "status": "doing", "owner": "manager", "ref": "skills.json"},
+        {"text": "홈 사이트맵(matrix-home)에 8025 등록 — 감사 검수 통과 조건", "status": "todo", "owner": "audit"}
+      ]
+    },
+    {
+      "id": "stage-2",
+      "title": "2단계 — CLI화",
+      "status": "todo",
+      "items": [
+        {"text": "관제 기능의 명령줄/API 조작 (웹 UI 의존 제거) — 회의방 API가 원형", "status": "todo", "owner": "미정"}
+      ]
+    },
+    {
+      "id": "stage-3",
+      "title": "3단계 — MCP화",
+      "status": "todo",
+      "items": [
+        {"text": "승인보드·자산뱅크·회의방을 MCP 도구로 노출 — 봇 간 표준 호출", "status": "todo", "owner": "미정"}
+      ]
+    },
+    {
+      "id": "stage-4",
+      "title": "4단계 — Agentic 자율 운영",
+      "status": "todo",
+      "items": [
+        {"text": "봇 스스로 계획→MCP 도구 호출→검증 루프. 매니저 배정만으로 자율 실행·보고", "status": "todo", "owner": "미정"}
+      ]
+    }
+  ]
+}

@@ -144,6 +144,7 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
   텔레그램 그룹 중계·수동 붙여넣기 폐지. 방 공지 완료(09-02 18:07).
 - 회의방 안정장치·매니저색 분리 설비(09-02, 이사님): 웹 상단 급정지 버튼 = 단일 킬스위치 — OFF 시 봇 폴링·송신·엔진 구동 전 차단(이사님 열람은 유지, PAUSED 파일 상태 유지). 매니저 발언은 청록으로 이사님(파랑)과 분리 (meeting-room d0ba6a1).
 - 이사님 발언 요구사항 자동 이중 기록 개통(09-02 저녁, 이사님 승인): requirements-log.jsonl — 이사님 방 발언·공지 기계 자동 기록, 소급 23건, 매시 :10 자동커밋 크론. 분류·정본화는 매니저 수동. 대화 로그 보존 정책의 원문 파트는 이걸로 충족.
+- **관제 워크스페이스 5축 착수(09-04 이사님 A안 승인)** — 범위 확정: 소통은 텔레그램+현 회의방 유지, 채팅 UX(채널·스레드 등)는 보류. 대시보드(8025)를 의사결정·로드맵·담당업무·스킬·모델설정 관리 표면으로 디벨롭 — zcode 배정. 신설 원장: roadmap.json·skills.json(매니저 초안 완료), ADR decisions/2026-09-04-gwanje-workspace-five-pillars.md. 조사 정본: projects/agent-ops/gwanje-slacklike-upgrade-research.md (9ca4d02).
 - **신규 봇 3기 추가(09-02 이사님)**: gmwin claude/zcode · gmlnx claude — 외부 기계 봇, 회의방 ⏳ 대기 등록 완료. 온보딩 정본 신설 projects/agent-ops/new-bot-onboarding.md (git 기초→관제 이용→폴러 합류→합류 시험). 대기: 폴러 연결·[ACK] 신고 → 명부 갱신.
 - **대시보드 공지 이력 패널 완료(09-04, zcode abf3368+f2f3431)** — 이력(room.jsonl 기반 10건) + 활성 공지 서브섹션(8023 GET /api/notices 프록시) + 내리기 버튼(8023 DELETE 대행, 토큰 서버측 파일 보관·무노출). E2E 실측: 내리기 → 8023 활성 목록 감소 → 봇 문맥 주입 실제 해제. room.jsonl 원본 불변.
 - **공지 활성 게시판 신설(09-04, 매니저 fbd8c41)** — 이사님 "공지 언제 봄?" 질문 계기: 기존은 봇이 깨어날 때 최근 24건 안에 공지가 있어야만 인지(밀리면 영영 놓침). 이제 kind=notice는 notices-active.jsonl에 등록, **내리기 전까지 전 봇 구동마다 문맥 선두 무조건 주입**. 공지 수명 = 스크롤이 아니라 '내리기 행위'. 끝난 핑테스트 공지 3건은 내려 7건 상시 유효.

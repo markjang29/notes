@@ -1,7 +1,7 @@
 ---
 title: 관제 Slack류 디벨롭 자료조사 (이사님 09-04 지시)
 date: 2026-09-04
-status: 조사 완료 — 방향 결정 대기
+status: 조사 완료 — **A안 승인(09-04)**, 범위는 관리 5축으로 한정·채팅 UX(Phase 1~3)는 보류 → ADR `decisions/2026-09-04-gwanje-workspace-five-pillars.md`
 tags:
   - agent-ops
   - meeting-room

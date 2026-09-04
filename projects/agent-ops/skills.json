@@ -1,0 +1,19 @@
+{
+  "updated": "2026-09-04",
+  "owner": "manager",
+  "note": "개발 참고 스킬 원장 — 스킬×사이트 설치 현황. status: installed|pending_report|assigned|excluded. 실측 일자·근거 필수",
+  "skills": [
+    {
+      "name": "react-best-practices",
+      "purpose": "React/Next.js 성능 최적화·리팩토링 검토 — 조직 웹 표준 스킬 (이사님 09-02 지시: 웹은 이 스킬 기반)",
+      "source": "https://github.com/michaelshimeles/react-best-practices",
+      "targets": [
+        {"site": "awslnx", "bot": "AWS claude 전 봇 공용", "status": "installed", "evidence": "공용 ~/.claude/skills/react-best-practices/ 09-03 실측 + dev1 [스킬OK] 세션 로딩 확인"},
+        {"site": "gmlnx", "bot": "heav_gmlnx_claude_bot", "status": "installed", "evidence": "[스킬설치 완료] 보고 09-04 00:45 (회의방 로그)"},
+        {"site": "firewin", "bot": "heav_firebat_claude_bot", "status": "pending_report", "evidence": "설치 지시 완료 — [스킬OK firebat] 보고 대기"},
+        {"site": "gmwin", "bot": "heav_gmwin_claude_bot", "status": "pending_report", "evidence": "설치 지시 완료 — 보고 대기"},
+        {"site": "전 zcode 엔진", "bot": "zcode 계열", "status": "excluded", "evidence": "온보딩 문서 §3-1 — zcode 엔진은 대상 외"}
+      ]
+    }
+  ]
+}
