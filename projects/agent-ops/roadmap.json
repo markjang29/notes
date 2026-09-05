@@ -15,7 +15,7 @@
         {"text": "RELAY 사이트 통합 티켓 정합 (RELAY-52·58 계열)", "status": "doing", "owner": "firebat+zcode"},
         {"text": "react-best-practices 스킬 전 사이트 claude 설치·실측", "status": "doing", "owner": "manager", "ref": "skills.json"},
         {"text": "홈 사이트맵(matrix-home)에 8025 등록 — 감사 검수 통과 조건", "status": "todo", "owner": "audit"},
-        {"text": "AWS→홈서버(N100 3대) 이관·통합 전략 — 테일스케일/외부노출/Spring 스트랭글러/AWS 잔존범위 결정 대기", "status": "doing", "owner": "manager", "ref": "homeserver-migration-research.md"},
+        {"text": "AWS→홈서버(N100 3대) 이관·통합 종합 설계 v1 완성 — 이사님 승인 대기(승인 시 결정 4건 소결)", "status": "doing", "owner": "manager", "ref": "homeserver-target-design-v1.md"},
         {"text": "포트 레지스트리(services.json) + 단일 진입 Caddy(/ → React, /api/* → Spring) — 이관 1단계 선행", "status": "todo", "owner": "미정"},
         {"text": "Spring Modulith 도입 — ApplicationModules.verify()로 모듈 사이클·침범·비인가 의존을 테스트 실패화", "status": "todo", "owner": "미정"},
         {"text": "데이터 provenance 표준 6필드 + CI DATA_GOVERNANCE_CHECK — '보이게만 개발' 차단 게이트(감사 체크리스트 편입)", "status": "todo", "owner": "미정"},
