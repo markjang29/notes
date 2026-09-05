@@ -14,7 +14,9 @@
         {"text": "관제 워크스페이스 5축 (의사결정·로드맵·담당업무·스킬·모델설정)", "status": "doing", "owner": "zcode", "adr": "2026-09-04-gwanje-workspace-five-pillars"},
         {"text": "RELAY 사이트 통합 티켓 정합 (RELAY-52·58 계열)", "status": "doing", "owner": "firebat+zcode"},
         {"text": "react-best-practices 스킬 전 사이트 claude 설치·실측", "status": "doing", "owner": "manager", "ref": "skills.json"},
-        {"text": "홈 사이트맵(matrix-home)에 8025 등록 — 감사 검수 통과 조건", "status": "todo", "owner": "audit"}
+        {"text": "홈 사이트맵(matrix-home)에 8025 등록 — 감사 검수 통과 조건", "status": "todo", "owner": "audit"},
+        {"text": "AWS→홈서버(N100 3대) 이관·통합 전략 — 테일스케일/외부노출/Spring 스트랭글러/AWS 잔존범위 결정 대기", "status": "doing", "owner": "manager", "ref": "homeserver-migration-research.md"},
+        {"text": "포트 레지스트리(services.json) + 단일 진입(역프록시) — 이관 1단계 선행 작업", "status": "todo", "owner": "미정"}
       ]
     },
     {

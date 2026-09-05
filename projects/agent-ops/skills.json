@@ -14,6 +14,15 @@
         {"site": "gmwin", "bot": "heav_gmwin_claude_bot", "status": "pending_report", "evidence": "설치 지시 완료 — 보고 대기"},
         {"site": "전 zcode 엔진", "bot": "zcode 계열", "status": "excluded", "evidence": "온보딩 문서 §3-1 — zcode 엔진은 대상 외"}
       ]
+    },
+    {
+      "name": "_candidates_2026-09-04",
+      "purpose": "신규 후보 스킬 목록 — 절차: 후보 등록 → 담당 봇 실측 → 채택/폐기 (중구난방 설치 방지 원칙)",
+      "source": "https://github.com/travisvn/awesome-claude-skills",
+      "targets": [
+        {"site": "-", "bot": "미정", "status": "candidate", "note": "Superpowers(작업 워크플로) · code-reviewer(검수 게이트) · Frontend Design(UI 품질)"},
+        {"site": "awslnx", "bot": "자체 보유 스킬", "status": "installed", "note": "architecture-map · dataviz · concurrency-meter · context-meter 등 로컬 스킬 — 원장 등록만 미뤄둠"}
+      ]
     }
   ]
 }
