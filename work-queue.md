@@ -159,11 +159,14 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
 
 ## ★ 로컬 서버 마이그레이션 (2026-08-30 수립) — 최상위 신규 트랙
 
-- **신규 AWS 엣지 접속 테스트 완료(09-06 이사님)** — 43.201.34.144·ubuntu·키 `~/.ssh/lightsail-512ram.pem`
-  (600, 커밋·채팅 게시 금지). 실측: Ubuntu 22.04.5 LTS · vCPU 2 · RAM 총 416MB usable(표기 512MB,
-  커널 예약분) · 디스크 20G 사용 3G · **스왑 0**. 역할=외부 입구 전용(서비스 상주 금지,
-  tailnet → 홈 리눅스 실서빙). 다음: tailnet 편입 시점·편입 후 무엇을 먼저 통과시킬지(공개 게이트웨이)
-  결정 대기.
+- **신규 AWS 엣지 봇 가동 완료(09-06 이사님 지시 "go", A안)** — 43.201.34.144에 ①스왑 1GB 설치
+  (fstab 등록) ②GLM 프록시 이식: `~/scripts/zai-fallback-proxy.js`(node12 호환 확인, 시크릿 무매몰)
+  + systemd 시스템 유닛 `zai-proxy.service`(127.0.0.1:8788, Restart=always) ③claude 자격 이식:
+  8GB `~/.claude/settings.json` env 블록을 ssh 파이프로 병합(값 화면·디스크 미노출) ④스모크 테스트
+  성공("ok" 회신, 프록시 경유 로그 1건 증적). 실측: RAM available 250MB·스왑 사용 66MB — 여유 정상.
+  무해 경고: `[claude-code:unrecognized_model]`(세션 제목용 모델명 표기 경고, 응답 영향 없음).
+  주의: 브릿지 구동 인자에 봇 토큰이 ps로 보임(단일 유저 박스라 허용, 출력 시 마스킹).
+  다음: tailnet 편입은 이관 단계(설계 §6)에서. heav_aws512 봇 실사용 테스트는 이사님.
 - **기존 AWS 8GB 셧다운 예정(09-06 이사님)** — 현 봇·회의방 8023·대시보드 8025 구동 중.
   서비스 이관 대상은 홈 리눅스(N100 #1). 설계 v1.1 §6 "규칙 먼저·이관은 마지막" 순서 유지.
 
