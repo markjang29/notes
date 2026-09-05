@@ -1,7 +1,7 @@
 ---
-title: 홈서버 이관·통합 종합 설계 v1 (4차 외부 의견 종합)
-date: 2026-09-04
-status: 설계 완료 — 이사님 승인 대기
+title: 홈서버 이관·통합 종합 설계 v1 (5차 외부 의견 종합)
+date: 2026-09-06
+status: 설계 완료 — 이사님 승인 대기 (v1.1: 실행 순서 재편 반영)
 tags:
   - agent-ops
   - infra
@@ -10,7 +10,8 @@ tags:
 
 # 홈서버 이관·통합 종합 설계 v1
 
-> 근거: 조사 정본 homeserver-migration-research.md(외부 4차 의견: Gemini·GPT·기술상세·엣지설계) +
+> 근거: 조사 정본 homeserver-migration-research.md(외부 5차 의견: Gemini·GPT·기술상세·엣지설계·
+> 읽을거리+실행순서) +
 > 우리 기존 자산(회의방 8023·대시보드 8025·사칙 체계·원장 3종·감사 evaluator).
 > 한 줄 요약: **봇 20기는 남긴다(입구·인격), 배관은 하나로(하네스·진입·원장), AWS는 없애지 않고 엣지로 축소.**
 
@@ -39,6 +40,10 @@ tags:
   산출 형식. 병행 작업은 git worktree 격리.
 - 게이트: 빌드·테스트·린트·**아키텍처(Spring Modulith verify())**·**데이터 provenance**·보안·UI.
 - Evaluator = 감사봇(모델 분리 유지: codex×claude 교차 검증).
+- 지식 전달 원칙(Vercel 실측 2026-01, §10 ⑤): 수평 지식(프레임워크·repo 규칙)은 **repo 루트
+  AGENTS.md/CLAUDE.md 압축 인덱스**로 상시 주입 — 스킬은 "호출 판단"을 요구하는 탓에 미호출 56%·
+  최대 79%인 반면, 8KB 압축 인덱스는 Build/Lint/Test 100%. 스킬은 업그레이드·마이그레이션 같은
+  **행동형 수직 과업**에만 쓴다(skills.json 채택 절차에 이 기준 반영).
 
 ## 4. 정책 버전 관리 — POLICY_SHA (활성 공지의 상위판)
 
@@ -55,14 +60,24 @@ tags:
 - 모델이 바뀌어도(예: Opus→Sonnet) **Task history는 그대로 남는다** — 관제 5축의 "담당업무"축이
   이 카드의 뷰가 된다(ADR 2026-09-04 5축과 연결).
 
-## 6. 이관 순서 (Strangler 3단계 + 마일스톤)
+## 6. 실행 순서 — "규칙 먼저, 이관은 마지막" (5차 외부 의견 수용, 판정 동의)
 
-1. 선행: 포트 레지스트리(services.json) · repo 규칙 표준(AGENTS.md/CLAUDE.md 헌법) · 티켓 템플릿
-   7필드 개정 · provenance 6필드 표준 초안. ← **매니저 즉시 착수 가능**
-2. 엣지: AWS 엣지 Caddy + Tailscale 조직망(5거점+홈 3대 편입) · 홈 Caddy 단일 진입.
-3. 통합: matrix-studio-spring을 Modulith 코어로 승격(이미 React 동서빙 실측됨) → 기능 단위 어댑터
-   이전(Phase A Spring→Python→Mongo) → DB 직결(B) → canonical DB(C) → Python 종료.
-4. 상시: 게이트 통과 증명만 이사님께(2단 승인) — 딥리딩 제거.
+핵심 원칙: **AWS→홈서버 이관부터 하면 안 된다.** 구조를 먼저 새로 세운 뒤 옮겨야, 옮긴 자리에서
+다시 뜯는 이중 비용이 없다. 이관 자체도 하나의 AI task pipeline(티켓·게이트·검수)으로 실행한다.
+
+1. **0단계 — inventory + 동결**: 현존 10여 개 서비스·repo를 기록만 한다(services.json = 포트
+   레지스트리 겸용). 새 기능 개발을 짧게 동결해 판을 고정. ← 동결 기간은 이사님 결정 안건.
+2. **1단계 — 운영 규칙**: platform-policy(notes POLICY_SHA) · Task Contract 7필드 · git worktree
+   격리 · CI 게이트(Modulith verify + provenance). 티켓 템플릿 개정·provenance 초안은 매니저 즉시
+   착수 가능.
+3. **2단계 — 골격**: matrix-studio-spring을 Modulith 코어로 승격 + React shell(동서빙 실측됨) —
+   레포 규칙 표준(루트 AGENTS.md 헌법+압축 인덱스)은 이 단계에 함께.
+4. **3단계 — 흡수(Strangler)**: 기존 Python 서비스를 기능 단위 어댑터로 하나씩 흡수(Phase A → B
+   → C), Python 종료.
+5. **4단계 — 이관(마지막)**: AWS 엣지 Caddy + Tailscale 조직망 편입 → 홈 N100으로 workload 이전.
+   이관 티켓도 같은 하네스·게이트를 통과한다.
+6. 상시: 게이트 통과 증명만 이사님께(2단 승인) — 딥리딩 제거. Jira는 인간용 에픽/로드맵만 남기고
+   실행 추적은 GitHub + 하네스 + 관제(8025) 중심으로.
 
 ## 7. 기존 자산 매핑 (버리는 것 없음)
 
@@ -83,3 +98,16 @@ tags:
    - 승인 시 ③AWS 잔존범위="엣지 축소", ②Spring=스트랭글러, ①테일스케일, ④하네스 표준이 함께 확정됨.
 2. N100 #2의 (선택) Linux 전환 — 나중에 결정 가능(보류 가능).
 3. 첫 실무 배정 승인: 티켓 템플릿 7필드 개정 + provenance 6필드 표준 초안(매니저 즉시).
+4. (5차 의견에서 신규) **0단계 선행 승인**: 전 서비스·repo inventory + 신규 기능 개발 단기 동결.
+   동결 기간·범위는 이사님이 정함(권고: 1~2주).
+
+## 10. 근거 문헌 — 읽을거리 실측 검증 (2026-09-06)
+
+- ① Effective harnesses for long-running agents — anthropic.com/engineering/effective-harnesses-for-long-running-agents **실재 확인**
+- ② Building a C compiler with a team of parallel Claudes — anthropic.com/engineering/building-c-compiler **실재 확인** · ~16 에이전트·~2,000 세션·task lock 파일·독립 worktree·GCC 오라클 검증
+- ③ Claude Code Best Practices — anthropic.com/engineering/claude-code-best-practices **실재 확인**
+- ④ AGENTS.md outperforms skills in our agent evals — vercel.com/blog/agents-md-outperforms-skills-in-our-agent-evals **실재 확인·수치 확보**(§3 반영)
+- ⑤ React Best Practices(Vercel) — 현재 설치 스킬(michaelshimeles)과 별개 원전 가능성 → skills.json 후보로 확인 중
+- ⑥ Spring Modulith — 공식 문서 실재(§3 게이트 근거)
+- ⑦ "Harness design for long-running application development" — 안내받은 URL은 **404**. ①과 같은 계열
+  주제를 다른 제목으로 지칭한 것으로 보임 → 원문 확인 필요(지어내지 않음).

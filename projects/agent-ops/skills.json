@@ -1,7 +1,7 @@
 {
   "updated": "2026-09-04",
   "owner": "manager",
-  "note": "개발 참고 스킬 원장 — 스킬×사이트 설치 현황. status: installed|pending_report|assigned|excluded. 실측 일자·근거 필수",
+  "note": "개발 참고 스킬 원장 — 스킬×사이트 설치 현황. status: installed|pending_report|assigned|excluded. 실측 일자·근거 필수. 채택 기준(09-06): 스킬은 행동형 수직 과업만 — 수평 지식은 repo 루트 AGENTS.md 압축 인덱스 우선(Vercel 실측 100% vs 스킬 79%·미호출 56%). ref: homeserver-target-design-v1.md §3·§10",
   "skills": [
     {
       "name": "react-best-practices",

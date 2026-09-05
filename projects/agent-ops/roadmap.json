@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-04",
+  "updated": "2026-09-06",
   "owner": "manager",
   "note": "조직 로드맵 단일 원장 — 대시보드(8025)와 봇이 공동 참조. 상태: done|doing|todo|blocked",
   "stages": [
@@ -16,7 +16,8 @@
         {"text": "react-best-practices 스킬 전 사이트 claude 설치·실측", "status": "doing", "owner": "manager", "ref": "skills.json"},
         {"text": "홈 사이트맵(matrix-home)에 8025 등록 — 감사 검수 통과 조건", "status": "todo", "owner": "audit"},
         {"text": "AWS→홈서버(N100 3대) 이관·통합 종합 설계 v1 완성 — 이사님 승인 대기(승인 시 결정 4건 소결)", "status": "doing", "owner": "manager", "ref": "homeserver-target-design-v1.md"},
-        {"text": "포트 레지스트리(services.json) + 단일 진입 Caddy(/ → React, /api/* → Spring) — 이관 1단계 선행", "status": "todo", "owner": "미정"},
+        {"text": "0단계: 전 서비스·repo inventory(services.json 겸용) + 신규 기능 단기 동결 — 규칙 먼저·이관은 마지막(이사님 동결 기간 결정)", "status": "todo", "owner": "manager", "ref": "homeserver-target-design-v1.md §6"},
+        {"text": "단일 진입 Caddy(/ → React, /api/* → Spring) — 골격 단계에서 구성", "status": "todo", "owner": "미정"},
         {"text": "Spring Modulith 도입 — ApplicationModules.verify()로 모듈 사이클·침범·비인가 의존을 테스트 실패화", "status": "todo", "owner": "미정"},
         {"text": "데이터 provenance 표준 6필드 + CI DATA_GOVERNANCE_CHECK — '보이게만 개발' 차단 게이트(감사 체크리스트 편입)", "status": "todo", "owner": "미정"},
         {"text": "repo 규칙 표준화 — 루트 AGENTS.md(claude·codex·zcode 공용) + CI 기계 게이트(스트랭글러 선행)", "status": "todo", "owner": "미정"}
