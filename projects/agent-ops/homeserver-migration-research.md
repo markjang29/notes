@@ -125,7 +125,30 @@ tags:
   "제품용 자산 공장"과 같은 철학의 조직 전체 확장이다. 봇 수를 줄이자는 게 아니라 **일의 형식이
   품질을 결정**하게 만들자는 것.
 
-## 9. 결정 안건 (이사님) — 갱신
+## 9. 기술 상세안 평가 (09-04 3차 수신 — Caddy·Modulith·provenance)
+
+세 답변 중 가장 구체적 — 5개 제안 전부 채택 가능. 실측 근거와 함께:
+
+- **Caddy 단일 진입**(/ → React, /api/* → Spring:8080) — 채택. 실측: matrix-studio-spring이 이미
+  단일 repo·단일 포트에서 React를 static으로 서빙 중(web-react 빌드 → static/react 확인). 즉 "한 포트"
+  절반은 이미 현실. 이관 시 Caddy(자동 HTTPS·설명 한 줄짜리 설정)로 전 사이트 통일.
+- **Spring Modulith 모듈 경계 기계 검증** — 채택, 이번 조사의 최고 수확. 현재 studio는 단일 플랫
+  패키지(service·controller·domain·repo)라 비즈니스 도메인(rpg·scenario·agent)이 들어오는 순간 경계가
+  필요해진다. `ApplicationModules.verify()`로 사이클·내부 침범·비인가 의존을 **테스트 실패**로 만드는
+  것은 "AI에게 말로 금지시키기"보다 강력 — GPT 하네스의 자동 게이트 중 아키텍처 게이트의 Spring 정석.
+- **Strangler 3단계 구체화**(Spring→Adapter→기존 Python, → 직접 DB, → Domain+canonical DB) — 채택.
+  "RPG inventory read API 하나만 기존 동작과 동일하게 이전" 같은 **검증 가능한 티켓 단위**가 되는 것이
+  핵심 이득 — Task Contract 7필드와 정확히 맞물린다.
+- **데이터 provenance 게이트** — 채택, "보이게만 개발"의 직접 처방. 원천 메타 6필드 표준(source_system,
+  source_id, source_timestamp, ingested_at, transformation_version, raw_reference) + CI
+  DATA_GOVERNANCE_CHECK + Evaluator 질문 4개(이 화면 데이터는 어디서 생성되나 · 원천까지 trace 되나 ·
+  shadow state를 만들었나 · 동일 객체를 다른 저장소에 중복 생성했나) → 감사봇 체크리스트에 편입.
+  React convenience JSON 별도 저장 금지 포함.
+- **AGENTS.md=헌법 / Skill=업무 매뉴얼 구분** — 채택. 우리 문서 체계의 정리 원칙: 사칙(변하지 않는
+  규칙)과 스킬(과업별 매뉴얼, skills.json 등록제)을 층으로 분리. docs/ARCHITECTURE.md 등 repo 문서
+  표준 구조도 신규 Spring 코어 발판에 반영.
+
+## 10. 결정 안건 (이사님) — 갱신
 
 
 1. 내부망 테일스케일 채택 + 외부 노출은 관제 웹만 — 승인 여부.
