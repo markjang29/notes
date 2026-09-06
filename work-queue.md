@@ -166,7 +166,11 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
   성공("ok" 회신, 프록시 경유 로그 1건 증적). 실측: RAM available 250MB·스왑 사용 66MB — 여유 정상.
   무해 경고: `[claude-code:unrecognized_model]`(세션 제목용 모델명 표기 경고, 응답 영향 없음).
   주의: 브릿지 구동 인자에 봇 토큰이 ps로 보임(단일 유저 박스라 허용, 출력 시 마스킹).
-  다음: tailnet 편입은 이관 단계(설계 §6)에서. heav_aws512 봇 실사용 테스트는 이사님.
+- **신규 엣지 tailnet 편입 완료(09-06 이사님 승인)** — aws512-edge = **100.102.194.108**,
+  `tailscale ping` duradev 8ms 직통. 조직망 6노드: aws512-edge(신규 엣지) · duradev(리눅스 —
+  홈/개발머신 추정) · ip-172-26-2-127(8GB AWS, 100.81.50.115) · nucboxg3(윈도우 — N100 추정) ·
+  s23-ultra · win-tgon9io01tv. 엣지가 공인 입구+조직망 둘 다 확보 — 향후 claude 트래픽을
+  조직망 경유(8GB 프록시 100.x) 전환 가능(현행 로컬 프록시 유지). heav_aws512 실사용 테스트는 이사님.
 - **기존 AWS 8GB 셧다운 예정(09-06 이사님)** — 현 봇·회의방 8023·대시보드 8025 구동 중.
   서비스 이관 대상은 홈 리눅스(N100 #1). 설계 v1.1 §6 "규칙 먼저·이관은 마지막" 순서 유지.
 
