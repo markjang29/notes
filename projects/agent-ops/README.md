@@ -22,6 +22,9 @@ Windows Codex는 더 이상 독점 controller·검수자·merge 담당·종결�
 - 새 작업지시와 회신 형식: `mail-v2.schema.json`
 - Telegram 직접 지시 intake: `telegram-intake-v1.schema.json`
 - 아이디어 후보와 결정 event: `idea-candidate-v1.schema.json`
+- 사칙·정책 센터 인덱스: `policy-index-v1.json`
+- `aws-audit` 정책 Steward standing assignment: `roles/aws-audit-policy-steward.md`
+- 홈/홈서버 정책 투영 동기화: `home-policy-sync-v1.md`
 - 야간 후보 정책: `overnight-ideation-v1.md`
 - 이전 Cokacdir 부팅 규칙: `cokacdir-boot-v1.md`
 - 현재 배포된 직접 지시·후보 부팅 규칙: `cokacdir-boot-v2.md`

@@ -1,0 +1,124 @@
+{
+  "schema": "policy-index-v1",
+  "version": "2026-09-07.1",
+  "authority": "director",
+  "status": "active",
+  "display": {
+    "primary_home_route": "/policies",
+    "projection_rule": "Home and dashboards are projections. Notes Git remains the source of truth."
+  },
+  "change_policy": {
+    "site_request_is_authoritative": false,
+    "rule": "사이트 변경요청은 초안이다. Notes Git commit+push 전까지 정책 정본이 아니다.",
+    "required_review": "director decision or delegated controller review",
+    "forbidden": [
+      "credential_capture",
+      "silent_policy_change",
+      "retroactive_completion_claim",
+      "state_transition_by_audit",
+      "self_approval"
+    ]
+  },
+  "docs": [
+    {
+      "id": "git-first",
+      "kind": "사칙",
+      "title": "사칙 — Git 정본과 보고 투영",
+      "status": "active",
+      "owner": "director",
+      "ref": "principles/git-first-project-truth.md",
+      "eli5": "공지판이 아니라 등기부를 먼저 고친다.",
+      "summary": "아이디어·결정·우선순위·검증 현황은 Git commit이 먼저이고, 홈/대시보드는 그 투영이다."
+    },
+    {
+      "id": "audit-watchdog",
+      "kind": "감사",
+      "title": "감사모드 저토큰 와치독 원칙",
+      "status": "active",
+      "owner": "aws-audit",
+      "ref": "principles/audit-watchdog-foundation.md",
+      "eli5": "검문소가 영수증과 실제 물건을 대조한다.",
+      "summary": "완료·커밋·모델·복구·Git 정합성 주장을 실제 근거와 대조한다."
+    },
+    {
+      "id": "agent-mail",
+      "kind": "작업계약",
+      "title": "Agent Mail 운영 정본",
+      "status": "rollout",
+      "owner": "manager",
+      "ref": "projects/agent-ops/README.md",
+      "eli5": "심부름 쪽지에는 보낸 사람·받는 사람·완료 기준이 적혀야 한다.",
+      "summary": "actor identity, mail lifecycle, ACK/verified/closed, direct Telegram intake 기준."
+    },
+    {
+      "id": "task-contract",
+      "kind": "작업지시",
+      "title": "Task Contract v1 — 작업 지시서 7필드",
+      "status": "draft",
+      "owner": "manager",
+      "ref": "projects/agent-ops/task-contract-v1.md",
+      "eli5": "일 시키기 전에 주소·완료조건·만질 범위·검사법을 칸에 적는다.",
+      "summary": "repo, 인수조건, 허용 경로, 원천, 테스트, 금지 변경, 산출 형식의 7필드 표준."
+    },
+    {
+      "id": "homeserver-policy-sha",
+      "kind": "이관",
+      "title": "홈서버 이관·통합 종합 설계 v1",
+      "status": "approved-design",
+      "owner": "manager",
+      "ref": "projects/agent-ops/homeserver-target-design-v1.md",
+      "eli5": "규칙책 판본 번호를 모든 작업 카드에 찍는다.",
+      "summary": "AWS는 엣지로 축소하고, 홈서버는 같은 Notes HEAD를 POLICY_SHA로 본다."
+    },
+    {
+      "id": "home-policy-sync",
+      "kind": "동기화",
+      "title": "홈/홈서버 정책 투영 동기화 v1",
+      "status": "active",
+      "owner": "aws-audit",
+      "ref": "projects/agent-ops/home-policy-sync-v1.md",
+      "eli5": "가게 간판을 옮겨도 메뉴판 원본은 같은 책을 본다.",
+      "summary": "8018 legacy home과 이관 대상 home server가 같은 policy-index와 Notes HEAD를 표시하는 규칙."
+    },
+    {
+      "id": "one-site",
+      "kind": "통합",
+      "title": "원사이트 통합 투트랙 v1",
+      "status": "doing",
+      "owner": "manager",
+      "ref": "projects/agent-ops/one-site-consolidation-v1.md",
+      "eli5": "기존 가게는 영업하면서, 새 백화점으로 코너를 하나씩 옮긴다.",
+      "summary": "레거시 링크 정합성과 Spring/React 원사이트 흡수를 분리해 진행한다."
+    },
+    {
+      "id": "new-bot-onboarding",
+      "kind": "온보딩",
+      "title": "신규 봇 온보딩",
+      "status": "active",
+      "owner": "manager",
+      "ref": "projects/agent-ops/new-bot-onboarding.md",
+      "eli5": "새 직원은 출근 첫날 규칙책부터 읽는다.",
+      "summary": "봇 기동 시 읽을 순서, 단일 채널, 조직 사칙 요약."
+    },
+    {
+      "id": "audit-policy-steward",
+      "kind": "역할",
+      "title": "aws-audit 정책 Steward 역할",
+      "status": "active",
+      "owner": "aws-audit",
+      "ref": "projects/agent-ops/roles/aws-audit-policy-steward.md",
+      "eli5": "감사봇은 규칙책 사서다. 책을 정리하고 판본을 찍지만 혼자 법을 통과시키지는 못한다.",
+      "summary": "주요 결정 전파, 정책 인덱스 관리, POLICY_SHA 정합성 감사의 standing assignment."
+    },
+    {
+      "id": "eli5-glossary",
+      "kind": "보고",
+      "title": "ELI5 고정 비유 사전",
+      "status": "active",
+      "owner": "manager",
+      "ref": "projects/agent-ops/eli5-glossary.md",
+      "eli5": "어려운 말을 매번 같은 생활 비유로 번역한다.",
+      "summary": "이사님 보고 시 용어를 쉽게 설명하기 위한 공통 비유 사전."
+    }
+  ]
+}
