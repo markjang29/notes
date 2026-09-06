@@ -159,6 +159,9 @@ python3 ~/scripts/export-chat-backup.py --latest --out /tmp/chat-backup.md
 
 ## ★ 로컬 서버 마이그레이션 (2026-08-30 수립) — 최상위 신규 트랙
 
+- **★매니저 창구 원칙(09-06 이사님)** — 매니저는 이관 대상과 무관하게 이사님 단일 창구 유지,
+  구현은 위치별 봇 배정·매니저가 보고. 봇 닉네임 표준 `[위치] 역할`. 정본: org-structure.md 말미 절.
+
 - **신규 AWS 엣지 봇 가동 완료(09-06 이사님 지시 "go", A안)** — 43.201.34.144에 ①스왑 1GB 설치
   (fstab 등록) ②GLM 프록시 이식: `~/scripts/zai-fallback-proxy.js`(node12 호환 확인, 시크릿 무매몰)
   + systemd 시스템 유닛 `zai-proxy.service`(127.0.0.1:8788, Restart=always) ③claude 자격 이식:
