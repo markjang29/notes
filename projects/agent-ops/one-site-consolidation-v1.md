@@ -44,6 +44,20 @@ tags: [agent-ops, one-site, spring]
   압축 인덱스 방식 병행(Vercel 실측: 스킬 호출 79% < 인덱스 100%).
 - 단일 원장: `roadmap.json` stage-1. 봇 보고=회의방 → 매니저 검증 → 원장 갱신 → ELI5 보고.
 
+## 페이지별 담당 봇 매칭 (제안 — 이사님 확인 대기, 09-06)
+
+- `/` 홈 허브 → **zcode** (통합 홈 허브 원제작자, 8018 오너십 계승)
+- `/game` (RPG·아케이드) → **rpg 팀**(heav_lnx_rpg_bot) 주관 + 아케이드 콘트롤 협력
+- `/studio` (스튜디오·넥서스) → 도메인 **zcode**, 스프링 구현 **firebat claude**(8024 repo 소유)
+- `/assets` (자산·시나리오·이미지·워크벤치) → **firewin**(heav_firebat_zcode_bot — 이사님 09-06
+  신설 롤 "자산창고 담당"+자산 현황 웹 오너쉽 인수와 정확히 대응). 시나리오 도메인은 scenario 팀장 협력.
+- `/daily` (뮤비 일상) → **codex_dev_1** (RELAY-42 music_video 담당 계승)
+- `/control` (회의방·대시보드 — 이사님 전용) → **매니저**(관제 오너) + 화면 구현 zcode
+- `/approve` (승인보드) → **매니저** (작업요청 창구 오너)
+- 공통: UI 설계 zcode · 스프링 구현 firebat claude · 검수 audit(codex×claude) · 반응형 기준
+  react-best-practices 스킬 필수.
+- 확정 시: roster.json·회의방 공지로 각 봇에게 페이지 오너십 부여, 20장 카드 담당과 연동.
+
 ## 20장 카드 (진행률 분모)
 
 - [설계 1~5] 1 IA 상세(zcode·진행중) 2 레거시 링크 감사(gmwin·진행중) 3 반응형 와이어프레임
