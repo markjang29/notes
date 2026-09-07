@@ -49,6 +49,12 @@
 
 ## ★ 서비스 전수조사·복구 (2026-09-06 이사님 요청)
 
+- **★규칙 원장 ORG-RULES.md 신설(09-07 이사님 지시 정리)** — 접속 토폴로지(43.201.34.144 진입→
+  tailscale→홈, 신규 개발 진입점)·관제 허브 REST 큐 v1(/api/hub/*, hub_client.py 30초 폴러)·
+  대화 규칙(큐 모드·eli5·표 대체·n/20 게이트). 정본: projects/agent-ops/ORG-RULES.md.
+  **미수행 과제(매니저)**: ①폴링·스케줄링 전수 리스팅+부하·토큰 점검 ②봇 전체에 규칙 공지·
+  자기정보 동기화 요청 ③관제 허브 정본·ADR 검증(gwanje-hub-rest-queue-v1.md).
+
 - **AWS 8GB 중단 3건 복구 완료(매니저 수동)** — ①8018 matrix-home 홈허브: systemd 미등록 nohup
   (telegram-zcode-bridge 자식)이라 브리지 재시작 때 사망 — 이관 때문 아님. ②8005 승인보드:
   유닛 stopped → start. ③8016 이미지스튜디오: @reboot 전용(사망 시 무재시작) → 수동 기동.
