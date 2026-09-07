@@ -67,13 +67,15 @@ task만 엔진을 깨우고 나머지는 적재+관제 전달만 한다(RELAY-61
 ## 홈 이전 계획 (이 서비스는 "이관 목록"에 이미 올라 있다)
 
 1. 허브는 8023 모듈이라 **8023 회의방의 홈(duradev) 이전과 동행** — 별도 이관 작업 없음.
-2. 이전 후 진입: `http://43.201.34.144/hub` → 엣지(aws512-edge) nginx → Tailscale → 홈 8023.
-   - 09-07 상태: 엣지엔 `/hub` 라우트가 없어 404였음(이사님 실측). **임시 진입 `http://13.125.131.126:8023/hub`(8GB, 외부 200 확인)**.
-   - **09-07 UTC 14:25 엣지 라우트 개설 완료(heav_gmwin_claude_bot, codex_dev_1 요청)**: `location = /hub`(GET 전용, POST 403)·
-     `location /api/hub/` → `upstream gwanje_hub_tmp { server 13.125.131.126:8023; }` 신설. 공인 실측 `/hub` 200(현황판 본문)·
-     `/api/hub/status` 401(토큰 인증 통과)·회귀 6경로 200. **경로 고정 — 스위치오버는 upstream 한 줄 교체(100.109.91.0:8023)로
-     이사님 승인 후**. 백업: 엣지 `~/nginx-backups/edge.conf.bak-hub-09071425`. 수행 경로·상세: `edge-routing-2026-09-07.md`.
-     (변경 전: 매니저 박스에서 엣지 SSH publickey 거부로 자체 시도 불가였음 — duradev 경유 키로 해소)
+2. 진입: `http://43.201.34.144/hub` → 엣지(aws512-edge) nginx → Tailscale → **duradev 8023**.
+   - 09-07 UTC 14:25(=KST 23:25) gmwin claude가 요청에 따라 라우트 개설 — 당시 임시로 13.125.131.126:8023
+     프록시(GET 전용). 백업: 엣지 `~/nginx-backups/edge.conf.bak-hub-09071425`.
+   - 09-07 23:40 **이사님 지시("13.은 이제 없다 — 43.으로 해결, 시도·기록·안내 전면 금지")로 재정리 완료
+     (codex_dev_1, 엣지 키 `~/.ssh/lightsail-512ram.pem` 확보 후 직접 수정)**: edge.conf에서 8GB 참조
+     (13.125.131.126·100.81.50.115) **전면 제거**, `/hub`·`/api/hub`를 `duradev_hub`(100.109.91.0:8023)로
+     고정, GET 전용 제한 제거(이사님 재큐·DLQ 비움 POST 필요). 실측: nginx -t OK·reload, 회귀
+     /·/healthz·/governance·/policies 200, /hub 502(duradev 8023 배치 대기 — 배치 즉시 200).
+     이후 엣지 재실측으로 13.·8GB 참조 0건 유지 확인. 수행 경로·상세: `edge-routing-2026-09-07.md`.
 3. 8018 관제 한판은 `/api/hub/status`를 같은 tailnet으로 폴링(8GB 의존 제거).
 4. **필요 조치(이사님 결정 1건)**: duradev 접근 수단 — ①이 박스에서 duradev로 SSH 키 등록, 또는
    ②홈 측 봇(firebat/n100-zcode·gmwin)에 배치 지시. 현재 이 박스→duradev SSH는 publickey 거부(09-07 실측).
