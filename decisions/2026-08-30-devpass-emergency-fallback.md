@@ -38,4 +38,22 @@
 ## 남은 것
 
 - 이사님 지정 단어 확정: **"게웨"** (게이트웨이 줄임). "게웨"=2시간 기본 · "게웨 N"=N시간 · "게웨 닫아"=즉시 잠금.
+
+## 갱신 (2026-09-08, 이사님 지시) — Gateway 폴백 1순위 승격
+
+- 지시: "폴백을 LLM Gateway 먼저 가자" → DevPass를 최후 회선에서 **1순위 폴백**으로 승격.
+- 새 체인: z.ai glm-5.3-flash 1차 시도 → 529/503/429 **첫 감지 시 즉시 Gateway**
+  glm-5.3 → gpt-5-mini → gpt-5 → 실패 시 기존 z.ai 강등 체인(glm-5.1→glm-4.6, 짧은 요청 한정,
+  MAX_ATTEMPTS=4) → 최종 안전망으로 Gateway 1회 더 → GAVE-UP.
+- 구현(`~/scripts/zai-fallback-proxy.js`): ①`DEVPASS_AUTO=1`이면 쿠폰 없이 `devpassActive()` 활성
+  ②첫 과부하(attempt===1)에서 `tryDevpassRescue` 선행 호출(DEVPASS-FIRST-MISS 로그 남김)
+  ③STARTED 로그에 모드 표기. drop-in `devpass.conf`에 `Environment=DEVPASS_AUTO=1`.
+- **08-30 허락제(쿠폰)는 본 지시로 해제.** 재잠금은 매니저가 `DEVPASS_AUTO=0` 후 재기동
+  ("게웨 닫아" 지시 시). `devpass-coupon.sh`는 비자동 모드에서 그대로 유효.
+  백업: `scripts/zai-fallback-proxy.js.bak-gateway-first-0908`.
+- 검증(09-08 실측): 토큰 유효(직접 /v1/models·/v1/messages 200, runware/glm-5.3) → 8789 테스트
+  인스턴스 DEVPASS_FORCE에서 `DEVPASS-RESCUED glm-5.3 200` → 운영 8788 재기동,
+  STARTED `armed(auto-first)` 확인.
+- 참고: 현 llmgateway 계정에서 gpt-5-mini·gpt-5는 404(미개통) — 실패 즉시 다음 모델로 넘어가
+  무해하며 실효 회선은 glm-5.3. 개통 시 체인 확장은 DEVPASS_MODELS로만 조정.
   실전 발동 시 최초 검증(텔레그램 🛟 알림) · 코덱스(OpenAI 호환) 쪽 동일 회선 확장.
