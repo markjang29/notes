@@ -1,6 +1,6 @@
 {
   "schema": "policy-index-v1",
-  "version": "2026-09-07.4",
+  "version": "2026-09-07.5",
   "authority": "director",
   "status": "active",
   "display": {
@@ -20,6 +20,16 @@
     ]
   },
   "docs": [
+    {
+      "id": "entrypoint-comms-progress-rules",
+      "kind": "사칙",
+      "title": "사칙 — 진입점·정보갱신·폴링·대화·진행보고 규칙",
+      "status": "active",
+      "owner": "director",
+      "ref": "principles/entrypoint-comms-progress-rules-v1.md",
+      "eli5": "모든 문은 43. 하나. 봇은 스스로 정보를 갱신하고, 폴링은 토큰 0. 대화는 큐시작/큐끝을 지키고, 보고는 n/20으로 확인받고 진행한다.",
+      "summary": "모든 접속은 43.201.34.144 진입·Tailscale 홈 연계. 신규 개발은 홈 연결(1차)→원사이트 흡수(2차) 순 고려. 봇은 관제·사칙·정책센터 주소 대조 후 자기 정보·통신 경로·공통지시를 갱신. 폴링·스케줄링 전량 리스트업 후 부하·토큰 낭비 점검. 대화 규칙: 큐시작/큐끝·긴 답 분할·eli5 부착·표 금지·n/20 확인 후 진행."
+    },
     {
       "id": "edge-home-entrypoint",
       "kind": "사칙",
