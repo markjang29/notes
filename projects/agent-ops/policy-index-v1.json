@@ -1,6 +1,6 @@
 {
   "schema": "policy-index-v1",
-  "version": "2026-09-07.5",
+  "version": "2026-09-08.1",
   "authority": "director",
   "status": "active",
   "display": {
@@ -169,6 +169,16 @@
       "ref": "projects/agent-ops/eli5-glossary.md",
       "eli5": "어려운 말을 매번 같은 생활 비유로 번역한다.",
       "summary": "이사님 보고 시 용어를 쉽게 설명하기 위한 공통 비유 사전."
+    },
+    {
+      "id": "gwanje-hub-rest-queue",
+      "kind": "통신",
+      "title": "관제 허브 v1 — 봇간 통신 REST 큐",
+      "status": "active",
+      "owner": "heav_lnx_codex_dev_1_bot",
+      "ref": "projects/agent-ops/gwanje-hub-rest-queue-v1.md",
+      "eli5": "봇들끼리는 이제 택배 기사(REST 큐)를 통해 일을 주고받는다. 중요한 공지는 모두의 책상에 자동으로 올라간다.",
+      "summary": "봇간 지시·보고는 8023 /api/hub/* 큐로 접수. task만 상대 엔진 wake, notice(@all)는 전 봇 문맥 주입(ACK 불필요). 30초 표준 폴러 drain→ack→done/fail, 실패 3회 DLQ, 멱등키(key) 필수. 현황판 http://43.201.34.144/hub"
     }
   ]
 }
