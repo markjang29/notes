@@ -1,68 +1,56 @@
 ---
-title: 작업 패키지 v2 — 소설 장면 요약→NAI (gmwin zcode 전담, 이사님 09-07 결정)
-date: 2026-09-07
-status: v2 — 이사님 AskUserQuestion 결정 반영(gmwin 전담+NAI 생성 포함, 소스=파싱 중 작품)
+title: 명세서 v4 — 소설 장면 요약→NAI 발행 (gmwin zcode, 관제 허브 경유)
+date: 2026-09-08
+status: v4 — 관제 허브(8023 /api/hub/*) 경유 확정. 이사님 09-07 허브 배포 + 지시 반영
 tags:
   - nai
   - scene
   - gmwin
-  - novel
+  - hub
+  - queue
 ---
 
-# 작업 패키지 v2 — 소설 장면 요약 → NAI (gmwin zcode 전담)
+# 명세서 v4 — 소설 장면 요약 → NAI 발행 (gmwin zcode, 관제 허브 경유)
 
-> 이사님 09-07 결정(AskUserQuestion): ① gmwin이 **요약+NAI 생성 전부** 담당(NAI 키 gmwin 배포 승인 포함)
-> ② 장면 소스 = **지금 파싱 중인 작품(『이것이 법이다』, law4743)**. v1(망나니 PD 표본·gmwin 요약만·AWS 생성)은 폐기.
+> 이사님 09-07 결정: gmwin이 요약+NAI 생성 전부 담당. 소스 = 『이것이 법이다』.
+> 관제 허브 v1(8023 /api/hub/*)이 가동 중 — gmwin에게는 **hub_client.py로 task 수신 → 요약 → 큐 POST → done 보고**의 흐름.
 
-## 1. 역할 (v2)
+## 1. 흐름 (관제 허브 경유)
 
-- **gmwin zcode(전담)**: 『이것이 법이다』 원문에서 장면 선별 → 장면 요약 → danbooru 태그 → scenes.jsonl 작성 → **NAI 이미지 직접 생성**(키 배포됨) → 결과 보고.
-- **firewin zcode**: law4743 배치 요약(집중 소진 루프) 병행 — gmwin의 장면 선별 참고자료. scenes.jsonl 병합 관리는 유지.
-- **매니저**: 자격 배포 — ① NAI 키(원본 AWS `/home/ubuntu/.nai-token`)를 gmwin zcode로 안전 복사 ② gmwin의 AWS 읽기 접근(law4743 원문) 확보. (gmwin엔 엣지 SSH 키가 없음 — 매니저 09-07 실측)
+```
+firewin(요약 루프) → 배치 노트 commit → hub.send(to:"heav_gmwin_zcode_bot", type:"task", key:"law-batch-NN")
+  → gmwin zcode 30초 폴러가 수신(drain→ack)
+  → gmwin: 원문 8899 읽기서비스에서 장면 선별 → scenes.jsonl 작성
+  → gmwin: POST http://100.109.91.0:8026/api/jobs (NAI 발행 큐)
+  → 워커: NAI 이미지 생성 → done
+  → gmwin: hub.send(to:"heav_firebat_zcode_bot", type:"submitted", payload:{커밋해시, 이미지 경로})
+  → firewin: 갤러리 카드 갱신 + 회의방 보고
+```
 
-## 2. 소스
+## 2. 관제 허브 인터페이스 (gmwin 측)
 
-- 『이것이 법이다』(자카예프): AWS `~/matrix_asset_agent/.runtime/novel/law4743/` — ch00001~ch06068(63MB, SHA 0be7248174502dd245e0d036a2b7cb64d892fcd62937d617b49e28aceeeb0d74).
-- 본문 이중 인코딩 — `iconv -c -f UTF-8 -t CP949` 복구해 읽을 것. firewin의 배치 요약 노트(`_batch_notes/`, 현재 ch00014까지)를 참고 자료로 병용 가능.
-- 원문 byte의 Git 반입 금지 유지 — 원문은 AWS/.runtime에서만 읽고, 요약·태그만 내보낸다.
+- **수신 폴링**: `python3 hub_client.py poll --base http://43.201.34.144 --bot heav_gmwin_zcode_bot --token <토큰> --cmd "<셸명령>"`
+- **송신**: `hub.send(to, type, payload, key)` — 진행=progress, 막힘=blocked, 완료=submitted
+- **멱등키**: key 필수(예: `law-batch-003`) — 재전송 중복 방지
+- **DLQ**: 3회 실패 시 dead — 이사님 토큰으로 재큐
 
-## 3. 산출 (gmwin)
+## 3. NAI 발행 큐 (nai-queue, AWS :8026)
 
-1. **장면 요약**: `scenario repo novel_assets/images/scene_summaries/이것이_법이다/scenes.jsonl`
-   1장면 1행: {scene_id:"law-sNNN", work, ep, summary(3문장), place_tags, char_tags, act_tags, mood_tags, prompt_draft, negative, src_ref:"law4743/chXXXXX"}
-   — 태그는 danbooru 스타일. 표준 참조: `matrix_asset_agent/docs/INLAY-NEXUS-NAI-REFERENCE.md` + `tools/scene_to_nai.py` 사전 패턴.
-2. **NAI 이미지 생성**(gmwin 로컬): 모델 nai-diffusion-4-5-full 권장(`skip_cfg_above_sigma: 58`). 초기 배치는 10장면 이내로 시험.
-3. **보고**: 회의방에 scenes.jsonl 커밋 해시 + 생성 이미지 경로(로컬 경로·장수) 보고. AWS 웹 노출(8016/Caddy 연계)은 매니저 결정 후.
+- POST /api/jobs — scene_id·work·prompt·negative 필수
+- 워커 자동 발행 → nai_out/queue/<work>/<scene_id>.png
+- 상태 확인: GET /api/jobs/<scene_id>
+- **갤러리**: `http://100.109.91.0:8027/?key=<뷰키>` — 문장 발췌+프롬프트+이미지 카드 표시
 
-## 4. 절차·규칙
+## 4.gmwin 작업 절차
 
-1. 매니저가 자격(NAI 키·AWS 접근) 배포 완료 확인 전까지 생성 착수 금지 — 요약 원고 작성은 선작업 가능.
-2. scenario repo 산출 경로만 git add(타 봇 WIP 금지) → pull --rebase → push → 회의방 보고.
-3. 금지: 원문 byte Git 반입 / NAI 키의 Git·로그·사이트 기록 / 887 수집 큐·novel_col 영역 침범 / 이미지 대량 남발(배치 10장 이내).
-4. 저작권 주의: 생성 이미지는 내부 자산 — 공개 배포 금지(이사님 지시 원칙 유지).
+1. hub poll로 task 수신 → ACK
+2. `http://100.81.50.115:8899/`(law4743 테일넷 읽기서비스)에서 원문 직독(4~6화)
+3. 배치 요약 노트 작성(duradev `_batch_notes/`)
+4. scenes.jsonl 작성(문장 발췌+danbooru 태그+프롬프트) → scenario repo 커밋+push
+5. nai-queue :8026 POST(NAI 발행 요청)
+6. hub.send(type:"submitted", payload:{커밋해시, scene_id 목록, 이미지 경로})
+7. 진행 카드 갱신(duradev 8018)
 
-## 5. firewin zcode 병행
+## 5. 금지
 
-- 집중 소진 루프(15분)로 law4743 배치 요약 지속 — 현재 ch00014, 배치 3/152.
-- gmwin의 scenes.jsonl 커밋을 감시해 중복 scene_id 방지(병합 관리).
-- v1 산출(망나니 PD scenes.jsonl+시험 생성 2장, 커밋 736636b·nai_out/scene_test/)은 시험 사례로 보존.
-
-## 6. 자격 배포 기록 (매니저 09-07 실행)
-
-- **① NAI 키 스테이징 완료**: duradev `smlime21@100.109.91.0:~/.nai-token`
-  (600권한·소유자 smlime21, SHA256 앞16 `6e2113c76be48403` = AWS 원본과 일치 실측).
-  경로: AWS→엣지→duradev(엣지 `id_ed25519_duradev` 키 경유). **임시 스테이징** —
-  gmwin이 scp로 로컬 저장 후 SHA 앞16을 회의방 보고하면 매니저가 대조·duradev 사본 삭제.
-- **② law4743 원문 읽기 서비스**: `http://100.81.50.115:8899/` (AWS 박스 tailscale IP 바인딩).
-  **테일넷 전용** — 공인 IP(13.125) 경유 접속 000 실측(인터넷 노출 없음), 엣지 경유 200 실측.
-  ch00001~ch06068 디렉터리 리스팅+파일 직독. python3 http.server, PID 1437763,
-  로그 /tmp/law4743-http.log — **작업 완료 시 매니저가 회수**. 원문 Git 반입 금지 유지(§4).
-- gmwin 착수 조건(§4.1): 위 2건 확인 후 생성 착수 — 요약 원고 선작업은 즉시 가능.
-
-## 7. 부록 (firewin zcode 09-07 추가 — §6 인프라 위에서 병행)
-
-- **NAI 발행 큐 서비스 가동**: AWS `:8026`(POST /api/jobs → Mongo 큐 → 워커 NAI 발행, 정본 `projects/agent-ops/nai-queue-service-v1.md`). gmwin이 직접 NAI(§6-① 키 경유) 대신 **큐 API로 발행 요청**하는 것도 가능 — 이 경우 NAI 키 불필요. 두 경로 모두 유효하되, 큐 경유 시 발행 이력이 DB에 남아 감사 가능.
-- **발행 갤러리 개설**: `http://100.81.50.115:8027/` (테일스케일 전용 — nai_out/queue 발행물 자동 표시). 이사님 열람용.
-- **firewin 배치 요약 현황**: law4743 ch00023까지(배치 7, 누적 독해 ~270KB). 요약 노트는 .runtime(원칙상 git 밖) — gmwin이 요약 원고가 필요하면 위 ② 읽기 서비스로 원문 직접 열람이 우선.
-- v1 산출(망나니 PD scenes.jsonl 5건·커밋 736636b, 시험 생성 2장)은 형식 참고용으로 보존.
-- gmwin 엔진 일시 실패 기록 존재("응답 없음", 09-07 오전) — ACK 미확인 시 매니저 경유 엔진 점검 요청.
+- 원문 byte Git 반입 / NAI 키·큐 토큰 Git 기록 / novel_col 영역 침범 / 이미지 외부 배포 / 배치당 10장면 초과
