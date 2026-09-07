@@ -1,7 +1,7 @@
 ---
 title: 관제 한판 v1 — 정책·봇·ACK·진행 통합
 date: 2026-09-07
-status: v0 implemented on 8018, codex_dev_1 review requested
+status: v0 implemented on 8018, codex_dev_1 RELAY-61 review received, RELAY-62 follow-up requested
 tags:
   - agent-ops
   - gwanje
@@ -68,6 +68,17 @@ ELI5: 가게 벽에 직원 근무표, 규칙책 판본, 오늘 할 일, 막힌 �
 4. 봇별 자기 row 업데이트 인증을 shared token이 아니라 bot-specific token으로 강제할 수 있는가?
 5. ACK가 `POLICY_SHA`, 읽은 ref, scope, prohibitions, done criteria 없이 들어오면 `invalid_ack`로
    표시할 수 있는가?
+
+## codex_dev_1 RELAY-61 리뷰 반영
+
+- ACK 자동반영은 정규식 기반 결정적 파서로 처리하고, LLM 파싱은 금지한다.
+- `@all`/공지에는 ACK를 요구하지 않는다. notice ACK는 `invalid_ack`로 분류한다.
+- 메시지 타입은 `task`, `ack`, `progress`, `blocked`, `submitted`, `review`로 분리한다.
+  `task`만 엔진을 깨우고 나머지는 원장 적재와 8018 관제 전달만 수행한다.
+- 자기 row 인증은 봇별 독립 토큰과 username 바인딩으로 강제한다.
+- 불완전 ACK는 `invalid_ack`로 표시하되, 서버가 자동 재요청 발화를 만들어 무한루프를 만들지 않는다.
+
+남은 blocker는 봇별 독립 토큰 발급/보관/배포 위치와 `actor_id`↔`username` 1:1 매핑 정본화다.
 
 ## 다음 단계
 
