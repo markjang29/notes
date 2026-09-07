@@ -25,7 +25,15 @@ tags:
    설계 정본: `firewin-warehouse-sync-design-v1.md` (동 디렉터리)
 4. 소설 수집 실행은 본 봇 경유 — 기존 큐·자료는 **삭제·초기화 없이 인계·통합 관리**
 5. **자산 현황 웹 오너쉽**(09-06 인수): 8018 `/asset/<key>`(마스터번호)·`/cards`·`/dossiers`·
-   `/api/stats`·`/s0` + 8015 `/city` — 기존 페이지·mongo `workbench.assets` 그대로 계승·확장
+   `/api/stats`·`/s0` + 8015 `/city` — 기존 페이지·mongo `workbench.assets` 그대로 계승·확장.
+   공개 경로 `http://13.125.131.126:8018`(이사님 조작 화면 `/novel-plan`·`/fleet` 포함, 09-07 실측 200).
+   **이중 인스턴스 발견(09-07)**: AWS 8018이 공인 노출 본진, duradev 8018은 사본 운행
+   (데이터 소폭 상이 — wb_runs 120↔117, images 53↔47, board_pending 0↔5).
+   통합 방향은 매니저·이사님 안건. 루프 진행 카드(`/reports/operations/novel-assetization-loop`)
+   는 양쪽 동시 갱신으로 임시 대응.
+   novel_col 경계(이사님 09-02 정리 기준): 887 큐·대기 3편(1422만포인트·1970재벌막내·소울라이크용사)은
+   novel_col 영역 — 본 봇 소설 루프는 `.runtime` 노트 재개분+대형 epub만 담당(중복 금지).
+   참고 실적: novel_col works 7/7 81개, 작품당 ≈130 프롬프트·약 20분, 429 시 리셋까지 정지.
 
 ## 2. 자산 원장 기준 (자산당 최소 기록)
 
@@ -56,7 +64,8 @@ tags:
 - AWS `~/Works/novel` 5.7GB / 7,365파일(웹소설 모음집·epub·_extract), `~/risu` 2.8GB, `~/nai_concepts` 122MB
 - 소설 수집 큐: `matrix-home/novel_queue.json`(duradev 본계 887건 전체 `대기`, 장르 기타406·로판355·현판71·무협33·SF17) + `novel_ops.json` 운용 상태. AWS 쪽 동일 파일은 사본으로 추정 — 원본 소재 재확인 대기
 - 자산 원장 선례: `matrix_asset_agent/inventory/novel_epub_manifest.json`, arcalive GDrive 콜드백업(`백업/COLD-*`) 관례 존재
-- 홈 사이트: `/novel-plan`·`/api/novel-queue`·`/api/novel-ops` = `matrix-home` repo, **duradev 8018에서 운행 중** (AWS 로컬 8018 미리스닝 — AWS 게이트웨이 경유 노출 여부 확인 대기)
+- 홈 사이트: `/novel-plan`·`/api/novel-queue`·`/api/novel-ops` = `matrix-home` repo — **이중 인스턴스**(09-07 확인):
+  AWS 8018(공인 13.125.131.126, 이사님 조작 본진) + duradev 8018(로컬 사본). 큐 원본 소재 재확인 필요(§8-3)
 
 ## 5. 금지사항 (이사님 09-06 지시)
 
@@ -82,7 +91,8 @@ tags:
 
 ## 8. 대기 결정 (이사님)
 
-- ~~백업 3계층·클라우드 목적지·창고 경로·순서~~ **07-06 결정 완료**(§1·§3, 설계 v1 §1).
+- ~~백업 3계층·클라우드 목적지·창고 경로·순서~~ **09-06 결정 완료**(§1·§3, 설계 v1 §1).
+- ~~8018 외부 노출~~ **09-07 확인 완료** — AWS 인스턴스가 공인 본진(§1-5).
 - 1. rclone GDrive 설정의 firewin 이식 승인(자격 이동 — 매니저/이사님 확인)
 - 2. 로그인 세션 쿠키 수령(로그인 필요 첨부용 — 미수령 중엔 공개글 증분만)
-- 3. 8018 홈 허브의 AWS 게이트웨이 외부 노출 방식(현황 페이지 접속 경로)
+- 3. matrix-home 이중 인스턴스 통합 방향(AWS 본진 vs duradev 사본 — 매니저 보고 대기)
