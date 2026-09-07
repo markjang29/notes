@@ -71,9 +71,14 @@ task만 엔진을 깨우고 나머지는 적재+관제 전달만 한다(RELAY-61
 4. **필요 조치(이사님 결정 1건)**: duradev 접근 수단 — ①이 박스에서 duradev로 SSH 키 등록, 또는
    ②홈 측 봇(firebat/n100-zcode·gmwin)에 배치 지시. 현재 이 박스→duradev SSH는 publickey 거부(09-07 실측).
 
-## 실측 (09-07, TestClient)
+## 실측 (09-07, 스크래치 포트 실측 — 라이브 8023 무영향)
 
-- (구현 직후 아래에 갱신 — 미실측 상태로 성공을 기록하지 않는다)
+- 14항목 전부 통과: task 발행+wake 콜백 1회 호출, 멱등키 중복 수렴(deduped·동일 id),
+  인증 실패 401, 봇별 토큰 발행, peek 상태 불변, drain→delivered, ack→acked, done→done,
+  fail→재큐(attempts 증가)→재배달→fail→dead 전이, `@all` notice 단일행·배달 안 됨,
+  ttl 만료→expired, requeue, DLQ clear, status 토큰모드(per-bot) 표시.
+- 시험 방식: hub_router를 별도 앱(:8099)에 장착해 실측 — 라이브 8023은 건드리지 않음.
+  운영 반영은 meeting-room.service 재시작으로 활성화.
 
 ## ELI5
 
