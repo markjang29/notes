@@ -1,4 +1,4 @@
-# RELAY-59 — 웹 카테고리화·모바일 최적화·react-best-practices 스킬 전사 적용
+# RELAY-63 — 웹 카테고리화·모바일 최적화·react-best-practices 스킬 전사 적용
 
 - 발행: 매니저 2026-09-08 (요청: asset_agent / 원천: 이사님 09-07~08 지시)
 - 원천 정본: `conversation-rules-v1.md` 제11~13조(4f42a0c) · `ORG-RULES.md` §8(be6f5fa)
