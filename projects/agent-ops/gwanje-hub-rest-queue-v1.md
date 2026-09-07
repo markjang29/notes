@@ -77,7 +77,13 @@ task만 엔진을 깨우고 나머지는 적재+관제 전달만 한다(RELAY-61
      /·/healthz·/governance·/policies 200, /hub 502(duradev 8023 배치 대기 — 배치 즉시 200).
      이후 엣지 재실측으로 13.·8GB 참조 0건 유지 확인. 수행 경로·상세: `edge-routing-2026-09-07.md`.
 3. 8018 관제 한판은 `/api/hub/status`를 같은 tailnet으로 폴링(8GB 의존 제거).
-4. **필요 조치(이사님 결정 1건)**: duradev 접근 수단 — ①이 박스에서 duradev로 SSH 키 등록, 또는
+4. **8018(matrix-home) 제어·반영 절차 (09-08 실측 정정)** — 8018은 **smlime21 소유**
+   (`~/projects/matrix-home/main.py`, novelweb venv, `~/notes`를 `MATRIX_POLICY_NOTES_ROOT`로 직접 읽음,
+   crontab에 상시성 항목 없음 — 수동 기동 존재). `/policies`는 **매 요청 notes 파일 직접 읽음 →
+   notes pull만으로 즉시 반영, 재시작 불필요**(실측: pull 후 2026-09-08.3 즉시 표시).
+   이전 "8018은 타 유저 소유라 재시작 불가" 보고는 오인 — proc 추적으로 정정.
+   자동 pull은 env-sync cron(매시 17분)이 담당.
+5. **필요 조치(이사님 결정 1건)**: duradev 접근 수단 — ①이 박스에서 duradev로 SSH 키 등록, 또는
    ②홈 측 봇(firebat/n100-zcode·gmwin)에 배치 지시. 현재 이 박스→duradev SSH는 publickey 거부(09-07 실측).
 
 ## 실측 (09-07, 스크래치 포트 실측 — 라이브 8023 무영향)
