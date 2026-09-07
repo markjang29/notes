@@ -68,9 +68,12 @@ task만 엔진을 깨우고 나머지는 적재+관제 전달만 한다(RELAY-61
 
 1. 허브는 8023 모듈이라 **8023 회의방의 홈(duradev) 이전과 동행** — 별도 이관 작업 없음.
 2. 이전 후 진입: `http://43.201.34.144/hub` → 엣지(aws512-edge) nginx → Tailscale → 홈 8023.
-   - 09-07 상태: 엣지엔 `/hub` 라우트가 없어 404(이사님 실측). **임시 진입 `http://13.125.131.126:8023/hub`(8GB, 외부 200 확인)**.
-     엣지 라우팅 추가를 gmwin claude에 회의방으로 요청 완료(지금 8GB → 스위치오버 후 duradev로 교체). 엣지 서버는
-     이 박스에서 SSH 접근 불가(publickey 거부 실측)라 자체 시도 불가.
+   - 09-07 상태: 엣지엔 `/hub` 라우트가 없어 404였음(이사님 실측). **임시 진입 `http://13.125.131.126:8023/hub`(8GB, 외부 200 확인)**.
+   - **09-07 UTC 14:25 엣지 라우트 개설 완료(heav_gmwin_claude_bot, codex_dev_1 요청)**: `location = /hub`(GET 전용, POST 403)·
+     `location /api/hub/` → `upstream gwanje_hub_tmp { server 13.125.131.126:8023; }` 신설. 공인 실측 `/hub` 200(현황판 본문)·
+     `/api/hub/status` 401(토큰 인증 통과)·회귀 6경로 200. **경로 고정 — 스위치오버는 upstream 한 줄 교체(100.109.91.0:8023)로
+     이사님 승인 후**. 백업: 엣지 `~/nginx-backups/edge.conf.bak-hub-09071425`. 수행 경로·상세: `edge-routing-2026-09-07.md`.
+     (변경 전: 매니저 박스에서 엣지 SSH publickey 거부로 자체 시도 불가였음 — duradev 경유 키로 해소)
 3. 8018 관제 한판은 `/api/hub/status`를 같은 tailnet으로 폴링(8GB 의존 제거).
 4. **필요 조치(이사님 결정 1건)**: duradev 접근 수단 — ①이 박스에서 duradev로 SSH 키 등록, 또는
    ②홈 측 봇(firebat/n100-zcode·gmwin)에 배치 지시. 현재 이 박스→duradev SSH는 publickey 거부(09-07 실측).
