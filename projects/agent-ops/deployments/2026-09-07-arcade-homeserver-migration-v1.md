@@ -23,7 +23,18 @@
 ### 1-B. 8010 arcade (matrix-engine v0.3.0, 1,116 카드)
 
 - 별도 이관 건 — 서비스 규모가 커서 8004 완료 후 매니저 조율로 진행.
-  본 명세 범위 밖 (RELAY-54 gap "8010 파이프라인상 위치"와 병행 검토).
+- 제안 경로: `http://43.201.34.144/arcade-engine/` (8010이 "아케이드 본점"
+  이므로 `/arcade/`와 경로 중첩을 피함 — 대안 `/cards/`). 이사님·매니저 확정 대기.
+- 소스: matrix-engine repo (matrix-web.service) — 8004 배치 검증 후
+  동일 방식(BASE_PATH prefix 지원 추가)으로 진행. RELAY-54 gap
+  "8010 파이프라인상 위치"와 병행 검토.
+
+### 1-C. 아케이드 봇 담당 git 전수 (2026-09-07 실측)
+
+- matrix_asset_agent — 8004 매장(PLAYABLE·승인·카탈로그·GLM 게이트). 본 명세 대상.
+- matrix-engine — 8010 카드 본점(1,116). 1-B 대상.
+- scenario — /api/catalog 원본(카탈로그). 8004 배치 시 clone 의존(절차 3).
+- notes — 기록 정본(공유). 이관 명세·규칙 정본 위치.
 
 ## 2. duradev 배치 절차 (공개키 등록 후 실행)
 
