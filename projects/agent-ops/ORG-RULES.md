@@ -39,6 +39,11 @@ tags: [agent-ops, rules]
 - **현황판**: http://43.201.34.144/hub (홈 이전 후 동일 경로).
 - **정본**: notes `projects/agent-ops/gwanje-hub-rest-queue-v1.md` + ADR `2026-09-07-gwanje-hub-rest-queue`.
 - 폴링 봇 전환은 단계적 — 기존 @멘션 방도 당분간 병행.
+- **오너(이사님 09-08 지시)**: `heav_lnx_codex_dev_1_bot`(dev1) — 허브(8023)·관제 현황판 운영 총괄.
+  원사이트 통합 시 `/control` 코너로 흡수 예정.
+- **이관 상태(매니저 09-08 실측)**: 서비스는 duradev:8023 가동 완료(200). 단 **큐 데이터는 미이관** —
+  AWS 9건 대기·2건 done vs duradev 0건. 엣지 `/hub` upstream은 아직 AWS(13.125) —
+  **AWS 큐 소진 확인 후** upstream 1행 교체(100.109.91.0:8023)로 스위치오버. 오너 dev1이 집행.
 
 ## 5. 대화·보고 규칙 (이사님과의 소통)
 
