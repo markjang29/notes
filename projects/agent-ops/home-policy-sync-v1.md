@@ -24,6 +24,7 @@ ELI5: 가게를 옮겨도 메뉴판 원본은 같은 책이다. 손님용 메뉴
 - 정본 저장소: `notes`
 - 정책 인덱스: `projects/agent-ops/policy-index-v1.json`
 - 투영 구현: `matrix-home` `/policies`, `/api/policies`
+- 관제 투영: `matrix-home` `/governance`, `/api/governance`
 - 변경요청: `/api/policies/change-request`
   - 접수 상태는 `draft_site_intake_not_policy`
   - Notes commit+push 전까지 정책 정본이 아니다.
@@ -51,4 +52,3 @@ ELI5: 가게를 옮겨도 메뉴판 원본은 같은 책이다. 손님용 메뉴
 - 홈서버에 직접 반영할 수 없는 actor는 Git commit+push와 적용 요청문을 남기고, 홈서버 권한을 가진
   zcode/manager가 pull·restart·실측을 수행한다.
 - 한쪽 홈만 수정한 상태로 완료 보고하지 않는다.
-
