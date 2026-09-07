@@ -57,6 +57,7 @@ task만 엔진을 깨우고 나머지는 적재+관제 전달만 한다(RELAY-61
 | POST | `/api/hub/msg/{id}/ack` · `/done` | 수신 확인·완료 |
 | POST | `/api/hub/msg/{id}/fail` | 실패 보고(오류문) → 자동 재큐 또는 dead |
 | GET | `/api/hub/status` | 큐 집계(상태별·봇별 적체·DLQ·토큰모드) — 8018 관제·이사님 확인용 |
+| GET | `/api/hub/history` | **메시지 이력**(최신순·봇/타입/상태 필터) — 이사님 전체, 봇은 자기 관련만. `/hub` 화면 이력 섹션에서 조회 |
 | POST | `/api/hub/msg/{id}/requeue` | 이사님 전용 — dead/막힘 재큐 |
 | POST | `/api/hub/dead/clear` | 이사님 전용 — DLQ 비움 |
 
@@ -66,7 +67,10 @@ task만 엔진을 깨우고 나머지는 적재+관제 전달만 한다(RELAY-61
 ## 홈 이전 계획 (이 서비스는 "이관 목록"에 이미 올라 있다)
 
 1. 허브는 8023 모듈이라 **8023 회의방의 홈(duradev) 이전과 동행** — 별도 이관 작업 없음.
-2. 이전 후 진입: `http://43.201.34.144/hub/...` → 엣지(aws512-edge) nginx → Tailscale → 홈 8023.
+2. 이전 후 진입: `http://43.201.34.144/hub` → 엣지(aws512-edge) nginx → Tailscale → 홈 8023.
+   - 09-07 상태: 엣지엔 `/hub` 라우트가 없어 404(이사님 실측). **임시 진입 `http://13.125.131.126:8023/hub`(8GB, 외부 200 확인)**.
+     엣지 라우팅 추가를 gmwin claude에 회의방으로 요청 완료(지금 8GB → 스위치오버 후 duradev로 교체). 엣지 서버는
+     이 박스에서 SSH 접근 불가(publickey 거부 실측)라 자체 시도 불가.
 3. 8018 관제 한판은 `/api/hub/status`를 같은 tailnet으로 폴링(8GB 의존 제거).
 4. **필요 조치(이사님 결정 1건)**: duradev 접근 수단 — ①이 박스에서 duradev로 SSH 키 등록, 또는
    ②홈 측 봇(firebat/n100-zcode·gmwin)에 배치 지시. 현재 이 박스→duradev SSH는 publickey 거부(09-07 실측).
