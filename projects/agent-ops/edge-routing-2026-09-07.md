@@ -20,3 +20,12 @@
      duradev 홈 8018로 향하는데 정책센터·관제한판 페이지는 AWS 8018 쪽에 존재. 해소하려면
      (a) 해당 prefix만 AWS 8018로 라우팅하거나 (b) 페이지를 홈에 배치 — 원사이트 트랙에서 결정 필요.
 - **교훈**: sites-enabled 안에 .bak 파일 두면 nginx가 함께 로딩해 중복 upstream 오류 — 백업은 밖에.
+
+---
+
+## 추가 — 09-07 16:20 감사실측 (aws-audit)
+
+- **미해결 ① 해소 확인**: `43.201.34.144/policies`·`/governance`·`/api/*` 전부 200. 구동은 홈 duradev:8018,
+  엣지는 Tailscale 패스스루(`/policies` 본문 해시 엣지=홈 동일). `policy_sha` `cc7946bbec48` = notes HEAD 일치.
+  회귀 `/`·`/studio/`·`/drawing/`·`/nexus/`·`/envsync/`·`/healthz` 전부 200. 상세: `relay/tickets/RELAY-62/7-verify.md`
+- **미해결 ② 유지**: `100.97.180.0:8766` 실측 `000` 불도달 — nucboxg3 로컬 조치(gmwin) 대기.
