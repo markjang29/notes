@@ -1,7 +1,7 @@
 {
   "schema": "relay-port-registry-v1",
   "ticket": "RELAY-15",
-  "updated_at": "2026-09-07T09:17:28+09:00",
+  "updated_at": "2026-09-07T23:30:00+09:00",
   "policy": {
     "scan_cron_kst": "10 9 * * *",
     "check": "8000-8099번대 리스닝 포트 스캔 → 프로세스 환경변수 RELAY_TICKET 확인 → 티켓이 없거나 Jira RELAY 프로젝트에 존재하지 않으면 무단 운행으로 승인보드 카드 발행",
@@ -90,7 +90,7 @@
       "port": 8018,
       "service": "matrix-home (nohup 프로토타입 — telegram-zcode-bridge 자식 프로세스, cwd matrix-home)",
       "ticket": "RELAY-57",
-      "note": "사후등록 2026-08-25(카드 req-20260825091007-792321): MATRIX 통합 홈 — 7단계 파이프라인 현황·사이트 허브(Flask, novelweb venv, 방화벽 개방 실측). 원등록 티켓 RELAY-50(Jira 실재 검증 HTTP 200, 'MATRIX 통합 홈 (8018)'). 브리지가 spawn한 nohup 프로세스로 재부팅 시 미생존 — 정식 채택 시 user 유닛 전환 권고. 티켓 갱신 2026-08-28(카드 req-20260828091001-f7b5b0): zcode 클라이언트가 /api/flow 공통 흐름 API 배포 후 RELAY_TICKET=RELAY-57로 재기동(신규 /api/flow·flowstrip 실측 통과) — 운행 티켓을 RELAY-57로 사후등록 갱신. env 복원 2026-09-03(카드 req-20260903091002-e01d2f): 09-03 00:31 무관 작업 재기동으로 env 유실돼 감사 env_missing 적발 — 동일 커맨드에 RELAY_TICKET=RELAY-57 주입해 무중단 복원(새 pid, HTTP 200). 유닛 미등록 상태라 재기동마다 재발 소지 — user 유닛 전환은 대기결정. env 복원 2026-09-07(카드 req-20260907091001-e25cc9): 09-07 07:09 세션 수동 재기동으로 재유실(09-03 복원 후 재발 2회째) → RELAY_TICKET=RELAY-57 주입해 복원(새 pid, HTTP 200). 당일 RELAY-60 정책 센터 작업 세션 활성 — 이후 재기동 시 env 동반 필요."
+      "note": "2026-09-07 systemd화 완료(matrix-home.service, enabled, RELAY_TICKET env) — 종전 nohup 프로토타입 해소. novel_col 작업."
     },
     {
       "port": 8020,
