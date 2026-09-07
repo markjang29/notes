@@ -1,6 +1,6 @@
 {
   "schema": "policy-index-v1",
-  "version": "2026-09-07.3",
+  "version": "2026-09-07.4",
   "authority": "director",
   "status": "active",
   "display": {
@@ -20,6 +20,16 @@
     ]
   },
   "docs": [
+    {
+      "id": "edge-home-entrypoint",
+      "kind": "사칙",
+      "title": "사칙 — AWS Edge 진입점과 홈서버 연계 원칙",
+      "status": "active",
+      "owner": "director",
+      "ref": "principles/edge-home-entrypoint-policy.md",
+      "eli5": "손님은 새 정문 43.201.34.144로 들어오고, 안쪽 방은 Tailscale로 홈서버에 연결한다.",
+      "summary": "모든 신규 개발은 43.201.34.144를 진입점으로 삼고, 홈서버 사이트 연결과 Spring/React 원사이트 흡수를 함께 고려한다."
+    },
     {
       "id": "git-first",
       "kind": "사칙",

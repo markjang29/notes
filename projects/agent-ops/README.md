@@ -24,6 +24,7 @@ Windows Codex는 더 이상 독점 controller·검수자·merge 담당·종결�
 - 아이디어 후보와 결정 event: `idea-candidate-v1.schema.json`
 - Telegram 큐 수신·응답 사칙: `principles/telegram-queue-protocol.md`
 - 관제 ACK·상태보고 사칙: `principles/gwanje-ack-protocol.md`
+- AWS Edge 진입점·홈서버 연계 사칙: `principles/edge-home-entrypoint-policy.md`
 - 사칙·정책 센터 인덱스: `policy-index-v1.json`
 - 관제 한판 설계: `gwanje-governance-board-v1.md`
 - `aws-audit` 정책 Steward standing assignment: `roles/aws-audit-policy-steward.md`
@@ -49,6 +50,10 @@ fail-closed한다. 상세 절차는 `notes:project-rules/notion-reporting.md`를
 
 Telegram 메시지는 알림과 대화 수단이지 완료 정본이 아니다. 작업 완료는 mail event,
 검증 근거, 필요 시 Git commit을 controller가 확인한 뒤 `verified`와 `closed`로 닫는다.
+
+2026-09-07 이사님 직접 지시 이후 모든 외부 접속의 1차 진입점은 `43.201.34.144`다.
+신규 개발은 이 진입점에서 Tailscale을 통해 홈서버 사이트와 연결되는 구조를 먼저 고려하고,
+2차 원사이트 통합 본(Spring + React)으로 흡수 가능한 경계를 함께 기록한다.
 
 ## 모델 경로와 사용량 정본
 
