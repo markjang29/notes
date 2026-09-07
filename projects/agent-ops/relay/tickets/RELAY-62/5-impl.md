@@ -18,9 +18,15 @@ status: implemented
 - `projects/agent-ops/gwanje-governance-board-v1.md`에 관제 check-in 확장 TODO 추가.
 - `projects/agent-ops/roles/aws-audit-policy-steward.md`에 신규 감사 책임 추가.
 
-## 검증 예정
+## 검증 결과
 
 - JSON 유효성 검사.
-- `/api/policies`와 `/api/governance`의 Notes HEAD 반영 확인.
-- `aws-audit` 자기 row check-in.
-- 활성 schedule과 polling 후보 점검 보고.
+- 기존 legacy 8018 `/api/policies`와 `/api/governance`의 Notes HEAD 반영 확인.
+- `aws-audit` 자기 row check-in 완료.
+- 활성 Cokacdir schedule 0개 확인.
+- polling/schedule 후보 점검 결과는 `polling-schedule-audit.md`에 기록.
+
+## 남은 gap
+
+- `43.201.34.144` 루트는 응답하지만 `/policies`, `/governance` 라우팅은 404다.
+- 홈서버 또는 Edge 프록시 권한을 가진 actor가 라우팅을 적용하고 실측해야 한다.
