@@ -85,3 +85,72 @@ task만 엔진을 깨우고 나머지는 적재+관제 전달만 한다(RELAY-61
 봇들끼리 소리 지르며 바로 부탁하던 걸, **접수창구에 종이 접수로 바꾼 것**입니다. 접수증 번호가 있고
 (멱등키), 받는 봇은 자기 서랍만 확인하고(인박스), 못 하면 다시 서랍으로 돌아가고(재시도), 세 번 못 하면
 "못 처리함" 서랍(DLQ)으로 갑니다. 이사님은 접수 현황판(status)만 보면 됩니다.
+
+## v1.1 — 메시지 서버 완성 (09-07 2차, 이사님 지시 "근본은 메시지 서버인샘 치고")
+
+### ① 기술 선택 — 왜 이 조합인가
+
+| 후보 | 판정 |
+|---|---|
+| **FastAPI + SQLite(8023 내장) — 채택** | 서비스·포트 증설 0, 봇 20기 규모엔 SQLite WAL 충분, 파일째 홈 이관 |
+| Kafka/Redis/Mongo 전용 브로커 | 봇 간 메시지 분당 수 건 규모에 과잉 — 운영 인프라만 늘어남. 도메인 대량 큐(nai-queue)만 해당 |
+| Mattermost/Zulip 도입 | A안 승인(09-04)으로 자체 발전 확정 — 커스텀 오케스트레이션 이식 비용이 이득 초과 |
+| Spring Modulith 흡수 | 원사이트 2차 단계에서 기능 단위 흡수(스트랭글러) — 지금 스키마가 그대로 계약이 됨 |
+
+### ② 관제 페이지 — `/hub` 현황판 (8023)
+
+- 상단 집계 카드 6장: 대기·배달·수신확인·완료·못처리함(DLQ)·만료
+- 봇별 큐 표(대기/배달/못처리함), DLQ 최근 10건 + **재큐·DLQ 비움 버튼(이사님 토큰 전용)**
+- 10초 자동 갱신, 모바일 퍼스트 카드형, CDN 0, 토큰은 입력 1회 → 브라우저 저장
+- 홈 이전 후 8018 관제 한판이 같은 `/api/hub/status`를 읽어 한 판에 합침
+
+### ③ 사칙 등 배포 방식
+
+```
+매니저/이사님 POST /api/hub/send {to:"@all", type:"notice", payload:{text:"[사칙 개정] ..."}}
+  → 큐 적재(감사 보존) + 방 공지 기록 + 활성 공지 등록(notices-active.jsonl)
+  → 전 봇이 다음 구동 시 무조건 문맥 주입 (ACK 요구 없음 — 토큰 0 원칙)
+```
+- notice는 개인 수신함으로 흐르지 않는다(도배 방지) — 배포는 주입으로, 작업은 큐로 역할 분리
+- 내리는 법: 기존 `/api/notices` DELETE 그대로
+
+### ④ 각 봇의 메시지 폴링 방식 — 표준 클라이언트 `hub_client.py` 제공
+
+```
+GET /api/hub/inbox?bot=<나>&limit=5   ← 30초 권장 주기 (queued→delivered 자동 배달)
+  → 메시지 처리 → POST /msg/{id}/ack → 완료 시 /done, 실패 시 /fail {error}
+     (fail 3회 → DLQ. 10분 무응답도 자동 재큐 — 죽은 봇의 일이 큐에 남아 회수됨)
+```
+- 로컬 봇: `from hub_client import HubClient` 후 `poll_forever(handler)`
+- 원격 봇(N100·gmwin): `python3 hub_client.py poll --base http://43.201.34.144 --bot <이름> --token <토큰> --cmd <셸명령>`
+- peek 모드로 훔쳐보기 가능(배달 상태 불변)
+
+### ⑤ A 봇 → B 봇 전달 방법
+
+```
+A: hub.send("B봇", "task", {"prompt": "..."}, key="작업-001")
+     → 큐 접수(멱등) → B 엔진 1회 wake(dispatch) → B가 drain으로 수신 → ack → 작업 → done
+B의 중간 보고: hub.send("A봇", "progress", {...}) / 막히면 "blocked" / 끝나면 "submitted"
+검수: 제3봇이 "review" — @all로 공개 검수요청도 가능(각 봇 수신함에 표시)
+```
+- 같은 큐 원장을 쓰므로 A→B 전달이 곧 관제 기록 — 별도 보고 체계 불필요
+
+### 실측 v1.1 (09-07)
+
+- 스크래치 20항목 전부 통과(v1 14항목 + notice 본문 필수 400·브로드캐스트 훅 호출·수신함 배제·
+  review @all 수신함 표시·hub_client drain/ack)
+- 라이브 반영: meeting-room.service 재시작, `/hub` 페이지 200, status API 200/401 확인
+- 커밋: meeting-room `b1c7040` (**주의: meeting-room repo는 원격 없음 — 로컬 커밋만. 원격 생성은 별도 결정**)
+  · notes 본 문서 커밋은 아래 배포 문장과 함께
+
+## 배포 문장 (09-07, 회의방 공지용)
+
+> [배포·이사님 09-07 지시] 관제 허브(메시지 서버) v1 가동 — 봇간 통신이 REST 큐로 바뀌었습니다.
+> ① 지시·보고·질문은 이제 8023 `/api/hub/*`로 접수합니다. A봇→B봇 전달:
+> `POST /api/hub/send {from, to, type, payload}` — task만 상대 엔진을 깨우고, notice(@all 한정)는
+> 활성 공지로 전 봇 문맥 주입됩니다(ACK 불필요). ② 각 봇은 `hub_client.py`(8023 repo) 표준 폴러로
+> 30초 주기 수신: drain → ack → done/fail. 실패 3회면 못 처리함(DLQ) — 재큐는 이사님 토큰으로.
+> ③ 작업에는 멱등키(key)를 붙여 재전송 중복을 막습니다. 진행=progress, 막힘=blocked, 완료=submitted.
+> ④ 현황판: `http://43.201.34.144/hub`(홈 이전 후 동일 경로). 정본: notes
+> `projects/agent-ops/gwanje-hub-rest-queue-v1.md` + ADR `2026-09-07-gwanje-hub-rest-queue`.
+> 폴링 봇 전환은 단계적으로 — 기존 @멘션 방도 당분간 병행됩니다.
