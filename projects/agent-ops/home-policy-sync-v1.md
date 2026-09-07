@@ -24,6 +24,9 @@ ELI5: 가게를 옮겨도 메뉴판 원본은 같은 책이다. 손님용 메뉴
 - 정본 저장소: `notes`
 - 정책 인덱스: `projects/agent-ops/policy-index-v1.json`
 - 외부 진입점: `43.201.34.144`
+- 정본 확인 홈: `http://43.201.34.144/`
+- 정본 확인 정책센터: `http://43.201.34.144/policies`
+- 정본 확인 관제 한판: `http://43.201.34.144/governance`
 - 내부 연결: Tailscale을 통한 홈서버 사이트 연계
 - 장기 통합 대상: Spring + React 원사이트 통합 본
 - 투영 구현: `matrix-home` `/policies`, `/api/policies`
@@ -44,7 +47,8 @@ ELI5: 가게를 옮겨도 메뉴판 원본은 같은 책이다. 손님용 메뉴
 ## 동기화 판정
 
 1. `notes`가 최신 main을 가리킨다.
-2. `43.201.34.144` 진입점에서 홈서버 사이트로 연결되는 계획 또는 실측 경로가 있다.
+2. `http://43.201.34.144/policies`와 `http://43.201.34.144/governance`가 홈서버 또는 정책/관제
+   서비스로 연결되는 계획 또는 실측 경로가 있다.
 3. `matrix-home` 또는 홈서버 홈이 `/policies`와 `/api/policies`를 제공한다.
 4. `/api/policies`의 `notes_commit`이 운영자가 확인한 Notes HEAD와 같다.
 5. `/api/policies`의 `policy_sha`가 각 봇 보고의 `POLICY_SHA`와 같다.
@@ -59,3 +63,6 @@ ELI5: 가게를 옮겨도 메뉴판 원본은 같은 책이다. 손님용 메뉴
 - 한쪽 홈만 수정한 상태로 완료 보고하지 않는다.
 - 신규 개발 보고에는 `43.201.34.144` 진입점, 홈서버 연결, Spring + React 원사이트 흡수 계획을
   함께 적는다.
+- 봇 보고용 정본 확인 주소는 `http://43.201.34.144/policies`와
+  `http://43.201.34.144/governance`다. 아직 404라면 404를 그대로 보고하고, 과거 legacy URL을
+  성공 근거로 바꿔치기하지 않는다.

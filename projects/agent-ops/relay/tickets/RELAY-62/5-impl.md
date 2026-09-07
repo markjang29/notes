@@ -30,3 +30,6 @@ status: implemented
 
 - `43.201.34.144` 루트는 응답하지만 `/policies`, `/governance` 라우팅은 404다.
 - 홈서버 또는 Edge 프록시 권한을 가진 actor가 라우팅을 적용하고 실측해야 한다.
+- 봇들에게 줄 정본 확인 주소는 `http://43.201.34.144/policies`와
+  `http://43.201.34.144/governance`로 고정한다. 404이면 옛 URL 성공으로 대체하지 않고
+  `Edge/Home routing gap`으로 보고한다.

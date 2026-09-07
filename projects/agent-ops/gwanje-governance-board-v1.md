@@ -24,7 +24,9 @@ ELI5: 가게 벽에 직원 근무표, 규칙책 판본, 오늘 할 일, 막힌 �
 ## v0 구현
 
 - 구현 위치: `matrix-home` 8018
-- 화면: `/governance`
+- 정식 확인 주소: `http://43.201.34.144/governance`
+- 정책센터 정식 확인 주소: `http://43.201.34.144/policies`
+- legacy 구현 화면: `/governance`
 - API:
   - `GET /api/governance`
   - `POST /api/governance/checkin`
@@ -88,3 +90,5 @@ ELI5: 가게 벽에 직원 근무표, 규칙책 판본, 오늘 할 일, 막힌 �
 4. 8025 대시보드가 같은 `/api/governance`를 읽거나 링크한다.
 5. 홈서버 이관 후에도 `POLICY_SHA` 동기화 확인.
 6. 봇별 check-in에 `43.201.34.144` 진입점/홈서버 연결 고려 여부와 공통지시 수신 상태를 표시한다.
+7. `http://43.201.34.144/policies`, `http://43.201.34.144/governance`가 404일 때 관제 화면에
+   `Edge/Home routing gap`으로 표시한다.

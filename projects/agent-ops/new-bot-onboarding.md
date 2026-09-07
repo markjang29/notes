@@ -96,6 +96,8 @@ cp /tmp/rbp/SKILL.md ~/.claude/skills/react-best-practices/SKILL.md
   `43.201.34.144`, 1차 연결 대상은 Tailscale 홈서버, 2차 흡수 대상은 Spring + React 원사이트다.
 - 8018 `/governance`에서 자기 모델·맡은 일·진행·블로커·이해한 `POLICY_SHA`를 자기 봇 토큰으로
   갱신한다. 다른 봇 항목은 수정하지 않는다.
+- 봇이 보고/ACK에 적을 정본 확인 주소는 `http://43.201.34.144/policies`와
+  `http://43.201.34.144/governance`다. 404면 그대로 `Edge/Home routing gap`으로 보고한다.
 - 컨텍스트 자동 압축이 기본 정책 — 세션 권고를 하지 않는다.
 - 모르겠으면 조용히 추측하지 말고 관제방에서 질문한다. `[ACK]`·`[완료]`·`[블로커]` 태그로 보고.
 - **웹 서비스 주소 보고 규칙(이사님 09-07 최신)**: 이사님께 웹 URL을 알려줄 때 `localhost`·`127.0.0.1` 금지 —
