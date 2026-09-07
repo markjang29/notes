@@ -1,6 +1,6 @@
 {
   "schema": "policy-index-v1",
-  "version": "2026-09-07.1",
+  "version": "2026-09-07.2",
   "authority": "director",
   "status": "active",
   "display": {
@@ -39,6 +39,16 @@
       "ref": "principles/audit-watchdog-foundation.md",
       "eli5": "검문소가 영수증과 실제 물건을 대조한다.",
       "summary": "완료·커밋·모델·복구·Git 정합성 주장을 실제 근거와 대조한다."
+    },
+    {
+      "id": "telegram-queue",
+      "kind": "사칙",
+      "title": "사칙 — Telegram 큐 수신·응답 규칙",
+      "status": "active",
+      "owner": "director",
+      "ref": "principles/telegram-queue-protocol.md",
+      "eli5": "택배 상자가 여러 개 올 때는 마지막 상자(큐끝)가 오기 전까지 뜯지 않는다.",
+      "summary": "큐시작 이후 큐끝 전까지는 긴 입력을 받기만 하고, 큐끝 뒤에 파일·분할·ELI5 규칙으로 답한다."
     },
     {
       "id": "agent-mail",
