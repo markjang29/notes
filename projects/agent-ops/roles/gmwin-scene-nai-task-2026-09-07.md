@@ -1,7 +1,7 @@
 ---
-title: 작업 패키지 — 소설 장면 요약→NAI (gmwin zcode 위임, 이사님 09-07 지시)
+title: 작업 패키지 v2 — 소설 장면 요약→NAI (gmwin zcode 전담, 이사님 09-07 결정)
 date: 2026-09-07
-status: v1 — firewin zcode가 회의방 봇 송신 API로 @heav_gmwin_zcode_bot 배정
+status: v2 — 이사님 AskUserQuestion 결정 반영(gmwin 전담+NAI 생성 포함, 소스=파싱 중 작품)
 tags:
   - nai
   - scene
@@ -9,55 +9,40 @@ tags:
   - novel
 ---
 
-# 작업 패키지 — 소설 장면 요약 → NAI (gmwin zcode)
+# 작업 패키지 v2 — 소설 장면 요약 → NAI (gmwin zcode 전담)
 
-> 이사님 09-07 지시: "지앰 윈도 zcode에 소설 장면 요약해달라고 던져서 NAI 뽑는 것도 해야해".
-> firewin zcode가 작업 패키지를 정본화하고 회의방 봇 송신 API(/api/bot/send, ROOM_BOT_TOKEN)로
-> @heav_gmwin_zcode_bot에 배정한다. 본 문서가 유일 정본.
+> 이사님 09-07 결정(AskUserQuestion): ① gmwin이 **요약+NAI 생성 전부** 담당(NAI 키 gmwin 배포 승인 포함)
+> ② 장면 소스 = **지금 파싱 중인 작품(『이것이 법이다』, law4743)**. v1(망나니 PD 표본·gmwin 요약만·AWS 생성)은 폐기.
 
-## 1. 역할 분담 (NAI 키 보안 원칙)
+## 1. 역할 (v2)
 
-- **gmwin zcode**: 소설 원문/요약에서 **장면 선별 → 장면 요약 → danbooru 태그 변환 → scenes.jsonl 산출**.
-- **AWS(scene_to_nai.py)**: scenes.jsonl을 입력으로 **이미지 생성**(NAI 키는 AWS `/home/ubuntu/.nai-token`에만 상주 — 키 분산 금지, RELAY-58 선례 준용). gmwin은 NAI 키를 요청·저장하지 않는다.
-- gmwin에서 직접 NAI API를 돌리려면 키 이전 승인이 필요 — 이사님 대기 결정(현재는 AWS 경유).
+- **gmwin zcode(전담)**: 『이것이 법이다』 원문에서 장면 선별 → 장면 요약 → danbooru 태그 → scenes.jsonl 작성 → **NAI 이미지 직접 생성**(키 배포됨) → 결과 보고.
+- **firewin zcode**: law4743 배치 요약(집중 소진 루프) 병행 — gmwin의 장면 선별 참고자료. scenes.jsonl 병합 관리는 유지.
+- **매니저**: 자격 배포 — ① NAI 키(원본 AWS `/home/ubuntu/.nai-token`)를 gmwin zcode로 안전 복사 ② gmwin의 AWS 읽기 접근(law4743 원문) 확보. (gmwin엔 엣지 SSH 키가 없음 — 매니저 09-07 실측)
 
-## 2. 입력 소스 (1차)
+## 2. 소스
 
-- **망나니 PD 아이돌로 살아남기** 표본 장면(이미 요약됨): 1화(저주·시스템 발동)·51화(〈Kismet〉 데뷔 무대)·105화(민지헌 내기 카페)·239화(할로윈 팬덤)·487화(동반 입대·새벽) — 요약본은 scenario repo `novel_assets/works/망나니_PD_아이돌로_살아남기/` 와 notes `projects/agent-ops/roles/` 의 사이클 4~5 산출 참조.
-- 2차: 100조로 갑질하기(273·275·276화), 지구식 구원자(프롤로그·비말록) — 순차 확대.
-- 원문 원본: AWS `~/Works/novel/epub 파일/`(읽기만, byte 반입 금지).
+- 『이것이 법이다』(자카예프): AWS `~/matrix_asset_agent/.runtime/novel/law4743/` — ch00001~ch06068(63MB, SHA 0be7248174502dd245e0d036a2b7cb64d892fcd62937d617b49e28aceeeb0d74).
+- 본문 이중 인코딩 — `iconv -c -f UTF-8 -t CP949` 복구해 읽을 것. firewin의 배치 요약 노트(`_batch_notes/`, 현재 ch00014까지)를 참고 자료로 병용 가능.
+- 원문 byte의 Git 반입 금지 유지 — 원문은 AWS/.runtime에서만 읽고, 요약·태그만 내보낸다.
 
-## 3. 산출 형식 (scenes.jsonl, 1장면 1행)
+## 3. 산출 (gmwin)
 
-```json
-{"scene_id":"pd-s01","work":"망나니_PD_아이돌로_살아남기","ep":"1",
- "summary":"편집실에서 아이돌에게 저주받는 악마 PD — 담배 연기, 뒤돌아 나가는 실루엣",
- "place_tags":["office interior, night","neon light through blinds"],
- "char_tags":["1boy, suit, cigarette","1girl, idol outfit, tears"],
- "act_tags":["smoking","turning away","angry expression"],
- "mood_tags":["noir lighting","cynical mood"],
- "prompt_draft":"1boy, suit, smoking, office interior, night, neon light, cynical mood, cinematic lighting, no humans on floor",
- "negative":"lowres, text, watermark",
- "src_ref":"works/망나니_PD_아이돌로_살아남기/전수심독/ep001-487_표본직독.md"}
-```
+1. **장면 요약**: `scenario repo novel_assets/images/scene_summaries/이것이_법이다/scenes.jsonl`
+   1장면 1행: {scene_id:"law-sNNN", work, ep, summary(3문장), place_tags, char_tags, act_tags, mood_tags, prompt_draft, negative, src_ref:"law4743/chXXXXX"}
+   — 태그는 danbooru 스타일. 표준 참조: `matrix_asset_agent/docs/INLAY-NEXUS-NAI-REFERENCE.md` + `tools/scene_to_nai.py` 사전 패턴.
+2. **NAI 이미지 생성**(gmwin 로컬): 모델 nai-diffusion-4-5-full 권장(`skip_cfg_above_sigma: 58`). 초기 배치는 10장면 이내로 시험.
+3. **보고**: 회의방에 scenes.jsonl 커밋 해시 + 생성 이미지 경로(로컬 경로·장수) 보고. AWS 웹 노출(8016/Caddy 연계)은 매니저 결정 후.
 
-- 태그 문법: danbooru 스타일(소문자, 쉼표 구분) — `matrix_asset_agent/docs/INLAY-NEXUS-NAI-REFERENCE.md` 참조.
-- 프롬프트 조립 표준: `matrix_asset_agent/tools/scene_to_nai.py`의 LOC/ACT/CHAR 사전 패턴 준용(해당 사전 확장은 환영 — 개선 커밋 환영).
+## 4. 절차·규칙
 
-## 4. 생성 규격 (AWS side — scene_to_nai.py 계승)
+1. 매니저가 자격(NAI 키·AWS 접근) 배포 완료 확인 전까지 생성 착수 금지 — 요약 원고 작성은 선작업 가능.
+2. scenario repo 산출 경로만 git add(타 봇 WIP 금지) → pull --rebase → push → 회의방 보고.
+3. 금지: 원문 byte Git 반입 / NAI 키의 Git·로그·사이트 기록 / 887 수집 큐·novel_col 영역 침범 / 이미지 대량 남발(배치 10장 이내).
+4. 저작권 주의: 생성 이미지는 내부 자산 — 공개 배포 금지(이사님 지시 원칙 유지).
 
-- 모델: nai-diffusion-4-5-full 권장(구형 3은 기존 스크립트 기본). 파라미터: INLAY 레퍼런스 준수 — `skip_cfg_above_sigma`: 4-5는 58.
-- 산출 이미지: `scenario/novel_assets/images/<work>/scene_<scene_id>.png` + 생성 메타(json) 동반. 기존 images app(scenario/novel_assets/images/app/main.py)과 연결 가능하면 연결.
+## 5. firewin zcode 병행
 
-## 5. 절차·규칙
-
-1. notes 최신 main pull → 본 문서 확인.
-2. scenario repo pull --rebase → 산출 경로만 git add(타 봇 WIP 금지) → commit `scene(망나니 PD): 장면 요약 N건 — NAI 프롬프트 패키지` → push.
-3. 완료·진행은 회의방 보고(@매니저 경유로 이사님 보고 체계 유지).
-4. 금지: 원문 byte Git 반입 / NAI 키 요청·저장 / 다른 봇 WIP 수정 / 대량 생성 남발(1차 배치는 10장면 이내).
-5. 승인 범위: 위 1차 입력(5장면)만 — 확대는 이사님 지시 후.
-
-## 6. firewin zcode가 하는 것
-
-- law4743 집중 소진 요약(병행) — 양쪽 요약이 모두 장면 소스로 축적.
-- scenes.jsonl가 올라오면 AWS에서 scene_to_nai.py로 시험 생성 1~2장 → 회의방 보고(생성 결과는 경로만 보고).
+- 집중 소진 루프(15분)로 law4743 배치 요약 지속 — 현재 ch00014, 배치 3/152.
+- gmwin의 scenes.jsonl 커밋을 감시해 중복 scene_id 방지(병합 관리).
+- v1 산출(망나니 PD scenes.jsonl+시험 생성 2장, 커밋 736636b·nai_out/scene_test/)은 시험 사례로 보존.
