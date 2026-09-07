@@ -6,6 +6,15 @@
 > zcode 클라이언트 승계). 07-10~07-12 야간 사이클·승인보드 상세는 `work-archive.md`
 > '2026-08-16 아카이브' 섹션으로 이동.
 
+## ★ RELAY-63 웹·스킬·JIRA 파이프라인 (2026-09-08 접수)
+
+- 정본: `conversation-rules-v1.md` 제11~13조(`4f42a0c`) · `ORG-RULES.md` §8 · 티켓
+  `relay/tickets/RELAY-63-web-mobile-react-skill/` · 스킬 원장 `projects/agent-ops/skills.json`
+- 상태: 규칙·티켓 반영 완료(중복 정본 금지). 스킬 설치 — awslnx·gmlnx 설치 확인 /
+  **firewin·gmwin 09-04 지시 후 보고 대기(4일차)** → 실측 독촉 필요.
+  허브가 duradev 스위치오버 중(§4, 오너 dev1)이라 이동 안정화 후 회의방 발신 or 관제그룹 공지.
+- 이사님 발언 티켓화 누락 금지(§8 운영 부담) — 본 건은 RELAY-63으로 이행 중.
+
 ## ★ Matrix 통합 후임 (2026-08-16)
 
 - 담당 actor: `aws-manager`
