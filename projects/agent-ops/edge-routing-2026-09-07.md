@@ -56,3 +56,12 @@
   허브 blocked 회신(멱등키 mgr-blocked-drawing2-8766-0908).
 - gmwin 조치 대기: Spring `server.address=0.0.0.0` + Windows 방화벽 TCP 8766 인바운드 허용.
   재보고 시 즉시 재측정 → /drawing2/ 라우트 추가(업stream 1행 + location 1행).
+
+## 추가 — 09-08 밤 매니저: 근본 원인 특정 — nucboxg3 절전
+
+- gmwin의 8766 바인딩 조치(0.0.0.0) 직후 측정: AWS·엣지 200 확인(앱 정상 "step2"). 
+- **수 분 뒤 nucboxg3 전체 offline**(tailscale "offline, last seen 3m ago") — 8765·8766·공인 /drawing 
+  동시 000, duradev은 정상. → 어제의 8766 불도달도 절전이 근본 원인으로 추정(바인딩은 별개 실결함이었음).
+- /drawing2 라우트 2차 보류 — 허브 blocked 회신(멱등키 mgr-blocked-drawing2-nap-0908).
+  gmwin 조치: `powercfg /change standby-timeout-ac 0`(hibernate 포함). 통과 조건: 무접속 30분×3회 외부측정 200 유지.
+- 파생 이슈: 절전 구간엔 1세대 /drawing 공인 경로도 죽음 → 사이트맵 up 표시와 실접속 불일치. 이사님 보고 완료.
