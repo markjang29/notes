@@ -65,3 +65,15 @@
 - /drawing2 라우트 2차 보류 — 허브 blocked 회신(멱등키 mgr-blocked-drawing2-nap-0908).
   gmwin 조치: `powercfg /change standby-timeout-ac 0`(hibernate 포함). 통과 조건: 무접속 30분×3회 외부측정 200 유지.
 - 파생 이슈: 절전 구간엔 1세대 /drawing 공인 경로도 죽음 → 사이트맵 up 표시와 실접속 불일치. 이사님 보고 완료.
+
+## 추가 — 09-09 아침 매니저: /drawing2 라우트 추가 완료
+
+- 안정성 판정: 계획한 3×30분 측정은 세션 재시작으로 1회만 수행됐으나, **밤새 ~9시간 경과 후
+  8765·8766 즉시 200**(07:51 실측) — 절전이었다면 몇 시간 내 사망했을 것. powercfg 조치 유효 판정.
+- 엣지 conf 추가(백업: `~/nginx-backups/edge.conf.bak-drawing2-*`): upstream nucboxg3_drawing2(8766) +
+  `location /drawing2/`(prefix-strip) + `/assets/`(경로보존) + `= /favicon.svg` +
+  정규식 `^/api/(gallery|like|likes|novel-scenes|novel-summaries|novel-summary|status)`(경로보존).
+  - /assets·/favicon·7개 API 접두사는 8018에서 전부 404(충돌 0 실측) — /api/sites·/api/jira·/api/hub/* 보존.
+- 검증(공인 URL): /drawing2/·CSS·JS·favicon·/api/status 전부 200 · 회귀 /·/drawing/·/studio/·/nexus/
+  ·/envsync/·/policies·/api/sites·/healthz 200 · /api/hub/status 401(허브 인증 정상).
+- 파생: gmwin의 8766 재배포(mvn package) 시 재시작 창에 /drawing2 일시 502 예상 — 배포 완료 보고 후 재확인.
