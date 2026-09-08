@@ -1,7 +1,7 @@
 {
   "schema": "relay-port-registry-v1",
   "ticket": "RELAY-15",
-  "updated_at": "2026-09-07T23:30:00+09:00",
+  "updated_at": "2026-09-08T09:15:11+09:00",
   "policy": {
     "scan_cron_kst": "10 9 * * *",
     "check": "8000-8099번대 리스닝 포트 스캔 → 프로세스 환경변수 RELAY_TICKET 확인 → 티켓이 없거나 Jira RELAY 프로젝트에 존재하지 않으면 무단 운행으로 승인보드 카드 발행",
@@ -78,7 +78,7 @@
       "port": 8016,
       "service": "novel-assets-image-studio (crontab @reboot)",
       "ticket": "RELAY-35",
-      "note": "신규등록 2026-08-24: 소설 자산 이미지 스튜디오(main.py에 RELAY-35·8016 명시, novel_col). @reboot 크론탭에 RELAY_TICKET 추가 + 재기동으로 env 주입. 정식 채택 시 user 유닛 전환 권고. env 복원 2026-09-07(카드 req-20260907091001-e25cc9): 09-06 17:45 에이전트 세션 수동 재기동으로 env 유실(크론탭은 env 포함 — 수동 재기동이 유일한 유실 경로) → 동일 커맨드에 RELAY_TICKET=RELAY-35 주입해 무중단 복원(새 pid, HTTP 200)."
+      "note": "신규등록 2026-08-24: 소설 자산 이미지 스튜디오(main.py에 RELAY-35·8016 명시, novel_col). @reboot 크론탭에 RELAY_TICKET 추가 + 재기동으로 env 주입. 정식 채택 시 user 유닛 전환 권고. env 복원 2026-09-07(카드 req-20260907091001-e25cc9): 09-06 17:45 에이전트 세션 수동 재기동으로 env 유실(크론탭은 env 포함 — 수동 재기동이 유일한 유실 경로) → 동일 커맨드에 RELAY_TICKET=RELAY-35 주입해 무중단 복원(새 pid, HTTP 200). env 복원 2026-09-08(카드 req-20260908091001-d77343): 09-07 23:54 재기동으로 재유실 → RELAY_TICKET=RELAY-35 주입 복원(새 pid, HTTP 200). 유닛 전환 권고 반복."
     },
     {
       "port": 8017,
@@ -90,7 +90,7 @@
       "port": 8018,
       "service": "matrix-home (nohup 프로토타입 — telegram-zcode-bridge 자식 프로세스, cwd matrix-home)",
       "ticket": "RELAY-57",
-      "note": "2026-09-07 systemd화 완료(matrix-home.service, enabled, RELAY_TICKET env) — 종전 nohup 프로토타입 해소. novel_col 작업."
+      "note": "2026-09-07 systemd화 완료(matrix-home.service, enabled, RELAY_TICKET env) — 종전 nohup 프로토타입 해소. novel_col 작업. 유닛 전환 후에도 09-07 23:28 세션이 유닛 대신 수동 nohup으로 재기동해 09-08 감사 env_missing 재적발(카드 req-20260908091001-d77343) — 매니저가 수동 프로세스 정리 후 matrix-home.service 기동으로 복원(09-08 09:16, env RELAY-57, HTTP 200, 재부팅 생존·failure 자동재시작). 이후 8018 재기동은 systemctl로만 — 수동 nohup 금지."
     },
     {
       "port": 8020,
@@ -102,7 +102,7 @@
       "port": 8021,
       "service": "matrix-studio (uvicorn 수동 기동 — systemd 미등록, cwd matrix-studio)",
       "ticket": "RELAY-58",
-      "note": "사후등록 2026-08-31(카드 req-20260831091002-2da522): Matrix Studio v0 FastAPI 통합 API(커밋 811cbeb, 2026-08-30 12:14 기동). 08-30 8022 nexus 신규등록 시 '기존 8021 보존'으로 운행 유지했으나 본포트 등록 누락. env RELAY_TICKET=RELAY-58 확인, HTTP 200. env 복원 2026-09-07(카드 req-20260907091001-e25cc9): 09-05 23:29 재기동으로 env 유실 → RELAY_TICKET=RELAY-58 주입해 복원(새 pid, HTTP 200)."
+      "note": "사후등록 2026-08-31(카드 req-20260831091002-2da522): Matrix Studio v0 FastAPI 통합 API(커밋 811cbeb, 2026-08-30 12:14 기동). 08-30 8022 nexus 신규등록 시 '기존 8021 보존'으로 운행 유지했으나 본포트 등록 누락. env RELAY_TICKET=RELAY-58 확인, HTTP 200. env 복원 2026-09-07(카드 req-20260907091001-e25cc9): 09-05 23:29 재기동으로 env 유실 → RELAY_TICKET=RELAY-58 주입해 복원(새 pid, HTTP 200). env 복원 2026-09-08(카드 req-20260908091001-d77343): 09-07 23:54 재기동으로 재유실 → RELAY_TICKET=RELAY-58 주입 복원(새 pid, HTTP 200)."
     },
     {
       "port": 8022,
@@ -114,19 +114,31 @@
       "port": 8023,
       "service": "meeting-room 관제 회의방 웹챗 (uvicorn — systemd 유닛 meeting-room.service, cwd meeting-room)",
       "ticket": null,
-      "note": "사후등록 2026-09-01(카드 req-20260901091002-384345): 텔레그램 그룹 제약 우회용 관제 회의방 웹챗 — 이사님 직접 지시(2026-08-31)로 개통, 전용 RELAY 티켓 없음(근거: work-queue.md '관제 회의방 웹챗 개통' 항, org-structure.md, aws-server-guide 포트표 티켓 '—'). 발언 11기 입장·E2E 통과, repo HEAD 380f4c8. env RELAY_TICKET 미주입 — 09-03 당일 2회 재기동(08:51 heav_ai_bot 명부 작업, 09:18 색 구분 재배포) 모두 env 누락 실측, 3일 연속 env_missing(카드 req-20260903091002-e01d2f). 전용 티켓이 없어 주입값이 정해지지 않음 — 사후 티켓 발행·env 주입 재시작·systemd 승격은 이사님 결정 대기. HTTP 200. systemd 승격 완료 2026-09-04 전후: 유닛 meeting-room.service로 전환(09-04 09:47 기동분부터 유닛 산하, 재부팅 생존) — 유닛 정의에 RELAY_TICKET 없음. env_missing은 5일 연속(09-03~09-07 감사, 카드 req-20260907091001-e25cc9) — 남은 결정은 전용 티켓 발행 + 유닛 env 주입뿐."
+      "note": "사후등록 2026-09-01(카드 req-20260901091002-384345): 텔레그램 그룹 제약 우회용 관제 회의방 웹챗 — 이사님 직접 지시(2026-08-31)로 개통, 전용 RELAY 티켓 없음(근거: work-queue.md '관제 회의방 웹챗 개통' 항, org-structure.md, aws-server-guide 포트표 티켓 '—'). 발언 11기 입장·E2E 통과, repo HEAD 380f4c8. env RELAY_TICKET 미주입 — 09-03 당일 2회 재기동(08:51 heav_ai_bot 명부 작업, 09:18 색 구분 재배포) 모두 env 누락 실측, 3일 연속 env_missing(카드 req-20260903091002-e01d2f). 전용 티켓이 없어 주입값이 정해지지 않음 — 사후 티켓 발행·env 주입 재시작·systemd 승격은 이사님 결정 대기. HTTP 200. systemd 승격 완료 2026-09-04 전후: 유닛 meeting-room.service로 전환(09-04 09:47 기동분부터 유닛 산하, 재부팅 생존) — 유닛 정의에 RELAY_TICKET 없음. env_missing은 6일 연속(09-03~09-08 감사, 카드 req-20260908091001-d77343; 09-08 00:45 유닛 재기동도 env 없음) — 남은 결정은 전용 티켓 발행 + 유닛 env 주입뿐."
     },
     {
       "port": 8024,
       "service": "matrix-studio-spring (java -jar 수동 기동 — systemd 미등록, telegram-zcode-bridge.service cgroup 내 기동, cwd matrix-studio-spring)",
       "ticket": "RELAY-58",
-      "note": "사후등록 2026-09-02(카드 req-20260902091002-b6d732): matrix-studio Spring(Java) 재작성 — zcode가 2026-09-01 15:31 기동, env RELAY_TICKET=RELAY-58 주입(8021 matrix-studio와 동일 티켓). 주의: 프로젝트 디렉터리가 git repo 아님(보존 원칙 gap), 루트 HTTP 500 — 별도 보고. env 복원 2026-09-07(카드 req-20260907091001-e25cc9): 09-06 00:47 재기동으로 env 유실 → RELAY_TICKET=RELAY-58 주입해 복원(새 pid, HTTP 200, Spring 기동 약 13초)."
+      "note": "사후등록 2026-09-02(카드 req-20260902091002-b6d732): matrix-studio Spring(Java) 재작성 — zcode가 2026-09-01 15:31 기동, env RELAY_TICKET=RELAY-58 주입(8021 matrix-studio와 동일 티켓). 주의: 프로젝트 디렉터리가 git repo 아님(보존 원칙 gap), 루트 HTTP 500 — 별도 보고. env 복원 2026-09-07(카드 req-20260907091001-e25cc9): 09-06 00:47 재기동으로 env 유실 → RELAY_TICKET=RELAY-58 주입해 복원(새 pid, HTTP 200, Spring 기동 약 13초). env 복원 2026-09-08(카드 req-20260908091001-d77343): 09-08 00:00 재기동으로 재유실 → RELAY_TICKET=RELAY-58 주입 복원(새 pid, HTTP 200)."
     },
     {
       "port": 8025,
       "service": "bot-dashboard 관제 봇 대시보드 (uvicorn — systemd 유닛 bot-dashboard.service, cwd bot-dashboard)",
       "ticket": null,
-      "note": "사후등록 2026-09-07(카드 req-20260907091001-e25cc9): 매니저 관제 봇 대시보드 — 설계 이사님 승인(2026-09-03 설계서 v1), 09-04~05 이사님 요청 기능 보강 후 운행(5축 관제 워크스페이스, repo HEAD 23d2f01). 감사 unregistered 4일 연속 적발(09-04~09-07). systemd 유닛 존재하나 RELAY_TICKET 정의 없음 — 전용 티켓 미발급으로 주입값 미정(bot-dashboard README 자체 'RELAY 티켓 발급 필요' 명시). 티켓 발행 + 유닛 env 주입은 이사님 결정 대기. HTTP 200."
+      "note": "사후등록 2026-09-07(카드 req-20260907091001-e25cc9): 매니저 관제 봇 대시보드 — 설계 이사님 승인(2026-09-03 설계서 v1), 09-04~05 이사님 요청 기능 보강 후 운행(5축 관제 워크스페이스, repo HEAD 23d2f01). 감사 unregistered 4일 연속 적발(09-04~09-07). systemd 유닛 존재하나 RELAY_TICKET 정의 없음 — 전용 티켓 미발급으로 주입값 미정(bot-dashboard README 자체 'RELAY 티켓 발급 필요' 명시). 티켓 발행 + 유닛 env 주입은 이사님 결정 대기. HTTP 200. env_missing 5일 연속(09-04~09-08 감사, 카드 req-20260908091001-d77343) — 상태 변화 없음."
+    },
+    {
+      "port": 8026,
+      "service": "nai-queue 발행 큐 API (python3 표준라이브러리+pymongo — systemd 미등록, ~/nai-queue/server.py)",
+      "ticket": null,
+      "note": "사후등록 2026-09-08(카드 req-20260908091001-d77343): NAI 발행 큐 서비스 v1 — 이사님 09-07 지시('API로 request 전달하면 큐 받아서 처리'), firewin zcode 구축·정서 projects/agent-ops/nai-queue-service-v1.md. 0.0.0.0:8026 바인드, 모든 엔드포인트 X-Token 인증(토큰·NAI 키는 서버 파일에만 존재). Mongo nai_queue.jobs 큐 + 워커(10초 폴링, 시험 done 실측). 같은 프로세스가 :8027(테일스케일 갤러리)도 점유. 전용 티켓 미발급 — 티켓 발행·env 주입·systemd 전환은 이사님 결정 대기. HTTP 401(비인증 요청에 정상)."
+    },
+    {
+      "port": 8027,
+      "service": "nai-queue 발행 갤러리 (8026과 동일 프로세스 — tailnet 전용 바인드 100.81.50.115:8027)",
+      "ticket": null,
+      "note": "사후등록 2026-09-08(카드 req-20260908091001-d77343): nai-queue 갤러리 엔드포인트 — 이사님이 발행 이미지를 직접 보는 창(server.py 주석). 테일스케일 IP 전용 바인드라 127.0.0.1 루프백 감사에서 응답 없음으로 보일 수 있음(설계상 의도). 8026과 동일 티켓 미발급 — 결정 대기."
     }
   ],
   "pending_registration": [],
