@@ -48,3 +48,11 @@
   `/api/hub/status` 401(백엔드 도달·토큰 인증 정상 전달) · 회귀 `/`·`/studio/`·`/drawing/`·`/nexus/`·`/envsync/`·`/healthz` 전부 200.
 - **잔여**: 스위치오버(duradev:8023)는 이사님 승인 후 upstream 1행 교체 + reload만이면 됨 — conf에 대상 기록해 둠.
 - 정본 반영: `gwanje-hub-rest-queue-v1.md` 진입 경로 상태 갱신.
+
+## 추가 — 09-08 매니저: /drawing2(8766) 요청 보류
+
+- gmwin zcode가 /drawing2/ → 100.97.180.0:8766 엣지 프록시 요청(이사님 09-08 지시).
+- **재실측 000 지속**(AWS·엣지 양쪽, 09-07과 동일) — 죽은 upstream에 공인 경로 얹으면 502 노출이라 보류,
+  허브 blocked 회신(멱등키 mgr-blocked-drawing2-8766-0908).
+- gmwin 조치 대기: Spring `server.address=0.0.0.0` + Windows 방화벽 TCP 8766 인바운드 허용.
+  재보고 시 즉시 재측정 → /drawing2/ 라우트 추가(업stream 1행 + location 1행).
