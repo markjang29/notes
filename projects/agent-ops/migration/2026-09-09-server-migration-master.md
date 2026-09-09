@@ -72,3 +72,14 @@ mkdir -p ~/projects && for r in notes rpg_game scenario autotrader matrix matrix
 4. **repo 클론** (위 TL;DR 3번)
 5. **대용량 수동 이관분** 원위치 (C절)
 6. **검증** — `ls ~/.cokacdir/bot_keys | wc -l`, `systemctl status` 주요 서비스, notes repo에서 이 문서 존재 확인
+
+## E. 최종 잔류물 처리 결과 (09-09 23:58 기준, 전 repo 재스캔)
+
+- `matrix-studio-spring` — 운영 중 발생 변경(WebConfig.java·main.jsx·README·런타임 DB) 추가 커밋·push ✓ (`a01c97f`)
+- `rpg_game` — 사진 원본 git 보존 커밋·push ✓ (`b1e2bf5`, rpg tarball과 이중 백업)
+- `scenario .runtime/` — scenario 봇이 sqlite tar(3.4K)로 보존 후 이사님 전송 완료 ✓
+- `scenario-worktree` — scenario 봇이 미커밋분 커밋 후 backup/* 브랜치로 push ✓
+- `approval-board.pre-49d70e5-20260717T163033` — 7월 17일자 구(舊) 스냅샷 디렉토리. 현재본은 원격 동기 완료. **미푸시 3커밋·dirty 존재하나 폐기/선택 보존 가능** (현재 approval-board 기준 과거 시점 복제본)
+- 그 외 전 repo unpushed 0 확인. 팀 봇 6개 자체 백업 완료 보고 접수 (rpg·scenario·codex_dev_1·novel_col·asset_agent)
+
+**결론: git 원격에 없는 소스코드 0. 남은 것은 C절 대용량 수동 이관 + 아카이브 3종(매니저 6.0M + 각 봇 tarball) 이사님 보관뿐.**
