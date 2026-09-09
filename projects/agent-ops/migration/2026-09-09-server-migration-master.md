@@ -80,6 +80,7 @@ mkdir -p ~/projects && for r in notes rpg_game scenario autotrader matrix matrix
 - `scenario .runtime/` — scenario 봇이 sqlite tar(3.4K)로 보존 후 이사님 전송 완료 ✓
 - `scenario-worktree` — scenario 봇이 미커밋분 커밋 후 backup/* 브랜치로 push ✓
 - `approval-board.pre-49d70e5-20260717T163033` — 7월 17일자 구(舊) 스냅샷 디렉토리. 현재본은 원격 동기 완료. **미푸시 3커밋·dirty 존재하나 폐기/선택 보존 가능** (현재 approval-board 기준 과거 시점 복제본)
-- 그 외 전 repo unpushed 0 확인. 팀 봇 6개 자체 백업 완료 보고 접수 (rpg·scenario·codex_dev_1·novel_col·asset_agent)
+- `matrix_asset_agent` 로컬 사본(projects 밖) — arcade 봇이 미푸시 8커밋+잔류변경을 `backup/arcade-local-20260909`(79f0f13)로 전량 push ✓. main(387895a)과 갈라짐 — **통합(merge)은 이관 후 새 서버에서 판단** (이관 직전 강제병합 리스크 회피, 양 브랜치 모두 원격 보존으로 무손상)
+- 그 외 전 repo unpushed 0 확인. 팀 봇 6개 자체 백업 완료 보고 접수 (rpg·scenario·codex_dev_1·novel_col·asset_agent·arcade)
 
 **결론: git 원격에 없는 소스코드 0. 남은 것은 C절 대용량 수동 이관 + 아카이브 3종(매니저 6.0M + 각 봇 tarball) 이사님 보관뿐.**
