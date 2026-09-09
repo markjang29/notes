@@ -1,0 +1,232 @@
+{
+  "schema": "relay-port-audit-v1",
+  "ticket": "RELAY-15",
+  "ran_at_kst": "2026-08-27T09:10:01+09:00",
+  "listening_ports": [
+    8003,
+    8004,
+    8005,
+    8006,
+    8008,
+    8009,
+    8010,
+    8011,
+    8012,
+    8013,
+    8015,
+    8016,
+    8017,
+    8018,
+    8020
+  ],
+  "total_findings": 17,
+  "violations": [
+    {
+      "port": 8003,
+      "pid": "3780777",
+      "cmd": "/home/ubuntu/.venvs/autotrader/bin/python -m uvicorn app:app --host 0.0.0.0 --port 8003 ",
+      "env_ticket": "RELAY-43",
+      "registry_ticket": "RELAY-43",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "Jira에 RELAY-43 없음"
+      ]
+    },
+    {
+      "port": 8004,
+      "pid": "3674189",
+      "cmd": "/usr/bin/python3 /home/ubuntu/matrix_asset_agent/tools/arcade_playable_server.py ",
+      "env_ticket": "RELAY-44",
+      "registry_ticket": "RELAY-44",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "Jira에 RELAY-44 없음"
+      ]
+    },
+    {
+      "port": 8005,
+      "pid": "3780774",
+      "cmd": "/home/ubuntu/projects/approval-board/venv/bin/python3 /home/ubuntu/projects/approval-board/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8005 ",
+      "env_ticket": "RELAY-18",
+      "registry_ticket": "RELAY-18",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "Jira에 RELAY-18 없음"
+      ]
+    },
+    {
+      "port": 8006,
+      "pid": "3780761",
+      "cmd": "/home/ubuntu/projects/approval-board/venv/bin/python /home/ubuntu/releases/scenario/current/tools/scenario-generator/backend/run_automation_settings.py ",
+      "env_ticket": "RELAY-45",
+      "registry_ticket": "RELAY-45",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "Jira에 RELAY-45 없음"
+      ]
+    },
+    {
+      "port": 8008,
+      "pid": "3214120",
+      "cmd": "/usr/bin/python3 -B -m matrix_candidate --matrix-repo /home/ubuntu/matrix-candidate/input-matrix --scenario-repo /home/ubuntu/matrix-candidate/input-scenario --runtime-dir /home/ub",
+      "env_ticket": "RELAY-46",
+      "registry_ticket": "RELAY-46",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "Jira에 RELAY-46 없음"
+      ]
+    },
+    {
+      "port": 8009,
+      "pid": "3780815",
+      "cmd": "/home/ubuntu/apps/rpg-game-01/.venv/bin/python3 /home/ubuntu/apps/rpg-game-01/.venv/bin/gunicorn --workers 2 --bind 0.0.0.0:8009 --access-logfile - --error-logfile - web.app:app ",
+      "env_ticket": "RELAY-47",
+      "registry_ticket": "RELAY-47",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "Jira에 RELAY-47 없음"
+      ]
+    },
+    {
+      "port": 8009,
+      "pid": "3780814",
+      "cmd": "/home/ubuntu/apps/rpg-game-01/.venv/bin/python3 /home/ubuntu/apps/rpg-game-01/.venv/bin/gunicorn --workers 2 --bind 0.0.0.0:8009 --access-logfile - --error-logfile - web.app:app ",
+      "env_ticket": "RELAY-47",
+      "registry_ticket": "RELAY-47",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "Jira에 RELAY-47 없음"
+      ]
+    },
+    {
+      "port": 8009,
+      "pid": "3780804",
+      "cmd": "/home/ubuntu/apps/rpg-game-01/.venv/bin/python3 /home/ubuntu/apps/rpg-game-01/.venv/bin/gunicorn --workers 2 --bind 0.0.0.0:8009 --access-logfile - --error-logfile - web.app:app ",
+      "env_ticket": "RELAY-47",
+      "registry_ticket": "RELAY-47",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "Jira에 RELAY-47 없음"
+      ]
+    },
+    {
+      "port": 8010,
+      "pid": "3780775",
+      "cmd": "/home/ubuntu/matrix-web-venv/bin/python -m matrix.web --host 0.0.0.0 --port 8010 ",
+      "env_ticket": "RELAY-48",
+      "registry_ticket": "RELAY-48",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "Jira에 RELAY-48 없음"
+      ]
+    },
+    {
+      "port": 8011,
+      "pid": "3780754",
+      "cmd": "/usr/bin/python3 /home/ubuntu/matrix_zcode/service/cli_server.py ",
+      "env_ticket": "RELAY-12",
+      "registry_ticket": "RELAY-12",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "Jira에 RELAY-12 없음"
+      ]
+    },
+    {
+      "port": 8012,
+      "pid": "2937542",
+      "cmd": "/usr/bin/python3 -B -m matrix_codex.web --host 0.0.0.0 --port 8012 --db /home/ubuntu/matrix_codex/runtime/matrix-codex.sqlite3 --scenario-repo /home/ubuntu/matrix_codex/input-scena",
+      "env_ticket": "RELAY-17",
+      "registry_ticket": "RELAY-17",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "Jira에 RELAY-17 없음"
+      ]
+    },
+    {
+      "port": 8013,
+      "pid": "3101115",
+      "cmd": "/home/ubuntu/risu/PocketRisu-v1.9.0-linux-x64/bin/node /home/ubuntu/risu/PocketRisu-v1.9.0-linux-x64/server/node/server.cjs ",
+      "env_ticket": "RELAY-1",
+      "registry_ticket": "RELAY-1",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "Jira에 RELAY-1 없음"
+      ]
+    },
+    {
+      "port": 8015,
+      "pid": "3780785",
+      "cmd": "/usr/bin/python3 /home/ubuntu/projects/matrix_asset_agent/tools/workbench_web.py ",
+      "env_ticket": "RELAY-8",
+      "registry_ticket": "RELAY-8",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "Jira에 RELAY-8 없음"
+      ]
+    },
+    {
+      "port": 8016,
+      "pid": "3784735",
+      "cmd": "/home/ubuntu/.venvs/novelweb/bin/python main.py ",
+      "env_ticket": "RELAY-56",
+      "registry_ticket": "RELAY-35",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "env 티켓 RELAY-56 != 레지스트리 RELAY-35",
+        "Jira에 RELAY-56 없음"
+      ]
+    },
+    {
+      "port": 8017,
+      "pid": "3121886",
+      "cmd": "python3 app.py --port 8017 ",
+      "env_ticket": "RELAY-36",
+      "registry_ticket": "RELAY-36",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "Jira에 RELAY-36 없음"
+      ]
+    },
+    {
+      "port": 8018,
+      "pid": "3784676",
+      "cmd": "/home/ubuntu/.venvs/novelweb/bin/python main.py ",
+      "env_ticket": "RELAY-56",
+      "registry_ticket": "RELAY-50",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "env 티켓 RELAY-56 != 레지스트리 RELAY-50",
+        "Jira에 RELAY-56 없음"
+      ]
+    },
+    {
+      "port": 8020,
+      "pid": "3780756",
+      "cmd": "/usr/bin/python3 server.py --port 8020 ",
+      "env_ticket": "RELAY-42",
+      "registry_ticket": "RELAY-42",
+      "verdict": "ticket_invalid",
+      "reasons": [
+        "Jira에 RELAY-42 없음"
+      ]
+    }
+  ],
+  "jira_checked": {
+    "RELAY-43": false,
+    "RELAY-44": false,
+    "RELAY-18": false,
+    "RELAY-45": false,
+    "RELAY-46": false,
+    "RELAY-47": false,
+    "RELAY-48": false,
+    "RELAY-12": false,
+    "RELAY-17": false,
+    "RELAY-1": false,
+    "RELAY-8": false,
+    "RELAY-56": false,
+    "RELAY-36": false,
+    "RELAY-42": false
+  },
+  "board_token_available": true,
+  "board_card_id": "req-20260827091008-193936"
+}

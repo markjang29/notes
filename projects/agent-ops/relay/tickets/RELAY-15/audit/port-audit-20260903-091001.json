@@ -1,0 +1,52 @@
+{
+  "schema": "relay-port-audit-v1",
+  "ticket": "RELAY-15",
+  "ran_at_kst": "2026-09-03T09:10:01+09:00",
+  "listening_ports": [
+    8003,
+    8004,
+    8005,
+    8006,
+    8008,
+    8009,
+    8010,
+    8011,
+    8012,
+    8013,
+    8015,
+    8018,
+    8020,
+    8021,
+    8023,
+    8024
+  ],
+  "total_findings": 18,
+  "violations": [
+    {
+      "port": 8018,
+      "pid": "882105",
+      "cmd": "/home/ubuntu/.venvs/novelweb/bin/python main.py ",
+      "env_ticket": null,
+      "registry_ticket": "RELAY-57",
+      "verdict": "env_missing",
+      "reasons": [
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    },
+    {
+      "port": 8023,
+      "pid": "949791",
+      "cmd": ".venv/bin/python -m uvicorn server:app --host 0.0.0.0 --port 8023 ",
+      "env_ticket": null,
+      "registry_ticket": null,
+      "verdict": "env_missing",
+      "reasons": [
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    }
+  ],
+  "jira_checked": {},
+  "jira_auth_ok": false,
+  "board_token_available": true,
+  "board_card_id": "req-20260903091002-e01d2f"
+}

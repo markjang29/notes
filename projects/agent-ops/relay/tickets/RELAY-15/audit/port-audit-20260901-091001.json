@@ -1,0 +1,43 @@
+{
+  "schema": "relay-port-audit-v1",
+  "ticket": "RELAY-15",
+  "ran_at_kst": "2026-09-01T09:10:01+09:00",
+  "listening_ports": [
+    8003,
+    8004,
+    8005,
+    8006,
+    8008,
+    8009,
+    8010,
+    8011,
+    8012,
+    8013,
+    8015,
+    8016,
+    8017,
+    8018,
+    8020,
+    8021,
+    8023
+  ],
+  "total_findings": 19,
+  "violations": [
+    {
+      "port": 8023,
+      "pid": "365657",
+      "cmd": ".venv/bin/python -m uvicorn server:app --host 0.0.0.0 --port 8023 ",
+      "env_ticket": null,
+      "registry_ticket": null,
+      "verdict": "unregistered",
+      "reasons": [
+        "레지스트리에 포트 없음",
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    }
+  ],
+  "jira_checked": {},
+  "jira_auth_ok": false,
+  "board_token_available": true,
+  "board_card_id": "req-20260901091002-384345"
+}

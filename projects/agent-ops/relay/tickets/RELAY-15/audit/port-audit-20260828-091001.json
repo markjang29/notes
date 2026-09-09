@@ -1,0 +1,62 @@
+{
+  "schema": "relay-port-audit-v1",
+  "ticket": "RELAY-15",
+  "ran_at_kst": "2026-08-28T09:10:01+09:00",
+  "listening_ports": [
+    8003,
+    8004,
+    8005,
+    8006,
+    8008,
+    8009,
+    8010,
+    8011,
+    8012,
+    8013,
+    8015,
+    8016,
+    8017,
+    8018,
+    8020
+  ],
+  "total_findings": 17,
+  "violations": [
+    {
+      "port": 8011,
+      "pid": "3853145",
+      "cmd": "/usr/bin/python3 -B service/cli_server.py --host 0.0.0.0 --port 8011 ",
+      "env_ticket": "RELAY-56",
+      "registry_ticket": "RELAY-12",
+      "verdict": "ticket_mismatch",
+      "reasons": [
+        "env 티켓 RELAY-56 != 레지스트리 RELAY-12"
+      ]
+    },
+    {
+      "port": 8016,
+      "pid": "3861831",
+      "cmd": "/home/ubuntu/.venvs/novelweb/bin/python main.py ",
+      "env_ticket": "RELAY-56",
+      "registry_ticket": "RELAY-35",
+      "verdict": "ticket_mismatch",
+      "reasons": [
+        "env 티켓 RELAY-56 != 레지스트리 RELAY-35"
+      ]
+    },
+    {
+      "port": 8018,
+      "pid": "3979025",
+      "cmd": "/home/ubuntu/.venvs/novelweb/bin/python main.py ",
+      "env_ticket": "RELAY-57",
+      "registry_ticket": "RELAY-50",
+      "verdict": "ticket_mismatch",
+      "reasons": [
+        "env 티켓 RELAY-57 != 레지스트리 RELAY-50"
+      ]
+    }
+  ],
+  "jira_checked": {},
+  "jira_auth_ok": false,
+  "board_token_available": true,
+  "board_card_id": "req-20260828091001-f7b5b0"
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "relay-port-audit-v1",
+  "ticket": "RELAY-15",
+  "ran_at_kst": "2026-08-26T09:10:01+09:00",
+  "listening_ports": [
+    8003,
+    8004,
+    8005,
+    8006,
+    8008,
+    8009,
+    8010,
+    8011,
+    8012,
+    8013,
+    8015,
+    8016,
+    8017,
+    8018,
+    8020
+  ],
+  "total_findings": 17,
+  "violations": [
+    {
+      "port": 8004,
+      "pid": "3406682",
+      "cmd": "python3 tools/arcade_playable_server.py ",
+      "env_ticket": "RELAY-8",
+      "registry_ticket": "RELAY-44",
+      "verdict": "ticket_mismatch",
+      "reasons": [
+        "env 티켓 RELAY-8 != 레지스트리 RELAY-44"
+      ]
+    },
+    {
+      "port": 8016,
+      "pid": "3498535",
+      "cmd": "/home/ubuntu/.venvs/novelweb/bin/python main.py ",
+      "env_ticket": null,
+      "registry_ticket": "RELAY-35",
+      "verdict": "env_missing",
+      "reasons": [
+        "환경변수 RELAY_TICKET 없음"
+      ]
+    }
+  ],
+  "jira_checked": {
+    "RELAY-43": true,
+    "RELAY-8": true,
+    "RELAY-18": true,
+    "RELAY-45": true,
+    "RELAY-46": true,
+    "RELAY-47": true,
+    "RELAY-48": true,
+    "RELAY-12": true,
+    "RELAY-17": true,
+    "RELAY-1": true,
+    "RELAY-35": true,
+    "RELAY-36": true,
+    "RELAY-50": true,
+    "RELAY-42": true
+  },
+  "board_token_available": true,
+  "board_card_id": "req-20260826091006-3e4f4a"
+}

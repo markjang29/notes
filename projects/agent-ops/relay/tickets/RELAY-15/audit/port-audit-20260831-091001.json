@@ -1,0 +1,41 @@
+{
+  "schema": "relay-port-audit-v1",
+  "ticket": "RELAY-15",
+  "ran_at_kst": "2026-08-31T09:10:01+09:00",
+  "listening_ports": [
+    8003,
+    8004,
+    8005,
+    8006,
+    8008,
+    8009,
+    8010,
+    8011,
+    8012,
+    8013,
+    8015,
+    8016,
+    8017,
+    8018,
+    8020,
+    8021
+  ],
+  "total_findings": 18,
+  "violations": [
+    {
+      "port": 8021,
+      "pid": "154186",
+      "cmd": "/home/ubuntu/projects/matrix-studio/.venv/bin/python3 .venv/bin/uvicorn api.main:app --host 0.0.0.0 --port 8021 ",
+      "env_ticket": "RELAY-58",
+      "registry_ticket": null,
+      "verdict": "unregistered",
+      "reasons": [
+        "레지스트리에 포트 없음"
+      ]
+    }
+  ],
+  "jira_checked": {},
+  "jira_auth_ok": false,
+  "board_token_available": true,
+  "board_card_id": "req-20260831091002-2da522"
+}
