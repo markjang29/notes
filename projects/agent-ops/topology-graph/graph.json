@@ -1,0 +1,40 @@
+{
+  "version": "v1",
+  "updated": "2026-09-08",
+  "nodes": [
+    {"id":"site-aws8","type":"site","label":"AWS 8GB (13.125.131.126)","status":"셧다운 예정","survey":"done"},
+    {"id":"site-edge512","type":"site","label":"AWS 엣지 512MB (43.201.34.144)","status":"진입점","survey":"done"},
+    {"id":"site-duradev","type":"site","label":"홈 리눅스 duradev (100.109.91.0)","status":"본진","survey":"pending"},
+    {"id":"site-nucboxg3","type":"site","label":"GM 윈도우 nucboxg3 (100.97.180.0)","survey":"pending"},
+    {"id":"site-firewin","type":"site","label":"firewin PC WIN-TGON9IO01TV (100.122.67.122)","survey":"pending"},
+    {"id":"svc-hub8023","type":"service","label":"관제 허브·회의방 8023","site":"site-aws8","owner":"codex_dev_1","survey":"done"},
+    {"id":"svc-hub-edge","type":"service","label":"허브 현황판 (엣지 :80/hub)","site":"site-edge512","survey":"done"},
+    {"id":"svc-spring8024","type":"service","label":"원사이트 스프링 8024","site":"site-aws8","owner":"firebat claude","survey":"done"},
+    {"id":"svc-home8018","type":"service","label":"MATRIX 홈 8018","site":"site-duradev","owner":"firewin","survey":"pending"},
+    {"id":"svc-home8021","type":"service","label":"matrix-studio 8021","site":"site-duradev","survey":"pending"},
+    {"id":"svc-home8022","type":"service","label":"matrix-nexus 8022","site":"site-duradev","survey":"pending"},
+    {"id":"svc-proxy8788","type":"service","label":"GLM 프록시 8788","site":"site-aws8","survey":"done"},
+    {"id":"git-notes","type":"git","label":"notes (규칙·원장 정본)","site":"site-aws8","remote":true,"survey":"done"},
+    {"id":"git-relay","type":"git","label":"relay tickets·requirements","site":"site-aws8","survey":"done"},
+    {"id":"git-spring","type":"git","label":"matrix-studio-spring","site":"site-aws8","owner":"firebat claude","remote":true,"survey":"done"},
+    {"id":"store-arcalive","type":"asset_store","label":"Works/arcalive 87G·37,773파일","site":"site-aws8","owner":"firewin","survey":"done"},
+    {"id":"store-novel","type":"asset_store","label":"Works/novel 5.7G + 큐 887건","site":"site-duradev","owner":"firewin","survey":"pending"},
+    {"id":"store-ledger","type":"asset_store","label":"asset_ledger.jsonl 원장","site":"site-firewin","owner":"firewin","survey":"pending"},
+    {"id":"store-cold","type":"asset_store","label":"Google Drive 콜드(matrix-cold)","owner":"firewin","survey":"pending"}
+  ],
+  "edges": [
+    {"from":"svc-hub8023","to":"site-aws8","type":"runs_on"},
+    {"from":"svc-hub-edge","to":"site-edge512","type":"runs_on"},
+    {"from":"svc-spring8024","to":"site-aws8","type":"runs_on"},
+    {"from":"svc-home8018","to":"site-duradev","type":"runs_on"},
+    {"from":"svc-home8021","to":"site-duradev","type":"runs_on"},
+    {"from":"svc-home8022","to":"site-duradev","type":"runs_on"},
+    {"from":"svc-proxy8788","to":"site-aws8","type":"runs_on"},
+    {"from":"site-edge512","to":"site-duradev","type":"flows","label":"tailscale 진입→실서빙"},
+    {"from":"store-arcalive","to":"store-ledger","type":"flows","label":"수집→검증→원장"},
+    {"from":"store-ledger","to":"site-duradev","type":"flows","label":"미러 동기화"},
+    {"from":"store-ledger","to":"store-cold","type":"flows","label":"콜드 백업"},
+    {"from":"git-spring","to":"svc-spring8024","type":"tracks","label":"배포 대상"},
+    {"from":"git-notes","to":"git-relay","type":"tracks","label":"티켓 원장 포함"}
+  ]
+}
