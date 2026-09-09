@@ -25,3 +25,31 @@ tags: [org, retirement, trader]
 ## 후속
 - 전 봇: 신규 task를 trader로 라우팅 금지 (허브 notice 방송됨).
 - work-queue: trader 관련 항목 정리 — 매니저.
+
+## 매니저 실측·처분 안건 (2026-09-09 매니저 — 이사님 승인 대기)
+
+"autotrader venv 서비스 2건"의 실체 실측 결과 — **둘 다 autotrader 기능이 아니라,
+autotrader venv를 파이썬 실행기로 빌려 쓰는 타 프로젝트 서비스**다.
+
+- **8003 = `scenario-generator.service`** (systemd enabled, Restart=on-failure, 부팅 자동기동)
+  — 시나리오 제너레이터 v5(FastAPI, cwd `projects/scenario/tools/scenario-generator/backend`),
+  기동 09-01 06:01 KST, OpenAPI 19 경로. /docs 200.
+- **8021 = `matrix-studio-api.service`** (systemd enabled, RELAY-58)
+  — 매트릭스 스튜디오 API(FastAPI, cwd `projects/matrix-studio`), 기동 09-09 09:15 KST,
+  OpenAPI 4 경로. /docs 200. 짝 서비스 **8024 = `matrix-studio-spring.service`**(Java,
+  venv 미사용)도 가동 중.
+- **autotrader 본체는 아무것도 안 떠 있음** — Streamlit 대시보드(8002) 미청취,
+  `projects/autotrader` 기동 프로세스 0건. 남는 것은 repo(보존)와 venv 633MB뿐.
+- venv(`~/.venvs/autotrader`, 633MB) 참조 전수: systemd 유닛 2건(8003·8021)뿐,
+  크론 0건. → **venv는 공유 실행 인프라**라 autotrader와 별개로 보존 필요.
+
+### 처분 선택지 (이사님 결정 대기)
+- **(a) 전부 유지 — 권장**. 서비스 2건은 시나리오·원사이트 트랙의 현역 인프라라
+  종료 시 양쪽 다운. 유지 비용 0(이미 유닛 관리), venv는 그대로 공유.
+- (b) venv 분리 — 8003·8021이 자체 venv 생성 후 전환(각 서비스 재기동 1회 필요,
+  작업 약 30분). autotrader venv는 이후 autotrader 재개 시까지 보존하거나 삭제 가능.
+- (c) autotrader 완전 처분(repo·venv 삭제) — repo 보존 원칙(본 결정서)과 충돌, 제외.
+
+### 인수자 공석
+- trader 퇴사로 autotrader(FastAPI+pandas 백테스트+Oracle 23ai) 구현 담당 공석.
+  재개 시점·인수 봇은 이사님 결정 — 재개 전까지 신규 task 라우팅 없음(notice 이행).

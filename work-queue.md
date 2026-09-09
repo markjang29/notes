@@ -48,7 +48,7 @@
   repo 범위에 matrix 7종(`matrix_asset_agent`/`scenario`/`matrix`/`matrix_zcode`/`matrix_codex`/
   `matrix-engine`/`matrix-living-drama`) + `music_video`(08-08 추가) 포함.
 - `aws-trader`: **2026-09-09 퇴사·삭제 확정(이사님 지시)** — bot_settings·actors.json·회의방·부트문서 정리 완료,
-  `decisions/2026-09-09-trader-bot-offboard.md` 참조. autotrader repo는 보존(봇만 퇴사).
+  `decisions/2026-09-09-trader-bot-retired.md` 참조. autotrader repo는 보존(봇만 퇴사).
 - 퇴역 windows-codex/windows-zcode 잔여 권한(크론·approval-board 클라이언트 토큰·시스템 프롬프트)
   감사: 08-16 감사봇 의뢰 진행 중(아래 대기 결정 #3).
 
@@ -115,10 +115,13 @@ claim 잠금(멱등). 메일형 작업지시 계약(Agent Mail v2)은 `projects/
 
 - 엔진: Godot 확정. 산출은 repo Git 기준. (07-12 감사 실측: ahead 1 + 미추적 다수 — push 보류)
 
-### 4. autotrader — 백테스트/대시보드 (pause)
+### 4. autotrader — 백테스트/대시보드 (pause · trader 봇 09-09 퇴사)
 
 - 스택: FastAPI + pandas 백테스트 + Oracle 23ai. 대시보드 Streamlit 8002.
-- 07-16 이사님 지시로 actor pause. 재개 대기.
+- 07-16 이사님 지시로 actor pause. 재개 대기. **본체 기동 프로세스 0건(09-09 실측)**.
+- trader 퇴사 후속: 서비스 처분 안건은 `decisions/2026-09-09-trader-bot-retired.md`
+  「매니저 실측·처분 안건」 참조 — 8003·8021은 autotrader venv를 빌려 쓰는
+  scenario-generator·matrix-studio-api 서비스로 실측, **유지 권장**(이사님 승인 대기).
 
 ### 5. scenario
 
@@ -130,7 +133,8 @@ claim 잠금(멱등). 메일형 작업지시 계약(Agent Mail v2)은 `projects/
 ## 대기 결정
 
 1. 야간 배정·일일 감사·아침 브리프 크론 재등록 여부 — 이사님.
-2. autotrader 재개 시점 — 이사님. (단 trader 봇은 09-09 퇴사 — 재개 시 구현 담당 봇 재배정 필요)
+2. autotrader 재개 시점 — 이사님. (단 trader 봇은 09-09 퇴사 — 재개 시 구현 담당 봇 재배정 필요,
+   인수자 공석) + **venv 서비스(8003·8021) 처분** — 유지 권장, 승인 대기(결정서 실측 참조).
 3. 퇴역 actor(windows-codex/windows-zcode) 잔여 권한 처분 — 감사 결과 수신 후.
 4. ~~07-12 감사 실측 push 잔류~~ **처리 완료(08-30 이사님 push 지시)** — notes `b566eb3`·autotrader
    `de7d041`·rpg `6a35f8d`·scenario `f456eac`·matrix-engine `e0ba2ce`·asset_agent `b534c68`·
