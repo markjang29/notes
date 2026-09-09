@@ -1,0 +1,35 @@
+# Memory Index
+
+- [Workspace layout](workspace-layout.md) — ~/projects(autotrader, rpg_game, scenario), ~/notes, ~/scripts 및 GitHub remotes
+- [Projects & collaboration](projects-and-collaboration.md) — autotrader + rpg_game, Windows 다중 에이전트 협업, git/notes 상세 공유 규칙
+- [Codex sandbox fix](codex-sandbox-fix.md) — bwrap loopback 실패로 Codex 샌드박스 off(danger-full-access), lib 패치 위치
+- [AI dev principles system](ai-dev-principles-system.md) — notes에 구축한 AI Native 신념 원칙 체계(7장·디렉토리·왜/어떻게 분업); personas v3 완료(2회 Codex 수용·커밋), 남은 것=후속인터뷰(기술선택 구체)
+- [memory-tick impl](memory-tick-impl.md) — memory-tick 자동메모리 부분구현(스킬/throttle/Stop hook); autoMemoryDirectory는 보류(미검증+충돌)
+- [Context explosion causes](context-explosion-causes.md) — 1M 폭발 원인(Codex 반환 누적)·예방(결과 파일분리·루프분산·Read절제·측정)
+- [Current work state](current-work-state.md) — /clear 후 복구: work-queue.md 우선. 매니저-팀장 조직, ideation v1→v2(체감 우선), 대기 결정, 쿼터 대응 ADR
+- [Clear recovery map](clear-recovery-map.md) — /clear 가 남기는 것(디스크/git/akl0hdys 메모리/공유로그) vs 지우는 것(대화기록); 복구入口 akl0hdys→work-queue.md
+- [Context % reporting](context-percent-reporting.md) — 이사님 요구: 매 상태 보고에 컨텍스트 % 추정치 포함 (feedback)
+- [Report with insights](feedback-report-with-insights.md) — 작업 보고 시 산출물+영감/통찰/후보방향 함께 (이사님 07-01 피드백)
+- [Manager recovery principle](manager-recovery-principle.md) — 매니저 생존 원칙. 레이트 리밋(529/429) 발생 시 복구 절차. 폴백·긴급 메모·팀장 보존
+- [GLM proxy environment](glm-proxy-environment.md) — 실제 LLM 환경: ANTHROPIC_AUTH_TOKEN + 로컬 GLM 프록시(127.0.0.1:8788) + 모델 라우팅(Haiku→glm-4.7). 스크립트 작성 시 필수
+- [Temp session folder ≠ workspace](temp-session-folder-not-workspace.md) — `~/.cokacdir/workspace/<랜덤id>` 임시 폴더를 작업 workspace로 헷갈리지 말 것 (이사님 07-02 반복 지적)
+- [529 Recovery Checkpoint 2026-07-03](checkpoint-529-recovery-0703.md) — 529 레이트 리밋 발생 시 체크포인트 (autotrader 완료·RPG Reasoning-Parry 확정·scenario 팀장 비활성 이슈)
+- [Session hygiene per task](session-hygiene-per-task.md) — 작업 단위로 /clear. 컨텍스트 누적 폭발 예방 (매니저+팀장, 07-03)
+- [Scenario team purpose (사칙)](scenario-team-purpose.md) — 시나리오팀 존재 이유: RISU 자산 기반 창작 스튜디오. 창작은 자유, 이사님 컨펌 후 디벨롭. 07-04 "임의시드 금지" 오버피팅 정정 (project)
+- [Codex communication policy](codex-communication-policy.md) — 평소 매니저 직접, 이사님이 물어볼 때만 codex 통신(동기 exec+파일). 세션 보호 (feedback, 07-04)
+- [RISU 자산 실제 내용 사용 = 근본 정책](feedback-risu-asset-real-content.md) — 메타(이름/경로)만 쓰면 사칙 1번 미달. .extract/ 실제 내용 펼치기 (feedback, 07-06)
+- [Scenario = 제품용 자산 공장](scenario-asset-factory-strategy.md) — 이사님 07-07 확정. 4대 축, 자산 뱅크 최우선. 제품이 쓸 자산 생산·축적 (project)
+- [야간 자율 = 인사이트 발굴](night-autonomy-insight.md) — 일(산출) 대신 진행중작업×인문/철학/게임학 → 고차원 통찰 발굴. 이사님 07-07 재정의 (feedback)
+- [자산 사용 전 컨펌 원칙](feedback-asset-confirm-before-use.md) — 올려준 것≠공감한 것. 자산 예시/창작은 이사님 컨펌·공감 선행. 상위 규칙 (feedback, 07-07)
+- [요청한 것만, 범위 확장 금지](feedback-no-scope-creep-minimal-work.md) — "더 할까요?" 금지. 접속 URL은 외부 IP(localhost 금지). ops는 요청 시만 (feedback, 07-07)
+- [야간 크론 = 메모리 우선](feedback-overnight-cron-memory-first.md) — cron 프롬프트 원문 맹신 금지. 송신 전 MEMORY.md+work-queue 재Read. 07-08 크론 중복 트리거 사고 (feedback)
+- [Arcade bot sends link](arcade-bot-send-link.md) — 확인·개발 완료 시 운영 주소 링크 필수 동봉 (feedback, 08-17)
+- [Relay site integration 08-24](relay-site-integration-0824.md) — 사이트 통합 7단계 파이프라인·매트릭스 정의 방향결정·zcode SE/매니저 조직화 (project, 08-24)
+- [Telegram 보고 형식 규칙](telegram-report-format.md) — 분할 전송·**표 금지→불릿/임시웹/이미지 대체**·ELI5 기본+긴 산출물엔 끝에 eli5·길면 파일 전송·n/20·단계 게이트·큐 모드 (feedback, 08-24~09-06)
+- [DevPass 허락제 쿠폰](devpass-coupon-gate.md) — LLM게이트웨이 폴백은 이사님 단어→X시간 쿠폰 발행제 (feedback, 08-30)
+- [Context auto-compact policy](context-auto-compact-policy.md) — 전 봇 자동 압축 기본, 새 세션 권장 금지 (이사님 09-02)
+- [Org evolution roadmap](org-evolution-roadmap.md) — 조직 발전 4단계: 사이트 정합→CLI화→MCP화→agentic (이사님 09-02, project)
+- [관제 단일 채널 정책](gwanje-single-channel-policy.md) — 봇 통신·지시·보고 모두 회의방(8023) 통일, 텔레그램 중계 폐지 (feedback, 09-02)
+- [AWS 엣지 2대 체제](aws-edge-instances.md) — 신규 512MB(ubuntu·외부 입구 전용) + 기존 8GB 셧다운 예정; tailnet 편입 완료(aws512-edge); 지도 확정 (project, 09-06)
+- [매니저 창구 원칙](manager-window-principle.md) — 매니저=이사님 단일 창구(이관 무관)·구현은 위치별 봇 배정·닉네임 `[위치] 역할` 표준 (feedback, 09-06)
+- [큐 모드 프로토콜](queue-mode-protocol.md) — "큐시작"~"큐끝" 동안 침묵·조각 누적, 큐끝에 한 번에 답변 (feedback, 09-06)
