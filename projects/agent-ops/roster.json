@@ -2,7 +2,7 @@
   "schema": "bot-roster-v1",
   "authority": "봇 기준정보 유일 원장 (이사님 09-03 지시 — 매니저 배정, heav_lnx_zcode_bot 구현)",
   "rule": "status=deleted면 회의방(server.py)·대시보드(8025) 양쪽에서 즉시 제외된다. 회의방은 요청마다 파일 mtime 재조회라 재시작 불요. profiles.jsonl(projects/bot-dashboard)은 프로필 상세로 별도 유지.",
-  "updated_at": "2026-09-03",
+  "updated_at": "2026-09-09",
   "sites": {
     "awslnx": "AWS 리눅스",
     "firewin": "firewin (N100)",
@@ -123,6 +123,13 @@
       "site": "asus",
       "status": "active",
       "note": "소재 확인"
+    },
+    {
+      "username": "heav_gmwin_codex_bot",
+      "display": "gmwin codex",
+      "site": "gmwin",
+      "status": "active",
+      "note": "등록 09-09(gmwin zcode 요청) — 합류 시험 대기, 판정은 매니저"
     }
   ]
 }

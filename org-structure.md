@@ -16,7 +16,6 @@ tags:
 - **사용자(준희)** — 최종 의사결정자, 아이디어/방향.
 - **총 매니저 봇 `@heav_lnx_bot`** (이 봇) — 조율·보고·회의 정리·ADR support·쿼터 감시.
 - **RPG 팀장 봇 `@heav_lnx_rpg_bot`** — 프로젝트 실행 + subagent 직원.
-- **trader 팀장 봇 `@heav_lnx_trader_bot`** — 프로젝트 실행 + subagent 직원.
 - **시나리오 팀장 봇 `@heav_lnx_scenario_bot`** — **RISU 자산 기반 창작 스튜디오**. repo `~/projects/scenario`. 2026-06-30 신설. 2026-07-04 이후 최신 기준은 `principles/scenario-team-purpose.md`가 우선한다: 자의적 자생서사는 금지, RISU 기반 draft 창작은 본업, 디벨롭은 이사님 컨펌 후, RPG 의뢰 시 RPG=클라이언트/시나리오팀=창작 서포터로 협업한다.
 - (향후 팀장 추가 시 동일 패턴)
 
@@ -44,7 +43,7 @@ RELAY-49 7단계(CLI 클로드코드류 하네스: REPL·RAG·MCP·LSP)가 2~3�
 
 ## 메시지 프로토콜 (cokacdir 그룹)
 - `@heav_lnx_bot <...>` — 사용자→매니저 지시/질문.
-- `@heav_lnx_rpg_bot <...>` / `@heav_lnx_trader_bot <...>` / `@heav_lnx_scenario_bot <...>` — 매니저→팀장 task 배정 (또는 사용자 직접).
+- `@heav_lnx_rpg_bot <...>` / `@heav_lnx_scenario_bot <...>` — 매니저→팀장 task 배정 (또는 사용자 직접).
 - `;<...>` — 전체 브로드캐스트 (사칙 변경 등 공지).
 - `/query@봇 <...>` — 특정 봇 쿼리.
 
@@ -70,7 +69,7 @@ RELAY-49 7단계(CLI 클로드코드류 하네스: REPL·RAG·MCP·LSP)가 2~3�
 - **영구 기록·인계·결정(ADR)·큐** → `~/notes` (`work-queue.md`, `decisions/`, `.reviews/`).
 
 ## 체크리스트
-- [x] 봇 ID: 매니저 `@heav_lnx_bot`, RPG `@heav_lnx_rpg_bot`, trader `@heav_lnx_trader_bot`, 시나리오 `@heav_lnx_scenario_bot`
+- [x] 봇 ID: 매니저 `@heav_lnx_bot`, RPG `@heav_lnx_rpg_bot`, 시나리오 `@heav_lnx_scenario_bot` (trader는 2026-09-09 퇴사·삭제)
 - [x] 그룹 채팅 생성 + 봇 초대
 - [ ] BotFather 프라이버시모드 off (각 봇 `/setprivacy` → Disable) — 2026-08-30 회의 단체방
       신설로 **전 봇(N100 포함) 대상 재필요**, 변경 후 재초대 (아래 §회의 단체방 규칙 1)
@@ -92,7 +91,7 @@ RELAY-49 7단계(CLI 클로드코드류 하네스: REPL·RAG·MCP·LSP)가 2~3�
 
 - **발언**: 매니저 `@heav_lnx_bot`(진행·통합보고) · rpg `@heav_lnx_rpg_bot` · scenario
   `@heav_lnx_scenario_bot`(각 현황 보고) · audit `@heav_lnx_audit_bot`(감사 소견)
-- **전달만**: trader `@heav_lnx_trader_bot`(pause — 재개 안건 시에만 발언) · asset_agent ·
+- **전달만**: asset_agent ·
   arcade · novel_col · codex_dev_1/2 (지시 수신용)
 
 **AWS — 자체 브리지 1기**: `@heav_lnx_zcode_bot` (zcode 클라이언트 다리, cokacdir 밖 —
@@ -102,8 +101,9 @@ RELAY-49 7단계(CLI 클로드코드류 하네스: REPL·RAG·MCP·LSP)가 2~3�
 그룹 사용법: `@heav_lnx_zcode_bot <지시>` (1:1은 종래대로 아무 텍스트).
 
 **AWS 10봇 /contextlevel 서버 직접 세팅 완료(08-31)** — 발언(매니저·rpg·scenario·audit)=8,
-전달(trader·asset_agent·arcade·novel_col·codex_dev_1/2)=0. 매니저가 bot_settings.json에서
+전달(asset_agent·arcade·novel_col·codex_dev_1/2)=0. 매니저가 bot_settings.json에서
 직접 반영(붙여넣기 블록이 첫 줄 봇만 처리되는 문제의 우회). firebat 3기는 N100 쪽 설정.
+(2026-09-09 기준 AWS 봇 9기 — trader 퇴사 반영)
 
 **N100 firebat — 3기**: `@heav_firebat_claude_bot`(**발언** — n100-zcode, actors.json v9 등록,
 온보딩·Phase 2/3 이전 주체. **담당 프로젝트: matrix-studio-spring(8024, RELAY-58) —

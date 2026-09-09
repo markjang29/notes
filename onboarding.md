@@ -26,7 +26,7 @@ key 매핑:
 - `f5c0501a3a7999ad` → `heav_lnx_bot` — 매니저
 - `c5bb2c97036d3741` → `heav_lnx_rpg_bot` — RPG 팀장
 - `c6a54f44dab7dfe7` → `heav_lnx_scenario_bot` — 시나리오 팀장
-- `e802e57aacbe8f8b` → `heav_lnx_trader_bot` — trader 팀장
+<!-- 2026-09-09: trader 팀장(e802e57...) 퇴사·삭제 — decisions/2026-09-09-trader-bot-offboard.md -->
 - `35f990a62d4c4f51` → `heav_lnx_codex_dev_1_bot` — Codex 개발 1
 - `6aaabd2328f22b4d` → `heav_lnx_codex_dev_2_bot` — Codex 개발 2
 

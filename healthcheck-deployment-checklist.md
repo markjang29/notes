@@ -94,11 +94,11 @@ python3 ~/scripts/healthcheck/recovery_middleware.py
 - [ ] healthcheck 스킬 인지
 - [ ] recovery_middleware 통합
 
-### 4.3 Trader 팀장 (heav_lnx_trader)
-- [ ] 첫 세션에서 onboarding.md 읽기
-- [ ] manager-recovery-principle.md 읽기
-- [ ] healthcheck 스킬 인지
-- [ ] recovery_middleware 통합
+### 4.3 Trader 팀장 (heav_lnx_trader) — **2026-09-09 퇴사·삭제됨(항목 보존용 주석)**
+- [x] 첫 세션에서 onboarding.md 읽기
+- [x] manager-recovery-principle.md 읽기
+- [x] healthcheck 스킬 인지
+- [x] recovery_middleware 통합
 
 ### 4.4 Scenario 팀장 (heav_lnx_scenario)
 - [ ] 첫 세션에서 onboarding.md 읽기

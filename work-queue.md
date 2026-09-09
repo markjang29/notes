@@ -47,7 +47,8 @@
 - 매니저(`@heav_lnx_bot`): 조율·배정·보고 전관 + **LIVING-DRAMA-OS(Matrix) 통합 작업자 겸직**.
   repo 범위에 matrix 7종(`matrix_asset_agent`/`scenario`/`matrix`/`matrix_zcode`/`matrix_codex`/
   `matrix-engine`/`matrix-living-drama`) + `music_video`(08-08 추가) 포함.
-- `aws-trader`: 07-16 이사님 지시로 pause. 재개는 이사님 결정.
+- `aws-trader`: **2026-09-09 퇴사·삭제 확정(이사님 지시)** — bot_settings·actors.json·회의방·부트문서 정리 완료,
+  `decisions/2026-09-09-trader-bot-offboard.md` 참조. autotrader repo는 보존(봇만 퇴사).
 - 퇴역 windows-codex/windows-zcode 잔여 권한(크론·approval-board 클라이언트 토큰·시스템 프롬프트)
   감사: 08-16 감사봇 의뢰 진행 중(아래 대기 결정 #3).
 
@@ -129,7 +130,7 @@ claim 잠금(멱등). 메일형 작업지시 계약(Agent Mail v2)은 `projects/
 ## 대기 결정
 
 1. 야간 배정·일일 감사·아침 브리프 크론 재등록 여부 — 이사님.
-2. autotrader 재개 시점 — 이사님.
+2. autotrader 재개 시점 — 이사님. (단 trader 봇은 09-09 퇴사 — 재개 시 구현 담당 봇 재배정 필요)
 3. 퇴역 actor(windows-codex/windows-zcode) 잔여 권한 처분 — 감사 결과 수신 후.
 4. ~~07-12 감사 실측 push 잔류~~ **처리 완료(08-30 이사님 push 지시)** — notes `b566eb3`·autotrader
    `de7d041`·rpg `6a35f8d`·scenario `f456eac`·matrix-engine `e0ba2ce`·asset_agent `b534c68`·
