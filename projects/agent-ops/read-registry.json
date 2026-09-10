@@ -10,7 +10,7 @@
     },
     {
       "key": "org-notice-20260911-pipeline-readcheck",
-      "hub_id": "발행 후 기입",
+      "hub_id": "m1a08d9f737c02b93c",
       "title": "아카 수집 파이프라인 인계 + 공지 숙지 확인제 시행",
       "doc": "projects/agent-ops/arca-pipeline-handover-v1.md",
       "doc_commit": "발행 커밋과 동일"
