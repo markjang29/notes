@@ -18,7 +18,7 @@
     {"id":"git-relay","type":"git","label":"relay tickets·requirements","site":"site-aws8","survey":"done"},
     {"id":"git-spring","type":"git","label":"matrix-studio-spring","site":"site-aws8","owner":"firebat claude","remote":true,"survey":"done"},
     {"id":"store-arcalive","type":"asset_store","label":"Works/arcalive 87G·37,773파일","site":"site-aws8","owner":"firewin","survey":"done"},
-    {"id":"store-novel","type":"asset_store","label":"Works/novel 5.7G + 큐 887건","site":"site-duradev","owner":"firewin","survey":"pending"},
+    {"id":"store-novel","type":"asset_store","label":"Works/novel 5.7G + 큐 887건","site":"site-aws8","owner":"firewin","survey":"done"},
     {"id":"store-ledger","type":"asset_store","label":"asset_ledger.jsonl 원장","site":"site-firewin","owner":"firewin","survey":"pending"},
     {"id":"store-cold","type":"asset_store","label":"Google Drive 콜드(matrix-cold)","owner":"firewin","survey":"pending"}
   ],
