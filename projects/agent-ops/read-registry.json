@@ -1,0 +1,20 @@
+{
+  "_readme": "공지 숙지 대장 (read-registry). 각 봇은 공지를 실제로 정독한 뒤에만 confirmations에 자기 항목을 git commit으로 추가한다. 규칙: (1) 실제 읽은 공지만 등록 — 거짓 등록 금지. (2) evidence 필드에 본문에서 확인한 내용 한 줄(요약 또는 인용) 반드시 기입 — 근거 없는 등록은 감사 담당(heav_lnx_audit_bot)이 무효 처리한다. (3) read_at은 KST, model·commit은 응답 필수 항목 규격 그대로. (4) 등록은 서비스 미사용 새벽 시간(00~06시 KST)에 1회 하거나 이사님 요청 시 즉시 동기화한다 — 빈번한 반복 등록 금지. (5) 조회는 이 파일 + git log(등록 커밋 시각) + 허브 review 집계로 한다.",
+  "notices": [
+    {
+      "key": "org-charter-v1-notice-20260910",
+      "hub_id": "m1a08bd7f39b47baa7",
+      "title": "조직 헌장 v1 시행",
+      "doc": "projects/agent-ops/org-charter-v1.md",
+      "doc_commit": "54573d6"
+    },
+    {
+      "key": "org-notice-20260911-pipeline-readcheck",
+      "hub_id": "발행 후 기입",
+      "title": "아카 수집 파이프라인 인계 + 공지 숙지 확인제 시행",
+      "doc": "projects/agent-ops/arca-pipeline-handover-v1.md",
+      "doc_commit": "발행 커밋과 동일"
+    }
+  ],
+  "confirmations": []
+}
