@@ -12,7 +12,7 @@
 
 | 범위 | 저장소 / 정본 | 확인 내용 |
 |---|---|---|
-| Spring + React Flow | `markjang29/matrix-studio-spring` `73110e87dfc9f8f78587af3b65f1b1be118a7e97` | topology API, v2 seed, UI, 정적 번들, 테스트, 홈 user-unit |
+| Spring + React Flow | `markjang29/matrix-studio-spring` `9bd71ae801f4077d3342a93aafad11c906e9ba20` | topology API, 컷오버 반영 v2 seed, UI, 정적 번들, 테스트, 홈 user-unit |
 | 홈 사이트맵 | `markjang29/matrix-home` `aef3864` | 홈 카드와 `/sites` 8024 항목을 `/flow`에 연결 |
 | 큰그림 설계 | `notes/projects/agent-ops/topology-graph-v1.md` 등 | 전체 컴퓨터·AWS·봇·사이트 연결 모델 |
 
@@ -20,8 +20,8 @@
 
 ```text
 /home/smlime21/projects/matrix-studio-spring
-/home/smlime21/services/matrix-studio-spring/releases/73110e87dfc9f8f78587af3b65f1b1be118a7e97/app.jar
-/home/smlime21/services/matrix-studio-spring/current -> releases/73110e87...
+/home/smlime21/services/matrix-studio-spring/releases/9bd71ae801f4077d3342a93aafad11c906e9ba20/app.jar
+/home/smlime21/services/matrix-studio-spring/current -> releases/9bd71ae...
 /home/smlime21/.local/state/matrix-studio-spring/data/chain.mv.db
 /home/smlime21/.local/state/matrix-studio-spring/topology/
 /home/smlime21/.config/matrix-studio-spring/env
@@ -34,7 +34,7 @@
 - `env`는 0600이며 실제 `TOPOLOGY_ADMIN_TOKEN`과 외부 상태 경로만 담는다. 토큰은 Git·문서·로그에 기록하지 않았다.
 - 홈에는 포터블 full JDK 17.0.20, Maven 3.8.7, Maven 오프라인 캐시와 프런트 `node_modules`가 이관됐다.
 - 홈 자체에서 `mvn -o test`와 Vite production build를 다시 통과했다.
-- JAR SHA-256: `2818dffce47c86470faf32feccc399cad16d8ad95b7bb3ba751e3c6d3f496974`
+- JAR SHA-256: `89110c5c3161ac080fe237e4e9593c8bc97286d9872a957fb9f3cbc1caf408b5`
 - 컷오버 H2 SHA-256: `254153af89807b001b02a30c071d9ab0556294159427790c2accb57a2c6d8b76`
 - 홈 DB 백업: `chain.mv.db.pre-cutover-20260909T150322Z`
 
@@ -50,11 +50,11 @@
 ## 검증 증거
 
 - Java 단위/보안 회귀 테스트: **11/11 PASS**.
-- Vite: **204 modules**, v2 seed **22 nodes / 26 edges** 왕복 보존.
+- Vite: **204 modules**, 컷오버 반영 활성 그래프 **23 nodes / 28 edges**.
 - 홈 `mvn -o test`와 홈 Vite build 통과.
 - 홈 `/`, `/flow`, `/control/flow`, `/api/topology`, `/api/topology/state`, `/api/zones`, `/api/basket` 모두 HTTP 200.
 - 공개 엣지 `/`, `/flow`, `/control/flow`, `/api/topology/state`와 JS asset 모두 HTTP 200.
-- 실제 홈 API에서 save → validate → plan → deploy → 동일 요청 replay를 실행했고 `valid=true`, generation 2, `idempotentReplay=true`를 확인했다.
+- 실제 홈 API에서 save → validate → plan → deploy → 동일 요청 replay를 실행했고, 컷오버 관측값 재승격 후 `valid=true`, generation 3을 확인했다.
 - 무인 재기동: user-unit enabled/active, `Linger=yes`.
 - 홈 8018 사이트맵도 공개 `/flow` 링크를 노출하고 재기동 확인했다.
 
@@ -68,6 +68,10 @@ curl -fsS http://43.201.34.144:8024/flow >/dev/null
 
 장애 시에는 홈 DB의 `pre-cutover` 백업과 immutable 이전 release를 사용한다. AWS 서비스는 삭제하지 않았지만 중지·비활성화했으므로, 홈 장애를 확인하지 않고 임의 재활성화하지 않는다.
 
+## 긴급 보안 후속
+
+홈 `cokacdir.service` 점검 중 Telegram 봇 자격증명 2개가 프로세스 명령행 인자로 노출되는 기존 구성을 확인했다. 두 토큰은 **노출된 것으로 간주해 BotFather에서 회전**하고, 새 값은 프로세스 argv가 아닌 도구가 지원하는 비밀 파일/credential 입력으로 전환해야 한다. 현재 값이나 unit 전문을 Git·채팅·로그에 다시 출력하지 않는다.
+
 ## 새 세션 인수인계 문장
 
-`관제, 홈 duradev의 ~/notes/projects/agent-ops/migration/2026-09-10-matrix-topology-home-cutover.md와 matrix-studio-spring 73110e8을 정본으로 읽고 user-unit·43.201.34.144:8024/flow·/control/flow 상태부터 검증한 뒤 남은 전체 토폴로지 작업만 이어가줘.`
+`관제, 홈 duradev의 ~/notes/projects/agent-ops/migration/2026-09-10-matrix-topology-home-cutover.md와 matrix-studio-spring 9bd71ae을 정본으로 읽고 user-unit·43.201.34.144:8024/flow·/control/flow 상태와 Cokacdir argv 노출 토큰 회전 필요를 먼저 확인한 뒤 남은 전체 토폴로지 작업만 이어가줘.`
