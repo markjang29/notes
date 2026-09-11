@@ -1,0 +1,29 @@
+{
+  "schema": "agent-mail-event-v2",
+  "event_id": "evt-20260911T153346Z-matrix-p0-own-01-queued",
+  "mail_id": "mail-20260911T152853Z-matrix-p0-own-01",
+  "actor_id": "windows-codex",
+  "event_type": "queued",
+  "created_at": "2026-09-11T15:33:46Z",
+  "attempt": 1,
+  "idempotency_key": "matrix-home.p0-owner-route.20260912.v1",
+  "work_order_digest": "5aa80ae0e4091d77b2d816b73c6c8ce8ba1a2b5ed8ef14391e3e78ec3abd3117",
+  "packet_digest": null,
+  "sequence": 1,
+  "previous_event_id": null,
+  "binding_refs": [
+    "projects/agent-ops/relay/tickets/MATRIX-P0-OWN-01/work-order-v2.json@b7f5233266b451ff83a881e6f3f7ba49895bb8a0",
+    "hub:m1a09118ba696db",
+    "hub:m1a09118ba76667"
+  ],
+  "summary": "작업지시를 Git에 먼저 고정한 뒤 같은 한 문장을 전체 공지로 등록하고 aws-manager에게 wake=true 작업으로 접수했다. target actor ACK는 아직 확인되지 않았다.",
+  "evidence_refs": [
+    "matrix-home@15ce46e9516b015f63955bcd536d5cc257bc186e:docs/migration/legacy-route-site-disposition-v1.json",
+    "hub:m1a09118ba696db:notice-broadcast",
+    "hub:m1a09118ba76667:manager-task-wake"
+  ],
+  "output_commit": null,
+  "receipt_ref": "hub:m1a09118ba76667",
+  "retry_condition": "aws-manager ACK가 없으면 동일 idempotency key와 attempt를 유지한 채 기존 receipt 상태를 먼저 확인한다.",
+  "user_action_required": false
+}
