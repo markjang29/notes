@@ -25,5 +25,22 @@
       "doc_commit": "발행 커밋과 동일"
     }
   ],
-  "confirmations": []
+  "confirmations": [
+    {
+      "bot": "heav_lnx_bot",
+      "notice_key": "org-charter-v1-notice-20260910",
+      "read_at": "2026-09-11T20:55+09:00",
+      "evidence": "§0 공식 주소(넥서스·H8·사이트맵 모두 43.201.34.144) · §2-1 원사이트 통합 강제(별도 웹+링크 구조 금지) · §3 통합 대상 repo markjang29/matrix-home · §4 COMMIT→소나큐브→패키징→Release→FULL TEST, CUA 테스트",
+      "model": "glm-5.3-flash",
+      "commit": ""
+    },
+    {
+      "bot": "heav_lnx_bot",
+      "notice_key": "org-notice-20260911-pipeline-readcheck",
+      "read_at": "2026-09-11T20:56+09:00",
+      "evidence": "arca 5단계(HTML수집→다운로드→디코딩→transform→push) · 표시명≠내부값(AI봇=자작봇) · 딜레이 0.8초+·병렬·asyncio 금지 · 남은 작업 4건(2130개 캡슐화·NDJSON push·mega 21개·gdrive 검증) · 숙지 등록은 실독 후 confirmations에 git commit, evidence 필수",
+      "model": "glm-5.3-flash",
+      "commit": ""
+    }
+  ]
 }
