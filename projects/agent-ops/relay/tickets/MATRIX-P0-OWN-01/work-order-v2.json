@@ -1,0 +1,73 @@
+{
+  "schema": "agent-mail-work-order-v2",
+  "mail_id": "mail-20260911T152853Z-matrix-p0-own-01",
+  "thread_id": "thread-matrix-p0-own-01",
+  "from_actor": "windows-codex",
+  "to_actor": "aws-manager",
+  "controller_actor": "windows-codex",
+  "request_origin": "controller",
+  "intent": "execute",
+  "result_disposition": "reviewed_output",
+  "parent_mail_id": null,
+  "schedule_ref": null,
+  "subject": "P0 route·site 68/68 단일 책임 배정과 ACK 수집",
+  "issued_at": "2026-09-11T15:28:53Z",
+  "expires_at": "2026-09-19T15:28:53Z",
+  "priority": "high",
+  "repo_id": "notes",
+  "input_commit": "5840a8c4b6f12c8df3a8f0942cc93d7e1df8cf36",
+  "attempt": 1,
+  "supersedes_mail_id": null,
+  "packet_digest": null,
+  "required_capabilities": [
+    "route",
+    "report",
+    "repo_read",
+    "repo_write",
+    "git_commit",
+    "git_push"
+  ],
+  "required_skill_refs": [
+    "agent-mail",
+    "projects/agent-ops/README.md",
+    "projects/agent-ops/actors.json",
+    "projects/agent-ops/principles/git-first-project-truth.md"
+  ],
+  "read_scope": [
+    "projects/agent-ops/relay/tickets/MATRIX-P0-OWN-01/spec.md",
+    "projects/agent-ops/actors.json",
+    "matrix-home@15ce46e9516b015f63955bcd536d5cc257bc186e:docs/migration/legacy-route-site-disposition-v1.json",
+    "matrix-home@15ce46e9516b015f63955bcd536d5cc257bc186e:docs/architecture/priority-backlog-v1.json"
+  ],
+  "write_scope": [
+    "projects/agent-ops/relay/tickets/MATRIX-P0-OWN-01/owner-allocation-v1.json",
+    "projects/agent-ops/relay/tickets/MATRIX-P0-OWN-01/status.md",
+    "projects/agent-ops/relay/tickets/MATRIX-P0-OWN-01/mail/"
+  ],
+  "forbidden": [
+    "silent_project_implementation",
+    "invent_completion",
+    "unapproved_public_web_or_port",
+    "aws_stop_disable_or_terminate",
+    "bot_cron_or_timer_shutdown",
+    "data_queue_file_or_snapshot_deletion",
+    "secret_session_chat_id_or_absolute_path_in_git_or_message",
+    "implementation_before_target_actor_acknowledgement",
+    "completion_claim_before_controller_verification"
+  ],
+  "dependencies": [
+    "projects/agent-ops/relay/tickets/MATRIX-P0-OWN-01/spec.md@5840a8c4b6f12c8df3a8f0942cc93d7e1df8cf36",
+    "matrix-home@15ce46e9516b015f63955bcd536d5cc257bc186e:docs/migration/legacy-route-site-disposition-v1.json"
+  ],
+  "done_criteria": [
+    "route 36개, site 27개, internal component 5개 전부가 정확히 한 capable actor 또는 하나의 검증 가능한 blocker를 가진다.",
+    "matrix-home 권한이 registry에 없는 actor는 구현 배정하지 않고 capability_not_registered로 표시한다.",
+    "8002, 8011, 8013, 8020, 8765, 8766을 추측하지 않고 사용자 결정 안건으로 분리한다.",
+    "실행 가능한 child mail은 full input commit, exact scope, 금지 동작, 완료조건, idempotency key를 가진다.",
+    "target actor ACK가 없는 child mail은 시작하지 않고 ACK를 완료로 세지 않는다.",
+    "산출물 commit을 원격 Git에 push하고 submitted event로 controller 검수를 요청한다."
+  ],
+  "approval_policy": "controller_review",
+  "idempotency_key": "matrix-home.p0-owner-route.20260912.v1",
+  "reply_channel": "Agent Mail v2 events in MATRIX-P0-OWN-01"
+}
