@@ -1,0 +1,717 @@
+{
+  "schema": "matrix-p0-own-01-allocation-v1",
+  "source": "matrix-home@15ce46e9516b015f63955bcd536d5cc257bc186e:docs/migration/legacy-route-site-disposition-v1.json",
+  "actors_registry": "notes:projects/agent-ops/actors.json@b7f5233",
+  "work_order": "mail-20260911T152853Z-matrix-p0-own-01",
+  "allocated_by": "aws-manager",
+  "issued_at": "2026-09-11T15:35:07Z",
+  "total": 68,
+  "owner_counts": {
+    "aws-manager": 31,
+    "aws-novel-col": 7,
+    "aws-audit": 12,
+    "aws-scenario": 5,
+    "aws-asset-agent": 10,
+    "aws-arcade": 1,
+    "aws-rpg": 2
+  },
+  "items": [
+    {
+      "kind": "route",
+      "item": "GET /",
+      "disposition": "SPRING_NATIVE",
+      "target": "/",
+      "module": "portal",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /api/flow",
+      "disposition": "SPRING_NATIVE",
+      "target": "/api/topology/flows",
+      "module": "topology",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /api/flow.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /api/stats",
+      "disposition": "SPRING_NATIVE",
+      "target": "/api/portal/summary",
+      "module": "portal",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /api/stats.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /roadmap",
+      "disposition": "REDIRECT",
+      "target": "/pipeline",
+      "module": "pipeline",
+      "owner": "aws-novel-col",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /roadmap.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /api/sites",
+      "disposition": "SPRING_NATIVE",
+      "target": "/api/sites",
+      "module": "registry",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /api/sites.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /api/components",
+      "disposition": "SPRING_NATIVE",
+      "target": "/api/components",
+      "module": "registry",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /api/components.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /open/<site_id>",
+      "disposition": "TEMP_ADAPTER",
+      "target": "/open/{siteId}",
+      "module": "registry",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /open/<site_id>.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /api/jira",
+      "disposition": "TEMP_ADAPTER",
+      "target": "/api/requests",
+      "module": "operations",
+      "owner": "aws-audit",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /api/jira.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /sites",
+      "disposition": "SPRING_NATIVE",
+      "target": "/sites",
+      "module": "registry",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /sites.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /policies",
+      "disposition": "SPRING_NATIVE",
+      "target": "/policies",
+      "module": "governance",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /policies.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /api/policies",
+      "disposition": "SPRING_NATIVE",
+      "target": "/api/policies",
+      "module": "governance",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /api/policies.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "POST /api/policies/change-request",
+      "disposition": "SPRING_NATIVE",
+      "target": "/api/policies/change-requests",
+      "module": "governance",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.POST /api/policies/change-request.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /governance",
+      "disposition": "SPRING_NATIVE",
+      "target": "/governance",
+      "module": "governance",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /governance.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /api/governance",
+      "disposition": "SPRING_NATIVE",
+      "target": "/api/governance",
+      "module": "governance",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /api/governance.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "POST /api/governance/checkin",
+      "disposition": "SPRING_NATIVE",
+      "target": "/api/governance/checkins",
+      "module": "governance",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.POST /api/governance/checkin.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /cards",
+      "disposition": "REDIRECT",
+      "target": "/approve",
+      "module": "approval",
+      "owner": "aws-scenario",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /cards.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /dossiers",
+      "disposition": "REDIRECT",
+      "target": "/approve",
+      "module": "approval",
+      "owner": "aws-scenario",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /dossiers.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /api/dossiers",
+      "disposition": "TEMP_ADAPTER",
+      "target": "/api/approvals/dossiers",
+      "module": "approval",
+      "owner": "aws-scenario",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /api/dossiers.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /api/dossier-approve",
+      "disposition": "RETIRED_410",
+      "target": "/api/approvals/{id}/decisions",
+      "module": "approval",
+      "owner": "aws-scenario",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /api/dossier-approve.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /asset/<key>",
+      "disposition": "TEMP_ADAPTER",
+      "target": "/assets/{key}",
+      "module": "provenance",
+      "owner": "aws-asset-agent",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /asset/<key>.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /combo/<plan_id>",
+      "disposition": "TEMP_ADAPTER",
+      "target": "/loadouts/{planId}",
+      "module": "validation",
+      "owner": "aws-asset-agent",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /combo/<plan_id>.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /api/h9",
+      "disposition": "TEMP_ADAPTER",
+      "target": "/api/topology/assets",
+      "module": "topology",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /api/h9.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /s0",
+      "disposition": "REDIRECT",
+      "target": "/assets?lens=sources",
+      "module": "provenance",
+      "owner": "aws-asset-agent",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /s0.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /reports",
+      "disposition": "SPRING_NATIVE",
+      "target": "/reports",
+      "module": "operations",
+      "owner": "aws-audit",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /reports.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /reports/<cat>/<slug>",
+      "disposition": "SPRING_NATIVE",
+      "target": "/reports/{category}/{slug}",
+      "module": "operations",
+      "owner": "aws-audit",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /reports/<cat>/<slug>.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /tests",
+      "disposition": "SPRING_NATIVE",
+      "target": "/tests",
+      "module": "operations",
+      "owner": "aws-audit",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /tests.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /tests/<slug>",
+      "disposition": "SPRING_NATIVE",
+      "target": "/tests/{slug}",
+      "module": "operations",
+      "owner": "aws-audit",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /tests/<slug>.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /api/novel-plan",
+      "disposition": "TEMP_ADAPTER",
+      "target": "/api/pipelines/novels/plan",
+      "module": "pipeline",
+      "owner": "aws-novel-col",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /api/novel-plan.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /novel-plan",
+      "disposition": "REDIRECT",
+      "target": "/pipeline/novels",
+      "module": "pipeline",
+      "owner": "aws-novel-col",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /novel-plan.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /fleet",
+      "disposition": "REDIRECT",
+      "target": "/control/agents",
+      "module": "operations",
+      "owner": "aws-audit",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /fleet.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /api/novel-queue",
+      "disposition": "TEMP_ADAPTER",
+      "target": "/api/novels/queue",
+      "module": "pipeline",
+      "owner": "aws-novel-col",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /api/novel-queue.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "POST /api/novel-queue",
+      "disposition": "RETIRED_410",
+      "target": "/api/novels/queue/actions",
+      "module": "pipeline",
+      "owner": "aws-novel-col",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.POST /api/novel-queue.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /api/novel-ops",
+      "disposition": "TEMP_ADAPTER",
+      "target": "/api/novels/operations",
+      "module": "operations",
+      "owner": "aws-audit",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /api/novel-ops.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "POST /api/novel-ops",
+      "disposition": "RETIRED_410",
+      "target": "/api/novels/operations/actions",
+      "module": "operations",
+      "owner": "aws-audit",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.POST /api/novel-ops.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "GET /api/bot-fleet",
+      "disposition": "TEMP_ADAPTER",
+      "target": "/api/control/agents",
+      "module": "operations",
+      "owner": "aws-audit",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.GET /api/bot-fleet.20260912.v1"
+    },
+    {
+      "kind": "route",
+      "item": "POST /api/bot-fleet",
+      "disposition": "RETIRED_410",
+      "target": "/api/control/agents/actions",
+      "module": "operations",
+      "owner": "aws-audit",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.route.POST /api/bot-fleet.20260912.v1"
+    },
+    {
+      "kind": "site",
+      "item": "8002",
+      "name": "Autotrader 대시보드",
+      "disposition": "TEMP_ADAPTER",
+      "target": "/apps/autotrader",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8002.20260912.v1",
+      "blocker": "needs_adr_이사님_선택_안건",
+      "note": "MATRIX 포함 여부와 제품 소유자 결정 필요"
+    },
+    {
+      "kind": "site",
+      "item": "8003",
+      "name": "scenario 백엔드",
+      "disposition": "DONOR_IMPORT",
+      "target": "/pipeline/scenarios",
+      "owner": "aws-scenario",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8003.20260912.v1"
+    },
+    {
+      "kind": "site",
+      "item": "8004",
+      "name": "아케이드",
+      "disposition": "DONOR_IMPORT",
+      "target": "/apps/arcade",
+      "owner": "aws-arcade",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8004.20260912.v1"
+    },
+    {
+      "kind": "site",
+      "item": "8005",
+      "name": "승인보드",
+      "disposition": "DONOR_IMPORT",
+      "target": "/approve",
+      "owner": "aws-audit",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8005.20260912.v1",
+      "note": "Spring Security RBAC와 감사 기록 선행"
+    },
+    {
+      "kind": "site",
+      "item": "8006",
+      "name": "자동수집 설정",
+      "disposition": "DONOR_IMPORT",
+      "target": "/control/collectors",
+      "owner": "aws-novel-col",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8006.20260912.v1"
+    },
+    {
+      "kind": "site",
+      "item": "8008",
+      "name": "매트릭스 후보",
+      "disposition": "INTERNAL_WORKER",
+      "target": "/matrix/candidates",
+      "owner": "aws-asset-agent",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8008.20260912.v1",
+      "note": "UI는 Spring read model로 import"
+    },
+    {
+      "kind": "site",
+      "item": "8009",
+      "name": "RPG 웹",
+      "disposition": "DONOR_IMPORT",
+      "target": "/apps/rpg",
+      "owner": "aws-rpg",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8009.20260912.v1"
+    },
+    {
+      "kind": "site",
+      "item": "8010",
+      "name": "매트릭스 엔진 웹",
+      "disposition": "INTERNAL_WORKER",
+      "target": "/matrix/runs",
+      "owner": "aws-asset-agent",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8010.20260912.v1",
+      "note": "엔진 UI만 Spring으로 import"
+    },
+    {
+      "kind": "site",
+      "item": "8011",
+      "name": "Matrix ZCODE",
+      "disposition": "RETIRED",
+      "target": "410",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8011.20260912.v1",
+      "blocker": "needs_adr_이사님_선택_안건",
+      "note": "고유 기능과 복구 필요성을 먼저 조사"
+    },
+    {
+      "kind": "site",
+      "item": "8012",
+      "name": "Matrix Codex",
+      "disposition": "INTERNAL_WORKER",
+      "target": "/matrix/core",
+      "owner": "aws-asset-agent",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8012.20260912.v1",
+      "note": "CLI와 계약을 먼저 import"
+    },
+    {
+      "kind": "site",
+      "item": "8013",
+      "name": "PocketRisu",
+      "disposition": "INTERNAL_WORKER",
+      "target": "/studio/risu",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8013.20260912.v1",
+      "blocker": "needs_adr_이사님_선택_안건",
+      "note": "사람용 PocketRisu 화면은 특수목적 예외 여부 결정"
+    },
+    {
+      "kind": "site",
+      "item": "8015",
+      "name": "워크벤치",
+      "disposition": "DONOR_IMPORT",
+      "target": "/studio/validation",
+      "owner": "aws-asset-agent",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8015.20260912.v1"
+    },
+    {
+      "kind": "site",
+      "item": "8016",
+      "name": "이미지 스튜디오",
+      "disposition": "DONOR_IMPORT",
+      "target": "/studio/images",
+      "owner": "aws-asset-agent",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8016.20260912.v1"
+    },
+    {
+      "kind": "site",
+      "item": "8017",
+      "name": "RPG 에셋 워크벤치",
+      "disposition": "RETIRED",
+      "target": "/studio/assets",
+      "owner": "aws-rpg",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8017.20260912.v1",
+      "note": "고유 기능과 데이터 import 후 410"
+    },
+    {
+      "kind": "site",
+      "item": "8018",
+      "name": "MATRIX 홈",
+      "disposition": "DONOR_IMPORT",
+      "target": "/",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8018.20260912.v1",
+      "note": "36/36 경로 parity와 rollback 후 Flask 종료"
+    },
+    {
+      "kind": "site",
+      "item": "8020",
+      "name": "music-video",
+      "disposition": "TEMP_ADAPTER",
+      "target": "/daily",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8020.20260912.v1",
+      "blocker": "needs_adr_이사님_선택_안건",
+      "note": "통합, 별도 제품, 종료 중 선택"
+    },
+    {
+      "kind": "site",
+      "item": "8021",
+      "name": "MATRIX 스튜디오",
+      "disposition": "DONOR_IMPORT",
+      "target": "/studio",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8021.20260912.v1"
+    },
+    {
+      "kind": "site",
+      "item": "8022",
+      "name": "MATRIX NEXUS 레거시",
+      "disposition": "RETIRED",
+      "target": "/nexus/",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8022.20260912.v1",
+      "note": "8030 중복 기능을 308로 모은 뒤 410"
+    },
+    {
+      "kind": "site",
+      "item": "8023",
+      "name": "관제 회의방",
+      "disposition": "DONOR_IMPORT",
+      "target": "/control/comms",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8023.20260912.v1"
+    },
+    {
+      "kind": "site",
+      "item": "8024",
+      "name": "MATRIX 전체 프로젝트 연결 맵",
+      "disposition": "DONOR_IMPORT",
+      "target": "matrix-home Spring/React baseline",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8024.20260912.v1",
+      "note": "donor 이력과 license 기록 후 donor 저장소 archive"
+    },
+    {
+      "kind": "site",
+      "item": "8025",
+      "name": "봇 대시보드",
+      "disposition": "DONOR_IMPORT",
+      "target": "/control/agents",
+      "owner": "aws-audit",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8025.20260912.v1",
+      "note": "관리 쓰기는 공개 화면과 분리"
+    },
+    {
+      "kind": "site",
+      "item": "8027",
+      "name": "NAI 발행 갤러리",
+      "disposition": "DONOR_IMPORT",
+      "target": "/assets?type=image",
+      "owner": "aws-asset-agent",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8027.20260912.v1"
+    },
+    {
+      "kind": "site",
+      "item": "8030",
+      "name": "MATRIX NEXUS",
+      "disposition": "DONOR_IMPORT",
+      "target": "/nexus/",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8030.20260912.v1"
+    },
+    {
+      "kind": "site",
+      "item": "8031",
+      "name": "아카 수집 현황",
+      "disposition": "DONOR_IMPORT",
+      "target": "/sources/arca",
+      "owner": "aws-novel-col",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8031.20260912.v1",
+      "note": "수집 UI와 실적은 Spring read model로, firebat 수집기는 내부 worker로 전환"
+    },
+    {
+      "kind": "site",
+      "item": "8100",
+      "name": "홈 이관 현황판",
+      "disposition": "DONOR_IMPORT",
+      "target": "/nexus/system/h8?lens=migration",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8100.20260912.v1"
+    },
+    {
+      "kind": "site",
+      "item": "8765",
+      "name": "드로잉 앱",
+      "disposition": "TEMP_ADAPTER",
+      "target": "/drawing/",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8765.20260912.v1",
+      "blocker": "needs_adr_이사님_선택_안건",
+      "note": "특수목적 예외 또는 8766 통합 결정"
+    },
+    {
+      "kind": "site",
+      "item": "8766",
+      "name": "드로잉/Spring v2",
+      "disposition": "TEMP_ADAPTER",
+      "target": "/drawing2/",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.site.8766.20260912.v1",
+      "blocker": "needs_adr_이사님_선택_안건",
+      "note": "React import 또는 NUC 특수목적 예외 결정"
+    },
+    {
+      "kind": "internal",
+      "item": "8001",
+      "name": "Autotrader REST API",
+      "disposition": "INTERNAL_WORKER",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.internal.8001.20260912.v1"
+    },
+    {
+      "kind": "internal",
+      "item": "8026",
+      "name": "NAI queue write API",
+      "disposition": "INTERNAL_WORKER",
+      "owner": "aws-asset-agent",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.internal.8026.20260912.v1"
+    },
+    {
+      "kind": "internal",
+      "item": "8443",
+      "name": "Cokacdir Funnel",
+      "disposition": "INTERNAL_WORKER",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.internal.8443.20260912.v1"
+    },
+    {
+      "kind": "internal",
+      "item": "8788",
+      "name": "LLM gateway",
+      "disposition": "INTERNAL_WORKER",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.internal.8788.20260912.v1"
+    },
+    {
+      "kind": "internal",
+      "item": "8899",
+      "name": "원문 reader",
+      "disposition": "INTERNAL_WORKER",
+      "owner": "aws-manager",
+      "ack_status": "pending",
+      "idempotency_key": "matrix-home.p0-own-01.internal.8899.20260912.v1"
+    }
+  ]
+}
