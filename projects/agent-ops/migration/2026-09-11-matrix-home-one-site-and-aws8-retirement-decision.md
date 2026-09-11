@@ -81,7 +81,7 @@ tags: [agent-ops, matrix-home, spring, react, homeserver, aws8, migration]
 제품의 상세 설계와 P0~P5 실행 순서는 다음 경로가 소유한다.
 
 - repo: `markjang29/matrix-home`
-- full commit: `444cce71adfc5b344f5864872de85752b089bb6a`
+- full commit: `dc4185554c6b348cbbbf109f038f4cdf4ba2f749`
 - ref: `docs/architecture/one-site-palantir-blueprint-v1.md`
 - JIRA seed ref: `docs/architecture/priority-backlog-v1.json`
 

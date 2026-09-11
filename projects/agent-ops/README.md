@@ -55,7 +55,7 @@ Telegram 메시지는 알림과 대화 수단이지 완료 정본이 아니다. 
 
 - 결정: `migration/2026-09-11-matrix-home-one-site-and-aws8-retirement-decision.md`
 - 제품 통합 저장소: `markjang29/matrix-home`
-- 제품 설계 근거: `matrix-home@444cce71adfc5b344f5864872de85752b089bb6a`,
+- 제품 설계 근거: `matrix-home@dc4185554c6b348cbbbf109f038f4cdf4ba2f749`,
   `docs/architecture/one-site-palantir-blueprint-v1.md`
 - 목표: 공개 루트·사이트맵·H8를 Spring Boot + React 한 사이트로 통합하고, Python/Risu/NAI/CUA는
   공개 포트가 없는 내부 작업자로 전환한다.
