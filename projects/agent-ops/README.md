@@ -51,6 +51,17 @@ fail-closed한다. 상세 절차는 `notes:project-rules/notion-reporting.md`를
 Telegram 메시지는 알림과 대화 수단이지 완료 정본이 아니다. 작업 완료는 mail event,
 검증 근거, 필요 시 Git commit을 controller가 확인한 뒤 `verified`와 `closed`로 닫는다.
 
+## 2026-09-11 원사이트 방향과 진행 상태
+
+- 결정: `migration/2026-09-11-matrix-home-one-site-and-aws8-retirement-decision.md`
+- 제품 통합 저장소: `markjang29/matrix-home`
+- 목표: 공개 루트·사이트맵·H8를 Spring Boot + React 한 사이트로 통합하고, Python/Risu/NAI/CUA는
+  공개 포트가 없는 내부 작업자로 전환한다.
+- 현재: 공개 주소는 응답하지만 루트와 사이트맵은 아직 Flask다. Spring 전환과 AWS 8GB 종료
+  게이트는 **진행 중이며 미검증**이다.
+- 다음 P0: 쓰기 주체 fence → queue/DB/파일 hash·복원 시험 → bot/cron 홈 왕복 → root 전환·rollback
+  → AWS 8GB `stop + disable` 관찰. 검증 전 terminate하지 않는다.
+
 2026-09-07 이사님 직접 지시 이후 모든 외부 접속의 1차 진입점은 `43.201.34.144`다.
 신규 개발은 이 진입점에서 Tailscale을 통해 홈서버 사이트와 연결되는 구조를 먼저 고려하고,
 2차 원사이트 통합 본(Spring + React)으로 흡수 가능한 경계를 함께 기록한다.
