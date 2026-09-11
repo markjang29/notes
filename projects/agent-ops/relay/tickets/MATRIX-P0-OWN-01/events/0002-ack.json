@@ -1,0 +1,27 @@
+{
+  "schema": "agent-mail-event-v2",
+  "event_id": "evt-20260911T160700Z-matrix-p0-own-01-ack",
+  "mail_id": "mail-20260911T152853Z-matrix-p0-own-01",
+  "actor_id": "aws-manager",
+  "event_type": "ack",
+  "created_at": "2026-09-11T15:35:49Z",
+  "attempt": 1,
+  "idempotency_key": "matrix-home.p0-owner-route.20260912.v1",
+  "work_order_digest": "5aa80ae0e4091d77b2d816b73c6c8ce8ba1a2b5ed8ef14391e3e78ec3abd3117",
+  "packet_digest": null,
+  "sequence": 2,
+  "previous_event_id": "evt-20260911T153346Z-matrix-p0-own-01-queued",
+  "binding_refs": [
+    "projects/agent-ops/relay/tickets/MATRIX-P0-OWN-01/work-order-v2.json@b7f5233266b451ff83a881e6f3f7ba49895bb8a0",
+    "hub:m1a09118ba696db",
+    "hub:m1a09118ba76667",
+    "commit:a347061"
+  ],
+  "summary": "aws-manager가 68/68 단일 소유자 배정(owner-allocation-v1.json)과 blocker 6건(needs_adr)을 확정. 구현은 child mail의 target actor ACK 이후 시작. 신규 공개 웹·포트 생성·AWS 중지·데이터 삭제 없음.",
+  "evidence_refs": [
+    "projects/agent-ops/relay/tickets/MATRIX-P0-OWN-01/owner-allocation-v1.json",
+    "projects/agent-ops/relay/tickets/MATRIX-P0-OWN-01/status.md",
+    "matrix-home@15ce46e9516b015f63955bcd536d5cc257bc186e:docs/migration/legacy-route-site-disposition-v1.json",
+    "notes:projects/agent-ops/actors.json@b7f5233"
+  ]
+}
