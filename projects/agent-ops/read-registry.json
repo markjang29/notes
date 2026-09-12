@@ -23,6 +23,13 @@
       "title": "아카 수집 파이프라인 인계 + 공지 숙지 확인제 시행",
       "doc": "projects/agent-ops/arca-pipeline-handover-v1.md",
       "doc_commit": "발행 커밋과 동일"
+    },
+    {
+      "key": "org-notice-20260912-director-correction",
+      "hub_id": "m1a093858c38bb5ecf",
+      "title": "정정 공지 — AWS 8GB stop+disable/EC2 stop 게이트 · Edge 유지 · child mail→개별 작업지시",
+      "doc": "projects/agent-ops/relay/tickets/MATRIX-P0-OWN-01/director-correction-2026-09-12.md",
+      "doc_commit": "3795c1b"
     }
   ],
   "confirmations": [
@@ -39,6 +46,14 @@
       "notice_key": "org-notice-20260911-pipeline-readcheck",
       "read_at": "2026-09-11T20:56+09:00",
       "evidence": "arca 5단계(HTML수집→다운로드→디코딩→transform→push) · 표시명≠내부값(AI봇=자작봇) · 딜레이 0.8초+·병렬·asyncio 금지 · 남은 작업 4건(2130개 캡슐화·NDJSON push·mega 21개·gdrive 검증) · 숙지 등록은 실독 후 confirmations에 git commit, evidence 필수",
+      "model": "glm-5.3-flash",
+      "commit": ""
+    },
+    {
+      "bot": "heav_lnx_bot",
+      "notice_key": "org-notice-20260912-director-correction",
+      "read_at": "2026-09-13T00:32+09:00",
+      "evidence": "AWS 8GB는 이관·복구 게이트 확인 직후 서비스 stop+disable 및 EC2 stop 대상, 43.201.34.144 Edge는 계속 유지, terminate·EBS·snapshot·DB·queue·파일·원천 자산 삭제는 별도 승인 전 금지, child mail은 '개별 작업지시'로 개칭 — 4항 실독",
       "model": "glm-5.3-flash",
       "commit": ""
     }
