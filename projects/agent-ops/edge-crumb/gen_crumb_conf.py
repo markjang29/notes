@@ -4,6 +4,7 @@
 sites.json(8024 포털 카탈로그)에서 nginx http-level sub_filter conf를 생성한다.
 - map "$server_port::$uri" → 사이트별 (메타+브레드크럼바) HTML
 - 8024(홈), 8018(자체 배너 보유), :80 루트/게이트/스프링 내부경로는 제외(주입 없음)
+- 8023은 메타만 주입(가시 바 제외): 소스 레벨 정적 트리바 보유 — 이중 렌더 방지(코덱스 실측 2026-09-12)
 """
 import json, sys
 
@@ -36,11 +37,17 @@ def meta(site_id, stack):
             '<meta name="implemented-with" content="' + esc(stack) + '">'
             '<meta name="crumb-source" content="edge-crumb v1 GM윈도 2026-09-12">')
 
-sites = {s['port']: s for s in json.load(sys.stdin)}
+sites = {str(s['port']): s for s in json.load(open(sys.argv[1], encoding='utf-8'))}  # port 타입 정규화(문자열/정수 호환)
 
 # 주입 대상: nginx listen 포트 (8018 자체배너·8024 홈 제외, 미리슨 포트 8002/8011/8016/8017 제외)
 PORTS = ['8003','8004','8005','8006','8008','8009','8010','8012','8013',
          '8015','8020','8021','8022','8023','8025','8027','8030','8100']
+# 소스 레벨 자체 표기 실태(2026-09-13 tailscale 전수 순회) 반영 — 엣지 중복 방지:
+BAR_EXCLUDE_PORTS = {'8023'}   # 소스 정적 트리바 보유 → 엣지는 메타만
+EDGE_SKIP_PORTS = {'8009'}     # 소스가 메타+바 모두 자체 보유 → 엣지 개입 없음
+BAR_ONLY_PORTS = {'8004', '8021', '8100'}  # 소스 메타 보유 → 엣지는 바만(메타는 소스에 위임)
+SID_OVERRIDE = {'8004': 'arcade-8004', '8021': 'studio-8021', '8100': 'envsync-8100'}  # 바 표시 ID 소스 정합
+META_ONLY_EXTRA = [('8024', 'portal-8024')]  # 포털 홈(SPA) 무표기 — 엣지 메타만 보강(6debe42 병합분)
 # :80 경로 라우트 (사이트 ID는 경로 기준, 카탈로그 port와 연결)
 PATHS = [
     ('/arcade/',        'arcade',       sites['8004']),
@@ -71,11 +78,17 @@ out.append('sub_filter \'<head>\' \'<head>$matrix_meta_html\';\n')
 out.append('sub_filter \'<body\' \'$matrix_bar_html<body\';\n')
 out.append('proxy_set_header Accept-Encoding "";\n\n')
 
-def map_block(varname, html_fn):
+def map_block(varname, html_fn, exclude_ports=(), extra_ports=()):
     lines = ['map "$server_port::$uri" ' + varname + ' {\n', '    default "";\n']
     for p in PORTS:
+        if p in exclude_ports:
+            continue
         s = sites[p]
-        lines.append('    ~^' + p + ':: ' + html_fn(p, s['name'], s['category'], s['stack']))
+        sid = SID_OVERRIDE.get(p, p)
+        lines.append('    ~^' + p + ':: ' + html_fn(sid, s['name'], s['category'], s['stack']))
+    for p, sid in extra_ports:
+        s = sites[p]
+        lines.append('    ~^' + p + ':: ' + html_fn(sid, s['name'], s['category'], s['stack']))
     for prefix, sid, s in PATHS:
         if s:
             lines.append('    ~^80::' + prefix + ' ' + html_fn(sid, s['name'], s['category'], s['stack']))
@@ -95,8 +108,11 @@ def meta_entry(sid, name, cat, stack):
 def bar_entry(sid, name, cat, stack):
     return "        '" + bar(sid, name, cat, stack) + "';\n"
 
-out.extend(map_block('$matrix_meta_html', meta_entry))
+out.extend(map_block('$matrix_meta_html', meta_entry,
+                     exclude_ports=EDGE_SKIP_PORTS | BAR_ONLY_PORTS,
+                     extra_ports=META_ONLY_EXTRA))
 out.append('\n')
-out.extend(map_block('$matrix_bar_html', bar_entry))
+out.extend(map_block('$matrix_bar_html', bar_entry,
+                     exclude_ports=EDGE_SKIP_PORTS | BAR_EXCLUDE_PORTS))
 
 sys.stdout.write(''.join(out))
