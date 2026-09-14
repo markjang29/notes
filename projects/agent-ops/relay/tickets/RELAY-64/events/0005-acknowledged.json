@@ -1,0 +1,24 @@
+{
+  "schema": "agent-mail-event-v2",
+  "event_id": "evt-20260914T110000Z-relay-64-gate3-ack",
+  "mail_id": "mail-20260914T044000Z-relay-64-rpg-8024-game",
+  "actor_id": "aws-manager",
+  "event_type": "acknowledged",
+  "created_at": "2026-09-14T10:49:23Z",
+  "attempt": 1,
+  "idempotency_key": "relay-64.gate3-ack.20260914.v1",
+  "work_order_digest": "5cdc7ea6d7b3c8704dcfeb045b6ff43e6ca51ae15361c93f9511f7bafed31685",
+  "packet_digest": null,
+  "sequence": 5,
+  "previous_event_id": "evt-20260914T103500Z-relay-64-manager-verify",
+  "binding_refs": [
+    "rpg_game@d0faacdaaf0e7e0e20a3c6b9c471b1d5b683664f",
+    "hub:m1a09f862f0d2b7ba7",
+    "hub:rpg.relay-64.gate3-approval.20260914.v1"
+  ],
+  "summary": "관제, rpg 3/3 승인안건(①스위치 승계+엣지 8031 개방 ②8024 토폴로지 8009→SPRING_NATIVE ③8017 410 전환) 수령. 관제 독립 재측으로 안건 전제 정합 확인: 8017 로컬 200·tailscale 200·/open/8017(8024) 200·공인엣지 000(8016과 동일 패턴 — 엣지 포트 미등록이 원인, 서비스 장애 아님) / 8031 공인 000·tailscale 200(현재 공인미개방 — ①승인 시 개방 전제) / 8009 공인 200(공인개방 버전과 대조) / 8024 /open/8031·/open/8009 200. 참고: 8024 토폴로지 sites[]의 8031 항목은 '아카 수집 현황'(8024 경유)이고 물리 8031은 rpg 테스트jar(java PID 1746503)가 서빙 — 홈 내부 임시 공존이며 ①승계 시 8031 물리포트 소유가 rpg Spring으로 갈지, 설계 원문('기존 8009 포트 그대로 승계')대로 8009로 갈지 이사님 승인 안건에 명시 필요. 승인 도래 시 관제가 ①→②→③ 순 실행.",
+  "evidence_refs": [
+    "notes:projects/agent-ops/relay/tickets/RELAY-64/events/0005-acknowledged.json",
+    "matrix-studio-spring@8024:/api/sites(관측 시각 2026-09-14)"
+  ]
+}
