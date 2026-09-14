@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://handoff.contract/schemas/ack.schema.json",
+  "title": "HandoffAck (영수증)",
+  "description": "수신유닛이 봉투를 검증·인수한 사실을 남기는 영수증. 3종(schema_valid·signature_valid·checksum_match) 전부 통과 시 → envelope_id에 '커밋(ACK 완료)'이 남는다. 4필드 계약 매핑: checks.schema_valid→01근거(스키마 판본), checks→02미완료(nack 시 remaining), result/note→03블로커(nack 사유), note→04다음(재검증 방법). result==ack-commit이면 계약 완결의 증거가 된다.",
+  "type": "object",
+  "required": [
+    "ack_version",
+    "ack_id",
+    "envelope_id",
+    "envelope_sha256",
+    "src_unit_id",
+    "dst_unit_id",
+    "checks",
+    "result",
+    "received_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "ack_version": {
+      "const": "1.0"
+    },
+    "ack_id": {
+      "type": "string",
+      "pattern": "^A-\\d{8}T\\d{6}Z-[0-9a-f]{6}$"
+    },
+    "envelope_id": {
+      "type": "string",
+      "pattern": "^E-\\d{8}T\\d{6}Z-[0-9a-f]{6}$"
+    },
+    "envelope_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "수신한 봉투 파일 전체의 sha256 — 봉투 무결성 증명"
+    },
+    "src_unit_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,62}$"
+    },
+    "dst_unit_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,62}$"
+    },
+    "src_seq": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "checks": {
+      "type": "object",
+      "required": [
+        "schema_valid",
+        "signature_valid",
+        "checksum_match"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_valid": {
+          "type": "boolean"
+        },
+        "signature_valid": {
+          "type": "boolean"
+        },
+        "checksum_match": {
+          "type": "boolean"
+        }
+      }
+    },
+    "result": {
+      "type": "string",
+      "pattern": "^(ack|nack)-[a-z0-9-]+$",
+      "description": "ack-commit(3종 검증 전부 통과, 커밋 확정) | nack-<사유>"
+    },
+    "note": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "receiver": {
+      "type": "string",
+      "minLength": 1,
+      "description": "검증·서명·수신한 사람/시스템"
+    }
+  }
+}

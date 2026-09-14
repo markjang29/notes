@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://handoff.contract/schemas/source-unit.schema.json",
+  "title": "SourceUnit",
+  "description": "전달 단위(1건). 4필드 계약(projects/agent-ops/handoff-contract-01-04.md) 기준: 01근거(evidence) → 02미완료(remaining) → 03블로커(blockers) → 04다음(next). 01~04 순서·존재가 계약의 본체이므로 4필드 모두 required. 규칙2(검증된 사실만, 추정 명시)·규칙3(블로커 은닉=무효)·규칙5(기밀은 본문 대신 위치만)는 이 스키마의 제약으로 강제된다.",
+  "type": "object",
+  "required": ["unit_id", "title", "owner", "body", "evidence", "remaining", "blockers", "next", "status", "generation", "checklist"],
+  "additionalProperties": false,
+  "properties": {
+    "unit_id": { "type": "string", "pattern": "^U-[0-9a-f]{8}$", "description": "U-<8hex> 유일 식별자" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "owner": {
+      "type": "object",
+      "required": ["from", "to"],
+      "additionalProperties": false,
+      "properties": {
+        "from": { "type": "string", "minLength": 1, "description": "인도자(actor_id)" },
+        "to": { "type": "string", "minLength": 1, "description": "수령자(actor_id). 규칙1: 수령자의 정체·scope 확인 후 유효" }
+      }
+    },
+    "body": {
+      "type": "object",
+      "required": ["context", "details", "open_questions"],
+      "additionalProperties": false,
+      "properties": {
+        "context": { "type": "string", "description": "왜 이 전달이 필요한가" },
+        "details": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "open_questions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["q", "severity"],
+            "additionalProperties": false,
+            "properties": {
+              "q": { "type": "string" },
+              "severity": { "enum": ["info", "minor", "major", "blocker"], "description": "blocker인 경우 03-블로커에도 기재(이중관리 아님: 03은 해제조건·담당까지" },
+              "hint": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "description": "01-근거: 무엇을 근거로 했는가. 정본=<commit>, 읽은 문서 경로, 실측 값, 산출물 커밋 해시. 추정은 estimate:true로 명시(규칙2).",
+      "items": {
+        "type": "object",
+        "required": ["kind", "ref"],
+        "additionalProperties": false,
+        "properties": {
+          "kind": { "enum": ["commit", "doc", "measurement", "artifact"] },
+          "ref": { "type": "string", "minLength": 1, "description": "commit=40hex 해시, doc=정본 저장소 경로, measurement=실측 값+일시, artifact=산출물 커밋 해시" },
+          "note": { "type": "string", "maxLength": 500 },
+          "estimate": { "type": "boolean", "default": false, "description": "true면 추정(규칙2: 추정은 명시)" }
+        }
+      }
+    },
+    "remaining": {
+      "type": "array",
+      "description": "02-미완료: 아직 안 끝난 것. 없어도 빈 배열로 명시(생략=계약 아님).",
+      "items": {
+        "type": "object",
+        "required": ["item", "state"],
+        "additionalProperties": false,
+        "properties": {
+          "item": { "type": "string", "minLength": 1 },
+          "state": { "type": "string", "minLength": 1, "description": "현재 lifecycle 상태" },
+          "effort": { "type": "string", "description": "예상 effort (예: S/M/L 또는 시간)" }
+        }
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "description": "03-블로커: 무엇이 막고 있는가. 없어도 빈 배열로 명시. 은닉=인수인계 무효(규칙3).",
+      "items": {
+        "type": "object",
+        "required": ["item", "release_condition", "owner", "waiting_on"],
+        "additionalProperties": false,
+        "properties": {
+          "item": { "type": "string", "minLength": 1 },
+          "release_condition": { "type": "string", "minLength": 1, "description": "해제 조건" },
+          "owner": { "type": "string", "minLength": 1, "description": "담당" },
+          "waiting_on": { "type": "string", "minLength": 1, "description": "기다리는 결정: 누가 무엇을" }
+        }
+      }
+    },
+    "next": {
+      "type": "object",
+      "required": ["resume_point", "steps", "verification"],
+      "additionalProperties": false,
+      "description": "04-다음: 받은 사람의 첫동작. 규칙4: 명령·파일·판정 기준 포함해 구체적으로.",
+      "properties": {
+        "resume_point": { "type": "string", "minLength": 1, "description": "재개 지점: 마지막 검증된 event 다음" },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1, "description": "실행 순서(명령·파일 경로 포함)" }
+        },
+        "verification": { "type": "string", "minLength": 1, "description": "검증 방법(판정 기준 포함)" }
+      }
+    },
+    "status": { "enum": ["draft", "ready", "in-flight", "delivered", "acknowledged", "superseded"] },
+    "generation": { "type": "integer", "minimum": 1, "description": "1회 전달=1세대. 재전달 시 +1" },
+    "supersedes": { "type": "string", "pattern": "^U-[0-9a-f]{8}$" },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "sha256", "bytes"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "bytes": { "type": "integer", "minimum": 1 }
+        }
+      }
+    },
+    "checklist": {
+      "type": "array",
+      "minItems": 1,
+      "description": "수령자가 인수 시 확인할 항목. 4필드 존재 검증(01근거·02미완료·03블로커·04다음)을 반드시 포함한다.",
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "done"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]{1,32}$" },
+          "label": { "type": "string", "minLength": 1 },
+          "done": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

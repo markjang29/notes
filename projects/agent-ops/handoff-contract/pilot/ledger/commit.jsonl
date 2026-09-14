@@ -1,0 +1,1 @@
+{"ack_id": "A-20260912T144922Z-844bbc", "dst": "02", "envelope_id": "E-20260912T144922Z-f4e71b", "envelope_sha256": "f52c3e7ff81abccdd7c3a764bcc229df24a1d10752aeb1de15754d4bb0d4a9e4", "result": "ack-commit", "src": "01", "src_seq": 1, "ts": "2026-09-12T14:49:22Z", "unit": "U-27216ab7"}

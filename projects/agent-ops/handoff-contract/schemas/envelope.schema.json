@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://handoff.contract/schemas/envelope.schema.json",
+  "title": "HandoffEnvelope",
+  "description": "SourceUnit 1건을 송신유닛→수신유닛으로 전달하는 봉투. 서명은 unit-secret으로直列화된 (header+payload)에 대한 HMAC-SHA256.",
+  "type": "object",
+  "required": ["envelope_version", "envelope_id", "created_at", "header", "payload", "signature"],
+  "additionalProperties": false,
+  "properties": {
+    "envelope_version": { "const": "1.0" },
+    "integrity_alg": { "const": "hmac-sha256" },
+    "envelope_id": {
+      "type": "string",
+      "pattern": "^E-\\d{8}T\\d{6}Z-[0-9a-f]{6}$",
+      "description": "E-<UTC시각>-<6hex> 전역 유일"
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "header": {
+      "type": "object",
+      "required": ["src_unit_id", "dst_unit_id", "payload_sha256", "payload_bytes", "content_type", "payload_encoding", "src_seq", "expects_ack"],
+      "additionalProperties": false,
+      "properties": {
+        "src_unit_id": { "$ref": "#/$defs/unit_id", "description": "송신 Unit (예: 01)" },
+        "dst_unit_id": { "$ref": "#/$defs/unit_id", "description": "수신 Unit (예: 02)" },
+        "payload_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "payload 직렬화(S-1) 후 sha256 hex" },
+        "payload_bytes": { "type": "integer", "minimum": 1, "description": "payload 직렬화(S-1) 후 바이트 수" },
+        "content_type": { "const": "application/json" },
+        "payload_encoding": { "const": "utf-8" },
+        "canonicalization": { "const": "S-1:json-compact-sorted", "description": "직렬화 규칙: 키 오름차순 정렬, 공백/개행 없는 compact JSON" },
+        "src_seq": { "type": "integer", "minimum": 1, "description": "송신 Unit의 발행 일련번호(엄밀 증가)" },
+        "expects_ack": { "type": "boolean", "const": true }
+      }
+    },
+    "payload": {
+      "type": "object",
+      "required": ["source_unit"],
+      "additionalProperties": false,
+      "properties": {
+        "source_unit": { "$ref": "source-unit.schema.json" }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "required": ["alg", "key_alias", "value"],
+      "additionalProperties": false,
+      "properties": {
+        "alg": { "const": "hmac-sha256" },
+        "key_alias": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}$", "description": "unit-secrets 레지스트리의 키 별칭 (예: unit-01-prod)" },
+        "value": { "type": "string", "pattern": "^[0-9a-f]{64}$", "description": "HMAC-SHA256( unit_secret, S-1({header, payload}) ) hex" }
+      }
+    }
+  },
+  "$defs": {
+    "unit_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]([a-z0-9-]{0,62})$",
+      "examples": ["01", "02"]
+    }
+  }
+}

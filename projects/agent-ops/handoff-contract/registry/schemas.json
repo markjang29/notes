@@ -1,0 +1,33 @@
+{
+  "registry_version": "0.1",
+  "contract": "handoff-contract",
+  "status": "v0-draft",
+  "description": "봉투·스키마는 v0-draft. 정식 규격 등록(status:active) 아님 — 기준 문서 projects/agent-ops/handoff-contract-01-04.md(4필드) 확정 후 승격.",
+  "registered_at": "2026-09-14T00:00:00Z",
+  "based_on": "projects/agent-ops/handoff-contract-01-04.md",
+  "schemas": {
+    "envelope": {
+      "id": "https://handoff.contract/schemas/envelope.schema.json",
+      "file": "../schemas/envelope.schema.json",
+      "version": "0.1",
+      "status": "draft"
+    },
+    "source-unit": {
+      "id": "https://handoff.contract/schemas/source-unit.schema.json",
+      "file": "../schemas/source-unit.schema.json",
+      "version": "0.1",
+      "status": "draft"
+    },
+    "ack": {
+      "id": "https://handoff.contract/schemas/ack.schema.json",
+      "file": "../schemas/ack.schema.json",
+      "version": "0.1",
+      "status": "draft"
+    }
+  },
+  "semantics": {
+    "commit_rule": "result==ack-commit 인정조건: checks.schema_valid && checks.signature_valid && checks.checksum_match 3종 전부 true",
+    "canonicalization": "S-1:json-compact-sorted — 키 오름차순, separators=(',',':'), ensure_ascii=false, utf-8",
+    "four_field_contract": "SourceUnit의 evidence(01근거)→remaining(02미완료)→blockers(03블로커)→next(04다음) 4필드는 모두 required, 순서·존재가 계약. 기준: projects/agent-ops/handoff-contract-01-04.md"
+  }
+}
