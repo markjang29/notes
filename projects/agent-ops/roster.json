@@ -2,36 +2,38 @@
   "schema": "bot-roster-v1",
   "authority": "봇 기준정보 유일 원장 (이사님 09-03 지시 — 매니저 배정, heav_lnx_zcode_bot 구현)",
   "rule": "status=deleted면 회의방(server.py)·대시보드(8025) 양쪽에서 즉시 제외된다. 회의방은 요청마다 파일 mtime 재조회라 재시작 불요. profiles.jsonl(projects/bot-dashboard)은 프로필 상세로 별도 유지.",
-  "updated_at": "2026-09-09",
+  "updated_at": "2026-09-14",
+  "update_note": "2026-09-14 heav_gmwin_claude_bot(담당봇 조사 담당): 이사님 09-14 봇 리스트(00~99 역할번호 체계, 18봇) 반영 — 기존 16기 display를 역할번호 명칭으로 갱신, 신규 2기(heav_aws512_bot·heav_gmlnx_zcode_bot) 추가. heav_asus_zai_bot은 18봇 리스트에 없어 유지·이사님 결정 대기.",
   "sites": {
     "awslnx": "AWS 리눅스",
     "firewin": "firewin (N100)",
     "gmwin": "gmwin",
     "gmlnx": "gmlnx",
-    "asus": "asus"
+    "asus": "asus",
+    "aws512": "AWS 엣지 512"
   },
   "bots": [
     {
       "username": "heav_lnx_bot",
-      "display": "매니저",
+      "display": "00_홈서버매니저",
       "site": "awslnx",
       "status": "active"
     },
     {
       "username": "heav_lnx_rpg_bot",
-      "display": "RPG 팀",
+      "display": "홈서버rpg",
       "site": "awslnx",
       "status": "active"
     },
     {
       "username": "heav_lnx_scenario_bot",
-      "display": "시나리오 팀",
+      "display": "홈서버시나리오",
       "site": "awslnx",
       "status": "active"
     },
     {
       "username": "heav_lnx_audit_bot",
-      "display": "감사 CODEX",
+      "display": "95_감사CODEX",
       "site": "awslnx",
       "status": "active"
     },
@@ -43,25 +45,25 @@
     },
     {
       "username": "heav_lnx_asset_agent_bot",
-      "display": "자산 에이전트",
+      "display": "03_GM리수창고",
       "site": "awslnx",
       "status": "active"
     },
     {
       "username": "heav_lnx_arcade_bot",
-      "display": "아케이드",
+      "display": "04_AWS8G아케이드",
       "site": "awslnx",
       "status": "active"
     },
     {
       "username": "heav_lnx_novel_col_bot",
-      "display": "소설 수집",
+      "display": "01_GM소설수집",
       "site": "awslnx",
       "status": "active"
     },
     {
       "username": "heav_lnx_codex_dev_1_bot",
-      "display": "dev1",
+      "display": "98_통신포서버코덱스dev_1",
       "site": "awslnx",
       "status": "active"
     },
@@ -74,45 +76,46 @@
     },
     {
       "username": "heav_lnx_zcode_bot",
-      "display": "zcode",
+      "display": "미사용zcode",
       "site": "awslnx",
-      "status": "active"
+      "status": "active",
+      "note": "이사님 09-14 리스트에서 '미사용' 지정 — deleted 전환(전면 제외) 여부는 이사님 결정 대기(원장 구현·관제 이력 봇이라 보수 유지)"
     },
     {
       "username": "heav_firebat_claude_bot",
-      "display": "firebat claude (N100)",
+      "display": "02_파뱃로드셋클로드",
       "site": "firewin",
       "status": "active"
     },
     {
       "username": "heav_firebat_zcode_bot",
-      "display": "firebat zcode (N100)",
+      "display": "01_파뱃Aka자산zcode",
       "site": "firewin",
       "status": "active"
     },
     {
       "username": "heav_firebat_codex_bot",
-      "display": "firebat codex (N100)",
+      "display": "96_파뱃툴수집코덱스",
       "site": "firewin",
       "status": "active"
     },
     {
       "username": "heav_gmwin_claude_bot",
-      "display": "gmwin claude",
+      "display": "99_GM인사클로드",
       "site": "gmwin",
       "status": "active",
       "note": "온보딩 합류 — 합격 판정은 매니저"
     },
     {
       "username": "heav_gmwin_zcode_bot",
-      "display": "gmwin zcode",
+      "display": "04_GM그림Zcode",
       "site": "gmwin",
       "status": "active",
       "note": "온보딩 합류 — 합격 판정은 매니저"
     },
     {
       "username": "heav_gmlnx_claude_bot",
-      "display": "gmlnx claude",
+      "display": "홈서버클로드",
       "site": "gmlnx",
       "status": "active",
       "note": "정식 참가(09-04 합류 시험 3항목 합격, 매니저 판정)"
@@ -122,14 +125,28 @@
       "display": "asus_zai",
       "site": "asus",
       "status": "active",
-      "note": "소재 확인"
+      "note": "소재 확인 — 이사님 09-14 18봇 리스트에는 없음(유지·삭제는 이사님 결정 대기)"
     },
     {
       "username": "heav_gmwin_codex_bot",
-      "display": "gmwin codex",
+      "display": "97_GM테스터코덱스",
       "site": "gmwin",
       "status": "active",
       "note": "등록 09-09(gmwin zcode 요청) — 합류 시험 대기, 판정은 매니저"
+    },
+    {
+      "username": "heav_gmlnx_zcode_bot",
+      "display": "홈서버zcode",
+      "site": "gmlnx",
+      "status": "active",
+      "note": "신규 등록(이사님 09-14 리스트) — 합류 시험·토큰 수령 여부는 매니저 확인 필요"
+    },
+    {
+      "username": "heav_aws512_bot",
+      "display": "00_aws512",
+      "site": "aws512",
+      "status": "active",
+      "note": "신규 등록(이사님 09-14 리스트) — site aws512는 topology-graph-v1 'AWS 엣지 512' 근거 · 합류 시험·토큰 수령 여부는 매니저 확인 필요"
     }
   ]
 }
