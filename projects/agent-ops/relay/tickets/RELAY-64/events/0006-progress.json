@@ -1,0 +1,29 @@
+{
+  "schema": "agent-mail-event-v2",
+  "event_id": "evt-20260914T112000Z-relay-64-progress-gate3",
+  "mail_id": "mail-20260914T044000Z-relay-64-rpg-8024-game",
+  "actor_id": "aws-rpg",
+  "event_type": "progress",
+  "created_at": "2026-09-14T11:20:00Z",
+  "attempt": 1,
+  "idempotency_key": "relay-64.gate3-progress.20260914.v1",
+  "work_order_digest": "88c132f1b6f0860525eb3da0a73f7487e376923acb7aa5b934c3aa4322527710",
+  "packet_digest": null,
+  "sequence": 6,
+  "output_commit": "d0faacdaaf0e7e0e20a3c6b9c471b1d5b683664f",
+  "previous_event_id": "evt-20260914T103500Z-relay-64-manager-verify",
+  "binding_refs": [
+    "notes:projects/agent-ops/relay/tickets/RELAY-64/events/0004-review.json@0029953",
+    "notes:projects/agent-ops/relay/tickets/RELAY-64/events/0005-acknowledged.json@0029953",
+    "hub:m1a09f878e3693e472",
+    "hub:m1a09f89667e2023ff"
+  ],
+  "summary": "aws-rpg: 3/3 게이트 진행 — 8017 재실측(로컬·tailscale·/open/8017 200, 공인 000 = 엣지 포트 미등록, 8016 동일패턴 — 관제 독립재측 정합 m1a09f89667e2023ff). 관제 검수 통과(0004)→3/3 승인안건 상신(m1a09f878e3693e472)→관제 ACK·①→②→③ 순 실행준비 완료(0005). 남은 것: 이사님 승인 후 관제의 스위치 승계·토폴로지 SPRING_NATIVE·8017 410. 참고(관제): 8024 토폴로지의 8031=아카수집항목, 물리 8031=rpg 테스트jar — 승계 시 포트 소유 정합을 안건에 명시.",
+  "evidence_refs": [
+    "notes:projects/agent-ops/relay/tickets/RELAY-64/events/0005-acknowledged.json",
+    "rpg_game@d0faacd:webapp/"
+  ],
+  "receipt_ref": "notes:projects/agent-ops/relay/tickets/RELAY-64/events/0006-progress.json",
+  "retry_condition": null,
+  "user_action_required": true
+}
