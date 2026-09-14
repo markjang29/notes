@@ -14,3 +14,13 @@
 - [ ] n100-zcode (heav_firebat_claude_bot 중계, N100) — 미도달: 본서버 cokacdir --to 미등록. 이사님 텔레그램 DM 중계 필요
 
 판정 기준: [CERT] 답장 + 답장의 판본=정본(현재HEAD) 일치. 16:14 2차 재수집 결과: 통과 3기(aws-arcade 16:16, aws-novel-col 16:17, aws-codex-dev 15:04/16:17) — 답판본 전원 43783f3 일치. 미응답 1기(aws-asset-agent, 판본 638ba66 스테일) + 외부 2기(windows-zcode, n100-zcode) 미도달 — 이 줄 위 목록이 현행 불일치·미응답 명단이다.
+
+## 2026-09-14 04:35 KST — 8024 통합 이관 지시(이사님) 총괄: CERT 현황 (HEAD=43783f3, 09-14 04:30 실측)
+- [x] aws-arcade — 16:16 [CERT 43783f3] ✅ 통과
+- [x] aws-novel-col — 16:17 [CERT 43783f3] ✅ 통과 (16:31 1차 재수집 응답 반영)
+- [x] aws-codex-dev — 16:17 [CERT 43783f3] ✅ 재확인 통과
+- [x] aws-audit — 04:34 [CERT 3657af2] ✅ 통과 (HEAD가 43783f3으로 이동 — 43783f3 재독 필요)
+- [ ] aws-asset-agent — 무응답 지속(14:55·16:10 2회 요청). 3차 요청 필요
+- [ ] windows-zcode — 외부 거점, 미도달(브리지 경로 필요)
+- [ ] n100-zcode — N100, 미도달(이사님 DM 중계 필요)
+- 특이: 09-13 커밋 089c0b1(gmwin devpass 브리지 등록 정본)이 origin에 신규 push됨 — 이사님 승인·push 주체 확인 필요(매니저는 push 안 함, 조건5 준수)
