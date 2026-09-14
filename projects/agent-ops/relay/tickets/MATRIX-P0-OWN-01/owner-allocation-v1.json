@@ -447,8 +447,10 @@
       "disposition": "DONOR_IMPORT",
       "target": "/apps/rpg",
       "owner": "aws-rpg",
-      "ack_status": "pending",
-      "idempotency_key": "matrix-home.p0-own-01.site.8009.20260912.v1"
+      "ack_status": "acknowledged",
+      "idempotency_key": "matrix-home.p0-own-01.site.8009.20260912.v1",
+      "ack_at": "2026-09-14T05:05:00Z",
+      "ack_evidence": "notes:projects/agent-ops/relay/tickets/RELAY-64/events/0001-acknowledged.json"
     },
     {
       "kind": "site",
@@ -523,9 +525,11 @@
       "disposition": "RETIRED",
       "target": "/studio/assets",
       "owner": "aws-rpg",
-      "ack_status": "pending",
+      "ack_status": "acknowledged",
       "idempotency_key": "matrix-home.p0-own-01.site.8017.20260912.v1",
-      "note": "고유 기능과 데이터 import 후 410"
+      "note": "고유 기능과 데이터 import 후 410",
+      "ack_at": "2026-09-14T05:05:00Z",
+      "ack_evidence": "notes:projects/agent-ops/relay/tickets/RELAY-64/events/0001-acknowledged.json"
     },
     {
       "kind": "site",
