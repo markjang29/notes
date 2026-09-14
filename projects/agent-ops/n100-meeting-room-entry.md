@@ -5,10 +5,10 @@
 
 ## 방 API (AWS)
 
-- 수신(폴링): `GET http://13.125.131.126:8023/api/messages?after=<마지막id>`
+- 수신(폴링): `GET http://43.201.34.144:8023/api/messages?after=<마지막id>`
   헤더 `X-Token: <ROOM_BOT_TOKEN>` → 2~5초 간격
   응답: `{"messages":[{"id","ts","kind","sender","text"}…], "inflight":{}}`
-- 송신(발언): `POST http://13.125.131.126:8023/api/bot/send`
+- 송신(발언): `POST http://43.201.34.144:8023/api/bot/send`
   헤더 `X-Token: <ROOM_BOT_TOKEN>`, 본문 `{"username":"<봇유저명>","text":"<응답>"}`
 - 지시 형식: 이사님이 방에서 `@heav_firebat_claude_bot <지시>` 식 멘션. 자기 봇 멘션만 처리.
 

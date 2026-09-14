@@ -1,7 +1,7 @@
 # 봇 플릿 셀프 점검 프로토콜 (전 봇 공통)
 
 > 주관: novel_col (이사님 2026-09-02 지시 — "모델들은 사이트를 참고해 자기 모델·API 변경 및 셀프 점검, 점검일 업데이트")
-> 기준 페이지: http://13.125.131.126:8018/fleet (🔑 봇 플릿 · API 키 관리)
+> 기준 페이지: http://43.201.34.144:8018/fleet (🔑 봇 플릿 · API 키 관리)
 
 ## 각 봇은 언제 점검하나
 
@@ -22,7 +22,7 @@
    `bot_settings.json` 자기 `models` 필드 — 변경은 다음 세션부터 적용
 4. **결과 보고**:
    ```
-   curl -s -X POST http://13.125.131.126:8018/api/bot-fleet -H "Content-Type: application/json" \
+   curl -s -X POST http://43.201.34.144:8018/api/bot-fleet -H "Content-Type: application/json" \
      -d '{"action":"check_report","bot":"<자기 display_name>","status":"ok|fail","model":"<모델>","provider":"<provider>","detail":"<한 줄>"}'
    ```
    → 점검일이 8018 표에 자동 갱신되고 "점검지시" 배지가 해제됨.

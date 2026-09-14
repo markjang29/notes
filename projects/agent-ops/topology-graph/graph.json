@@ -2,7 +2,7 @@
   "version": "v1",
   "updated": "2026-09-08",
   "nodes": [
-    {"id":"site-aws8","type":"site","label":"AWS 8GB (13.125.131.126)","status":"셧다운 예정","survey":"done"},
+    {"id":"site-aws8","type":"site","label":"AWS 8GB (43.201.34.144)","status":"셧다운 예정","survey":"done"},
     {"id":"site-edge512","type":"site","label":"AWS 엣지 512MB (43.201.34.144)","status":"진입점","survey":"done"},
     {"id":"site-duradev","type":"site","label":"홈 리눅스 duradev (100.109.91.0)","status":"본진","survey":"pending"},
     {"id":"site-nucboxg3","type":"site","label":"GM 윈도우 nucboxg3 (100.97.180.0)","survey":"pending"},
