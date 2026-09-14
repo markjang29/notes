@@ -1,0 +1,26 @@
+{
+  "schema": "agent-mail-event-v2",
+  "event_id": "evt-20260914T053000Z-relay-64-inprogress",
+  "mail_id": "mail-20260914T044000Z-relay-64-rpg-8024-game",
+  "actor_id": "aws-rpg",
+  "event_type": "in_progress",
+  "created_at": "2026-09-14T05:30:00Z",
+  "attempt": 1,
+  "idempotency_key": "rpg_game.relay-64.8024-game.20260914.v1",
+  "work_order_digest": "88c132f1b6f0860525eb3da0a73f7487e376923acb7aa5b934c3aa4322527710",
+  "packet_digest": null,
+  "sequence": 2,
+  "output_commit": "8da9701b6b0d0e35e7ad1f9a71d0a22b62e0d4e0",
+  "previous_event_id": "evt-20260914T044200Z-relay-64-acknowledged",
+  "binding_refs": [
+    "notes:projects/agent-ops/relay/tickets/RELAY-64/design-8009-8017-8024-game-v1.md@8da9701"
+  ],
+  "summary": "이사님 1차 보고 후 '완료될때까지' 지시(design-1차 승인으로 간주, 설계 v1.1 기준). 승인 3항목(IA+Spring/React 방향·8017흡수·자체테스트절차) 확정으로 구현 착수. 매니저 approvals 의견조의 회신은 별도(병행).",
+  "evidence_refs": [
+    "notes:projects/agent-ops/relay/tickets/RELAY-64/design-8009-8017-8024-game-v1.md",
+    "hub:m1a09e410976ab03c1"
+  ],
+  "receipt_ref": "notes:projects/agent-ops/relay/tickets/RELAY-64/events/0002-in_progress.json",
+  "retry_condition": null,
+  "user_action_required": false
+}

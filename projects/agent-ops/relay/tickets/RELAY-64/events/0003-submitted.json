@@ -1,0 +1,29 @@
+{
+  "schema": "agent-mail-event-v2",
+  "event_id": "evt-20260914T105500Z-relay-64-submitted",
+  "mail_id": "mail-20260914T044000Z-relay-64-rpg-8024-game",
+  "actor_id": "aws-rpg",
+  "event_type": "submitted",
+  "created_at": "2026-09-14T10:55:00Z",
+  "attempt": 1,
+  "idempotency_key": "rpg_game.relay-64.8024-game.20260914.v1",
+  "work_order_digest": "88c132f1b6f0860525eb3da0a73f7487e376923acb7aa5b934c3aa4322527710",
+  "packet_digest": null,
+  "sequence": 3,
+  "output_commit": "d0faacdaaf0e7e0e20a3c6b9c471b1d5b683664f",
+  "previous_event_id": "evt-20260914T053000Z-relay-64-inprogress",
+  "binding_refs": [
+    "rpg_game:d0faacdaaf0e7e0e20a3c6b9c471b1d5b683664f",
+    "hub:m1a09f775aa15f01a2"
+  ],
+  "summary": "RELAY-64 구현 1차(submitted): Spring Boot 4.1+React 18 webapp/ — /apps/rpg·/prototype·/tactics·/studio/assets(8017 import)+/legacy 패리티. 자체테스트: 경로8종 200·API4종·WASM 39.5MB application/wasm 단일소스·SPA no-store·8031(매니저지정, 로컬/tailscale/LAN 200, 공인 미개방-무승인 포트개방 없음)·8009·8017 운영 무영향. react-best-practices 7규칙 적용. 테스트 요청 허브 m1a09f775aa15f01a2. 검수(verified/closed)는 관제 몫.",
+  "evidence_refs": [
+    "rpg_game:webapp/pom.xml@d0faacd",
+    "rpg_game:webapp/src/main/java/com/rpg/webapp/page/ReactPageController.java@d0faacd",
+    "rpg_game:webapp/web-react/src/apps-main.jsx@d0faacd",
+    "notes:projects/agent-ops/relay/tickets/RELAY-64/design-8009-8017-8024-game-v1.md"
+  ],
+  "receipt_ref": "notes:projects/agent-ops/relay/tickets/RELAY-64/events/0003-submitted.json",
+  "retry_condition": null,
+  "user_action_required": false
+}
