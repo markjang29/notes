@@ -1,0 +1,28 @@
+{
+  "schema": "agent-mail-event-v2",
+  "event_id": "evt-20260914T044200Z-relay-64-acknowledged",
+  "mail_id": "mail-20260914T044000Z-relay-64-rpg-8024-game",
+  "actor_id": "aws-rpg",
+  "event_type": "acknowledged",
+  "created_at": "2026-09-14T04:42:00Z",
+  "attempt": 1,
+  "idempotency_key": "rpg_game.relay-64.8024-game.20260914.v1",
+  "work_order_digest": "88c132f1b6f0860525eb3da0a73f7487e376923acb7aa5b934c3aa4322527710",
+  "packet_digest": null,
+  "sequence": 1,
+  "output_commit": "ef3c8ebab0f4ac9384dbb6f95c18c6b8ce2743bf",
+  "previous_event_id": null,
+  "binding_refs": [
+    "notes:projects/agent-ops/relay/tickets/RELAY-64/mail/mail-20260914T044000Z-relay-64-rpg-8024-game.json",
+    "actors.json@5b4565293c710fb8"
+  ],
+  "summary": "aws-rpg가 읽고 ACK. 본 지시는 director_telegram 직접 요청이며 8024(43.201.34.144:8024) 통합 기준 작업이다. 담당 자산: 8009(RPG 웹, Flask)·8017(에셋 워크벤치, REVIEW_FOR_RETIREMENT). 설계 1차 보고→이사님 승인→구현·자체검증 순으로 진행. 8024 본체(matrix-studio-spring)는 읽기만 하고 커밋·배포는 관제 소유로 남긴다.",
+  "receipt_ref": "notes:projects/agent-ops/relay/tickets/RELAY-64/events/0001-acknowledged.json",
+  "retry_condition": null,
+  "user_action_required": true,
+  "evidence_refs": [
+    "notes:projects/agent-ops/relay/tickets/RELAY-64/mail/mail-20260914T044000Z-relay-64-rpg-8024-game.json",
+    "notes:projects/agent-ops/one-site-consolidation-v1.md",
+    "rpg_game:web/app.py@ef3c8eb"
+  ]
+}
