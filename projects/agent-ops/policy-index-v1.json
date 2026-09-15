@@ -1,6 +1,6 @@
 {
   "schema": "policy-index-v1",
-  "version": "2026-09-15.1",
+  "version": "2026-09-15.2",
   "authority": "director",
   "status": "active",
   "display": {
@@ -179,6 +179,36 @@
       "ref": "projects/agent-ops/gwanje-hub-rest-queue-v1.md",
       "eli5": "봇들끼리는 이제 택배 기사(REST 큐)를 통해 일을 주고받는다. 중요한 공지는 모두의 책상에 자동으로 올라간다.",
       "summary": "봇간 지시·보고는 8023 /api/hub/* 큐로 접수. task만 상대 엔진 wake, notice(@all)는 전 봇 문맥 주입(ACK 불필요). 30초 표준 폴러 drain→ack→done/fail, 실패 3회 DLQ, 멱등키(key) 필수. 현황판 http://43.201.34.144/hub"
+    },
+    {
+      "id": "95-comms-first",
+      "kind": "사칙",
+      "status": "active",
+      "owner": "director",
+      "ref": "principles/95-comms-autonomy-rules-v1.md",
+      "title": "95_ 사칙 — 통신 불가 시 통신담당 선문의",
+      "eli5": "전화가 안 되면 아버지 휴대폰이 아니라 먼저 통신사(통신담당)에 물어본다.",
+      "summary": "봇간 통신 실패 시 통신 담당 봇에게 먼저 \"어떻게 시도했고 어디서 막혔는지\"를 물어본 후 조치 요청. 수동 전달은 마지막 수단. 이사님 09-15 지시. 통신담당 봇 미지정 — 매니저 배정 대기."
+    },
+    {
+      "id": "95-speed-autonomy",
+      "kind": "사칙",
+      "status": "active",
+      "owner": "director",
+      "ref": "principles/95-comms-autonomy-rules-v1.md",
+      "title": "95_ 사칙 — 시도 기록은 통신봇 경유",
+      "eli5": "못 연결된 이유는 통신봇 창구로 물어본다. 아버지(이사님) 수동 전달은 임시방편.",
+      "summary": "A봇→B봇 시도 기록과 실패 원인은 통신봇 경유로 해소. 이사님 수동 전달은 반복 표준이 아니라 임시방편. 이사님 09-15 지시."
+    },
+    {
+      "id": "95-org-speed",
+      "kind": "사칙",
+      "status": "active",
+      "owner": "director",
+      "ref": "principles/95-comms-autonomy-rules-v1.md",
+      "title": "95_ 사칙 — 조직 속도 자율",
+      "eli5": "리더가 유일한 관문이면 리더가 쉬는 순간 회사가 멈춘다. 각자 자기 도로로 가고, 관문은 예외 통로.",
+      "summary": "조직 전체 진행 속도가 이사님 개인 전달 속도에 맞춰져선 안 됨. 각 봇은 자기 흐름대로 병행 진행, 통로가 막을 때만 95-1·95-2로 해소. 이사님 09-15 지시."
     }
   ]
 }
