@@ -152,7 +152,17 @@ claim 잠금(멱등). 메일형 작업지시 계약(Agent Mail v2)은 `projects/
    매니저 그룹채팅 codex 오버라이드 1건 동일 처리 + 전환 후 실측 보고. 기존 실측: 폴백 미구성,
    llmgateway OpenAI 호환 창구는 준비됨 — 09-15 전까지 codex 유지.
    codex_dev_1/2(models=codex)·audit(codex:gpt-5.5) 전부 OpenAI 직통(구독 로그인, config에
-   provider 없음) — 한도(429) 시 그냥 실패. llmgateway는 OpenAI 호환 창구 보유(실측 200,
+   provider 없음) — 한도(429) 시 그냥 실패.
+   **09-15 만료일 실측·정리 완료(매니저)**: ①오버라이드 제거 — bot_settings.json에서
+   codex_dev_1·audit의 `models={"-":"glm-5.3-flash"}` 2건을 빈 객체로(기본값 상속
+   ANTHROPIC_MODEL=glm-5.3-flash, ~/.claude/settings.json 실측). 나머지 10봇·매니저 그룹채팅
+   오버라이드 0건 실측 확인(09-07 조기 전환 이미 반영, dev2잔재도 없음). 백업
+   `bot_settings.json.bak-20260915-codex-switch`. ②ccserver 재시작 불필요 판정 — 전·후
+   실효모델 동일(glm-5.3-flash)이라 동작 차이 0, 실행중 유닛(cokacdir.service, 09-15 02:53
+   기동)이 다음 재시작 때 자동 반영. ③실측 — 회의방 8023 @멘션: 감사 CODEX 응답
+   "glm-5.3-flash"(09:10:18) ✅ / dev1 발신 2회(09:10·09:13)→회의방 "처리 중" 잠금, 회신
+   미수령(재시도 가능). 8018 /status 판에도 감사CODEX·dev1 전원 "기본 라우팅 zai 프록시
+   8788 → z.ai" 표시. ccserver 자체는 providers=claude만 ✓(codex ✗ — 이미 미사용). llmgateway는 OpenAI 호환 창구 보유(실측 200,
    252모델·gpt-5 계열) → 도착지는 준비됨. 구현: zai 프록시에 OpenAI 포맷 레이어 + codex
    config 커스텀 provider. 이사님 착수 승인 대기. 그 전 수동 운영: 매니저가 실패 감지 시
    claude 계열 봇으로 임시 재배정.
