@@ -30,6 +30,13 @@
       "title": "정정 공지 — AWS 8GB stop+disable/EC2 stop 게이트 · Edge 유지 · child mail→개별 작업지시",
       "doc": "projects/agent-ops/relay/tickets/MATRIX-P0-OWN-01/director-correction-2026-09-12.md",
       "doc_commit": "3795c1b"
+    },
+    {
+      "key": "relay-65-ai-dev-improvements-20260916",
+      "hub_id": "1789548403089",
+      "title": "RELAY-65 AI 개발 개선사항 6건 전사 적용",
+      "doc": "projects/agent-ops/relay/requirements/ai-dev-improvements-2026-09-16.md",
+      "doc_commit": "a9da361b113d"
     }
   ],
   "confirmations": [
@@ -56,6 +63,14 @@
       "evidence": "AWS 8GB는 이관·복구 게이트 확인 직후 서비스 stop+disable 및 EC2 stop 대상, 43.201.34.144 Edge는 계속 유지, terminate·EBS·snapshot·DB·queue·파일·원천 자산 삭제는 별도 승인 전 금지, child mail은 '개별 작업지시'로 개칭 — 4항 실독",
       "model": "glm-5.3-flash",
       "commit": ""
+    },
+    {
+      "bot": "heav_lnx_bot",
+      "notice_key": "relay-65-ai-dev-improvements-20260916",
+      "read_at": "2026-09-16T17:46+09:00",
+      "evidence": "Swagger-first(데이터모델→OpenAPI→목업)·CI게이트 통과 없이 병합·배포 금지·안티패턴 5항목 — 정본 §2·§5·§6 실독 확인",
+      "model": "glm-5.3-flash",
+      "commit": "a9da361b113d"
     }
   ]
 }
