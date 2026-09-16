@@ -1,0 +1,15 @@
+{
+  "schema": "agent-ops-event-v2",
+  "event_id": "evt-20260916T084507Z-relay65-issued",
+  "mail_id": "mail-20260916T084507Z-relay-65-ai-dev-improvements",
+  "actor_id": "aws-manager",
+  "event_type": "issued",
+  "work_order_digest": "sha256:052a1e4bae0d2fe8",
+  "attempt": 1,
+  "idempotency_key": "relay-65-ai-dev-improvements-attempt-1",
+  "packet_digest": null,
+  "sequence": 1,
+  "predecessor_event_id": "evt-20260914T044000Z-relay64-issued",
+  "issued_at": "2026-09-16T08:45:07Z",
+  "summary": "RELAY-65 발행 — AI 개발 개선사항 6건(이사님 09-16). 요구사항 정본+mail v2+허브 @all 공지+숙지확인. ORG-RULES §10~13과 무모순."
+}

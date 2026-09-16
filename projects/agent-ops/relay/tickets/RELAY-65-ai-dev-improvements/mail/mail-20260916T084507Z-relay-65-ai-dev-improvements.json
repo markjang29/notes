@@ -1,0 +1,56 @@
+{
+  "schema": "agent-mail-work-order-v2",
+  "mail_id": "mail-20260916T084507Z-relay-65-ai-dev-improvements",
+  "thread_id": "thread-relay-65-ai-dev-improvements",
+  "from_actor": "aws-manager",
+  "to_actor": "aws-manager",
+  "controller_actor": "windows-codex",
+  "request_origin": "director_telegram",
+  "intent": "execute",
+  "result_disposition": "reviewed_output",
+  "parent_mail_id": null,
+  "schedule_ref": null,
+  "subject": "RELAY-65 — AI 개발 개선사항(Swagger-first·E2E·CI/CD 게이트 등 6건) 전사 적용·전 봇 숙지",
+  "issued_at": "2026-09-16T08:45:07Z",
+  "expires_at": "2026-09-30T08:45:07Z",
+  "priority": "medium",
+  "repo_id": "notes",
+  "input_commit": "4dce19e8834f7a23d58af5247bfa85a761416c81",
+  "attempt": 1,
+  "supersedes_mail_id": null,
+  "packet_digest": null,
+  "required_capabilities": [
+    "route",
+    "report",
+    "repo_read",
+    "repo_write",
+    "git_commit",
+    "git_push"
+  ],
+  "required_skill_refs": [
+    "notes:projects/agent-ops/relay/requirements/ai-dev-improvements-2026-09-16.md",
+    "notes:ORG-RULES.md"
+  ],
+  "read_scope": [
+    "notes:projects/agent-ops/relay/requirements/ai-dev-improvements-2026-09-16.md",
+    "notes:projects/agent-ops/relay/tickets/RELAY-65-ai-dev-improvements/req.md",
+    "notes:ORG-RULES.md",
+    "notes:projects/agent-ops/conversation-rules-v1.md"
+  ],
+  "write_scope": [
+    "notes:projects/agent-ops/relay/tickets/RELAY-65-ai-dev-improvements/**",
+    "notes:projects/agent-ops/read-registry.json"
+  ],
+  "done_criteria": [
+    "requirements 정본 + 본 티켓 커밋·push",
+    "허브 8023 @all 공지 발송(등록 응답 포함)",
+    "read-registry에 전 봇 confirmation 등록(신규 notice_key) — 미등록 봇은 목록화 보고",
+    "ORG-RULES·conversation-rules-v1·roadmap.json과 무모순 유지(중복 정의 금지)"
+  ],
+  "prohibitions": [
+    "silent_project_implementation",
+    "invent_completion"
+  ],
+  "dependencies": [],
+  "notes": "director 지시(09-16) 요구사항화. RELAY-63 선례(규칙 정본 연결·중복 금지) 준수."
+}
