@@ -1,0 +1,4 @@
+{"actor": "aws-audit", "rule_id": "95-comms-first", "ref": "actors/aws-audit/rules-compliance-95-comms-autonomy.md", "recorded_doc_sha": "7b90c33e557513cd2a0345ee768600e1b618e1d0a8c0acb8843d83b5a8365bc6", "recorded_at": "2026-09-17T22:32:44Z"}
+{"actor": "aws-audit", "rule_id": "95-speed-autonomy", "ref": "actors/aws-audit/rules-compliance-95-comms-autonomy.md", "recorded_doc_sha": "7b90c33e557513cd2a0345ee768600e1b618e1d0a8c0acb8843d83b5a8365bc6", "recorded_at": "2026-09-17T22:32:44Z"}
+{"actor": "aws-audit", "rule_id": "95-org-speed", "ref": "actors/aws-audit/rules-compliance-95-comms-autonomy.md", "recorded_doc_sha": "7b90c33e557513cd2a0345ee768600e1b618e1d0a8c0acb8843d83b5a8365bc6", "recorded_at": "2026-09-17T22:32:44Z"}
+{"actor": "aws-audit", "rule_id": "95-report-addr", "ref": "actors/aws-audit/rules-compliance-95-comms-autonomy.md", "recorded_doc_sha": "7b90c33e557513cd2a0345ee768600e1b618e1d0a8c0acb8843d83b5a8365bc6", "recorded_at": "2026-09-17T22:32:44Z"}
