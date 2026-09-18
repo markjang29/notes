@@ -57,3 +57,9 @@ authority: 이사님 09-15 지시 (사칙 95_) · 09-17 95-4·95-5 추가
 - 상위: `principles/entrypoint-comms-progress-rules-v1.md` (진입점·폴링·진행보고 — 8023 hub task 만)
 - 상위: `principles/gwanje-ack-protocol.md` (ACK = 이해의 서명)
 - 관련: 통신담당 봇 지정은 본 사칙 95-1의 1차 수신자. 현재 미지정 — 매니저 배정 대기.
+
+### 95-4-a. 담당 주소 원장 (95-report-addr-registry) — 이사님 09-18 지시 "박아라"
+
+- 원장: `projects/agent-ops/report-addresses.json` (정본). 각 actor의 담당 주소 1행.
+- 8024 /rules 95-4 카드 하단 excerpt에 본 섹션이 노출되며, 각 봇은 자기 행의 주소를 답장 하단에 붙인다.
+- 주소 변경은 이 원장+정본 커밋으로만. 임의 변경 금지.
