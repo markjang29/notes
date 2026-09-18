@@ -1,234 +1,255 @@
 {
-  "schema": "policy-index-v1",
-  "version": "2026-09-17.1",
-  "authority": "director",
-  "status": "active",
-  "display": {
-    "primary_home_route": "/policies",
-    "projection_rule": "Home and dashboards are projections. Notes Git remains the source of truth."
-  },
-  "change_policy": {
-    "site_request_is_authoritative": false,
-    "rule": "사이트 변경요청은 초안이다. Notes Git commit+push 전까지 정책 정본이 아니다.",
-    "required_review": "director decision or delegated controller review",
-    "forbidden": [
-      "credential_capture",
-      "silent_policy_change",
-      "retroactive_completion_claim",
-      "state_transition_by_audit",
-      "self_approval"
-    ]
-  },
-  "docs": [
-    {
-      "id": "entrypoint-comms-progress-rules",
-      "kind": "사칙",
-      "title": "사칙 — 진입점·정보갱신·폴링·대화·진행보고·개발·조직진화 규칙",
-      "status": "active",
-      "owner": "director",
-      "ref": "principles/entrypoint-comms-progress-rules-v1.md",
-      "eli5": "모든 문은 43. 하나. 봇은 스스로 정보를 갱신하고, 폴링은 토큰 0. 대화는 큐시작/큐끝, 보고는 n/20 확인 후 진행. 매 답장엔 모델·컨텍스트·경로·규칙 commit을 붙인다. 개발은 카테고리화·모바일 먼저, 웹은 react-best-practices 스킬로 검수하고, 이사님 말은 티켓이 되고, 나중엔 업무를 CLI/MCP로 바꿔 agentic하게 돌린다.",
-      "summary": "모든 접속은 43.201.34.144 진입·Tailscale 홈 연계. 신규 개발은 홈 연결(1차)→원사이트 흡수(2차) 순 고려. 봇은 관제·사칙·정책센터 주소 대조 후 자기 정보·통신 경로·공통지시를 갱신. 폴링·스케줄링 전량 리스트업 후 부하·토큰 낭비 점검. 대화 규칙: 큐시작/큐끝·긴 답 분할·eli5 부착·표 금지·n/20 확인 후 진행. 자기 보고: 매 답장 모델·컨텍스트 실측, 게이트웨이/API 경로 구분, 숙지 규칙 정본 마지막 commit 명시, 관제 공지·허브 메시지 상시 주시. 개발 규칙: 페이지·선택 항목 카테고리화, 모바일 최적화 기본, Vercel react-best-practices(Claude Code Skill) 사이트별 Claude 선행 설치 후 검수, 발화→요구사항 티켓(JIRA/RELAY)→검증→구현. 조직 진화: 사이트 정합성 구축→업무 CLI/MCP화→agentic 운영. 봇간 통신: 요청·검증·회신·이력은 자동 채널(허브 task·RELAY 티켓·관제방 API)로만 수행. 이력 정본은 티켓 — 관제방 채팅은 알림. 예외: 실측 입증된 채널 장애 시 + 폴러 미설치 봇(gmlnx_zcode·aws512) 한해 중계 잠정 허용. 장애 판정은 당사 봇 독단 금지 — 감사·매니저 재측으로 확정. (09-16 이사님 승인, 감사 소견 근거, 기존 §5·§7 사이 신설 §6 — 기존 §6~§8은 §7~§9로 재번호)"
-    },
-    {
-      "id": "edge-home-entrypoint",
-      "kind": "사칙",
-      "title": "사칙 — AWS Edge 진입점과 홈서버 연계 원칙",
-      "status": "active",
-      "owner": "director",
-      "ref": "principles/edge-home-entrypoint-policy.md",
-      "eli5": "손님은 새 정문 43.201.34.144로 들어오고, 안쪽 방은 Tailscale로 홈서버에 연결한다.",
-      "summary": "모든 신규 개발은 43.201.34.144를 진입점으로 삼고, 홈서버 사이트 연결과 Spring/React 원사이트 흡수를 함께 고려한다."
-    },
-    {
-      "id": "git-first",
-      "kind": "사칙",
-      "title": "사칙 — Git 정본과 보고 투영",
-      "status": "active",
-      "owner": "director",
-      "ref": "principles/git-first-project-truth.md",
-      "eli5": "공지판이 아니라 등기부를 먼저 고친다.",
-      "summary": "아이디어·결정·우선순위·검증 현황은 Git commit이 먼저이고, 홈/대시보드는 그 투영이다."
-    },
-    {
-      "id": "audit-watchdog",
-      "kind": "감사",
-      "title": "감사모드 저토큰 와치독 원칙",
-      "status": "active",
-      "owner": "aws-audit",
-      "ref": "principles/audit-watchdog-foundation.md",
-      "eli5": "검문소가 영수증과 실제 물건을 대조한다.",
-      "summary": "완료·커밋·모델·복구·Git 정합성 주장을 실제 근거와 대조한다."
-    },
-    {
-      "id": "telegram-queue",
-      "kind": "사칙",
-      "title": "사칙 — Telegram 큐 수신·응답 규칙",
-      "status": "active",
-      "owner": "director",
-      "ref": "principles/telegram-queue-protocol.md",
-      "eli5": "택배 상자가 여러 개 올 때는 마지막 상자(큐끝)가 오기 전까지 뜯지 않는다.",
-      "summary": "큐시작 이후 큐끝 전까지는 긴 입력을 받기만 하고, 큐끝 뒤에 파일·분할·ELI5 규칙으로 답한다."
-    },
-    {
-      "id": "gwanje-ack",
-      "kind": "사칙",
-      "title": "사칙 — 관제 ACK·상태보고 규칙",
-      "status": "active",
-      "owner": "director",
-      "ref": "principles/gwanje-ack-protocol.md",
-      "eli5": "택배를 집은 것과 배송 완료는 다르다. 주소·주의사항·완료 기준을 확인해야 ACK다.",
-      "summary": "ACK 최소 필드, 루틴 폴링 보고 금지, 봇별 POLICY_SHA check-in, 관제 앱 책임 분리."
-    },
-    {
-      "id": "agent-mail",
-      "kind": "작업계약",
-      "title": "Agent Mail 운영 정본",
-      "status": "rollout",
-      "owner": "manager",
-      "ref": "projects/agent-ops/README.md",
-      "eli5": "심부름 쪽지에는 보낸 사람·받는 사람·완료 기준이 적혀야 한다.",
-      "summary": "actor identity, mail lifecycle, ACK/verified/closed, direct Telegram intake 기준."
-    },
-    {
-      "id": "task-contract",
-      "kind": "작업지시",
-      "title": "Task Contract v1 — 작업 지시서 7필드",
-      "status": "draft",
-      "owner": "manager",
-      "ref": "projects/agent-ops/task-contract-v1.md",
-      "eli5": "일 시키기 전에 주소·완료조건·만질 범위·검사법을 칸에 적는다.",
-      "summary": "repo, 인수조건, 허용 경로, 원천, 테스트, 금지 변경, 산출 형식의 7필드 표준."
-    },
-    {
-      "id": "homeserver-policy-sha",
-      "kind": "이관",
-      "title": "홈서버 이관·통합 종합 설계 v1",
-      "status": "approved-design",
-      "owner": "manager",
-      "ref": "projects/agent-ops/homeserver-target-design-v1.md",
-      "eli5": "규칙책 판본 번호를 모든 작업 카드에 찍는다.",
-      "summary": "AWS는 엣지로 축소하고, 홈서버는 같은 Notes HEAD를 POLICY_SHA로 본다."
-    },
-    {
-      "id": "home-policy-sync",
-      "kind": "동기화",
-      "title": "홈/홈서버 정책 투영 동기화 v1",
-      "status": "active",
-      "owner": "aws-audit",
-      "ref": "projects/agent-ops/home-policy-sync-v1.md",
-      "eli5": "가게 간판을 옮겨도 메뉴판 원본은 같은 책을 본다.",
-      "summary": "8018 legacy home과 이관 대상 home server가 같은 policy-index와 Notes HEAD를 표시하는 규칙."
-    },
-    {
-      "id": "governance-board",
-      "kind": "관제",
-      "title": "관제 한판 v1 — 정책·봇·ACK·진행 통합",
-      "status": "v0 implemented",
-      "owner": "aws-audit+codex_dev_1",
-      "ref": "projects/agent-ops/gwanje-governance-board-v1.md",
-      "eli5": "직원 근무표, 규칙책 판본, 오늘 할 일, 막힌 일을 한 장으로 붙여둔다.",
-      "summary": "8018 /governance, 봇별 모델·맡은일·진행·블로커·POLICY_SHA, 8023 ACK 연동 설계."
-    },
-    {
-      "id": "one-site",
-      "kind": "통합",
-      "title": "원사이트 통합 투트랙 v1",
-      "status": "doing",
-      "owner": "manager",
-      "ref": "projects/agent-ops/one-site-consolidation-v1.md",
-      "eli5": "기존 가게는 영업하면서, 새 백화점으로 코너를 하나씩 옮긴다.",
-      "summary": "레거시 링크 정합성과 Spring/React 원사이트 흡수를 분리해 진행한다."
-    },
-    {
-      "id": "new-bot-onboarding",
-      "kind": "온보딩",
-      "title": "신규 봇 온보딩",
-      "status": "active",
-      "owner": "manager",
-      "ref": "projects/agent-ops/new-bot-onboarding.md",
-      "eli5": "새 직원은 출근 첫날 규칙책부터 읽는다.",
-      "summary": "봇 기동 시 읽을 순서, 단일 채널, 조직 사칙 요약."
-    },
-    {
-      "id": "audit-policy-steward",
-      "kind": "역할",
-      "title": "aws-audit 정책 Steward 역할",
-      "status": "active",
-      "owner": "aws-audit",
-      "ref": "projects/agent-ops/roles/aws-audit-policy-steward.md",
-      "eli5": "감사봇은 규칙책 사서다. 책을 정리하고 판본을 찍지만 혼자 법을 통과시키지는 못한다.",
-      "summary": "주요 결정 전파, 정책 인덱스 관리, POLICY_SHA 정합성 감사의 standing assignment."
-    },
-    {
-      "id": "eli5-glossary",
-      "kind": "보고",
-      "title": "ELI5 고정 비유 사전",
-      "status": "active",
-      "owner": "manager",
-      "ref": "projects/agent-ops/eli5-glossary.md",
-      "eli5": "어려운 말을 매번 같은 생활 비유로 번역한다.",
-      "summary": "이사님 보고 시 용어를 쉽게 설명하기 위한 공통 비유 사전."
-    },
-    {
-      "id": "gwanje-hub-rest-queue",
-      "kind": "통신",
-      "title": "관제 허브 v1 — 봇간 통신 REST 큐",
-      "status": "active",
-      "owner": "heav_lnx_codex_dev_1_bot",
-      "ref": "projects/agent-ops/gwanje-hub-rest-queue-v1.md",
-      "eli5": "봇들끼리는 이제 택배 기사(REST 큐)를 통해 일을 주고받는다. 중요한 공지는 모두의 책상에 자동으로 올라간다.",
-      "summary": "봇간 지시·보고는 8023 /api/hub/* 큐로 접수. task만 상대 엔진 wake, notice(@all)는 전 봇 문맥 주입(ACK 불필요). 30초 표준 폴러 drain→ack→done/fail, 실패 3회 DLQ, 멱등키(key) 필수. 현황판 http://43.201.34.144/hub"
-    },
-    {
-      "id": "95-comms-first",
-      "kind": "사칙",
-      "status": "active",
-      "owner": "director",
-      "ref": "principles/95-comms-autonomy-rules-v1.md",
-      "title": "95_ 사칙 — 통신 불가 시 통신담당 선문의",
-      "eli5": "전화가 안 되면 아버지 휴대폰이 아니라 먼저 통신사(통신담당)에 물어본다.",
-      "summary": "봇간 통신 실패 시 통신 담당 봇에게 먼저 \"어떻게 시도했고 어디서 막혔는지\"를 물어본 후 조치 요청. 수동 전달은 마지막 수단. 이사님 09-15 지시. 통신담당 봇 미지정 — 매니저 배정 대기."
-    },
-    {
-      "id": "95-speed-autonomy",
-      "kind": "사칙",
-      "status": "active",
-      "owner": "director",
-      "ref": "principles/95-comms-autonomy-rules-v1.md",
-      "title": "95_ 사칙 — 시도 기록은 통신봇 경유",
-      "eli5": "못 연결된 이유는 통신봇 창구로 물어본다. 아버지(이사님) 수동 전달은 임시방편.",
-      "summary": "A봇→B봇 시도 기록과 실패 원인은 통신봇 경유로 해소. 이사님 수동 전달은 반복 표준이 아니라 임시방편. 이사님 09-15 지시."
-    },
-    {
-      "id": "95-org-speed",
-      "kind": "사칙",
-      "status": "active",
-      "owner": "director",
-      "ref": "principles/95-comms-autonomy-rules-v1.md",
-      "title": "95_ 사칙 — 조직 속도 자율",
-      "eli5": "리더가 유일한 관문이면 리더가 쉬는 순간 회사가 멈춘다. 각자 자기 도로로 가고, 관문은 예외 통로.",
-      "summary": "조직 전체 진행 속도가 이사님 개인 전달 속도에 맞춰져선 안 됨. 각 봇은 자기 흐름대로 병행 진행, 통로가 막을 때만 95-1·95-2로 해소. 이사님 09-15 지시."
-    },
-    {
-      "id": "95-report-addr",
-      "kind": "사칙",
-      "status": "active",
-      "owner": "director",
-      "ref": "principles/95-comms-autonomy-rules-v1.md",
-      "title": "95_ 사칙 — 보고 하단에 담당 사이트 주소",
-      "eli5": "편지 끝에 집 주소를 꼭 쓴다. 찾아가려면 주소가 필요하다.",
-      "summary": "모든 마지막 텔레그램 메시지 하단에 자신이 담당하는 사이트 주소(접속 경로)를 함께 답장. 이사님이 별도 검색 없이 바로 접속. 이사님 09-17 지시. 완료·진행 보고 무관 항상 적용."
-    },
-    {
-      "id": "95-plain-report",
-      "kind": "사칙",
-      "status": "active",
-      "owner": "director",
-      "ref": "principles/95-comms-autonomy-rules-v1.md",
-      "title": "95_ 사칙 — 완료보고는 알기쉬운 용어로 첫줄 요약",
-      "eli5": "친구한테 얘기하듯 윗줄에 짧게. 본문 안 읽어도 윗줄만 보면 알아야 한다.",
-      "summary": "봇 보고·공지는 대부분 끝까지 안 읽혀진다. 완료·진행 보고의 첫 줄에 전문용어 없는 알기쉬운 요약 1~2줄 필수(ELI5 비유와 별개). 이사님 09-17 지시. 구성: 쉬운요약 → 본문 → 담당사이트주소(95-4)."
-    }
+ "schema": "policy-index-v1",
+ "version": "2026-09-17.1",
+ "authority": "director",
+ "status": "active",
+ "display": {
+  "primary_home_route": "/policies",
+  "projection_rule": "Home and dashboards are projections. Notes Git remains the source of truth."
+ },
+ "change_policy": {
+  "site_request_is_authoritative": false,
+  "rule": "사이트 변경요청은 초안이다. Notes Git commit+push 전까지 정책 정본이 아니다.",
+  "required_review": "director decision or delegated controller review",
+  "forbidden": [
+   "credential_capture",
+   "silent_policy_change",
+   "retroactive_completion_claim",
+   "state_transition_by_audit",
+   "self_approval"
   ]
+ },
+ "docs": [
+  {
+   "id": "entrypoint-comms-progress-rules",
+   "kind": "사칙",
+   "title": "사칙 — 진입점·정보갱신·폴링·대화·진행보고·개발·조직진화 규칙",
+   "status": "active",
+   "owner": "director",
+   "site": "http://43.201.34.144:8024",
+   "ref": "principles/entrypoint-comms-progress-rules-v1.md",
+   "eli5": "모든 문은 43. 하나. 봇은 스스로 정보를 갱신하고, 폴링은 토큰 0. 대화는 큐시작/큐끝, 보고는 n/20 확인 후 진행. 매 답장엔 모델·컨텍스트·경로·규칙 commit을 붙인다. 개발은 카테고리화·모바일 먼저, 웹은 react-best-practices 스킬로 검수하고, 이사님 말은 티켓이 되고, 나중엔 업무를 CLI/MCP로 바꿔 agentic하게 돌린다.",
+   "summary": "모든 접속은 43.201.34.144 진입·Tailscale 홈 연계. 신규 개발은 홈 연결(1차)→원사이트 흡수(2차) 순 고려. 봇은 관제·사칙·정책센터 주소 대조 후 자기 정보·통신 경로·공통지시를 갱신. 폴링·스케줄링 전량 리스트업 후 부하·토큰 낭비 점검. 대화 규칙: 큐시작/큐끝·긴 답 분할·eli5 부착·표 금지·n/20 확인 후 진행. 자기 보고: 매 답장 모델·컨텍스트 실측, 게이트웨이/API 경로 구분, 숙지 규칙 정본 마지막 commit 명시, 관제 공지·허브 메시지 상시 주시. 개발 규칙: 페이지·선택 항목 카테고리화, 모바일 최적화 기본, Vercel react-best-practices(Claude Code Skill) 사이트별 Claude 선행 설치 후 검수, 발화→요구사항 티켓(JIRA/RELAY)→검증→구현. 조직 진화: 사이트 정합성 구축→업무 CLI/MCP화→agentic 운영. 봇간 통신: 요청·검증·회신·이력은 자동 채널(허브 task·RELAY 티켓·관제방 API)로만 수행. 이력 정본은 티켓 — 관제방 채팅은 알림. 예외: 실측 입증된 채널 장애 시 + 폴러 미설치 봇(gmlnx_zcode·aws512) 한해 중계 잠정 허용. 장애 판정은 당사 봇 독단 금지 — 감사·매니저 재측으로 확정. (09-16 이사님 승인, 감사 소견 근거, 기존 §5·§7 사이 신설 §6 — 기존 §6~§8은 §7~§9로 재번호)"
+  },
+  {
+   "id": "edge-home-entrypoint",
+   "kind": "사칙",
+   "title": "사칙 — AWS Edge 진입점과 홈서버 연계 원칙",
+   "status": "active",
+   "owner": "director",
+   "site": "http://43.201.34.144:8024",
+   "ref": "principles/edge-home-entrypoint-policy.md",
+   "eli5": "손님은 새 정문 43.201.34.144로 들어오고, 안쪽 방은 Tailscale로 홈서버에 연결한다.",
+   "summary": "모든 신규 개발은 43.201.34.144를 진입점으로 삼고, 홈서버 사이트 연결과 Spring/React 원사이트 흡수를 함께 고려한다."
+  },
+  {
+   "id": "git-first",
+   "kind": "사칙",
+   "title": "사칙 — Git 정본과 보고 투영",
+   "status": "active",
+   "owner": "director",
+   "site": "https://github.com/markjang29/notes",
+   "ref": "principles/git-first-project-truth.md",
+   "eli5": "공지판이 아니라 등기부를 먼저 고친다.",
+   "summary": "아이디어·결정·우선순위·검증 현황은 Git commit이 먼저이고, 홈/대시보드는 그 투영이다."
+  },
+  {
+   "id": "audit-watchdog",
+   "kind": "감사",
+   "title": "감사모드 저토큰 와치독 원칙",
+   "status": "active",
+   "owner": "aws-audit",
+   "site": "http://43.201.34.144:8024/bot-dashboard",
+   "ref": "principles/audit-watchdog-foundation.md",
+   "eli5": "검문소가 영수증과 실제 물건을 대조한다.",
+   "summary": "완료·커밋·모델·복구·Git 정합성 주장을 실제 근거와 대조한다."
+  },
+  {
+   "id": "telegram-queue",
+   "kind": "사칙",
+   "title": "사칙 — Telegram 큐 수신·응답 규칙",
+   "status": "active",
+   "owner": "director",
+   "site": "http://43.201.34.144:8023",
+   "ref": "principles/telegram-queue-protocol.md",
+   "eli5": "택배 상자가 여러 개 올 때는 마지막 상자(큐끝)가 오기 전까지 뜯지 않는다.",
+   "summary": "큐시작 이후 큐끝 전까지는 긴 입력을 받기만 하고, 큐끝 뒤에 파일·분할·ELI5 규칙으로 답한다."
+  },
+  {
+   "id": "gwanje-ack",
+   "kind": "사칙",
+   "title": "사칙 — 관제 ACK·상태보고 규칙",
+   "status": "active",
+   "owner": "director",
+   "site": "http://43.201.34.144:8023",
+   "ref": "principles/gwanje-ack-protocol.md",
+   "eli5": "택배를 집은 것과 배송 완료는 다르다. 주소·주의사항·완료 기준을 확인해야 ACK다.",
+   "summary": "ACK 최소 필드, 루틴 폴링 보고 금지, 봇별 POLICY_SHA check-in, 관제 앱 책임 분리."
+  },
+  {
+   "id": "agent-mail",
+   "kind": "작업계약",
+   "title": "Agent Mail 운영 정본",
+   "status": "rollout",
+   "owner": "manager",
+   "site": "http://43.201.34.144:8023",
+   "ref": "projects/agent-ops/README.md",
+   "eli5": "심부름 쪽지에는 보낸 사람·받는 사람·완료 기준이 적혀야 한다.",
+   "summary": "actor identity, mail lifecycle, ACK/verified/closed, direct Telegram intake 기준."
+  },
+  {
+   "id": "task-contract",
+   "kind": "작업지시",
+   "title": "Task Contract v1 — 작업 지시서 7필드",
+   "status": "draft",
+   "owner": "manager",
+   "site": "http://43.201.34.144:8040",
+   "ref": "projects/agent-ops/task-contract-v1.md",
+   "eli5": "일 시키기 전에 주소·완료조건·만질 범위·검사법을 칸에 적는다.",
+   "summary": "repo, 인수조건, 허용 경로, 원천, 테스트, 금지 변경, 산출 형식의 7필드 표준."
+  },
+  {
+   "id": "homeserver-policy-sha",
+   "kind": "이관",
+   "title": "홈서버 이관·통합 종합 설계 v1",
+   "status": "approved-design",
+   "owner": "manager",
+   "site": "http://43.201.34.144:8100",
+   "ref": "projects/agent-ops/homeserver-target-design-v1.md",
+   "eli5": "규칙책 판본 번호를 모든 작업 카드에 찍는다.",
+   "summary": "AWS는 엣지로 축소하고, 홈서버는 같은 Notes HEAD를 POLICY_SHA로 본다."
+  },
+  {
+   "id": "home-policy-sync",
+   "kind": "동기화",
+   "title": "홈/홈서버 정책 투영 동기화 v1",
+   "status": "active",
+   "owner": "aws-audit",
+   "site": "http://43.201.34.144:8024/rules",
+   "ref": "projects/agent-ops/home-policy-sync-v1.md",
+   "eli5": "가게 간판을 옮겨도 메뉴판 원본은 같은 책을 본다.",
+   "summary": "8018 legacy home과 이관 대상 home server가 같은 policy-index와 Notes HEAD를 표시하는 규칙."
+  },
+  {
+   "id": "governance-board",
+   "kind": "관제",
+   "title": "관제 한판 v1 — 정책·봇·ACK·진행 통합",
+   "status": "v0 implemented",
+   "owner": "aws-audit+codex_dev_1",
+   "site": "http://43.201.34.144:8024",
+   "ref": "projects/agent-ops/gwanje-governance-board-v1.md",
+   "eli5": "직원 근무표, 규칙책 판본, 오늘 할 일, 막힌 일을 한 장으로 붙여둔다.",
+   "summary": "8018 /governance, 봇별 모델·맡은일·진행·블로커·POLICY_SHA, 8023 ACK 연동 설계."
+  },
+  {
+   "id": "one-site",
+   "kind": "통합",
+   "title": "원사이트 통합 투트랙 v1",
+   "status": "doing",
+   "owner": "manager",
+   "site": "http://43.201.34.144:8024/sites",
+   "ref": "projects/agent-ops/one-site-consolidation-v1.md",
+   "eli5": "기존 가게는 영업하면서, 새 백화점으로 코너를 하나씩 옮긴다.",
+   "summary": "레거시 링크 정합성과 Spring/React 원사이트 흡수를 분리해 진행한다."
+  },
+  {
+   "id": "new-bot-onboarding",
+   "kind": "온보딩",
+   "title": "신규 봇 온보딩",
+   "status": "active",
+   "owner": "manager",
+   "site": "https://github.com/markjang29/notes",
+   "ref": "projects/agent-ops/new-bot-onboarding.md",
+   "eli5": "새 직원은 출근 첫날 규칙책부터 읽는다.",
+   "summary": "봇 기동 시 읽을 순서, 단일 채널, 조직 사칙 요약."
+  },
+  {
+   "id": "audit-policy-steward",
+   "kind": "역할",
+   "title": "aws-audit 정책 Steward 역할",
+   "status": "active",
+   "owner": "aws-audit",
+   "site": "http://43.201.34.144:8024/rules",
+   "ref": "projects/agent-ops/roles/aws-audit-policy-steward.md",
+   "eli5": "감사봇은 규칙책 사서다. 책을 정리하고 판본을 찍지만 혼자 법을 통과시키지는 못한다.",
+   "summary": "주요 결정 전파, 정책 인덱스 관리, POLICY_SHA 정합성 감사의 standing assignment."
+  },
+  {
+   "id": "eli5-glossary",
+   "kind": "보고",
+   "title": "ELI5 고정 비유 사전",
+   "status": "active",
+   "owner": "manager",
+   "site": "https://github.com/markjang29/notes",
+   "ref": "projects/agent-ops/eli5-glossary.md",
+   "eli5": "어려운 말을 매번 같은 생활 비유로 번역한다.",
+   "summary": "이사님 보고 시 용어를 쉽게 설명하기 위한 공통 비유 사전."
+  },
+  {
+   "id": "gwanje-hub-rest-queue",
+   "kind": "통신",
+   "title": "관제 허브 v1 — 봇간 통신 REST 큐",
+   "status": "active",
+   "owner": "heav_lnx_codex_dev_1_bot",
+   "site": "http://43.201.34.144:8023",
+   "ref": "projects/agent-ops/gwanje-hub-rest-queue-v1.md",
+   "eli5": "봇들끼리는 이제 택배 기사(REST 큐)를 통해 일을 주고받는다. 중요한 공지는 모두의 책상에 자동으로 올라간다.",
+   "summary": "봇간 지시·보고는 8023 /api/hub/* 큐로 접수. task만 상대 엔진 wake, notice(@all)는 전 봇 문맥 주입(ACK 불필요). 30초 표준 폴러 drain→ack→done/fail, 실패 3회 DLQ, 멱등키(key) 필수. 현황판 http://43.201.34.144/hub"
+  },
+  {
+   "id": "95-comms-first",
+   "kind": "사칙",
+   "status": "active",
+   "owner": "director",
+   "site": "http://43.201.34.144:8023",
+   "ref": "principles/95-comms-autonomy-rules-v1.md",
+   "title": "95_ 사칙 — 통신 불가 시 통신담당 선문의",
+   "eli5": "전화가 안 되면 아버지 휴대폰이 아니라 먼저 통신사(통신담당)에 물어본다.",
+   "summary": "봇간 통신 실패 시 통신 담당 봇에게 먼저 \"어떻게 시도했고 어디서 막혔는지\"를 물어본 후 조치 요청. 수동 전달은 마지막 수단. 이사님 09-15 지시. 통신담당 봇 미지정 — 매니저 배정 대기."
+  },
+  {
+   "id": "95-speed-autonomy",
+   "kind": "사칙",
+   "status": "active",
+   "owner": "director",
+   "site": "http://43.201.34.144:8023",
+   "ref": "principles/95-comms-autonomy-rules-v1.md",
+   "title": "95_ 사칙 — 시도 기록은 통신봇 경유",
+   "eli5": "못 연결된 이유는 통신봇 창구로 물어본다. 아버지(이사님) 수동 전달은 임시방편.",
+   "summary": "A봇→B봇 시도 기록과 실패 원인은 통신봇 경유로 해소. 이사님 수동 전달은 반복 표준이 아니라 임시방편. 이사님 09-15 지시."
+  },
+  {
+   "id": "95-org-speed",
+   "kind": "사칙",
+   "status": "active",
+   "owner": "director",
+   "site": "http://43.201.34.144:8023",
+   "ref": "principles/95-comms-autonomy-rules-v1.md",
+   "title": "95_ 사칙 — 조직 속도 자율",
+   "eli5": "리더가 유일한 관문이면 리더가 쉬는 순간 회사가 멈춘다. 각자 자기 도로로 가고, 관문은 예외 통로.",
+   "summary": "조직 전체 진행 속도가 이사님 개인 전달 속도에 맞춰져선 안 됨. 각 봇은 자기 흐름대로 병행 진행, 통로가 막을 때만 95-1·95-2로 해소. 이사님 09-15 지시."
+  },
+  {
+   "id": "95-report-addr",
+   "kind": "사칙",
+   "status": "active",
+   "owner": "director",
+   "site": "http://43.201.34.144:8023",
+   "ref": "principles/95-comms-autonomy-rules-v1.md",
+   "title": "95_ 사칙 — 보고 하단에 담당 사이트 주소",
+   "eli5": "편지 끝에 집 주소를 꼭 쓴다. 찾아가려면 주소가 필요하다.",
+   "summary": "모든 마지막 텔레그램 메시지 하단에 자신이 담당하는 사이트 주소(접속 경로)를 함께 답장. 이사님이 별도 검색 없이 바로 접속. 이사님 09-17 지시. 완료·진행 보고 무관 항상 적용."
+  },
+  {
+   "id": "95-plain-report",
+   "kind": "사칙",
+   "status": "active",
+   "owner": "director",
+   "site": "http://43.201.34.144:8023",
+   "ref": "principles/95-comms-autonomy-rules-v1.md",
+   "title": "95_ 사칙 — 완료보고는 알기쉬운 용어로 첫줄 요약",
+   "eli5": "친구한테 얘기하듯 윗줄에 짧게. 본문 안 읽어도 윗줄만 보면 알아야 한다.",
+   "summary": "봇 보고·공지는 대부분 끝까지 안 읽혀진다. 완료·진행 보고의 첫 줄에 전문용어 없는 알기쉬운 요약 1~2줄 필수(ELI5 비유와 별개). 이사님 09-17 지시. 구성: 쉬운요약 → 본문 → 담당사이트주소(95-4)."
+  }
+ ]
 }
