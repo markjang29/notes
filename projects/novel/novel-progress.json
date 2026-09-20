@@ -1,0 +1,100 @@
+{
+  "_readme": "소설 수집·자산화 진행 원장 (공개 미러) — 8024 /novel 현황판(NovelPageController)이 읽는 데이터 소스. 정본은 scenario 비공개 repo novel_assets/novel-progress.json이며 소설수집 봇이 v주기마다 이곳에 미러 커밋한다. 모든 숫자는 전수심독·체크포인트 실측치.",
+  "updated": "2026-09-14",
+  "pipeline": "원천 데이터 → NAI 이미지 → 리수 검증 → 자산 승인 → 매트릭스 코어 (1단계: 수집·자산화)",
+  "token": {
+    "weekly_budget": null,
+    "note": "주간 예산 미고정. 사용량은 8024가 프록시 로그(zai-fallback-proxy.log REQ-SUMMARY)에서 집계해 표시한다. 예산을 정하면 이 값을 숫자로 바꾼다 — 현황판의 잔여·소진 예상일이 활성화된다."
+  },
+  "works": [
+    {
+      "id": "earth-style-savior",
+      "title": "지구식 구원자",
+      "total_chapters": 368,
+      "chapters_read": 96,
+      "stage": "v4",
+      "stage_date": "2026-09-14",
+      "unread_blocks": [
+        "29~49",
+        "53~75",
+        "81~242",
+        "276~278",
+        "284~292",
+        "311~365"
+      ],
+      "next_candidates": [
+        "29~49화",
+        "53~75화",
+        "81~242화 (162화 최대 블록 — '붉은색' 수수께끼 회수 유망)",
+        "276~278·284~292화 (난양 결전)",
+        "311~365화"
+      ],
+      "capsules": 9,
+      "components": 16,
+      "chains": 10,
+      "deepread_files_cum": 15,
+      "volume_history": [
+        {
+          "stage": "v1",
+          "date": "2026-09-12",
+          "chapters_read_cum": null,
+          "deepread_files_cum": 2,
+          "capsules": 5,
+          "components": 6,
+          "chains": 6
+        },
+        {
+          "stage": "v2",
+          "date": "2026-09-14",
+          "chapters_read_cum": 20,
+          "deepread_files_cum": 5,
+          "capsules": 7,
+          "components": 9,
+          "chains": 8
+        },
+        {
+          "stage": "v3",
+          "date": "2026-09-14",
+          "chapters_read_cum": 38,
+          "deepread_files_cum": 10,
+          "capsules": 8,
+          "components": 12,
+          "chains": 9
+        },
+        {
+          "stage": "v4",
+          "date": "2026-09-14",
+          "chapters_read_cum": 96,
+          "deepread_files_cum": 15,
+          "capsules": 9,
+          "components": 16,
+          "chains": 10
+        }
+      ]
+    },
+    {
+      "id": "van-gogh-reborn",
+      "title": "다시 태어난 반 고흐",
+      "total_chapters": null,
+      "chapters_read": null,
+      "stage": "v1 완결 자산화 (7항 완결)",
+      "stage_date": "2026-09-12",
+      "capsules": 6,
+      "components": 6,
+      "chains": 12,
+      "deepread_files_cum": null
+    },
+    {
+      "id": "idol-survivor-pd",
+      "title": "망나니 PD 아이돌로 살아남기",
+      "total_chapters": 487,
+      "chapters_read": null,
+      "stage": "v1 표본",
+      "stage_date": "2026-09-12",
+      "capsules": 5,
+      "components": 6,
+      "chains": 8,
+      "deepread_files_cum": null
+    }
+  ]
+}
