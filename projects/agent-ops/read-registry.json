@@ -1,76 +1,84 @@
 {
-  "_readme": "공지 숙지 대장 (read-registry). 각 봇은 공지를 실제로 정독한 뒤에만 confirmations에 자기 항목을 git commit으로 추가한다. 규칙: (1) 실제 읽은 공지만 등록 — 거짓 등록 금지. (2) evidence 필드에 본문에서 확인한 내용 한 줄(요약 또는 인용) 반드시 기입 — 근거 없는 등록은 감사 담당(heav_lnx_audit_bot)이 무효 처리한다. (3) read_at은 KST, model·commit은 응답 필수 항목 규격 그대로. (4) 등록은 서비스 미사용 새벽 시간(00~06시 KST)에 1회 하거나 이사님 요청 시 즉시 동기화한다 — 빈번한 반복 등록 금지. (5) 조회는 이 파일 + git log(등록 커밋 시각) + 허브 review 집계로 한다.",
-  "_schema": {
-    "_desc": "confirmations[] 항목 필드 규격 — 숙지 현황판(8024 /readcheck)이 이 필드명으로 읽는다. 다른 필드명은 무시됨.",
-    "bot": "내 봇 아이디 (예: heav_gmwin_claude_bot)",
-    "notice_key": "notices[].key 값 그대로 (예: org-charter-v1-notice-20260910)",
-    "read_at": "실독 완료 시각 KST (예: 2026-09-12T03:20+09:00)",
-    "evidence": "본문에서 확인한 내용 한 줄(요약 또는 짧은 인용) — 필수, 없으면 감사 시 무효",
-    "model": "응답 필수 항목 규격의 모델명 (예: glm-4.7)",
-    "commit": "내 응답 정본 커밋 해시 (예: 54573d6)"
+ "_readme": "공지 숙지 대장 (read-registry). 각 봇은 공지를 실제로 정독한 뒤에만 confirmations에 자기 항목을 git commit으로 추가한다. 규칙: (1) 실제 읽은 공지만 등록 — 거짓 등록 금지. (2) evidence 필드에 본문에서 확인한 내용 한 줄(요약 또는 인용) 반드시 기입 — 근거 없는 등록은 감사 담당(heav_lnx_audit_bot)이 무효 처리한다. (3) read_at은 KST, model·commit은 응답 필수 항목 규격 그대로. (4) 등록은 서비스 미사용 새벽 시간(00~06시 KST)에 1회 하거나 이사님 요청 시 즉시 동기화한다 — 빈번한 반복 등록 금지. (5) 조회는 이 파일 + git log(등록 커밋 시각) + 허브 review 집계로 한다.",
+ "_schema": {
+  "_desc": "confirmations[] 항목 필드 규격 — 숙지 현황판(8024 /readcheck)이 이 필드명으로 읽는다. 다른 필드명은 무시됨.",
+  "bot": "내 봇 아이디 (예: heav_gmwin_claude_bot)",
+  "notice_key": "notices[].key 값 그대로 (예: org-charter-v1-notice-20260910)",
+  "read_at": "실독 완료 시각 KST (예: 2026-09-12T03:20+09:00)",
+  "evidence": "본문에서 확인한 내용 한 줄(요약 또는 짧은 인용) — 필수, 없으면 감사 시 무효",
+  "model": "응답 필수 항목 규격의 모델명 (예: glm-4.7)",
+  "commit": "내 응답 정본 커밋 해시 (예: 54573d6)"
+ },
+ "notices": [
+  {
+   "key": "org-charter-v1-notice-20260910",
+   "hub_id": "m1a08bd7f39b47baa7",
+   "title": "조직 헌장 v1 시행",
+   "doc": "projects/agent-ops/org-charter-v1.md",
+   "doc_commit": "54573d6"
   },
-  "notices": [
-    {
-      "key": "org-charter-v1-notice-20260910",
-      "hub_id": "m1a08bd7f39b47baa7",
-      "title": "조직 헌장 v1 시행",
-      "doc": "projects/agent-ops/org-charter-v1.md",
-      "doc_commit": "54573d6"
-    },
-    {
-      "key": "org-notice-20260911-pipeline-readcheck",
-      "hub_id": "m1a08d9f737c02b93c",
-      "title": "아카 수집 파이프라인 인계 + 공지 숙지 확인제 시행",
-      "doc": "projects/agent-ops/arca-pipeline-handover-v1.md",
-      "doc_commit": "발행 커밋과 동일"
-    },
-    {
-      "key": "org-notice-20260912-director-correction",
-      "hub_id": "m1a093858c38bb5ecf",
-      "title": "정정 공지 — AWS 8GB stop+disable/EC2 stop 게이트 · Edge 유지 · child mail→개별 작업지시",
-      "doc": "projects/agent-ops/relay/tickets/MATRIX-P0-OWN-01/director-correction-2026-09-12.md",
-      "doc_commit": "3795c1b"
-    },
-    {
-      "key": "relay-65-ai-dev-improvements-20260916",
-      "hub_id": "1789548403089",
-      "title": "RELAY-65 AI 개발 개선사항 6건 전사 적용",
-      "doc": "projects/agent-ops/relay/requirements/ai-dev-improvements-2026-09-16.md",
-      "doc_commit": "a9da361b113d"
-    }
-  ],
-  "confirmations": [
-    {
-      "bot": "heav_lnx_bot",
-      "notice_key": "org-charter-v1-notice-20260910",
-      "read_at": "2026-09-11T20:55+09:00",
-      "evidence": "§0 공식 주소(넥서스·H8·사이트맵 모두 43.201.34.144) · §2-1 원사이트 통합 강제(별도 웹+링크 구조 금지) · §3 통합 대상 repo markjang29/matrix-home · §4 COMMIT→소나큐브→패키징→Release→FULL TEST, CUA 테스트",
-      "model": "glm-5.3-flash",
-      "commit": ""
-    },
-    {
-      "bot": "heav_lnx_bot",
-      "notice_key": "org-notice-20260911-pipeline-readcheck",
-      "read_at": "2026-09-11T20:56+09:00",
-      "evidence": "arca 5단계(HTML수집→다운로드→디코딩→transform→push) · 표시명≠내부값(AI봇=자작봇) · 딜레이 0.8초+·병렬·asyncio 금지 · 남은 작업 4건(2130개 캡슐화·NDJSON push·mega 21개·gdrive 검증) · 숙지 등록은 실독 후 confirmations에 git commit, evidence 필수",
-      "model": "glm-5.3-flash",
-      "commit": ""
-    },
-    {
-      "bot": "heav_lnx_bot",
-      "notice_key": "org-notice-20260912-director-correction",
-      "read_at": "2026-09-13T00:32+09:00",
-      "evidence": "AWS 8GB는 이관·복구 게이트 확인 직후 서비스 stop+disable 및 EC2 stop 대상, 43.201.34.144 Edge는 계속 유지, terminate·EBS·snapshot·DB·queue·파일·원천 자산 삭제는 별도 승인 전 금지, child mail은 '개별 작업지시'로 개칭 — 4항 실독",
-      "model": "glm-5.3-flash",
-      "commit": ""
-    },
-    {
-      "bot": "heav_lnx_bot",
-      "notice_key": "relay-65-ai-dev-improvements-20260916",
-      "read_at": "2026-09-16T17:46+09:00",
-      "evidence": "Swagger-first(데이터모델→OpenAPI→목업)·CI게이트 통과 없이 병합·배포 금지·안티패턴 5항목 — 정본 §2·§5·§6 실독 확인",
-      "model": "glm-5.3-flash",
-      "commit": "a9da361b113d"
-    }
-  ]
+  {
+   "key": "org-notice-20260911-pipeline-readcheck",
+   "hub_id": "m1a08d9f737c02b93c",
+   "title": "아카 수집 파이프라인 인계 + 공지 숙지 확인제 시행",
+   "doc": "projects/agent-ops/arca-pipeline-handover-v1.md",
+   "doc_commit": "발행 커밋과 동일"
+  },
+  {
+   "key": "org-notice-20260912-director-correction",
+   "hub_id": "m1a093858c38bb5ecf",
+   "title": "정정 공지 — AWS 8GB stop+disable/EC2 stop 게이트 · Edge 유지 · child mail→개별 작업지시",
+   "doc": "projects/agent-ops/relay/tickets/MATRIX-P0-OWN-01/director-correction-2026-09-12.md",
+   "doc_commit": "3795c1b"
+  },
+  {
+   "key": "relay-65-ai-dev-improvements-20260916",
+   "hub_id": "1789548403089",
+   "title": "RELAY-65 AI 개발 개선사항 6건 전사 적용",
+   "doc": "projects/agent-ops/relay/requirements/ai-dev-improvements-2026-09-16.md",
+   "doc_commit": "a9da361b113d"
+  }
+ ],
+ "confirmations": [
+  {
+   "bot": "heav_lnx_bot",
+   "notice_key": "org-charter-v1-notice-20260910",
+   "read_at": "2026-09-11T20:55+09:00",
+   "evidence": "§0 공식 주소(넥서스·H8·사이트맵 모두 43.201.34.144) · §2-1 원사이트 통합 강제(별도 웹+링크 구조 금지) · §3 통합 대상 repo markjang29/matrix-home · §4 COMMIT→소나큐브→패키징→Release→FULL TEST, CUA 테스트",
+   "model": "glm-5.3-flash",
+   "commit": ""
+  },
+  {
+   "bot": "heav_lnx_bot",
+   "notice_key": "org-notice-20260911-pipeline-readcheck",
+   "read_at": "2026-09-11T20:56+09:00",
+   "evidence": "arca 5단계(HTML수집→다운로드→디코딩→transform→push) · 표시명≠내부값(AI봇=자작봇) · 딜레이 0.8초+·병렬·asyncio 금지 · 남은 작업 4건(2130개 캡슐화·NDJSON push·mega 21개·gdrive 검증) · 숙지 등록은 실독 후 confirmations에 git commit, evidence 필수",
+   "model": "glm-5.3-flash",
+   "commit": ""
+  },
+  {
+   "bot": "heav_lnx_bot",
+   "notice_key": "org-notice-20260912-director-correction",
+   "read_at": "2026-09-13T00:32+09:00",
+   "evidence": "AWS 8GB는 이관·복구 게이트 확인 직후 서비스 stop+disable 및 EC2 stop 대상, 43.201.34.144 Edge는 계속 유지, terminate·EBS·snapshot·DB·queue·파일·원천 자산 삭제는 별도 승인 전 금지, child mail은 '개별 작업지시'로 개칭 — 4항 실독",
+   "model": "glm-5.3-flash",
+   "commit": ""
+  },
+  {
+   "bot": "heav_lnx_bot",
+   "notice_key": "relay-65-ai-dev-improvements-20260916",
+   "read_at": "2026-09-16T17:46+09:00",
+   "evidence": "Swagger-first(데이터모델→OpenAPI→목업)·CI게이트 통과 없이 병합·배포 금지·안티패턴 5항목 — 정본 §2·§5·§6 실독 확인",
+   "model": "glm-5.3-flash",
+   "commit": "a9da361b113d"
+  },
+  {
+   "bot": "heav_lnx_asset_agent_bot",
+   "notice_key": "relay-65-ai-dev-improvements-20260916",
+   "read_at": "2026-09-21T00:26+09:00",
+   "evidence": "§2 Swagger-first(데이터모델→OpenAPI→백엔드목업) · §5 CI게이트 통과 없이 병합·배포 금지 · §6 안티패턴 5항목(스펙없이 코딩·4개 불일치·테스트 없이 병합·silent 구현·완료 발명) — §0~§7 실독 확인",
+   "model": "glm-5.3-flash",
+   "commit": "a9da361b113d"
+  }
+ ]
 }
