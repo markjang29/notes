@@ -1,7 +1,7 @@
 {
   "schema": "bot-roster-v2",
   "authority": "봇 기준정보 유일 원장 (이사님 09-03 지시 — 매니저 배정, heav_lnx_zcode_bot 구현 / 09-14 이사님 확정 명단 반영)",
-  "rule": "status=deleted면 회의방(server.py)·대시보드(8025) 양쪽에서 즉시 제외된다. 회의방은 요청마다 파일 mtime 재조회라 재시작 불요. profiles.jsonl(projects/bot-dashboard)은 프로필 상세로 별도 유지. v2 필드: seq(이사님 명단 번호), role(이사님 명단 원문 표기 — 웹 인사 원장의 공식 표기명), telegram_id(텔레그램 숫자 ID). display는 회의방·대시보드 표기(같은 이사님 명단의 축약명 — 09-14 조사 담당 갱신분 유지). 역할·이름 변경은 이 파일 git commit으로만 하며, 웹(/insa/)은 60초 캐시로 원천을 다시 읽어 최대 5분 이내 반영된다. status=unused는 미사용(참고 표시)이며 deleted와 달리 제외를 뜻하지 않는다.",
+  "rule": "status=deleted면 회의방(server.py)·대시보드(8024/bot-dashboard — 09-20 전환, 구 8025 파이썬 종료) 양쪽에서 즉시 제외된다. 회의방은 요청마다 파일 mtime 재조회라 재시작 불요. profiles.jsonl(projects/bot-dashboard)은 프로필 상세로 별도 유지. v2 필드: seq(이사님 명단 번호), role(이사님 명단 원문 표기 — 웹 인사 원장의 공식 표기명), telegram_id(텔레그램 숫자 ID). display는 회의방·대시보드 표기(같은 이사님 명단의 축약명 — 09-14 조사 담당 갱신분 유지). 역할·이름 변경은 이 파일 git commit으로만 하며, 웹(/insa/)은 60초 캐시로 원천을 다시 읽어 최대 5분 이내 반영된다. status=unused는 미사용(참고 표시)이며 deleted와 달리 제외를 뜻하지 않는다.",
   "updated_at": "2026-09-17",
   "update_note": "2026-09-14 (1) 조사 담당: 이사님 09-14 봇 리스트(18봇) 반영 — display 역할번호 명칭 갱신, 신규 2기(heav_aws512_bot·heav_gmlnx_zcode_bot) 추가, aws512 사이트 키 신설. (2) 인사 heav_gmwin_claude_bot: v2 승격 — seq·role(명단 원문)·telegram_id 신설, heav_lnx_zcode_bot status=unused 전환, 웹 /insa/ 원장·누가봇 원장 연동.",
   "sites": {
