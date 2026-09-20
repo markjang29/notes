@@ -1,7 +1,7 @@
 {
   "schema": "report-addresses-v1",
   "rule_id": "95-report-addr",
-  "updated": "2026-09-18",
+  "updated": "2026-09-20",
   "source": "이사님 09-18 지시 \"8024/rules 읽고 담당사이트 박아\" — 95-4-a 원장 신설",
   "rows": [
     {
@@ -48,6 +48,11 @@
       "actor": "windows-codex",
       "address": "http://43.201.34.144:8018",
       "note": "관제 홈(matrix-home)"
+    },
+    {
+      "actor": "gmwin-claude",
+      "address": "http://43.201.34.144/insa/",
+      "note": "인사 명단 원장 + 누가봇(whois) — heav_gmwin_claude_bot · 공지 ACK 보드 http://43.201.34.144/insa/ack"
     }
   ]
 }
