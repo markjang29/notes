@@ -139,9 +139,12 @@ rawdata (원천)            ─ 아카 글·소설·이미지 · asset_ledger.js
 - 데이터 원천: asset_ledger.jsonl · 리수 DB(export) · rs-ledger.jsonl — 신규 원장 최소화,
   기존 원장 연결 우선.
 
-## 8. 다음 액션 (초안 승인 시)
+## 8. 시행 기록 (2026-09-20 승인 즉시 시행)
 
-1. `~/risu/loadset/` 골격 + rs-ledger.jsonl 생성
-2. 라이프 모듈·올인원 모듈에 토글 면(customModuleToggle) 정의 부트스트랩
-3. apply_loadset.cjs + 정합성 사전검사 스크립트(E2E: 기존 임포트 경로 재사용)
-4. 기존 라그나로크 카드로 1개 로드셋 파일럿 → 장바구니 → 3회 검증 → 승인 플로우 실증
+1. ✅ `~/risu/loadset/` 골격 + rs-ledger.jsonl 생성 — tools/ledger-append.sh 원장 기록기 포함
+2. ✅ duradev 8모듈 WSL 리수 이식 + 라이프 모듈 토글면 11키(living_world·scene_tracker·정사·sex·
+   출력·인풋처리·인칭 등, 트리거 lua 실측값 기준 기본값)·올인원 모듈 cot 키 부트스트랩 완료
+3. ✅ tools/apply_loadset.cjs(부착 4지점+토글값 주입) · tools/validate_loadset.cjs(G1~G4 게이트) 완성
+4. 파일럿 rs-l-ragna-base-001: G1~G4 통과(G4에서 그림체1/2 동시활성 레극스 충돌 4건 발견 → 그림체1
+   단독으로 교정 — 게이트가 실제 결함을 잡아낸 사례) → 장바구니 staged → 적용 완료, 재export 대조로
+   부착 4지점·토글 8키 일치 확인. **잔여: 5단계 3회 채팅 검증은 리수에 LLM API 키 등록 후 실행**
