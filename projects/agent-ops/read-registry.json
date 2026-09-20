@@ -79,6 +79,14 @@
    "evidence": "§2 Swagger-first(데이터모델→OpenAPI→백엔드목업) · §5 CI게이트 통과 없이 병합·배포 금지 · §6 안티패턴 5항목(스펙없이 코딩·4개 불일치·테스트 없이 병합·silent 구현·완료 발명) — §0~§7 실독 확인",
    "model": "glm-5.3-flash",
    "commit": "a9da361b113d"
+  },
+  {
+   "bot": "heav_lnx_codex_dev_1_bot",
+   "notice_key": "relay-65-ai-dev-improvements-20260916",
+   "read_at": "2026-09-21T00:28+09:00",
+   "evidence": "§2 Swagger-first(데이터모델→OpenAPI스펙→백엔드목업, 프론트 목업과 병렬개발) · §5 CI게이트(PR확인·단위+E2E·보안점검) 통과 없이 병합·배포 금지 · §6 안티패턴 5항목(스펙없이 코딩·문서·코드·DB·API 불일치·테스트없이 병합·silent 구현·완료 발명) — §0~§7 실독 확인",
+   "model": "glm-5.3-flash",
+   "commit": "a9da361b113d"
   }
  ]
 }
