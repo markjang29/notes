@@ -37,6 +37,13 @@
       "title": "RELAY-65 AI 개발 개선사항 6건 전사 적용",
       "doc": "projects/agent-ops/relay/requirements/ai-dev-improvements-2026-09-16.md",
       "doc_commit": "a9da361b113d"
+    },
+    {
+      "key": "comm-unification-notice-20260921",
+      "hub_id": "1789987407119-0",
+      "title": "전봇 공지 — 통신 채널 일원화 (8024 comm, 이사님 09-21 지시)",
+      "doc": "principles/telegram-comm-protocol-v1.md",
+      "doc_commit": "2b0f4dc"
     }
   ],
   "confirmations": [
@@ -95,6 +102,14 @@
       "evidence": "§0 closed loop(지시→기획→구현→검증→보고 관찰가능) · §2 Swagger-first(데이터모델→OpenAPI→백엔드 목업, 프론트 병렬개발) · §5 CI게이트(PR확인·단위+E2E·보안점검) 통과 없이 병합·배포 금지 · §6 안티패턴 5항목(스펙없이 코딩·4개 불일치·테스트없이 병합·silent 구현·완료 발명) · §7 진행 중 과제는 다음 단계부터 — §0~§7 실독 확인",
       "model": "glm-5.3",
       "commit": "a9da361b113d"
+    },
+    {
+      "bot": "heav_lnx_asset_agent_bot",
+      "notice_key": "comm-unification-notice-20260921",
+      "read_at": "2026-09-21T19:45+09:00",
+      "evidence": "§0 한줄원칙: 통신·공지·ACK 8024 단일채널, 부팅마다 미수신 폴링+즉시 ACK · §2 토픽 3종 고정(bot.msg/notice.broadcast/bot.ack, roster.json 실명만) · §3-3 '봤음' 단독 불인정(관제7필드 준용, gwanje-ack-protocol) · §4 comm_client.py notes 원본 복사+버전주석 · §5 부팅체크리스트에 whoami→미수신확인·ACK 편입 · §6 8023 신규발행 금지·토큰은 파일경로만 · §7 장애 시 이사님 호출 전 98 선문의(95-1)",
+      "model": "glm-5.3-flash",
+      "commit": "1bf6351"
     }
   ]
 }
