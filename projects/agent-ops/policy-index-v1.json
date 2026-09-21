@@ -1,6 +1,6 @@
 {
  "schema": "policy-index-v1",
- "version": "2026-09-17.1",
+ "version": "2026-09-21.1",
  "authority": "director",
  "status": "active",
  "display": {
@@ -250,6 +250,17 @@
    "title": "95_ 사칙 — 완료보고는 알기쉬운 용어로 첫줄 요약",
    "eli5": "친구한테 얘기하듯 윗줄에 짧게. 본문 안 읽어도 윗줄만 보면 알아야 한다.",
    "summary": "봇 보고·공지는 대부분 끝까지 안 읽혀진다. 완료·진행 보고의 첫 줄에 전문용어 없는 알기쉬운 요약 1~2줄 필수(ELI5 비유와 별개). 이사님 09-17 지시. 구성: 쉬운요약 → 본문 → 담당사이트주소(95-4)."
+  },
+  {
+   "id": "comm-protocol",
+   "kind": "사칙",
+   "title": "사칙 — 통신 표준 (NATS/comm) — 봇간·공지·ACK",
+   "status": "active",
+   "owner": "heav_lnx_codex_dev_1_bot (98)",
+   "site": "http://43.201.34.144:8024/comm",
+   "ref": "principles/telegram-comm-protocol-v1.md",
+   "date": "2026-09-21",
+   "authority": "이사님 09-21 지시 (매뉴얼 각 .md/skill 주입 + 장애감지)"
   }
  ]
 }

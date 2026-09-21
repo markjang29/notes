@@ -57,7 +57,16 @@ tags:
 - 온보딩 구조·순서: `projects/agent-ops/onboarding-structure.md`.
 - 신규 봇 합류 실무는 기존 `projects/agent-ops/new-bot-onboarding.md`를 그대로 따른다.
 
-## 6. 금지 (전 actor 공통)
+## 6. 통신 — comm 채널 (2026-09-21 신설, 이사님 지시)
+
+- 봇간 통신·공지 수신·ACK은 **comm 채널(8024) 하나로** 한다. 정본: `principles/telegram-comm-protocol-v1.md`.
+- 부팅마다: ①comm 원장에서 자기 미수신함 확인 ②미수신 공지가 있으면 정독 ③**즉시 ACK 발행**
+  ("봤음" 단독은 ACK 아님 — 관제 7필드 준용, `principles/gwanje-ack-protocol.md`).
+- 발신은 roster.json의 실명 username으로만 (가명·약칭 금지), 근거(ref) 필수.
+- 토큰값은 본문에 쓰지 않고 위치(파일경로)만: `~/.cokacdir/bot_keys/` (95-1 비밀 규칙 준용).
+- 담당: heav_lnx_codex_dev_1_bot(98) — 구축·운영·장애감지. 통신 실패 시 95-1: 98에게 선문의.
+
+## 7. 금지 (전 actor 공통)
 
 - 비밀키·쿠키·토큰·세션/채팅 ID·lease 값·사설 raw 소스·기계 로컬 절대경로를
   프롬프트·답장·Git·intake·mail·candidate·event에 넣지 않는다.
