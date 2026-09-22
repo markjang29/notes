@@ -3,7 +3,7 @@
   "authority": "봇 기준정보 유일 원장 (이사님 09-03 지시 — 매니저 배정, heav_lnx_zcode_bot 구현 / 09-14 이사님 확정 명단 반영)",
   "rule": "status=deleted면 회의방(server.py)·대시보드(8024/bot-dashboard — 09-20 전환, 구 8025 파이썬 종료) 양쪽에서 즉시 제외된다. 회의방은 요청마다 파일 mtime 재조회라 재시작 불요. profiles.jsonl(projects/bot-dashboard)은 프로필 상세로 별도 유지. v2 필드: seq(이사님 명단 번호), role(이사님 명단 원문 표기 — 웹 인사 원장의 공식 표기명), telegram_id(텔레그램 숫자 ID). display는 회의방·대시보드 표기(같은 이사님 명단의 축약명 — 09-14 조사 담당 갱신분 유지). 역할·이름 변경은 이 파일 git commit으로만 하며, 웹(/insa/)은 60초 캐시로 원천을 다시 읽어 최대 5분 이내 반영된다. status=unused는 미사용(참고 표시)이며 deleted와 달리 제외를 뜻하지 않는다.",
   "updated_at": "2026-09-21",
-  "update_note": "2026-09-21 (2) 인사99: 홈서버(duradev·awslnx) 9종 모델 반영 — 매니저 허브 회신(model-survey-0921-05-reply, 실측 09-20 15:2x UTC) 기준. claude CLI 8종(매니저·RPG·시나리오·감사·자산에이전트·아케이드·소설수집·dev1)=glm-5.3-flash(api.llmgateway.io), zcode 1종=zai-plan/glm-5.3-flash(api.z.ai, config 원값은 런타임 env로 덮어씀). codex 사용 봇 없음. 2026-09-21 (1) 인사99: 봇별 사용 모델(model) 필드 신설 — gmwin 3종 실측 반영(99 클로드 glm-5.3, 97 코덱스 glm-5.3, 04 zcode glm-5.3-flash). firewin·awslnx·gmlnx 등 타 사이트는 각 기기 조사 후 추가 예정. 2026-09-14 (1) 조사 담당: 이사님 09-14 봇 리스트(18봇) 반영 — display 역할번호 명칭 갱신, 신규 2기(heav_aws512_bot·heav_gmlnx_zcode_bot) 추가, aws512 사이트 키 신설. (2) 인사 heav_gmwin_claude_bot: v2 승격 — seq·role(명단 원문)·telegram_id 신설, heav_lnx_zcode_bot status=unused 전환, 웹 /insa/ 원장·누가봇 원장 연동.",
+  "update_note": "2026-09-22: heav_aws512_bot 행 갱신 — 회의방 미등록 해소(8023 폐지예정·comm 명부로 일원화), 모델/프로바이더 자기보고 반영(z.ai 직결·릴레이 8788 — 홈서버 노트의 LMM Gateway는 duradev·awslnx 봇 기준으로 불일치 아님). ",
   "sites": {
     "awslnx": "AWS 리눅스",
     "firewin": "firewin (N100)",
@@ -21,7 +21,9 @@
       "display": "00_aws512",
       "site": "aws512",
       "status": "active",
-      "note": "09-14 명단 신규 등재 — 회의방(8023) 명부에는 미등록, 매핑 대조 필요"
+      "note": "09-14 명단 신규 등재 — 09-22 매핑 대조 완료(98): 8023 회의방 명부는 4단계 폐지 예정이라 미등록 무해, comm 채널(8024) 명부=roster로 일원화. 모델·프로바이더는 본봇 자기보고(§8) 반영.",
+      "model": "glm-5.3-flash",
+      "provider": "z.ai API (로컬 릴레이 8787/8788 경유 — 본봇 자기보고 09-21, LMM Gateway 아님)"
     },
     {
       "seq": "00",
