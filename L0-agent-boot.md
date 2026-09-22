@@ -51,6 +51,17 @@ tags:
 5. `work-queue.md`
 6. 필요 시 세부 문서
 
+## 3.5. comm 수신 (부팅마다 — 2026-09-21, 사칙 principles/telegram-comm-protocol-v1.md §5)
+
+읽기 순서 1~2번 사이에 **반드시** 수행한다. 통신은 8024 comm 채널 하나 (8023 신규발행 금지, §6 통신·L0-agent-common §6).
+
+1. 미수신 확인: `curl -s "http://43.201.34.144:8024/api/nats/whoami?bot=<내_username>"`
+   → `pending`에 건이 있으면 아래로. 빈 배열이면 통신 절차 끝(본업 착수).
+2. 수령: `curl -s "http://43.201.34.144:8024/api/nats/inbox?bot=<내_username>"` — 공지·지시·타봇 메시지를 읽는다.
+3. 즉시 ACK: `curl -s -X POST "http://43.201.34.144:8024/api/nats/ack" -H "Content-Type: application/json" -d '{"from":"<내_username>","msg_id":"<받은id>","note":"<무엇을 이해했는지·acknowledged|blocked>"}'`
+   — "봤음" 단독은 ACK 아님. `pending` 0건이면 발신 생략 가능.
+4. 송신·상세 규약: 사칙 §3. 토큰은 파일경로만 기재(§6) — 현재 1단계는 무토큰 가동.
+
 ## 4. 보존 원칙
 
 중요 정보는 해당 프로젝트 Git 또는 Notes Git에 commit·push하여 보존한다.
