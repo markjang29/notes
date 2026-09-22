@@ -58,6 +58,10 @@
       "actor": "gmwin-claude",
       "address": "http://43.201.34.144/insa/",
       "note": "인사 명단 원장 + 누가봇(whois) — heav_gmwin_claude_bot · 공지 ACK 보드 http://43.201.34.144/insa/ack"
+    },
+    {
+      "actor": "gmwin-zcode",
+      "address": "http://43.201.34.144/drawing/"
     }
   ]
 }
