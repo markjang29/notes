@@ -2,7 +2,7 @@
   "schema": "bot-roster-v2",
   "authority": "봇 기준정보 유일 원장 (이사님 09-03 지시 — 매니저 배정, heav_lnx_zcode_bot 구현 / 09-14 이사님 확정 명단 반영)",
   "rule": "status=deleted면 회의방(server.py)·대시보드(8024/bot-dashboard — 09-20 전환, 구 8025 파이썬 종료) 양쪽에서 즉시 제외된다. 회의방은 요청마다 파일 mtime 재조회라 재시작 불요. profiles.jsonl(projects/bot-dashboard)은 프로필 상세로 별도 유지. v2 필드: seq(이사님 명단 번호), role(이사님 명단 원문 표기 — 웹 인사 원장의 공식 표기명), telegram_id(텔레그램 숫자 ID). display는 회의방·대시보드 표기(같은 이사님 명단의 축약명 — 09-14 조사 담당 갱신분 유지). 역할·이름 변경은 이 파일 git commit으로만 하며, 웹(/insa/)은 60초 캐시로 원천을 다시 읽어 최대 5분 이내 반영된다. status=unused는 미사용(참고 표시)이며 deleted와 달리 제외를 뜻하지 않는다.",
-  "updated_at": "2026-09-21",
+  "updated_at": "2026-09-23",
   "update_note": "2026-09-22: heav_aws512_bot 행 갱신 — 회의방 미등록 해소(8023 폐지예정·comm 명부로 일원화), 모델/프로바이더 자기보고 반영(z.ai 직결·릴레이 8788 — 홈서버 노트의 LMM Gateway는 duradev·awslnx 봇 기준으로 불일치 아님). ",
   "sites": {
     "awslnx": "AWS 리눅스",
@@ -215,6 +215,18 @@
       "site": "awslnx",
       "status": "deleted",
       "note": "삭제됨(이사님 09-03: 수차례 자기 문제 확인 지시 불응) — 회의방 명부 제거 동기화 완료(a13ef25)"
+    },
+    {
+      "seq": "",
+      "role": "[WSL] devpass (이사님 09-23 asus대체 지정 — seq·TG id는 자기보고 후 확정)",
+      "username": "heav_gmwin_devpass_bot",
+      "telegram_id": "unknown",
+      "display": "devpass",
+      "site": "awslnx",
+      "status": "active",
+      "model": "미확인",
+      "provider": "미확인",
+      "note": "09-23 이사님 멘션으로 부활·8024 whoami 등록 확인. 매니저가 roster 추가(8024 checkBot 400 해소). 실태보고 후 role·site 갱신 예정."
     }
   ],
   "tg_synced_at": "2026-09-17"
