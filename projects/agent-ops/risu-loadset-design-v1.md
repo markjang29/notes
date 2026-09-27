@@ -147,4 +147,11 @@ rawdata (원천)            ─ 아카 글·소설·이미지 · asset_ledger.js
 3. ✅ tools/apply_loadset.cjs(부착 4지점+토글값 주입) · tools/validate_loadset.cjs(G1~G4 게이트) 완성
 4. 파일럿 rs-l-ragna-base-001: G1~G4 통과(G4에서 그림체1/2 동시활성 레극스 충돌 4건 발견 → 그림체1
    단독으로 교정 — 게이트가 실제 결함을 잡아낸 사례) → 장바구니 staged → 적용 완료, 재export 대조로
-   부착 4지점·토글 8키 일치 확인. **잔여: 5단계 3회 채팅 검증은 리수에 LLM API 키 등록 후 실행**
+   부착 4지점·토글 8키 일치 확인.
+5. ✅ LLM 키·접속지 이식(2026-09-28, 09-28 이사님 지시) — duradev(95-1) 리수 DB에서
+   WSL 리수(8013)로 파일간 복사(export→inject→import, 95-1: 키값은 채팅·커밋 본문 미기재).
+   리수의 리버스 프록시는 2필드 구성: **proxyKey(키) + forceReplaceUrl(접속지)** — 접속지는
+   설정UI forceUrl 입력칸에 바인딩됨(v1.9 클라 번들 실측). 이식 필드: apiType=reverse_proxy,
+   proxyKey(49B), forceReplaceUrl, customProxyRequestModel, customAPIFormat, hideApiKey.
+   실측 검증: z.ai anthropic-호환 /v1/messages 호출 → 200, 실응답 수신(glm-5.2).
+   **잔여: 5단계 3회 채팅 검증 — 키 가동 완료로 실행 가능**
