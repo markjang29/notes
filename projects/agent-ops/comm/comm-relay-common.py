@@ -75,7 +75,7 @@ def log(msg):
     try:
         os.makedirs(os.path.dirname(LOGFILE), exist_ok=True)
         with open(LOGFILE, "a") as f:
-            f.write(line + "\\n")
+            f.write(line + "\n")
     except Exception:
         pass
 
