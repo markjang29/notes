@@ -215,7 +215,18 @@ def wake(bot, keyfile, pend):
         log(f"각성 실패({bot}, 백오프 x{2 ** (fails + 1)}): {(r.stdout or '')[:120]} {(r.stderr or '')[:120]}")
         return False
     except Exception as e:
-        log(f"각성 예외({bot}): {e}")
+        # 1차 경로 예외(cokacdir 미존재·timeout 등)도 2차로 폴백 — 이중화 사각지대 제거(부록A1)
+        log(f"각성 1차 예외({bot}) → 2차 폴백: {e}")
+        try:
+            r2 = subprocess.run([COKACDIR, "--prompt", prompt, "--key-file", keyfile],
+                                capture_output=True, timeout=300, text=True)
+            if r2.stdout and r2.stdout.strip():
+                st[bot] = {"waked_at": now, "pend": pend, "fails": 0, "last_note": "ok2"}
+                save_state(st)
+                log(f"각성 성공(2차 --prompt, 1차예외 폴백): {bot} (미수신 {pend}건)")
+                return True
+        except Exception as e2b:
+            log(f"각성 2차 폴백 예외({bot}): {e2b}")
         return False
 
 
