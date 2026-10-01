@@ -153,7 +153,8 @@
       "display": "홈서버zcode",
       "site": "gmlnx",
       "status": "active",
-      "note": "09-14 명단 신규 등재 — 회의방(8023) 원격 명부 누락 확인됨, 매핑 대조 필요"
+      "note": "09-14 명단 신규 등재 — 회의방(8023) 원격 명부 누락 확인됨, 매핑 대조 필요 · wake:false(브리지 구동 — cokacdir 각성키 없음, N3-d 09-10-01)",
+      "wake": false
     },
     {
       "seq": "",

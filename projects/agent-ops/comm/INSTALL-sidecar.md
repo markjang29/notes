@@ -115,3 +115,21 @@ systemctl --user show comm-relay-sidecar -p MainPID --value | xargs -I{} ps -o r
 조용히(무음) 들여다보다가, 안 읽은 편지가 있으면 "지금 확인해!"라고 봇 자기 톨레그램 키로 한 번
 외쳐준다(각성). 외침은 1시간에 한 번, 한 봇씩만 — 아빠(이사님) 채팅 한 곳에만. 사서함 확인
 방법(whoami→inbox→ACK)은 notes 사칭 telegram-comm-protocol-v1.md에 정해져 있다.
+
+## §N3-c firewin/gmwin 배포 (PIPE#60, 2026-10-01 — 커버리지 구멍 폐쇄)
+
+각 사이트 담당봇이 **자기 거점에** 사본을 설치한다 (정본: 이 폴더 comm-relay-common.py, 사본+버전주석 — 95-5).
+
+| 거점 | sidecar.env 핵심값 | 감시대상(site) |
+|---|---|---|
+| firewin (N100 WSL) | SIDECAR_SITE=firewin · SIDECAR_BOT=heav_firebat_claude_bot | firebat 3기 |
+| gmwin (WSL) | SIDECAR_SITE=gmwin · SIDECAR_BOT=heav_gmwin_claude_bot | gmwin 4기 |
+
+절차 (윈도우 WSL 기준):
+1. `~/.config/comm-sidecar/sidecar.env` 작성 (§2 양식 + 위 표값, SIDECAR_KEYDIR=그 거점 봇 키 디렉토리)
+2. 정본을 사본으로: `comm-relay-common.py` 복사 + 첫 줄 버전주석 (거점명·날짜)
+3. 상주: 윈도우 NSSM 또는 WSL cron `@reboot` — 모드 watch
+4. 검증: `tail -f ~/.local/state/comm-relay-<site>.log`에서 "기동 — watch 모드" + 8024 whoami 1회 성공
+5. 완료 보고: 회의방에 "사이드카 가동 · 감시 n봇 · pending 0" — 매니저가 Taiga PIPE#60에 기록
+
+주의: 각성키는 그 거점의 cokacdir 키 디렉토리 기준. 없는 봇은 roster `wake:false` 표기 후 감시 제외(N3-d).

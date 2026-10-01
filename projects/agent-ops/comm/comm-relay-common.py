@@ -67,6 +67,9 @@ LOGFILE = os.environ.get("SIDECAR_LOG", os.path.expanduser(
 STATE = os.environ.get("SIDECAR_STATE", os.path.expanduser(
     "~/.local/state/comm-relay-" + ("awslnx" if MODE == "watch" else BOT) + ".json"))
 COKACDIR = os.environ.get("SIDECAR_COKACDIR", "/usr/local/bin/cokacdir")
+# N3 (PIPE#60, 2026-10-01): 메시지 TTL·각성 지수백오프 — 미ACK 공지 영구루프·스킴 스팸 방지
+MSG_TTL_H = int(os.environ.get("SIDECAR_MSG_TTL_H", "72"))     # 미ACK 만료 폐기 시간
+BACKOFF_MAX = int(os.environ.get("SIDECAR_BACKOFF_MAX", "8"))  # 백오프 상한 (COOLDOWN의 배수)
 
 
 def log(msg):
@@ -80,10 +83,23 @@ def log(msg):
         pass
 
 
-def http_json(url):
-    with urllib.request.urlopen(url, timeout=10) as r:
+def http_json(url, method="GET", body=None):
+    data = json.dumps(body).encode() if body is not None else None
+    req = urllib.request.Request(url, data=data, method=method,
+                                 headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=10) as r:
         raw = r.read().decode()
         return json.loads(raw) if raw.strip() else {}
+
+
+def roster_wake_map():
+    """username → roster wake:false 여부 (N3-d: 키 없는 봇 감시 제외 표기)."""
+    try:
+        with open(ROSTER) as f:
+            return {b.get("username", ""): bool(b.get("wake", True))
+                    for b in json.load(f)["bots"]}
+    except Exception:
+        return {}
 
 
 def load_state():
@@ -147,12 +163,18 @@ def pending_count(bot):
 
 
 def wake(bot, keyfile, pend):
-    """각성 — 봇 자기키로 발화 1회. 쿨다운 1시간 (지시 2번: 1회 1봇 순차 + 쿨다운 유지).
+    """각성 — 봇 자기키로 발화 1회. 쿨다운 1시간 + 실패마다 지수백오프(최대 BACKOFF_MAX배, N3-a).
+    스킵 로그는 상태 변화시 1회만 (N3: 주기 반복 스팸 금지).
     cokacdir 응답(status ok)이 각성성공 판정 — 실측: --at은 1m/30m(초단위 미지원, 09-23)."""
     st = load_state()
     now = time.time()
-    if now - st.get(bot, {}).get("waked_at", 0) < COOLDOWN:
-        log(f"각성 쿨다운({bot}) — 스킵")
+    fails = st.get(bot, {}).get("fails", 0)
+    cd = min(COOLDOWN * (2 ** fails), COOLDOWN * BACKOFF_MAX)
+    if now - st.get(bot, {}).get("waked_at", 0) < cd:
+        if st.get(bot, {}).get("last_note") != "cooldown":
+            st[bot] = {**st.get(bot, {}), "last_note": "cooldown"}
+            save_state(st)
+            log(f"각성 대기({bot}) — 백오프 {int(cd // 60)}분 (연속실패 {fails})")
         return False
     prompt = (f"[relay 자동각성] {bot} — comm 사서함 미수신 {pend}건. "
               f"지금 즉시: whoami→inbox→7필드준용ACK (사칭 principles/telegram-comm-protocol-v1.md §3.5·L0). "
@@ -164,11 +186,13 @@ def wake(bot, keyfile, pend):
             capture_output=True, timeout=60, text=True)
         ok = '"status":"ok"' in (r.stdout or "") or '"status": "ok"' in (r.stdout or "")
         if ok:
-            st[bot] = {"waked_at": now, "pend": pend}
+            st[bot] = {"waked_at": now, "pend": pend, "fails": 0, "last_note": "ok"}
             save_state(st)
             log(f"각성 성공: {bot} (미수신 {pend}건, key={os.path.basename(keyfile)[:16]}…)")
         else:
-            log(f"각성 실패({bot}): {(r.stdout or '')[:120]} {(r.stderr or '')[:120]}")
+            st[bot] = {**st.get(bot, {}), "fails": fails + 1, "last_note": "fail"}
+            save_state(st)
+            log(f"각성 실패({bot}, 백오프 x{2 ** (fails + 1)}): {(r.stdout or '')[:120]} {(r.stderr or '')[:120]}")
         return ok
     except Exception as e:
         log(f"각성 예외({bot}): {e}")
@@ -201,22 +225,56 @@ def run_watch():
         tick += 1
 
         debt = {}                                           # 무음감시 — 정상시 로그 0
+        wake_map = roster_wake_map()                        # N3-d: wake:false 표기봇
+        st = load_state()
         for bot in targets:
+            if wake_map.get(bot) is False:
+                continue                                    # roster wake:false — 각성 대상 외 (N3-d)
             n = pending_count(bot)
+            if n > 0:
+                # N3-b: 미ACK 만료(TTL) 메시지 폐기 — 영구 재시도 루프 차단
+                try:
+                    rows = http_json(f"{BASE}/api/nats/messages?to={bot}&limit=200")
+                    fresh = 0
+                    import datetime as _dt
+                    for m in rows:
+                        if str(m.get("ts", "")) < "2000": continue
+                        try:
+                            age_h = (_dt.datetime.now(_dt.timezone.utc)
+                                     - _dt.datetime.fromisoformat(str(m["ts"]).replace("Z", "+00:00"))
+                                     ).total_seconds() / 3600
+                        except Exception:
+                            fresh += 1; continue
+                        if age_h > MSG_TTL_H and not m.get("ackedAt"):
+                            http_json(f"{BASE}/api/nats/ack", "POST",
+                                      {"from": bot, "msg_id": m["id"],
+                                       "note": f"만료 폐기 (TTL {MSG_TTL_H}h, N3-b/PIPE#60) — 재시도 루프 차단"})
+                            log(f"TTL 만료 폐기: {m['id']} → {bot} ({int(age_h)}h경과)")
+                        else:
+                            fresh += 1
+                    n = fresh
+                except Exception:
+                    pass                                    # 폐기 실패 시 기존 카운트 유지
             if n > 0:
                 debt[bot] = n
             time.sleep(0.3)                                 # 8024 부하 최소화
 
+        st = load_state()
         for bot, n in debt.items():                         # 1회 1봇 순차 (지시 3번)
             kf = keyfile_of(bot)
             if not kf:
-                log(f"키 파일 미발견 — 각성 불가: {bot}")
+                if st.get(bot, {}).get("last_note") != "nokey":
+                    st[bot] = {**st.get(bot, {}), "last_note": "nokey"}
+                    save_state(st)
+                    log(f"키 파일 미발견 — 각성 불가: {bot} (roster wake:false 권장 — 이후 침묵)")
                 continue
             wake(bot, kf, n)
             time.sleep(WAKE_GAP)
 
         if debt:
-            log(f"주기종료 — 미수신 {sum(debt.values())}건 / {len(debt)}봇 (mem={mem_mb():.1f}MB)")
+            tot = st.get("_stats", {"wake_ok": 0, "wake_try": 0})
+            rate = (100 * tot["wake_ok"] // tot["wake_try"]) if tot.get("wake_try") else -1
+            log(f"주기종료 — 미수신 {sum(debt.values())}건 / {len(debt)}봇 · 각성성공률 {rate}% ({tot['wake_ok']}/{tot['wake_try']}) (mem={mem_mb():.1f}MB)")
         time.sleep(WATCH_EVERY)
 
 
