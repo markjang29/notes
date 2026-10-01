@@ -60,7 +60,9 @@ tags:
 2. 수령: `curl -s "http://43.201.34.144:8024/api/nats/inbox?bot=<내_username>"` — 공지·지시·타봇 메시지를 읽는다.
 3. 즉시 ACK: `curl -s -X POST "http://43.201.34.144:8024/api/nats/ack" -H "Content-Type: application/json" -d '{"from":"<내_username>","msg_id":"<받은id>","note":"<무엇을 이해했는지·acknowledged|blocked>"}'`
    — "봤음" 단독은 ACK 아님. `pending` 0건이면 발신 생략 가능.
-4. 송신·상세 규약: 사칙 §3. 토큰은 파일경로만 기재(§6) — 현재 1단계는 무토큰 가동.
+4. notes 사본 최신화(pull-on-boot, INFRA#12 D2): `git -C <notes 경로> pull --ff-only`
+   — 부팅마다 1회. 실패(conflict 등)는 무시하고 진행(다음 부팅에 재시도). 정본 notes가 원본이다.
+5. 송신·상세 규약: 사칙 §3. 토큰은 파일경로만 기재(§6) — 현재 1단계는 무토큰 가동.
 
 ## 4. 보존 원칙
 
