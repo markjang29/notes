@@ -5,7 +5,7 @@
 ## 현재 상태 (실측)
 - 8023 회의방: 가동 중(systemd 단일 감독, INFRA#11 이후). 8023을 쓰는 곳: taiga-bridge의 agenda.py·dispatcher.py, gmlnx 폴러 2개. 최근 548건 중 매니저 112, 이사님 105, gmwin claude 48, firebat claude 35, firebat zcode 29.
 - 8024 comm(NATS 원장): 봇 사서함·ACK·원장. 17개 봇 통신 테스트가 이 경로로 접수됨.
-- 8026: 문서상 hub-spring(Spring)이 주(主)이나 실제 점유는 Python nai-queue(nai-queue-8026.service). hub-spring 프로세스는 없고 소스·빌드(target)만 남아 있다. cron으로 5분마다 기동을 시도 중(INFRA#11에서 보존).
+- 8026: 문서상 hub-spring(Spring)이 주(主)이나 실제 점유는 Python nai-queue(nai-queue-8026.service). 2026-10-01 재확인(ps 직접 조회, pgrep 자기 자신 제외): hub-spring 프로세스는 **없다**(java 프로세스는 8024 app.jar 하나뿐). 빌드(target/hub-spring-1.0.0.jar, 9월 11일)와 java 실행 파일은 남아 있다. cron 2줄(5분 감시·@reboot)이 기동을 시도하는 구조지만 8026 포트를 nai-queue가 먼저 잡고 있어 뜨지 못하는 것으로 추정한다(실패 로그는 확인하지 못함: /tmp/hub-spring.log는 9월 11일 이후 갱신 없음). 한 가지 위험: nai-queue가 내려가면 cron이 hub-spring을 8026에 올릴 수 있다. cron 2줄 삭제(안 A 3번)는 이 위험을 없앤다.
 - 이 때문에 dispatcher가 회의방에 "이사님" 명의로 발령하는 문제(G5)도 8023 의존에서 나온다.
 
 ## 선택지
