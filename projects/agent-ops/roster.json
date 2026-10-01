@@ -200,8 +200,8 @@
       "username": "heav_asus_zai_bot",
       "display": "asus_zai",
       "site": "asus",
-      "status": "active",
-      "note": "소재 확인 — 09-14 이사님 명단에는 미기재. 회의방 대기 명부에는 존재. 유지·제외 판정은 이사님"
+      "status": "deleted",
+      "note": "삭제됨(이사님 2026-10-01 확인). 사이드카·점검 대상 제외"
     },
     {
       "username": "heav_lnx_trader_bot",
