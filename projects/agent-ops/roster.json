@@ -82,7 +82,8 @@
       "site": "gmwin",
       "model": "glm-5.3-flash",
       "status": "active",
-      "note": "온보딩 합류 — 합격 판정은 매니저"
+      "note": "온보딩 합류 — 합격 판정은 매니저 · wake:false(cokacdir 각성키 없음 — 사이드카 실측 09-23~10-01 매주기 미발견, N3-d 10-01)",
+      "wake": false
     },
     {
       "seq": "04",
