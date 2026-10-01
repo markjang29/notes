@@ -1,13 +1,19 @@
 {
   "schema": "relay-port-registry-v1",
   "ticket": "RELAY-15",
-  "updated_at": "2026-09-09T09:16:32+09:00",
+  "updated_at": "2026-10-01T21:32:57+09:00",
   "policy": {
     "scan_cron_kst": "10 9 * * *",
     "check": "8000-8099번대 리스닝 포트 스캔 → 프로세스 환경변수 RELAY_TICKET 확인 → 티켓이 없거나 Jira RELAY 프로젝트에 존재하지 않으면 무단 운행으로 승인보드 카드 발행",
     "requirement": "신규 서버 기동 시 systemd 유닛 Environment= 또는 EnvironmentFile=에 RELAY_TICKET=<RELAY-n>을 반드시 포함할 것 (이사님 2026-08-20 결정, RELAY-15)"
   },
   "registered": [
+    {
+      "port": 8002,
+      "service": "autotrader-8002.service (user) — Streamlit autotrader 대시보드",
+      "ticket": null,
+      "note": "사후등록 2026-10-01(감사 CODEX, INFRA#17 A6): ss 실측 0.0.0.0:8002 LISTEN(pid 2847023, streamlit dashboard.py). RELAY_TICKET 미주입, 대장 누락. 폐기 아닌 가동 확인 — 티켓 배정은 이사님/매니저 판정 보류(null)."
+    },
     {
       "port": 8003,
       "service": "scenario-generator.service",
@@ -139,6 +145,36 @@
       "service": "nai-queue 발행 갤러리 (8026과 동일 프로세스 — tailnet 전용 바인드 100.81.50.115:8027)",
       "ticket": null,
       "note": "사후등록 2026-09-08(카드 req-20260908091001-d77343): nai-queue 갤러리 엔드포인트 — 이사님이 발행 이미지를 직접 보는 창(server.py 주석). 테일스케일 IP 전용 바인드라 127.0.0.1 루프백 감사에서 응답 없음으로 보일 수 있음(설계상 의도). 8026과 동일 티켓 미발급 — 결정 대기."
+    },
+    {
+      "port": 8030,
+      "service": "matrix-nexus-8030.service (user) — Matrix Nexus (uvicorn, Tailscale 100.109.91.0 바인드)",
+      "ticket": "RELAY-58",
+      "note": "사후등록 2026-10-01(감사 CODEX, INFRA#17 A6): ss 실측 100.109.91.0:8030 LISTEN(pid 1094, uvicorn app.main:app). 프로세스 env RELAY_TICKET=RELAY-58 실측 + matrix-nexus/README.md RELAY-58 표기 일치. 테일스케일 전용 바인드(8027 선례와 동일 설계)라 루프백 감사 응답 없음은 의도."
+    },
+    {
+      "port": 8040,
+      "service": "Taiga API (taiga unified) — 0.0.0.0:8040, 유저권한으로 프로세스 미확인",
+      "ticket": null,
+      "note": "사후등록 2026-10-01(감사 CODEX, INFRA#17 A6): ss 실측 0.0.0.0:8040+:::8040 LISTEN. /api/v1/ 응답=Taiga. 소유 pid는 비루트 권한으로 확인 불가(docker/별도 유저 추정, 단정 금지) — 소유 봇·유닛 판정은 관제 후속. RELAY_TICKET 없음. taiga-bridge/agenda/dispatcher(relay-side)는 별도 8040 유닛 아님."
+    },
+    {
+      "port": 8100,
+      "service": "env-sync-dashboard.service (system) — Env Sync Dashboard",
+      "ticket": null,
+      "note": "사후등록 2026-10-01(감사 CODEX, INFRA#17 A6): ss 실측 0.0.0.0:8100 LISTEN(pid 3926515, python3 env-sync/dashboard.py). cgroup=system.slice/env-sync-dashboard.service. RELAY_TICKET 미주입. edge-routing /envsync/ 라우팅 존재. 티켓 배정 보류(null)."
+    },
+    {
+      "port": 8222,
+      "service": "nats.service (user) — NATS BOTLOG broker 모니터링(http) 0.0.0.0:8222",
+      "ticket": null,
+      "note": "사후등록 2026-10-01(감사 CODEX, INFRA#17 A6): ss 실측 *:8222 LISTEN(nats-server pid 831390, .config/nats/nats.conf http: 0.0.0.0:8222). 본체 8024 통합. 모니터링 포트로 RELAY_TICKET 미주입. 인증 OFF 확인은 INFRA#9 N1(큐6) 범위 — 여기서 처리 안 함."
+    },
+    {
+      "port": 8788,
+      "service": "zai-fallback-proxy.service (user) — zAI fallback 프록시 (node)",
+      "ticket": null,
+      "note": "사후등록 2026-10-01(감사 CODEX, INFRA#17 A6): ss 실측 127.0.0.1:8788 LISTEN(pid 523548, node zai-fallback-proxy.js). 루프백 전용 바인드라 외부 노출 없음. RELAY_TICKET 미주입. 티켓 배정 보류(null)."
     }
   ],
   "pending_registration": [],
