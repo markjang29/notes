@@ -189,11 +189,31 @@ def wake(bot, keyfile, pend):
             st[bot] = {"waked_at": now, "pend": pend, "fails": 0, "last_note": "ok"}
             save_state(st)
             log(f"각성 성공: {bot} (미수신 {pend}건, key={os.path.basename(keyfile)[:16]}…)")
-        else:
-            st[bot] = {**st.get(bot, {}), "fails": fails + 1, "last_note": "fail"}
-            save_state(st)
-            log(f"각성 실패({bot}, 백오프 x{2 ** (fails + 1)}): {(r.stdout or '')[:120]} {(r.stderr or '')[:120]}")
-        return ok
+            return True
+        # 개정1 (부록A1/PIPE#60): 1차(--cron) 실패 시 2차 경로 — cokacdir --prompt 직접 호출(큐 적체 무관, 즉시 동기실행)
+        try:
+            r2 = subprocess.run([COKACDIR, "--prompt", prompt, "--key-file", keyfile],
+                                capture_output=True, timeout=300, text=True)
+            if r2.stdout and r2.stdout.strip():
+                st[bot] = {"waked_at": now, "pend": pend, "fails": 0, "last_note": "ok2"}
+                save_state(st)
+                log(f"각성 성공(2차 --prompt): {bot} (미수신 {pend}건)")
+                return True
+            log(f"각성 2차 실패({bot}): {(r2.stdout or '')[:80]} {(r2.stderr or '')[:80]}")
+        except Exception as e2:
+            log(f"각성 2차 예외({bot}): {e2}")
+        # 3단(텔레그램 경보): 1·2차 모두 실패 — 사이드카 무음 원칙 유지 위해 8024로 1회 경보(쿨다운은 같은 백오프 주기)
+        try:
+            http_json(f"{BASE}/api/nats/send", "POST",
+                      {"from": BOT, "to": "heav_lnx_bot", "type": "task", "ref": "wake-fail",
+                       "text": f"[각성 경보] {bot} 1·2차 경로 모두 실패 — 미수신 {pend}건. 사이드카({BOT}) 수동 점검 필요."})
+            log(f"각성 경보 발행({bot}) — 매니저 notice")
+        except Exception as e3:
+            log(f"경보 발송 실패({bot}): {e3}")
+        st[bot] = {**st.get(bot, {}), "fails": fails + 1, "last_note": "fail"}
+        save_state(st)
+        log(f"각성 실패({bot}, 백오프 x{2 ** (fails + 1)}): {(r.stdout or '')[:120]} {(r.stderr or '')[:120]}")
+        return False
     except Exception as e:
         log(f"각성 예외({bot}): {e}")
         return False
