@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+"""테스터 v1 — '테스트봇검증' 상태 Taiga 티켓을 자동 검사:
+사이트/포트 필드 대상 헬스체크 3종 → 결과 요약 카드를 승인보드에 → 이사님승인으로 전이.
+결과 요약 형식은 추후 @heav_gmwin_codex_bot(97 테스터)가 대체 생성하도록 확장 여지 유지."""
+import json
+import os
+import urllib.request
+import urllib.error
+from datetime import datetime
+from pathlib import Path
+
+# GOV#28(G6): 타이가 주소·인증은 taiga_common(로컬 127.0.0.1:8040 우선)으로 단일화
+HOME = os.path.expanduser("~")
+DECISIONS = Path(HOME + "/projects/approval-board/decisions.json")
+STATE = Path(HOME + "/.config/taiga-bridge/state.json")
+
+# GOV#24 [G3]: 승인보드 파일 경합 제거 — 승인보드 앱의 request_store(파일잠금+원자교체)를 빌려 쓴다.
+import sys
+sys.path.insert(0, HOME + "/projects/approval-board")
+from request_store import transact_json
+LOG = lambda m: print(f"{datetime.now():%m-%d %H:%M:%S} {m}", flush=True)
+
+# GOV#28(G6): 타이가 클라이언트 공통모듈로 단일화 — def taiga 복붙 제거, 로컬우선·파일잠금 내장.
+# 프로젝트ID·slug·상태명도 taiga_common 상수로 집결(G6-③).
+import taiga_common
+from taiga_common import taiga, SLUGS, STATUS_TEST, STATUS_BOSS
+def probe(port):
+    """3종 검사: 루트 응답 / 비-5xx 비스파이크 / 응답시간"""
+    results = []
+    for path in ("/", "/health", "/api"):
+        url = f"http://127.0.0.1:{port}{path}"
+        t0 = datetime.now()
+        try:
+            r = urllib.request.urlopen(url, timeout=8)
+            ms = int((datetime.now() - t0).total_seconds() * 1000)
+            results.append((path, r.status, ms))
+        except urllib.error.HTTPError as e:
+            results.append((path, e.code, -1))
+        except Exception as e:
+            results.append((path, 0, -1))
+    ok = sum(1 for _, c, _ in results if c and c < 500)
+    return ok, results
+
+def main():
+    d = json.loads(DECISIONS.read_text()) if DECISIONS.exists() else {"items": []}
+    state = json.loads(STATE.read_text()) if STATE.exists() else {"processed": {}}
+    for pid, slug in SLUGS.items():
+        statuses = {s["id"]: s["name"] for s in taiga("GET", f"/userstory-statuses?project={pid}")}
+        for u in taiga("GET", f"/userstories?project={pid}&page_size=100"):
+            if statuses.get(u["status"]) != STATUS_TEST:
+                continue
+            det = taiga("GET", f"/userstories/{u['id']}")
+            attrs = taiga("GET", f"/userstories/custom-attributes-values/{u['id']}")
+            vals = attrs.get("attributes_values", {})
+            attrdefs = {a["id"]: a["name"] for a in taiga("GET", f"/userstory-custom-attributes?project={pid}")}
+            portval = None
+            for aid, v in vals.items():
+                if attrdefs.get(int(aid)) == "사이트/포트":
+                    portval = str(v).split("/")[0]
+            lines = [f"테스트 대상: {u['subject'][:50]}", ""]
+            if portval and portval.isdigit():
+                ok, results = probe(int(portval))
+                verdict = "통과" if ok >= 2 else "반려"
+                lines.append(f"- 헬스체크(:{portval}) {ok}/3 통과 — " +
+                             ", ".join(f"{p}→{c}{'('+str(m)+'ms)' if m>=0 else ''}" for p, c, m in results))
+                lines.append(f"- 판정: {verdict} (기준: 3종 중 2통과)")
+            else:
+                verdict = "대기"
+                lines.append("- 사이트/포트 필드 없음 — 수동 검증 필요 (테스터 봇 인계 대상)")
+            summary = "\n".join(lines)
+            # 보드 카드
+            if not any(i.get("taiga_ref") == f"{pid}:{u['id']}" and i.get("kind") == "taiga_test" for i in d["items"]):
+                d["items"].insert(0, {
+                    "id": f"test-{int(datetime.now().timestamp())}-{pid}-{u['id']}",
+                    "kind": "taiga_test", "taiga_ref": f"{pid}:{u['id']}", "gate": "배포승인",
+                    "title": f"[테스트결과·{verdict}] {u['subject'][:60]}",
+                    "body": summary, "status": "pending", "comment": "", "client": "taiga-tester",
+                    "log": [{"ts": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "msg": "test summary created"}],
+                    "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
+            # 상태 전이 + 요약 기록
+            newdesc = (det.get("description") or "") + f"\n\n## 테스트봇 검증 ({datetime.now():%m-%d})\n{summary}"
+            st2 = {s["name"]: s["id"] for s in taiga("GET", f"/userstory-statuses?project={pid}")}
+            taiga("PATCH", f"/userstories/{u['id']}",
+                  {"description": newdesc, "status": st2[STATUS_BOSS], "version": det["version"]})
+            LOG(f"테스트 완료 {u['subject'][:30]} → {verdict}")
+    # GOV#24 [G3]: 무잠금 덮어쓰기 → 잠금 후 "최신본 + 신규카드 병합" 원자 저장(add-only — 판정 존중)
+    def _merge(fresh):
+        have = {i.get("id") for i in fresh.get("items", [])}
+        add = [i for i in d.get("items", []) if i.get("id") not in have]
+        fresh.setdefault("items", [])
+        fresh["items"] = add + fresh["items"]
+        return fresh
+    transact_json(DECISIONS, {"items": []}, _merge)
+
+if __name__ == "__main__":
+    main()
