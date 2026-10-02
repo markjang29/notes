@@ -1,0 +1,9 @@
+# NATS (BOTLOG) — INFRA#9 [N1]: 127.0.0.1 로컬바인딩 (승인 후 적용본, 98 10-02)
+# 기존: 0.0.0.0 (무인증·전인터페이스) — 원격 노드가 직접 접속할 일이 생기면 authorization+tailscaleIP로 재상신
+listen: 127.0.0.1:4222
+http: 127.0.0.1:8222
+jetstream: {
+  store_dir: "/home/smlime21/.local/state/nats/jetstream"
+  max_memory_store: 128MB
+  max_file_store: 1GB
+}
