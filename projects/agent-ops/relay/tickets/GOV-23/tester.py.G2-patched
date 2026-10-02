@@ -1,0 +1,111 @@
+#!/usr/bin/env python3
+"""테스터 v1 — '테스트봇검증' 상태 Taiga 티켓을 자동 검사:
+사이트/포트 필드 대상 헬스체크 3종 → 결과 요약 카드를 승인보드에 → 이사님승인으로 전이.
+결과 요약 형식은 추후 @heav_gmwin_codex_bot(97 테스터)가 대체 생성하도록 확장 여지 유지."""
+import json
+import os
+import urllib.request
+import urllib.error
+from datetime import datetime
+from pathlib import Path
+
+# GOV#28(G6): 타이가 주소·인증은 taiga_common(로컬 127.0.0.1:8040 우선)으로 단일화
+HOME = os.path.expanduser("~")
+DECISIONS = Path(HOME + "/projects/approval-board/decisions.json")
+STATE = Path(HOME + "/.config/taiga-bridge/state.json")
+LOG = lambda m: print(f"{datetime.now():%m-%d %H:%M:%S} {m}", flush=True)
+
+# GOV#28(G6): 타이가 클라이언트 공통모듈로 단일화 — def taiga 복붙 제거, 로컬우선·파일잠금 내장.
+# 프로젝트ID·slug·상태명도 taiga_common 상수로 집결(G6-③).
+import taiga_common
+from taiga_common import taiga, SLUGS, STATUS_TEST, STATUS_BOSS
+def probe(port):
+    """3종 검사: 루트 응답 / 비-5xx 비스파이크 / 응답시간"""
+    results = []
+    for path in ("/", "/health", "/api"):
+        url = f"http://127.0.0.1:{port}{path}"
+        t0 = datetime.now()
+        try:
+            r = urllib.request.urlopen(url, timeout=8)
+            ms = int((datetime.now() - t0).total_seconds() * 1000)
+            results.append((path, r.status, ms))
+        except urllib.error.HTTPError as e:
+            results.append((path, e.code, -1))
+        except Exception as e:
+            results.append((path, 0, -1))
+    ok = sum(1 for _, c, _ in results if c and 200 <= c < 400)   # GOV#23 [G2]: 합격은 2xx/3xx만(404·401·403은 반려)
+    return ok, results
+
+def main():
+    d = json.loads(DECISIONS.read_text()) if DECISIONS.exists() else {"items": []}
+    state = json.loads(STATE.read_text()) if STATE.exists() else {"processed": {}}
+    for pid, slug in SLUGS.items():
+        statuses = {s["id"]: s["name"] for s in taiga("GET", f"/userstory-statuses?project={pid}")}
+        for u in taiga("GET", f"/userstories?project={pid}&page_size=100"):
+            if statuses.get(u["status"]) != STATUS_TEST:
+                continue
+            det = taiga("GET", f"/userstories/{u['id']}")
+            attrs = taiga("GET", f"/userstories/custom-attributes-values/{u['id']}")
+            vals = attrs.get("attributes_values", {})
+            attrdefs = {a["id"]: a["name"] for a in taiga("GET", f"/userstory-custom-attributes?project={pid}")}
+            portval = None
+            for aid, v in vals.items():
+                if attrdefs.get(int(aid)) == "사이트/포트":
+                    portval = str(v).split("/")[0]
+            lines = [f"테스트 대상: {u['subject'][:50]}", ""]
+            if portval and portval.isdigit():
+                ok, results = probe(int(portval))
+                verdict = "통과" if ok >= 2 else "반려"
+                lines.append(f"- 헬스체크(:{portval}) {ok}/3 통과 — " +
+                             ", ".join(f"{p}→{c}{'('+str(m)+'ms)' if m>=0 else ''}" for p, c, m in results))
+                lines.append(f"- 판정: {verdict} (기준: 3종 중 2통과)")
+            else:
+                verdict = "대기"
+                lines.append("- 사이트/포트 필드 없음 — 수동 검증 필요 (테스터 봇 인계 대상)")
+            summary = "\n".join(lines)
+            # 보드 카드
+            if not any(i.get("taiga_ref") == f"{pid}:{u['id']}" and i.get("kind") == "taiga_test" for i in d["items"]):
+                d["items"].insert(0, {
+                    "id": f"test-{int(datetime.now().timestamp())}-{pid}-{u['id']}",
+                    "kind": "taiga_test", "taiga_ref": f"{pid}:{u['id']}", "gate": "배포승인",
+                    "title": f"[테스트결과·{verdict}] {u['subject'][:60]}",
+                    "body": summary, "status": "pending", "comment": "", "client": "taiga-tester",
+                    "log": [{"ts": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "msg": "test summary created"}],
+                    "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
+            # GOV#23 [G2] 상태 전이 + 요약 기록 — 판정을 반영(기존은 verdict 무시·무조건 이사님승인)
+            #  - 통과: 이사님승인으로 전이, 게이트증거(포트·판정·일시)를 설명란에 기입(전이 조건)
+            #  - 반려: 구현으로 되돌리고 사유(헬스체크 실패내역)를 설명란에 기록
+            #  - 대기: 테스트봇검증 상태 유지 + 97봇(heav_gmwin_codex_bot)에게 8024 task 인계
+            import taiga_common as _tc
+            newdesc = (det.get("description") or "") + f"\n\n## 테스트봇 검증 ({datetime.now():%m-%d})\n{summary}"
+            st2 = {s["name"]: s["id"] for s in taiga("GET", f"/userstory-statuses?project={pid}")}
+            if verdict == "통과":
+                evidence = f"- 게이트증거: 포트 {portval}, 판정 통과({ok}/3, 2xx/3xx), {datetime.now():%m-%d %H:%M}"
+                newdesc += f"\n{evidence}"
+                patch = {"description": newdesc, "status": st2[STATUS_BOSS], "version": det["version"]}
+            elif verdict == "반려":
+                patch = {"description": newdesc + "\n- 판정: 반려 → 구현으로 되돌림(사유: 헬스체크 2xx/3xx 미달 2/3)",
+                         "status": st2[_tc.STATUS_IMPL], "version": det["version"]}
+            else:  # 대기 — 상태 유지(테스트봇검증), 97봇 인계만
+                patch = {"description": newdesc + "\n- 판정: 대기(포트 미기재) — 테스트봇검증 유지, 97봇 인계",
+                         "version": det["version"]}
+            taiga("PATCH", f"/userstories/{u['id']}", patch)
+            if verdict == "대기":
+                try:
+                    notify = {"from": "heav_lnx_codex_dev_1_bot", "to": "heav_gmwin_codex_bot",
+                              "type": "task", "ref": f"test-97:{pid}:{u['id']}",
+                              "text": f"[테스트 인계] {u['subject'][:60]} — 사이트/포트 미기재. 수동 검증 후 8024에 판정 회신 필요."}
+                    r2 = urllib.request.Request("http://43.201.34.144:8024/api/nats/send",
+                          data=json.dumps(notify, ensure_ascii=False).encode(), method="POST",
+                          headers={"Content-Type": "application/json"})
+                    urllib.request.urlopen(r2, timeout=10)
+                except Exception as e:
+                    LOG(f"97봇 인계 실패(무시·다음 폴링 재시도): {e}")
+            LOG(f"테스트 완료 {u['subject'][:30]} → {verdict}")
+    DECISIONS.parent.mkdir(parents=True, exist_ok=True)
+    tmp = DECISIONS.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(d, ensure_ascii=False, indent=1))
+    tmp.replace(DECISIONS)
+
+if __name__ == "__main__":
+    main()
