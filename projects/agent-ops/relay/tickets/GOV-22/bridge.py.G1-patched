@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+"""Taiga ↔ 승인보드(8005) 게이트 브릿지.
+- Taiga 스토리가 설계승인대기/이사님승인 상태가 되면 승인보드(decisions.json)에 카드 생성
+- 이사님이 보드에서 O/X 판정 → Taiga 상태 자동 전이 (설계승인대기→구현/설계, 이사님승인→배포/구현)
+- 테스트봇검증: tester.py가 결과 요약 카드를 만들고 이사님승인으로 전이
+20초 폴링, 처리 상태는 state.json에 기록(멱등)."""
+import json
+import os
+import time
+import urllib.request
+import urllib.error
+from datetime import datetime
+from pathlib import Path
+
+DECISIONS = Path(os.path.expanduser("~/projects/approval-board/decisions.json"))
+STATE = Path(os.path.expanduser("~/.config/taiga-bridge/state.json"))
+LOG = lambda msg: print(f"{datetime.now():%m-%d %H:%M:%S} {msg}", flush=True)
+
+# GOV#28(G6): 타이가 클라이언트 공통모듈로 단일화 — def taiga 복붙 제거, 로컬우선·파일잠금 내장
+import taiga_common
+from taiga_common import taiga, SLUGS, GATE_OF_STATUS
+def reauth():
+    # GOV#28(G6): 재인증·저장은 taiga_common(_relogin — 잠금내 저장)으로 단일화. 호환용 래퍼(호출 0 — 시험용).
+    import taiga_common as _tc
+    _tc._relogin(_tc._load_creds())
+    LOG("token refreshed (via taiga_common)")
+
+def load_state():
+    return json.loads(STATE.read_text()) if STATE.exists() else {"processed": {}}
+
+def save_state(s):
+    STATE.parent.mkdir(parents=True, exist_ok=True)
+    STATE.write_text(json.dumps(s, ensure_ascii=False, indent=1))
+
+def board_items():
+    return json.loads(DECISIONS.read_text()) if DECISIONS.exists() else {"items": []}
+
+def board_save(d):
+    tmp = DECISIONS.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(d, ensure_ascii=False, indent=1))
+    tmp.replace(DECISIONS)
+
+def roster_display():
+    """roster 원장에서 username → 표시명. 실패 시 빈 매핑."""
+    try:
+        import pathlib
+        r = json.loads(pathlib.Path.home().joinpath("notes/projects/agent-ops/roster.json").read_text())
+        return {b["username"]: b.get("display", "") for b in r.get("bots", [])}
+    except Exception:
+        return {}
+
+
+def _is_judged(item, state):
+    """GOV#22 [G1] — 카드가 이미 판정 처리되었는지(state.processed 등록 여부)."""
+    return item.get("id") in state.get("processed", {})
+
+def ensure_card(d, state, ref, subject, gate, slug, link, summary, bot=None):
+    # GOV#22 [G1]: 중복 키를 (taiga_ref, gate, 진입회차)로 — 기존은 taiga_ref 단일키라
+    # 같은 스토리가 설계승인 → 이사님승인(배포승인)으로 오면 2번째 카드가 영영 안 생김.
+    # 진입회차: 같은 (ref,gate) 카드가 이미 판정(processed)된 횟수 — 재진입·반려 재상신시 회차+1 새 카드.
+    prior = [i for i in d["items"] if i.get("taiga_ref") == ref and i.get("gate") == gate]
+    if prior:
+        # 미판정(진행중) 카드가 있으면 중복 억제 — 정상.
+        if any(i.get("status") in ("pending",) for i in prior):
+            return
+        # 전부 판정됨 → 재진입: 회차+1 새 카드(판정 이력 남김)
+        round_no = max(len([x for x in prior if _is_judged(x, state)]), 1) + 1
+    else:
+        round_no = 1
+    disp = roster_display().get((bot or "").lstrip("@"), "")
+    owner_line = f"담당봇: {bot} ({disp})\n" if bot else "담당봇: 미지정\n"
+    card = {
+        "id": f"gate-{int(time.time()*1000)}-{ref.replace(':','-')}-{gate}-{round_no}",
+        "kind": "taiga_gate", "taiga_ref": ref, "gate": gate, "round": round_no,
+        "title": f"[{gate}] {subject}",
+        "body": f"{owner_line}\n{summary or ''}\n\n티켓: {link}",
+        "status": "pending", "comment": "", "client": "taiga-bridge",
+        "log": [{"ts": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                 "msg": f"taiga gate card created ({gate})"}],
+        "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    }
+    d["items"].insert(0, card)
+    LOG(f"카드 생성 [{gate}] {subject[:30]}")
+
+def main():
+    LOG("bridge start")
+    while True:
+        try:
+            state = load_state()
+            d = board_items()
+            changed = False
+            for pid, slug in SLUGS.items():
+                statuses = {s["id"]: s["name"] for s in taiga("GET", f"/userstory-statuses?project={pid}")}
+                rev = {}
+                for sid, n in statuses.items():
+                    rev.setdefault(n, sid)
+                for u in taiga("GET", f"/userstories?project={pid}&page_size=100"):
+                    st = statuses.get(u["status"], "")
+                    if st not in GATE_OF_STATUS:
+                        continue
+                    det = taiga("GET", f"/userstories/{u['id']}")
+                    attrs = taiga("GET", f"/userstories/custom-attributes-values/{u['id']}").get("attributes_values", {})
+                    defs = {a["id"]: a["name"] for a in taiga("GET", f"/userstory-custom-attributes?project={pid}")}
+                    bot = next((v for k, v in attrs.items() if defs.get(int(k)) == "담당봇"), "")
+                    ref = f"{pid}:{u['id']}"
+                    link = taiga_common.us_link(pid, u["ref"])
+                    ensure_card(d, state, ref, u["subject"], GATE_OF_STATUS[st], slug, link,
+                                (det.get("description") or "")[:300], bot)
+                    changed = True
+            if changed:
+                board_save(d)
+            # 판정 처리
+            d = board_items()
+            moved = False
+            for item in d["items"]:
+                if item.get("kind") not in ("taiga_gate", "taiga_test"):
+                    continue
+                if item.get("status") not in ("approved", "rejected", "deferred"):
+                    continue
+                if state["processed"].get(item["id"]):
+                    continue
+                pid, sid = item["taiga_ref"].split(":")
+                pid, sid = int(pid), int(sid)
+                statuses = {s["name"]: s["id"] for s in taiga("GET", f"/userstory-statuses?project={pid}")}
+                det = taiga("GET", f"/userstories/{sid}")
+                gate = item.get("gate")
+                verdict = item["status"]
+                label = {"approved": "승인", "rejected": "기각", "deferred": "보류"}[verdict]
+                if verdict == "approved":
+                    newst = "구현" if gate == "설계승인" else "배포"
+                elif verdict == "rejected":
+                    newst = "설계" if gate == "설계승인" else "구현"
+                else:
+                    newst = None
+                cmt = item.get("comment", "")
+                if cmt:  # 폼 인코딩 mojibake(ë°) 복원 시도
+                    try:
+                        fixed = cmt.encode("latin-1").decode("utf-8")
+                        if "�" not in fixed and any(ord(ch) > 127 for ch in fixed):
+                            cmt = fixed
+                    except Exception:
+                        pass
+                note = f"[게이트 {gate}] 이사님 판정: {label}" + (f" — {cmt}" if cmt else "")
+                if newst:
+                    taiga("PATCH", f"/userstories/{sid}",
+                          {"status": statuses[newst], "version": det["version"]})
+                # 판정 기록: 설명 꼬리에 한 줄 추가 (댓글 API 부재)
+                newdesc = (det.get("description") or "") + f"\n\n`{datetime.now():%m-%d %H:%M} {note}`"
+                taiga("PATCH", f"/userstories/{sid}", {"description": newdesc, "version": det["version"]})
+                state["processed"][item["id"]] = datetime.now().isoformat()
+                LOG(f"판정 반영 {item['taiga_ref']} {gate} {label} → {newst}")
+                moved = True
+            if moved:
+                save_state(state)
+        except Exception as ex:
+            LOG(f"error: {ex}")
+        time.sleep(20)
+
+if __name__ == "__main__":
+    main()

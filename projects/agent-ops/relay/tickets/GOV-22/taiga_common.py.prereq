@@ -1,0 +1,142 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+taiga_common.py — 타이가 클라이언트 공통 모듈 (GOV#28 [G6], 2026-10-01, 98)
+근거: proposals/2026-09-30-system-improvement-review.md §4 G6 —
+  ①taiga() 4곳(bridge·agenda·dispatcher·tester) 복붙 → 본 모듈 1곳으로 단일화
+  ②401 재인증시 creds.json을 4 프로세스가 동시 덮어쓰기 → fcntl 파일잠금
+  ③타이가 주소 공인IP(엣지) 하드코딩 → 로컬 127.0.0.1:8040 우선(엣지 장애시에도 게이트 유지)
+  ④프로젝트ID·상태명 하드코딩 → PROJECTS·STATUS 상수 1곳으로 집결
+토큰값은 creds.json(~/.config/taiga-bridge, 600)에서만 읽는다(§6 — 본문기입 금지).
+"""
+import fcntl
+import json
+import os
+import time
+import urllib.error
+import urllib.request
+
+CREDS_PATH = os.path.expanduser("~/.config/taiga-bridge/creds.json")
+LOCK_PATH = os.path.expanduser("~/.config/taiga-bridge/creds.lock")
+
+# 로컬 우선 — 엣지(공인IP)는 폴백. 기동시 1회 판정, 실패시에만 재판정(무음)
+_TAIGA_BASE = None
+_LAST_PROBE = 0.0
+PROBE_EVERY = 300
+
+
+def _alive(url):
+    try:
+        with urllib.request.urlopen(url + "/projects", timeout=4) as r:
+            return r.status == 200
+    except Exception:
+        return False
+
+
+def taiga_base():
+    """로컬 8040 우선(환경변수 TAIGA_BASE로 강제 가능). 엣지 장애시에도 게이트 전체 정지 방지(G6)."""
+    global _TAIGA_BASE, _LAST_PROBE
+    if _TAIGA_BASE and time.time() - _LAST_PROBE < PROBE_EVERY:
+        return _TAIGA_BASE
+    for cand in (os.environ.get("TAIGA_BASE"),
+                 "http://127.0.0.1:8040/api/v1",
+                 "http://43.201.34.144:8040/api/v1"):
+        if not cand:
+            continue
+        if cand.startswith("http://127.0.0.1") or _alive(cand):
+            _TAIGA_BASE, _LAST_PROBE = cand, time.time()
+            return _TAIGA_BASE
+    _TAIGA_BASE, _LAST_PROBE = "http://43.201.34.144:8040/api/v1", time.time()
+    return _TAIGA_BASE
+
+
+# 프로젝트ID·slug·표기명·상태명 — 4곳 복붙값을 1곳으로 집결(G6-③).
+# GOV관제=3, PIPE=4, SITE=5, INFRA=6 실측(10-01). 기존 4파일 순회 관례대로 PROJECTS=pid→표기명.
+PROJECTS = {3: "GOV", 4: "PIPE", 5: "SITE", 6: "INFRA"}          # pid → 표기명 (발령·에이젠더·tester 순회)
+SLUGS = {3: "gov-gwanje", 4: "pipe-jasan-paipeurain", 5: "site-saiteu-tonghab", 6: "infra-inpeura"}  # pid → slug(링크)
+STATUS_IMPL = "구현"
+STATUS_AFTER_DESIGN = "설계"
+STATUS_AFTER_APPROVE = "배포"
+GATE_OF_STATUS = {"설계승인대기": "설계승인", "이사님승인": "배포승인"}   # 게이트 카드 명칭(bridge)
+STATUS_TEST = "테스트봇검증"
+STATUS_DEcide = "의사결정대기"
+STATUS_BOSS = "이사님승인"
+STATUS_WAIT_DESIGN = "설계승인대기"
+
+
+def us_link(pid, ref):
+    """스토리 링크 — 타이가 주소·slug 하드코딩 집결(G6-②③). 로컬우선 base + SLUGS."""
+    return f"{taiga_base().replace('/api/v1', '')}/project/{SLUGS[pid]}/{ref}"
+STATUS_WAIT_DESIGN = "설계승인대기"
+
+
+def _load_creds():
+    with open(CREDS_PATH) as f:
+        return json.load(f)
+
+
+def _save_creds(c):
+    """401 재인증 토큰 저장 — fcntl 잠금(4 프로세스 경합 방지, G6-②). 임시파일+replace. 값 출력 금지."""
+    fd = os.open(LOCK_PATH, os.O_CREAT | os.O_RDONLY, 0o600)   # 단일 열기(이중 open 제거 — 데드락 원인, 실측 10-01)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        tmp = CREDS_PATH + ".tmp"
+        with open(tmp, "w") as f:
+            json.dump(c, f)
+        os.replace(tmp, CREDS_PATH)
+    finally:
+        os.close(fd)
+
+
+def _relogin(c):
+    req = urllib.request.Request(
+        taiga_base() + "/auth",
+        data=json.dumps({"type": "normal", "username": c["user"], "password": c["password"]}).encode(),
+        headers={"Content-Type": "application/json"})   # /auth는 JSON 헤더 필수(400 방지 — 기존4곳 동일, 실측)
+    with urllib.request.urlopen(req, timeout=10) as r:
+        c["token"] = json.load(r)["auth_token"]
+    _save_creds(c)
+    return c
+
+
+def taiga(method, path, payload=None, retry_auth=True):
+    """GET/POST/PATCH 1회 호출. 401시 잠금+재인증 1회 후 재시도(중복 재인증 방지 — 잠금내 2중검사)."""
+    c = _load_creds()
+    data = json.dumps(payload, ensure_ascii=False).encode() if payload is not None else None
+    req = urllib.request.Request(taiga_base() + path, data=data, method=method)
+    req.add_header("Authorization", "Bearer " + c["token"])
+    if data:
+        req.add_header("Content-Type", "application/json")
+    try:
+        with urllib.request.urlopen(req, timeout=20) as r:
+            body = r.read().decode()
+            return json.loads(body) if body.strip() else {}
+    except urllib.error.HTTPError as e:
+        if e.code == 401 and retry_auth:
+            fd = os.open(LOCK_PATH, os.O_RDONLY)
+            fd = os.open(LOCK_PATH, os.O_CREAT | os.O_RDONLY, 0o600)
+            fresh = None
+            try:
+                fcntl.flock(fd, fcntl.LOCK_EX)
+                fresh = _load_creds()                   # 남이 이미 재인증했는지 열람만(잠금) — 재인증·저장은 잠금 밖
+            finally:
+                os.close(fd)                            # 잠금 해제 후 _save_creds의 자체잠금과 이중 충돌 제거(데드락, 실측 10-02)
+            if fresh["token"] != c["token"]:            # 남이 이미 재인증함 — 그 토큰으로 1회 재시도
+                req2 = urllib.request.Request(taiga_base() + path, data=data, method=method)
+                req2.add_header("Authorization", "Bearer " + fresh["token"])
+                if data:
+                    req2.add_header("Content-Type", "application/json")
+                with urllib.request.urlopen(req2, timeout=20) as r:
+                    body = r.read().decode()
+                    return json.loads(body) if body.strip() else {}
+            _relogin(fresh)                             # 내가 재인증 주체 — _save_creds가 자체 잠금으로 기록
+            return taiga(method, path, payload, retry_auth=False)
+        raise
+
+
+def by_ref(ref, project_id):
+    return taiga("GET", f"/userstories/by_ref?ref={ref}&project={project_id}")
+
+
+def patch(us, fields):
+    return taiga("PATCH", "/userstories/%d" % us["id"], {**fields, "version": us["version"]})
