@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+"""승인 에이젠더 — 매니저 목소리로 이사님 판정 큐를 정기 발행.
+- 1일 1회 정기(09:00 KST) + 대기 항목이 새로 생기면 즉시 1회(변화시에만, 스팸 방지)
+- 내용: [배포승인/설계승인] 보드 카드 + Taiga 의사결정대기 (🎯비유 첫줄 포함)
+"""
+import hashlib
+import json
+import os
+import re
+import urllib.request
+import urllib.error
+from datetime import datetime
+from pathlib import Path
+
+# GOV#28(G6): 타이가 주소·인증은 taiga_common(로컬 127.0.0.1:8040 우선)으로 단일화
+HOME = os.path.expanduser("~")
+ROOM_TOKEN = next((l.split("=", 1)[1].strip() for l in open(HOME + "/meeting-room/.env")
+                   if l.startswith("ACCESS_TOKEN=")), "")
+BOARD = Path(HOME + "/projects/approval-board/decisions.json")
+STATE = Path(HOME + "/.config/taiga-bridge/agenda-state.json")
+LOG = lambda m: print(f"{datetime.now():%m-%d %H:%M:%S} {m}", flush=True)
+
+# GOV#28(G6): 타이가 클라이언트 공통모듈로 단일화 — def taiga 복붙 제거, 로컬우선·파일잠금 내장.
+# 프로젝트ID·상태명·해시(G6-⑤: Python hash()→sha1, 프로세스별 솔트로 재시작시 '변경' 오인 방지)
+import taiga_common
+from taiga_common import taiga, PROJECTS, STATUS_DEcide   # G6-⑤: 상수 단일화(STATUS_DEcide='의사결정대기')
+def send_room(text):
+    req = urllib.request.Request("http://127.0.0.1:8023/api/send?token=" + ROOM_TOKEN,
+                                 data=json.dumps({"sender": "매니저", "text": text}).encode(),
+                                 headers={"Content-Type": "application/json"})
+    return json.load(urllib.request.urlopen(req, timeout=15))
+
+def collect():
+    """대기 항목 수집 → (줄목록, 지문키)"""
+    lines = []
+    d = json.loads(BOARD.read_text()) if BOARD.exists() else {"items": []}
+    for i in d["items"]:
+        if i.get("kind") == "taiga_gate" and i.get("status") == "pending":
+            lines.append(f"· [{i.get('gate','승인')}] {i['title'][:60]}")
+    dec = []
+    for pid, pname in PROJECTS.items():
+        statuses = {s["id"]: s["name"] for s in taiga("GET", f"/userstory-statuses?project={pid}")}
+        for u in taiga("GET", f"/userstories?project={pid}&page_size=100"):
+            if statuses.get(u["status"]) == STATUS_DEcide:
+                det = taiga("GET", f"/userstories/{u['id']}")
+                m = re.search(r"## 🎯 (.+)", det.get("description") or "")
+                tag = f" ({m.group(1)})" if m else ""
+                dec.append(f"· [{pname}] {u['subject'][:50]}{tag}")
+    return lines, dec
+
+def main():
+    LOG("agenda start")
+    import time
+    while True:
+        try:
+            gate, dec = collect()
+            fingerprint = hashlib.sha1(json.dumps([gate, dec], sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+            state = json.loads(STATE.read_text()) if STATE.exists() else {"last": None, "day": ""}
+            today = datetime.now().strftime("%Y-%m-%d")
+            due_daily = state.get("day") != today and datetime.now().hour >= 9
+            changed = state.get("last") != fingerprint
+            if (gate or dec) and (due_daily or (changed and state.get("last") is not None)):
+                msg = ["[매니저 정기 — 이사님 판정 대기 큐]"]
+                if gate:
+                    msg.append(f"■ 승인보드 카드 {len(gate)}건 (http://43.201.34.144:8005 에서 승인/폐기)")
+                    msg += gate
+                if dec:
+                    msg.append(f"■ 의사결정 필요 {len(dec)}건 (http://43.201.34.144:8040 에서 방향 확정)")
+                    msg += dec
+                msg.append("판정하시면 자동으로 다음 단계가 진행됩니다.")
+                send_room("\n".join(msg))
+                LOG(f"발행: 카드 {len(gate)}·의사결정 {len(dec)}")
+            STATE.write_text(json.dumps({"last": fingerprint, "day": today}))
+        except Exception as ex:
+            LOG(f"error: {ex}")
+        time.sleep(600)
+
+if __name__ == "__main__":
+    main()

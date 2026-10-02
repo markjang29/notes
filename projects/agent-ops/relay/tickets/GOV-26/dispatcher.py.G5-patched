@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+"""Taiga → 회의방 작업 배분 다리.
+'구현' 상태 진입 티켓(담당봇 필드 있음)을 1회 발령: 회의방에 @담당봇 지시 송신.
+멱등: state.json에 발령 완료 기록. 30초 폴링."""
+import json
+import os
+import urllib.request
+import urllib.error
+from datetime import datetime
+from pathlib import Path
+
+# GOV#28(G6): 타이가 주소·인증은 taiga_common(로컬 127.0.0.1:8040 우선)으로 단일화
+HOME = os.path.expanduser("~")
+ROOM_TOKEN = next((l.split("=", 1)[1].strip() for l in open(HOME + "/meeting-room/.env")
+                   if l.startswith("ACCESS_TOKEN=")), "")
+STATE = Path(HOME + "/.config/taiga-bridge/dispatch-state.json")
+LOG = lambda m: print(f"{datetime.now():%m-%d %H:%M:%S} {m}", flush=True)
+
+# GOV#28(G6): 타이가 클라이언트 공통모듈로 단일화 — def taiga 복붙 제거, 로컬우선·파일잠금 내장.
+# 프로젝트ID·slug·상태명도 taiga_common 상수로 집결(G6-③).
+import taiga_common
+from taiga_common import taiga, PROJECTS, STATUS_IMPL, STATUS_WAIT_DESIGN
+def load_state():
+    return json.loads(STATE.read_text()) if STATE.exists() else {"sent": {}}
+
+def save_state(s):
+    STATE.parent.mkdir(parents=True, exist_ok=True)
+    STATE.write_text(json.dumps(s, ensure_ascii=False, indent=1))
+
+SENDER = "taiga-bridge"   # GOV#26 [G5]: 자동발령은 서비스 신원(이사님 명의 금지 — 이사님 발언=요구사항)
+
+def send_8024(text, ref):
+    """G5: 발령을 8024 원장에 기록(type=task, ref=Taiga US) — "모든 계약은 원장" 원칙."""
+    try:
+        b = {"from": "heav_lnx_bot", "to": "@all", "type": "task", "ref": ref, "text": text[:500]}
+        req = urllib.request.Request("http://43.201.34.144:8024/api/nats/send",
+                                     data=json.dumps(b, ensure_ascii=False).encode(),
+                                     headers={"Content-Type": "application/json"})
+        return json.load(urllib.request.urlopen(req, timeout=15))
+    except Exception as ex:
+        LOG(f"8024 원장 기록 실패(무시): {ex}")
+        return None
+
+def send_room(text, ref=None):
+    if ref:  # G5: 원장 우선 기록(증적) — 회의방(8023, 폐지 예정 채널)은 병행(전환기)
+        send_8024(text, ref)
+    req = urllib.request.Request("http://127.0.0.1:8023/api/send?token=" + ROOM_TOKEN,
+                                 data=json.dumps({"sender": SENDER, "text": text}).encode(),
+                                 headers={"Content-Type": "application/json"})
+    return json.load(urllib.request.urlopen(req, timeout=15))
+
+def main():
+    LOG("dispatcher start")
+    while True:
+        try:
+            state = load_state()
+            for pid, pname in PROJECTS.items():
+                statuses = {s["id"]: s["name"] for s in taiga("GET", f"/userstory-statuses?project={pid}")}
+                defs = {a["id"]: a["name"] for a in taiga("GET", f"/userstory-custom-attributes?project={pid}")}
+                for u in taiga("GET", f"/userstories?project={pid}&page_size=100"):
+                    if statuses.get(u["status"]) != STATUS_IMPL:
+                        continue
+                    # GOV#25 [G4]: 키를 (ref, phase)로 — 구현 재진입(설계승인 판정 후)에도 재발령.
+                    # phase는 설명란의 최신 발령기록에서 추출(무기록=초회) — 1회성 단순키가 재진입을 먹던 결함.
+                    key = f"{pid}:{u['id']}:impl"
+                    prior = [k for k in state["sent"] if k.startswith(f"{pid}:{u['id']}:")]
+                    if key in prior:
+                        continue
+                    # 초회발령 기록 정합: 과거 단순키(4:82)가 남아있으면 새 키로 승격 기록(중복 발령 0 — 이관)
+                    old_key = f"{pid}:{u['id']}"
+                    if old_key in state["sent"]:
+                        state["sent"][key] = state["sent"].pop(old_key)
+                        save_state(state)
+                        continue
+                    attrs = taiga("GET", f"/userstories/custom-attributes-values/{u['id']}").get("attributes_values", {})
+                    bot = next((v for k, v in attrs.items() if defs.get(int(k)) == "담당봇"), "")
+                    if not bot.startswith("@"):
+                        continue  # 담당 미정 — 발령 보류
+                    msg = (f"{bot} [자동발령·Taiga {pname}] {u['subject']} — "
+                           f"티켓: {taiga_common.us_link(pid, u['ref'])} (상태: {STATUS_IMPL}). "
+                           f"설계 먼저, 완료 시 '{STATUS_WAIT_DESIGN}'로 이동 후 이사님 보드 판정. 진행률 n/m 회의방 보고.")
+                    send_room(msg, ref=f"taiga:{pid}:{u['ref']}")
+                    state["sent"][key] = datetime.now().isoformat()
+                    save_state(state)
+                    LOG(f"발령 {u['subject'][:32]} → {bot}")
+        except Exception as ex:
+            LOG(f"error: {ex}")
+        import time
+        time.sleep(30)
+
+if __name__ == "__main__":
+    main()
