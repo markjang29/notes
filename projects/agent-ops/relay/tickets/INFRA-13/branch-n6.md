@@ -16,3 +16,11 @@
 - relay98·8024 사이드카 에러 0, 8024 whoami 정상
 ## 롤백
 - consumer 재생성(nats-py, 설정 원값 max_deliver=-1·inactive=None) — 스트림 BOTLOG·메시지 원본 무영향
+
+## 적용·검증 (10-03 11:48, 98 — 이사님 승인 [10-03] 후)
+- 적용 전 현상(/jsz+nats-py 재실측): 8 consumer, 전부 max_deliver=-1·inactive=None. scan-tmp pending 258(진단 77→222→**258** — 증가 지속 재확인).
+- ①잔재 3 삭제: tc02-durable·tc04verify 삭제(재조회 NOT FOUND) → gmlnx-scan-tmp는 ③재생검증 후 삭제(삭제직전 pending 258, 재조회 NOT FOUND).
+- ②운영 5개 경계: relay98-ack→msg→notice→gmlnx-claude-inbox→once 순(1개씩 적용·같은명령검증·다음) — 전부 (5, 1h)로 전환 실측. nats-py 주의: inactive_threshold는 **초 단위**(3600 — nanosecond 아님. 3_600_000_000_000 넣으면 과대값 400. 실측으로 확정, 진단문서에 없는 계약).
+- ③원장 재생: 8024 재시작 → totalLedger 569→569 무손실(재생 확인), relay98 pending=0·watchdog 평시, 8024 비-Duplicate 에러 0. 재시작전 스냅샷과 동일 — studio-8024-msglog durable 전환 상신은 불필요(재생됨).
+- 최종: 5 consumer(전부 운영), 잔재 0, notice.broadcast pending 3×2(gmlnx) — 티켓 기재대로 본 건 범위 밖(PIPE#60(b)).
+- 근거: 65b00e3, notes@본커밋.
