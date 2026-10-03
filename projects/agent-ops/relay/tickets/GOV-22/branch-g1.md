@@ -19,3 +19,9 @@
 
 ## 롤백
 - `cp ~/services/taiga-bridge/bridge.py.bak-g1 ~/services/taiga-bridge/bridge.py` + 재시작(state.json·decisions.json 영향 없음 — 키만 확장, 구버전도 읽음)
+
+## 적용·검증 (10-03 04:30, 98 — 이사님 승인 [10-03] 후)
+- 절차: 운영본 백업(`bridge.py.bak-g1`) → `bridge.py.G1-patched` 교체 → `py_compile` SYNTAX_OK → `systemctl --user restart taiga-bridge` → active·재폴링 개시("bridge start" 04:30:21).
+- 운영본 = 준비본 diff-0 실측. 롤백 1줄: `cp ~/services/taiga-bridge/bridge.py.bak-g1 ~/services/taiga-bridge/bridge.py && systemctl --user restart taiga-bridge`
+- 단위시험 4/4 재실측(운영본 기준): ①진행중 중복 억제 ②배포승인 2차 카드 생성(G1 결함 해소) ③판정 후 재진입 round=2 ④3회차 연속 round=3.
+- 실측 러너: 가짜보드(운영 decisions.json·state.json 미사용), 운영 파일에서 `ensure_card` 직접 추출 실행 — 환경주입(datetime·roster) 3회 수정 후 4/4.
