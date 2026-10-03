@@ -20,3 +20,11 @@
 
 ## 롤백
 - 원본 복원+재시작(decisions.json·state.json·lock 스키마 변경 없음)
+
+## 적용·검증 (10-03 11:38, 98 — 이사님 승인 [10-03] 후)
+- **준비본은 G1·G2 이전판** — 그대로 교체 시 선행 개정 소실(회귀)이므로 **병합 이식** 수행: 운영본(G1·G2 반영)에 G3 변경 2부분만 이식(bridge·tester 각: import 2행+저장부 교체). G1(_is_judged·round_no)·G2(2xx/3xx 합격) 유지 확인. 백업: `bridge.py.bak-g3`·`tester.py.bak-g3`.
+- py_compile SYNTAX_OK · import both IMPORT_OK.
+- 단위시험 ② 재실행(사본 경로, 운영 파일 미사용): 4스레드×20회(보드 2+브리지 2) — 에러 0, 이사님 판정(seed) 유지(approved), 신규카드 유실 0, .json.lock 생성 실측. 참고: transact_json 계약은 mutator의 data 직접변형(반환값 무관) — 운영 코드는 fresh 직접변형이라 적합.
+- 재기동+회귀(이사님 지시): `systemctl --user restart taiga-bridge` → active, "bridge start" 11:38:12, 에러·트레이스 0, 운영 decisions.json 28카드 무손상(28→28), tester·dispatcher·agenda 타이머·서비스 전부 active.
+- 롤백 1줄: `cp ~/services/taiga-bridge/{bridge,tester}.py.bak-g3 ~/services/taiga-bridge/ && systemctl --user restart taiga-bridge` — 스키마 변경 없음.
+- 근거: 준비본 d11de27(병합분), 8024@불간, notes@본커밋.
