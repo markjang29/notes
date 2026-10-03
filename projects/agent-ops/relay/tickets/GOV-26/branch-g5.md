@@ -12,3 +12,10 @@
 2. 검증(티켓): 원장(totalLedger)에 발령 기록 +1, 회의방 메시지 sender=taiga-bridge
 ## 롤백
 - dispatcher.py 원복+재시작(8024 원장은 이력으로 잔존 — 무해)
+
+## 적용·검증 (10-03 11:40, 98 — GOV#25와 동일본 동시 적용)
+- 적용: dispatcher.py ← G4-patched(=G5-patched, 60ca3ad) 교체·재시작 — SENDER="taiga-bridge", send_8024() 원장 기록 경로 탑재.
+- 8024 원장 실측: 통신 재개 후 totalLedger 559→568(+9 — 발령 포함·본통신 포함, 원장 계속 증가). 원장 기록은 발령 발생시마다 (from=heav_lnx_bot, type=task, ref=taiga:pid:ref).
+- 8023 회의방: 병행 송신 유지(전환기 — 원장 기록 후 회의방, 실패 무시). 다음 실제 발령시 sender=taiga-bridge 확인 예정(현 구현상태 US 없어 무발령 — G4 회신 참조).
+- 롤백: dispatcher.py.bak-g4g5 원복+재시작 — 8024 원장 기록분은 이력 잔존(무해).
+- 근거: 준비본 60ca3ad, notes@본커밋.
