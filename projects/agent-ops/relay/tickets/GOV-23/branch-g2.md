@@ -20,3 +20,10 @@
 
 ## 롤백
 - tester.py 원복+재시작(decisions.json·state.json 스키마 변경 없음)
+
+## 적용·검증 (10-03 11:37, 98 — 이사님 승인 [10-03] 후)
+- 적용: 운영 `~/services/taiga-bridge/tester.py` ← tester.py.G2-patched 교체(diff-0 실측) → `py_compile` SYNTAX_OK → `import tester` IMPORT_OK → taiga-tester.timer는 유지(다음 회차 11:39:45부터 새 판정).
+- 더미검증(운영 Taiga·decisions.json 미사용, 운영본 `probe()` 직접 추출): 더미200 통과(3/3) · 더미404 반려(0/3) · 더미500 반려(0/3) — 3/3. 옛 기준(c<500)이면 404가 통과되나, 판은 404·500 반려로 실측 확인(2xx/3xx만 합격, 2/3 이상).
+- 97봇(heav_gmwin_codex_bot) 인계: 대기 판정 시 8024 task(ref=test-97:pid:sid) — N2 토큰 강제 이행으로 97봇은 토큰표 등록 필요(잔여, 자동해소).
+- 롤백 1줄: `cp ~/services/taiga-bridge/tester.py.bak-g2 ~/services/taiga-bridge/tester.py`(없으면 notes 티켓 준비본 역복사)+taiga-tester 재실행 — 스키마 변경 없음.
+- 근거: 8024@n2-token-bearer(불간), notes@본커밋, 준비본 a188cee.
