@@ -29,11 +29,28 @@ def save_state(s):
 
 SENDER = "taiga-bridge"   # GOV#26 [G5]: 자동발령은 서비스 신원(이사님 명의 금지 — 이사님 발언=요구사항)
 
-def send_8024(text, ref):
-    """G5: 발령을 8024 원장에 기록(type=task, ref=Taiga US) — "모든 계약은 원장" 원칙."""
+def _comm_token8024():
+    """INFRA#10 연동: 8024 comm-tokens.json에서 heav_lnx_bot의 토큰을 읽어 사용(값 출력·문서 기입 금지 — 파일경로만)."""
     try:
+        import hjson  # 없으면 아래 except
+        return hjson  # 자리표시 — 실제 로직은 아래
+    except Exception:
+        pass
+
+def send_8024(text, ref):
+    """G5: 발령을 8024 원장에 기록(type=task, ref=Taiga US) — "모든 계약은 원장" 원칙.
+    INFRA#10(토큰 강제, 10-03 11:46 반영) 연동: 본문 token 필드에 매니저봇 토큰(파일에서 판독)."""
+    try:
+        tf = "/home/smlime21/.config/matrix-studio-spring/comm-tokens.json"
+        tok = ""
+        try:
+            tok = json.load(open(tf)).get("heav_lnx_bot", "")
+        except Exception as _e:
+            LOG(f"comm-tokens 판독 실패(무시): {_e}")
         b = {"from": "heav_lnx_bot", "to": "@all", "type": "task", "ref": ref, "text": text[:500]}
-        req = urllib.request.Request("http://43.201.34.144:8024/api/nats/send",
+        if tok:
+            b["token"] = tok
+        req = urllib.request.Request("http://127.0.0.1:8024/api/nats/send",
                                      data=json.dumps(b, ensure_ascii=False).encode(),
                                      headers={"Content-Type": "application/json"})
         return json.load(urllib.request.urlopen(req, timeout=15))
