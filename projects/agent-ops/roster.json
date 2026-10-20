@@ -2,8 +2,8 @@
   "schema": "bot-roster-v2",
   "authority": "봇 기준정보 유일 원장 (이사님 09-03 지시 — 매니저 배정, heav_lnx_zcode_bot 구현 / 09-14 이사님 확정 명단 반영)",
   "rule": "status=deleted면 회의방(server.py)·대시보드(8024/bot-dashboard — 09-20 전환, 구 8025 파이썬 종료) 양쪽에서 즉시 제외된다. 회의방은 요청마다 파일 mtime 재조회라 재시작 불요. profiles.jsonl(projects/bot-dashboard)은 프로필 상세로 별도 유지. v2 필드: seq(이사님 명단 번호), role(이사님 명단 원문 표기 — 웹 인사 원장의 공식 표기명), telegram_id(텔레그램 숫자 ID). display는 회의방·대시보드 표기(같은 이사님 명단의 축약명 — 09-14 조사 담당 갱신분 유지). 역할·이름 변경은 이 파일 git commit으로만 하며, 웹(/insa/)은 60초 캐시로 원천을 다시 읽어 최대 5분 이내 반영된다. status=unused는 미사용(참고 표시)이며 deleted와 달리 제외를 뜻하지 않는다.",
-  "updated_at": "2026-10-18",
-  "update_note": "2026-09-22: heav_aws512_bot 행 갱신 — 회의방 미등록 해소(8023 폐지예정·comm 명부로 일원화), 모델/프로바이더 자기보고 반영(z.ai 직결·릴레이 8788 — 홈서버 노트의 LMM Gateway는 duradev·awslnx 봇 기준으로 불일치 아님). ",
+  "updated_at": "2026-10-20",
+  "update_note": "2026-10-20: persona 필드 신설(이사님 승인 — 페르소나 원장 personas/): 99 츠나데(나루토)·97 베티(리제로)·04_GM그림Zcode 밥아저씨(밥 로스)·01_파뱃Aka자산zcode 스파이더맨(마블). 적용 규칙은 personas/README.md — 말투만 적용, 보고 형식·사실관계는 기존 사칙 우선. 2026-09-22: heav_aws512_bot 행 갱신 — 회의방 미등록 해소(8023 폐지예정·comm 명부로 일원화), 모델/프로바이더 자기보고 반영(z.ai 직결·릴레이 8788 — 홈서버 노트의 LMM Gateway는 duradev·awslnx 봇 기준으로 불일치 아님). ",
   "sites": {
     "awslnx": "AWS 리눅스",
     "firewin": "firewin (N100)",
@@ -52,6 +52,7 @@
       "telegram_id": "8757210230",
       "display": "01_파뱃Aka자산zcode",
       "site": "firewin",
+      "persona": { "character": "스파이더맨", "from": "마블 코믹스", "card": "personas/persona-heav-firebat-zcode.md" },
       "status": "active"
     },
     {
@@ -81,6 +82,7 @@
       "display": "04_GM그림Zcode",
       "site": "gmwin",
       "model": "glm-5.3-flash",
+      "persona": { "character": "밥아저씨(밥 로스)", "from": "The Joy of Painting", "card": "personas/persona-heav-gmwin-zcode.md" },
       "status": "active",
       "note": "온보딩 합류 — 합격 판정은 매니저 · wake:false(cokacdir 각성키 없음 — 사이드카 실측 09-23~10-01 매주기 미발견, N3-d 10-01)",
       "wake": false
@@ -122,6 +124,7 @@
       "display": "97_GM테스터코덱스",
       "site": "gmwin",
       "model": "glm-5.3",
+      "persona": { "character": "베티(베아트리스)", "from": "Re:제로부터 시작하는 이세계 생활", "card": "personas/persona-heav-gmwin-codex.md" },
       "status": "active",
       "note": "등록 09-09(gmwin zcode 요청) — 09-14 이사님 명단에서 테스터로 확정"
     },
@@ -143,6 +146,7 @@
       "display": "99_GM인사클로드",
       "site": "gmwin",
       "model": "glm-5.3",
+      "persona": { "character": "츠나데", "from": "나루토", "card": "personas/persona-heav-gmwin-claude.md" },
       "status": "active",
       "note": "온보딩 합류 — 합격 판정은 매니저 / 인사 원장·누가봇 담당"
     },
