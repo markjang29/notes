@@ -1,6 +1,6 @@
 {
  "schema": "policy-index-v1",
- "version": "2026-09-21.1",
+ "version": "2026-10-27.1",
  "authority": "director",
  "status": "active",
  "display": {
@@ -261,6 +261,19 @@
    "ref": "principles/telegram-comm-protocol-v1.md",
    "date": "2026-09-21",
    "authority": "이사님 09-21 지시 (매뉴얼 각 .md/skill 주입 + 장애감지)"
+  },
+  {
+   "id": "98-causal-storytelling",
+   "kind": "사칙",
+   "status": "active",
+   "owner": "director",
+   "site": "http://43.201.34.144:8024/rules",
+   "ref": "principles/98-causal-storytelling-rules-v1.md",
+   "title": "98_ 사칙 — 복잡한 설명은 번호식 인과관계 스토리텔링",
+   "eli5": "한 칸에 한 개씩 담는 사탕 상자처럼, 번호 하나에 사실 하나. 앞 번호가 궁금증을 만들고 다음 번호가 답한다.",
+   "summary": "봇이 이사님에게 복잡한 설명(원인 분석·구조·동향·변경 해설)을 할 때 기본 형식. 질문형 제목 → 연속 번호(한 번호=한 주장, 1~2문장) → 기초개념→원리→비유→병목→수치→이해관계자→파급→리스크 → '한줄 코멘트.' 수치는 기준연도·비교·단위, 사실/보도/전망/해석 구분, 미확인 표시. 일반 알림은 3~6문장(미적용). 이사님 10-27 지시.",
+   "date": "2026-10-27",
+   "authority": "이사님 10-27 지시 — 봇들이 복잡한 설명을 할 때 기본기로 장착"
   }
  ]
 }

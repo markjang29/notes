@@ -22,6 +22,8 @@ maintainer: aws-audit (lint 시 참조 무결성 점검)
 - `principles/telegram-comm-protocol-v1.md` — 통신표준 v1 (comm 전환, 09-21).
 - `principles/entrypoint-comms-progress-rules-v1.md` — 진입점·폴링·진행보고 (8023 시대 —
   **comm 전환 미반영, lint L2 지적**).
+- `principles/98-causal-storytelling-rules-v1.md` — 98_ 사칙: 복잡한 설명의 기본 형식
+  (번호식 인과관계 스토리텔링, 이사님 10-27 채택).
 - `principles/gwanje-ack-protocol.md` — ACK = 이해의 서명.
 - `L0-agent-common.md` §6 — 부팅 시 comm 미수신 확인·즉시 ACK·실명 발신·토큰은 경로만.
 
