@@ -153,14 +153,14 @@
    "note": "2026-11-02 신설. 콘텐츠 ~/sites/wiki/<secret>/index.html, keepalive.sh 크론 5분+재부팅. 원장 규칙: notes가 정본, 사이트는 스냅샷"
   },
   {
-   "id": "svc-wikijs8090",
+   "id": "svc-wiki8090",
    "type": "service",
-   "label": "Wiki.js 2.5(진짜 위키 엔진) — 로컬 8090 + cloudflared 전용 터널",
+   "label": "미니 위키(마크다운+git, 로그인 없음) — 로컬 8090 + cloudflared 전용 터널",
    "site": "site-duradev",
    "owner": "heav_lnx_bot",
    "status": "active",
    "survey": "done",
-   "note": "2026-11-03 이사님 지시(위키 엔진+편집 앱). SQLite(data/db.sqlite), v3는 Postgres 필수라 2.5.307 사용(모듈 번들+npm rebuild sqlite3). 관리 마법사 미완(이사님 계정 생성 대기). keepalive가 사이트·위키 2본 체계 관리"
+   "note": "2026-11-03 2차 개정. Wiki.js 폐기(로그인 필수라 이사님 반려 \"왠 로그인이야\") → karpathy llm-wiki 패턴의 자체 미니 위키로 교체(wiki_server.py, 표준 라이브러리만). 콘텐츠 ~/sites/wiki-md/content(git 저장소, 저장 시 자동 커밋=복구 수단). 주소 자체가 열쇠(capability URL), 이사님에게만 공유. Wiki.js ~/sites/wikijs 는 정지 상태로 보관"
   }
  ],
  "edges": [
