@@ -161,6 +161,26 @@
    "status": "active",
    "survey": "done",
    "note": "2026-11-03 2차 개정. Wiki.js 폐기(로그인 필수라 이사님 반려 \"왠 로그인이야\") → karpathy llm-wiki 패턴의 자체 미니 위키로 교체(wiki_server.py, 표준 라이브러리만). 콘텐츠 ~/sites/wiki-md/content(git 저장소, 저장 시 자동 커밋=복구 수단). 주소 자체가 열쇠(capability URL), 이사님에게만 공유. Wiki.js ~/sites/wikijs 는 정지 상태로 보관"
+  },
+  {
+   "id": "git-matrix-asset-agent",
+   "type": "git",
+   "label": "matrix_asset_agent — 원본·출처·CAS·검증기 정본 (source-evidence-v1)",
+   "site": "site-duradev",
+   "owner": "aws-manager",
+   "status": "active",
+   "survey": "done",
+   "note": "2026-11-05 P0 조사로 등록(매니저). MATRIX-ORCH-001 첫 flow의 레코드/검증 재사용 원천. inventory/records 9,411건 인덱스"
+  },
+  {
+   "id": "svc-orch4200",
+   "type": "service",
+   "label": "Prefect 서버(자체호스팅, venv 프로세스) — 127.0.0.1:4200, SQLite 백엔드",
+   "site": "site-duradev",
+   "owner": "aws-manager",
+   "status": "active",
+   "survey": "done",
+   "note": "2026-11-05 MATRIX-ORCH-001 P1. docker 불가 환경이라 venv(~/.venvs/orch)+start-server.sh. 워크트리 ~/projects/matrix-home-orch, keepalive 예정"
   }
  ],
  "edges": [
@@ -234,6 +254,16 @@
    "to": "git-relay",
    "type": "tracks",
    "label": "티켓 원장 포함"
+  },
+  {
+   "from": "svc-orch4200",
+   "to": "git-matrix-asset-agent",
+   "type": "reads_records"
+  },
+  {
+   "from": "svc-home8018",
+   "to": "svc-orch4200",
+   "type": "planned_pipeline_view"
   }
  ]
 }
