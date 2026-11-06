@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "note": "외부 서비스 신원 레지스트리 — Telegram 봇(roster.json)과 구분. 토큰값은 여기에 두지 않는다(서버 전용 비밀 파일, L0 §6). 서비스 신원은 Telegram 동기화·전봇 방송·sidecar 각성 대상에서 제외.",
+  "actors": [
+    {
+      "actor_id": "chatgpt_architect",
+      "transport": "http",
+      "wake": false,
+      "allowed_recipients": ["heav_lnx_bot", "heav_lnx_codex_dev_1_bot"],
+      "status": "active",
+      "ref": "proposals/2026-11-05-chatgpt-http-control-bridge-spec-v1.md",
+      "registered": "2026-11-06",
+      "registered_by": "aws-manager"
+    }
+  ]
+}
