@@ -1,269 +1,293 @@
 {
- "version": "v1",
- "updated": "2026-09-08",
- "nodes": [
-  {
-   "id": "site-aws8",
-   "type": "site",
-   "label": "AWS 8GB (43.201.34.144)",
-   "status": "셧다운 예정",
-   "survey": "done"
-  },
-  {
-   "id": "site-edge512",
-   "type": "site",
-   "label": "AWS 엣지 512MB (43.201.34.144)",
-   "status": "진입점",
-   "survey": "done"
-  },
-  {
-   "id": "site-duradev",
-   "type": "site",
-   "label": "홈 리눅스 duradev (100.109.91.0)",
-   "status": "본진",
-   "survey": "pending"
-  },
-  {
-   "id": "site-nucboxg3",
-   "type": "site",
-   "label": "GM 윈도우 nucboxg3 (100.97.180.0)",
-   "survey": "pending"
-  },
-  {
-   "id": "site-firewin",
-   "type": "site",
-   "label": "firewin PC WIN-TGON9IO01TV (100.122.67.122)",
-   "survey": "pending"
-  },
-  {
-   "id": "svc-hub8023",
-   "type": "service",
-   "label": "관제 허브·회의방 8023",
-   "site": "site-aws8",
-   "owner": "codex_dev_1",
-   "survey": "done"
-  },
-  {
-   "id": "svc-hub-edge",
-   "type": "service",
-   "label": "허브 현황판 (엣지 :80/hub)",
-   "site": "site-edge512",
-   "survey": "done"
-  },
-  {
-   "id": "svc-spring8024",
-   "type": "service",
-   "label": "원사이트 스프링 8024",
-   "site": "site-aws8",
-   "owner": "firebat claude",
-   "survey": "done"
-  },
-  {
-   "id": "svc-home8018",
-   "type": "service",
-   "label": "MATRIX 홈 8018",
-   "site": "site-duradev",
-   "owner": "firewin",
-   "survey": "pending"
-  },
-  {
-   "id": "svc-home8021",
-   "type": "service",
-   "label": "matrix-studio 8021",
-   "site": "site-duradev",
-   "survey": "pending"
-  },
-  {
-   "id": "svc-home8022",
-   "type": "service",
-   "label": "matrix-nexus 8022",
-   "site": "site-duradev",
-   "survey": "pending"
-  },
-  {
-   "id": "svc-proxy8788",
-   "type": "service",
-   "label": "GLM 프록시 8788",
-   "site": "site-aws8",
-   "survey": "done"
-  },
-  {
-   "id": "git-notes",
-   "type": "git",
-   "label": "notes (규칙·원장 정본)",
-   "site": "site-aws8",
-   "remote": true,
-   "survey": "done"
-  },
-  {
-   "id": "git-relay",
-   "type": "git",
-   "label": "relay tickets·requirements",
-   "site": "site-aws8",
-   "survey": "done"
-  },
-  {
-   "id": "git-spring",
-   "type": "git",
-   "label": "matrix-studio-spring",
-   "site": "site-aws8",
-   "owner": "firebat claude",
-   "remote": true,
-   "survey": "done"
-  },
-  {
-   "id": "store-arcalive",
-   "type": "asset_store",
-   "label": "Works/arcalive 87G·37,773파일",
-   "site": "site-aws8",
-   "owner": "firewin",
-   "survey": "done"
-  },
-  {
-   "id": "store-novel",
-   "type": "asset_store",
-   "label": "Works/novel 5.7G + 큐 887건",
-   "site": "site-aws8",
-   "owner": "firewin",
-   "survey": "done"
-  },
-  {
-   "id": "store-ledger",
-   "type": "asset_store",
-   "label": "asset_ledger.jsonl 원장",
-   "site": "site-firewin",
-   "owner": "firewin",
-   "survey": "pending"
-  },
-  {
-   "id": "store-cold",
-   "type": "asset_store",
-   "label": "Google Drive 콜드(matrix-cold)",
-   "owner": "firewin",
-   "survey": "pending"
-  },
-  {
-   "id": "svc-wiki8088",
-   "type": "service",
-   "label": "정리 위키 사이트 — 로컬 8088(127.0.0.1)+cloudflared 터널(공개)",
-   "site": "site-duradev",
-   "owner": "heav_lnx_bot",
-   "status": "active",
-   "survey": "done",
-   "note": "2026-11-02 신설. 콘텐츠 ~/sites/wiki/<secret>/index.html, keepalive.sh 크론 5분+재부팅. 원장 규칙: notes가 정본, 사이트는 스냅샷"
-  },
-  {
-   "id": "svc-wiki8090",
-   "type": "service",
-   "label": "미니 위키(마크다운+git, 로그인 없음) — 로컬 8090 + cloudflared 전용 터널",
-   "site": "site-duradev",
-   "owner": "heav_lnx_bot",
-   "status": "active",
-   "survey": "done",
-   "note": "2026-11-03 2차 개정. Wiki.js 폐기(로그인 필수라 이사님 반려 \"왠 로그인이야\") → karpathy llm-wiki 패턴의 자체 미니 위키로 교체(wiki_server.py, 표준 라이브러리만). 콘텐츠 ~/sites/wiki-md/content(git 저장소, 저장 시 자동 커밋=복구 수단). 주소 자체가 열쇠(capability URL), 이사님에게만 공유. Wiki.js ~/sites/wikijs 는 정지 상태로 보관"
-  },
-  {
-   "id": "git-matrix-asset-agent",
-   "type": "git",
-   "label": "matrix_asset_agent — 원본·출처·CAS·검증기 정본 (source-evidence-v1)",
-   "site": "site-duradev",
-   "owner": "aws-manager",
-   "status": "active",
-   "survey": "done",
-   "note": "2026-11-05 P0 조사로 등록(매니저). MATRIX-ORCH-001 첫 flow의 레코드/검증 재사용 원천. inventory/records 9,411건 인덱스"
-  },
-  {
-   "id": "svc-orch4200",
-   "type": "service",
-   "label": "Prefect 서버(자체호스팅, venv 프로세스) — 127.0.0.1:4200, SQLite 백엔드",
-   "site": "site-duradev",
-   "owner": "aws-manager",
-   "status": "active",
-   "survey": "done",
-   "note": "2026-11-05 MATRIX-ORCH-001 P1. docker 불가 환경이라 venv(~/.venvs/orch)+start-server.sh. 워크트리 ~/projects/matrix-home-orch, keepalive 예정"
-  }
- ],
- "edges": [
-  {
-   "from": "svc-hub8023",
-   "to": "site-aws8",
-   "type": "runs_on"
-  },
-  {
-   "from": "svc-hub-edge",
-   "to": "site-edge512",
-   "type": "runs_on"
-  },
-  {
-   "from": "svc-spring8024",
-   "to": "site-aws8",
-   "type": "runs_on"
-  },
-  {
-   "from": "svc-home8018",
-   "to": "site-duradev",
-   "type": "runs_on"
-  },
-  {
-   "from": "svc-home8021",
-   "to": "site-duradev",
-   "type": "runs_on"
-  },
-  {
-   "from": "svc-home8022",
-   "to": "site-duradev",
-   "type": "runs_on"
-  },
-  {
-   "from": "svc-proxy8788",
-   "to": "site-aws8",
-   "type": "runs_on"
-  },
-  {
-   "from": "site-edge512",
-   "to": "site-duradev",
-   "type": "flows",
-   "label": "tailscale 진입→실서빙"
-  },
-  {
-   "from": "store-arcalive",
-   "to": "store-ledger",
-   "type": "flows",
-   "label": "수집→검증→원장"
-  },
-  {
-   "from": "store-ledger",
-   "to": "site-duradev",
-   "type": "flows",
-   "label": "미러 동기화"
-  },
-  {
-   "from": "store-ledger",
-   "to": "store-cold",
-   "type": "flows",
-   "label": "콜드 백업"
-  },
-  {
-   "from": "git-spring",
-   "to": "svc-spring8024",
-   "type": "tracks",
-   "label": "배포 대상"
-  },
-  {
-   "from": "git-notes",
-   "to": "git-relay",
-   "type": "tracks",
-   "label": "티켓 원장 포함"
-  },
-  {
-   "from": "svc-orch4200",
-   "to": "git-matrix-asset-agent",
-   "type": "reads_records"
-  },
-  {
-   "from": "svc-home8018",
-   "to": "svc-orch4200",
-   "type": "planned_pipeline_view"
-  }
- ]
+  "version": "v1",
+  "updated": "2026-09-08",
+  "nodes": [
+    {
+      "id": "site-aws8",
+      "type": "site",
+      "label": "AWS 8GB (43.201.34.144)",
+      "status": "셧다운 예정",
+      "survey": "done"
+    },
+    {
+      "id": "site-edge512",
+      "type": "site",
+      "label": "AWS 엣지 512MB (43.201.34.144)",
+      "status": "진입점",
+      "survey": "done"
+    },
+    {
+      "id": "site-duradev",
+      "type": "site",
+      "label": "홈 리눅스 duradev (100.109.91.0)",
+      "status": "본진",
+      "survey": "pending"
+    },
+    {
+      "id": "site-nucboxg3",
+      "type": "site",
+      "label": "GM 윈도우 nucboxg3 (100.97.180.0)",
+      "survey": "pending"
+    },
+    {
+      "id": "site-firewin",
+      "type": "site",
+      "label": "firewin PC WIN-TGON9IO01TV (100.122.67.122)",
+      "survey": "pending"
+    },
+    {
+      "id": "svc-hub8023",
+      "type": "service",
+      "label": "관제 허브·회의방 8023",
+      "site": "site-aws8",
+      "owner": "codex_dev_1",
+      "survey": "done"
+    },
+    {
+      "id": "svc-hub-edge",
+      "type": "service",
+      "label": "허브 현황판 (엣지 :80/hub)",
+      "site": "site-edge512",
+      "survey": "done"
+    },
+    {
+      "id": "svc-spring8024",
+      "type": "service",
+      "label": "원사이트 스프링 8024",
+      "site": "site-aws8",
+      "owner": "firebat claude",
+      "survey": "done"
+    },
+    {
+      "id": "svc-home8018",
+      "type": "service",
+      "label": "MATRIX 홈 8018",
+      "site": "site-duradev",
+      "owner": "firewin",
+      "survey": "pending"
+    },
+    {
+      "id": "svc-home8021",
+      "type": "service",
+      "label": "matrix-studio 8021",
+      "site": "site-duradev",
+      "survey": "pending"
+    },
+    {
+      "id": "svc-home8022",
+      "type": "service",
+      "label": "matrix-nexus 8022",
+      "site": "site-duradev",
+      "survey": "pending"
+    },
+    {
+      "id": "svc-proxy8788",
+      "type": "service",
+      "label": "GLM 프록시 8788",
+      "site": "site-aws8",
+      "survey": "done"
+    },
+    {
+      "id": "git-notes",
+      "type": "git",
+      "label": "notes (규칙·원장 정본)",
+      "site": "site-aws8",
+      "remote": true,
+      "survey": "done"
+    },
+    {
+      "id": "git-relay",
+      "type": "git",
+      "label": "relay tickets·requirements",
+      "site": "site-aws8",
+      "survey": "done"
+    },
+    {
+      "id": "git-spring",
+      "type": "git",
+      "label": "matrix-studio-spring",
+      "site": "site-aws8",
+      "owner": "firebat claude",
+      "remote": true,
+      "survey": "done"
+    },
+    {
+      "id": "store-arcalive",
+      "type": "asset_store",
+      "label": "Works/arcalive 87G·37,773파일",
+      "site": "site-aws8",
+      "owner": "firewin",
+      "survey": "done"
+    },
+    {
+      "id": "store-novel",
+      "type": "asset_store",
+      "label": "Works/novel 5.7G + 큐 887건",
+      "site": "site-aws8",
+      "owner": "firewin",
+      "survey": "done"
+    },
+    {
+      "id": "store-ledger",
+      "type": "asset_store",
+      "label": "asset_ledger.jsonl 원장",
+      "site": "site-firewin",
+      "owner": "firewin",
+      "survey": "pending"
+    },
+    {
+      "id": "store-cold",
+      "type": "asset_store",
+      "label": "Google Drive 콜드(matrix-cold)",
+      "owner": "firewin",
+      "survey": "pending"
+    },
+    {
+      "id": "svc-wiki8088",
+      "type": "service",
+      "label": "정리 위키 사이트 — 로컬 8088(127.0.0.1)+cloudflared 터널(공개)",
+      "site": "site-duradev",
+      "owner": "heav_lnx_bot",
+      "status": "active",
+      "survey": "done",
+      "note": "2026-11-02 신설. 콘텐츠 ~/sites/wiki/<secret>/index.html, keepalive.sh 크론 5분+재부팅. 원장 규칙: notes가 정본, 사이트는 스냅샷"
+    },
+    {
+      "id": "svc-wiki8090",
+      "type": "service",
+      "label": "미니 위키(마크다운+git, 로그인 없음) — 로컬 8090 + cloudflared 전용 터널",
+      "site": "site-duradev",
+      "owner": "heav_lnx_bot",
+      "status": "active",
+      "survey": "done",
+      "note": "2026-11-03 2차 개정. Wiki.js 폐기(로그인 필수라 이사님 반려 \"왠 로그인이야\") → karpathy llm-wiki 패턴의 자체 미니 위키로 교체(wiki_server.py, 표준 라이브러리만). 콘텐츠 ~/sites/wiki-md/content(git 저장소, 저장 시 자동 커밋=복구 수단). 주소 자체가 열쇠(capability URL), 이사님에게만 공유. Wiki.js ~/sites/wikijs 는 정지 상태로 보관"
+    },
+    {
+      "id": "git-matrix-asset-agent",
+      "type": "git",
+      "label": "matrix_asset_agent — 원본·출처·CAS·검증기 정본 (source-evidence-v1)",
+      "site": "site-duradev",
+      "owner": "aws-manager",
+      "status": "active",
+      "survey": "done",
+      "note": "2026-11-05 P0 조사로 등록(매니저). MATRIX-ORCH-001 첫 flow의 레코드/검증 재사용 원천. inventory/records 9,411건 인덱스"
+    },
+    {
+      "id": "svc-orch4200",
+      "type": "service",
+      "label": "Prefect 서버(자체호스팅, venv 프로세스) — 127.0.0.1:4200, SQLite 백엔드",
+      "site": "site-duradev",
+      "owner": "aws-manager",
+      "status": "active",
+      "survey": "done",
+      "note": "2026-11-05 MATRIX-ORCH-001 P1. docker 불가 환경이라 venv(~/.venvs/orch)+start-server.sh. 워크트리 ~/projects/matrix-home-orch, keepalive 예정"
+    },
+    {
+      "id": "actor-chatgpt-architect",
+      "type": "service",
+      "status": "active",
+      "label": "외부 서비스 신원 chatgpt_architect — ChatGPT 실행 환경의 HTTP 관제 호출자 (service-actors.json 등록, Bearer 인증)",
+      "survey": "2026-11-06 aws-manager — bridge C0·C1 왕복 실증(명세 2026-11-05 v1)"
+    },
+    {
+      "id": "svc-bridge-edge",
+      "type": "service",
+      "status": "active",
+      "label": "agent-bridge HTTPS edge — cloudflared quick tunnel → 경로 필터 프록시(127.0.0.1:8126) → 8024 /api/agent-bridge/v1",
+      "survey": "2026-11-06 aws-manager — quick tunnel URL은 재시작 시 변경(urlwatch 크론이 이사님 채팅에 자동 통보)"
+    }
+  ],
+  "edges": [
+    {
+      "from": "svc-hub8023",
+      "to": "site-aws8",
+      "type": "runs_on"
+    },
+    {
+      "from": "svc-hub-edge",
+      "to": "site-edge512",
+      "type": "runs_on"
+    },
+    {
+      "from": "svc-spring8024",
+      "to": "site-aws8",
+      "type": "runs_on"
+    },
+    {
+      "from": "svc-home8018",
+      "to": "site-duradev",
+      "type": "runs_on"
+    },
+    {
+      "from": "svc-home8021",
+      "to": "site-duradev",
+      "type": "runs_on"
+    },
+    {
+      "from": "svc-home8022",
+      "to": "site-duradev",
+      "type": "runs_on"
+    },
+    {
+      "from": "svc-proxy8788",
+      "to": "site-aws8",
+      "type": "runs_on"
+    },
+    {
+      "from": "site-edge512",
+      "to": "site-duradev",
+      "type": "flows",
+      "label": "tailscale 진입→실서빙"
+    },
+    {
+      "from": "store-arcalive",
+      "to": "store-ledger",
+      "type": "flows",
+      "label": "수집→검증→원장"
+    },
+    {
+      "from": "store-ledger",
+      "to": "site-duradev",
+      "type": "flows",
+      "label": "미러 동기화"
+    },
+    {
+      "from": "store-ledger",
+      "to": "store-cold",
+      "type": "flows",
+      "label": "콜드 백업"
+    },
+    {
+      "from": "git-spring",
+      "to": "svc-spring8024",
+      "type": "tracks",
+      "label": "배포 대상"
+    },
+    {
+      "from": "git-notes",
+      "to": "git-relay",
+      "type": "tracks",
+      "label": "티켓 원장 포함"
+    },
+    {
+      "from": "svc-orch4200",
+      "to": "git-matrix-asset-agent",
+      "type": "reads_records"
+    },
+    {
+      "from": "svc-home8018",
+      "to": "svc-orch4200",
+      "type": "planned_pipeline_view"
+    },
+    {
+      "from": "actor-chatgpt-architect",
+      "to": "svc-bridge-edge",
+      "type": "flows"
+    },
+    {
+      "from": "svc-bridge-edge",
+      "to": "svc-spring8024",
+      "type": "flows"
+    }
+  ]
 }
