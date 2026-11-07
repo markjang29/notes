@@ -103,3 +103,12 @@ a00e493a(11-06)로 원장·배달·이벤트 수집·상태 전이 정상 실증
 3. 로그: comm-relay-98.log(13:29:56 수령·ACK), comm-relay-awslnx.log(TTL 재ACK 46,060회).
 4. 코드: NatsLogController.ack(ackedAt만 설정)·whoami(deliveredAt 기준 pending) — 정의 불일치.
 5. 원장 총수 644건(13:23 whoami). NATS 로컬 프로세스 정상(nats-server, nats.conf).
+
+## 8. 후속 (14:40 추가 — submitted 이후 해소)
+
+1. audit pong 도착 실측: probe 발송 13:29:56 → pong+7필드ACK 13:37:43(왕복 7분47초).
+   probe 예산(120초) 초과 지연이나 전이 완결 — §3의 3번 판정 부분정상 → 정상(회신 지연).
+2. 릴레이 쿨다운 만료 후 자동 각성 재개 실측: 14:11 heav_lnx_bot 각성(미수신 7건 → 부팅·전건 ACK,
+   스케줄 이력 52C7A1FE ok). F1은 '쿨다운 중 신규 지시 무시'로 한정 — 쿨다운 경과 후 정상 복귀.
+3. 분담과제 배달·회신 왕복 2건 실측(rpg 13:47 progress·13:49 submitted, scenario 13:52 submitted) —
+   각성→수신→조사→notes 커밋(d995d88·10fc638)→회신까지 전 경로 정상.
