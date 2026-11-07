@@ -193,8 +193,8 @@
       "id": "svc-bridge-edge",
       "type": "service",
       "status": "active",
-      "label": "agent-bridge HTTPS edge — cloudflared quick tunnel → 경로 필터 프록시(127.0.0.1:8126) → 8024 /api/agent-bridge/v1",
-      "survey": "2026-11-06 aws-manager — quick tunnel URL은 재시작 시 변경(urlwatch 크론이 이사님 채팅에 자동 통보)"
+      "label": "agent-bridge HTTPS edge — AWS 엣지(aws512-edge) Tailscale Funnel 443(ts.net 고정 주소) → nginx 경로 필터 → 8024 /api/agent-bridge/v1",
+      "survey": "2026-11-07 aws-manager — trycloudflare가 ChatGPT 호출환경에서 403 차단되어 폐지. ts.net 주소는 기계명 고정(변경 없음), 인증키 동일. 부트스트랩 일회용 URL로 토큰 전달(커밋 c081676)"
     }
   ],
   "edges": [

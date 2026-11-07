@@ -93,3 +93,35 @@ ChatGPT 자격 제출 → 매니저 각성·수신 → 결과 제출 → ChatGPT
 2. 롤백: `ln -sfn ~/services/matrix-studio-spring/releases/2e1914751341 ~/services/matrix-studio-spring/current
    && systemctl --user restart matrix-studio-spring-8024` — 접수된 작업 원장(agent_bridge_*)은
    PostgreSQL에 남아 롤백 중에도 보존(명세 §9 요건). 엣지 프록시·터널은 별도 유닛이라 무관.
+
+## 7. 11-07 추가 — 호출환경 403 대응: HTTPS 경로 전환 + 부트스트랩 전달
+
+사건: 이사님 보고 "ChatGPT 호출환경에서 trycloudflare 주소가 403 'Your request was blocked.'"
+(서버 측 동일 주소 200 — Cloudflare WAF의 데이터센터 IP·비브라우저 차단으로 판단).
+
+1. 경로 탐색: LE IP 인증서(엣지 443) 시도 → certbot 5.9.0이 IP 주소 발급 자체를 거부(불가 확인).
+   대안 확정: aws512-edge에 이미 켜져 있던 Tailscale Funnel(443, ts.net 인증서는 Tailscale이
+   자동 발급·갱신) 재사용. Funnel 루트가 엣지 nginx :80으로 전달되는 구조라
+   nginx에 `location ^~ /api/agent-bridge/v1/ → duradev_spring(8024)` 1행만 추가(edge.conf 49행).
+   Funnel 설정·타 서비스 경로 무변경.
+2. **새 base URL(주소 고정 — 터널 재시작 무관, 인증키 동일):**
+   `https://aws512-edge.tail1cf879.ts.net/api/agent-bridge/v1`
+3. 서버 측 실측(11-07, 전부 통과):
+   - tailnet 내부 경로: health 200(0.11s), 무토큰 whoami 401, 타 경로(/api/nats/*) 404 — 경로 필터 유지.
+   - **공용 인그레스 경로**: 공용 DNS(1.1.1.1)가 알려준 공인 IP(103.84.155.153)로 강제 접속 —
+     health 200(0.47s), 무토큰 401, TLS 유효(시스템 CA 검증 통과). 진짜 인터넷 왕복 실증.
+   - POST 계약: Idempotency-Key 누락 400, 잘못된 kind 400(헤더·본문 정상 도달, 원장 미삽입).
+   - quick tunnel·8126 경로프록시·urlwatch 크론 폐기(disable --now·crontab 제거, 파일 보존).
+     롤백: `systemctl --user enable --now agent-bridge-tunnel agent-bridge-edge` + urlwatch 재등록.
+4. 부트스트랩 일회용 URL(커밋 `c081676…`, 배포 releases/c081676…):
+   - POST /bootstrap(Bearer 필수) → 코드 40자 hex·10분 만료. 재발급 시 그 신원의 이전 코드 폐기.
+   - GET /bootstrap/{code} — 공개·단 1회. 응답 {actor_id, token, usage}. 환급은
+     `DELETE … RETURNING` 원자 처리로 동시 조회 시 1명만 성공. 토큰값은 서버 전용 파일(0600,
+     또는 60초 캐시)에서 즉시 읽어 반환 — 채팅·Git·로그 미경유, 저장도 안 함.
+   - 실측 7항목 통과: 무토큰 발급 401 · 발급 형식(40hex) · 공개 URL 1회 환급 값 일치(MATCH) ·
+     재환급 404 · 미지수 코드 404 · 재발급 시 이전 폐기(404) · whoami 정상.
+5. **ChatGPT 실제 접속 검증: 미실시(이사님 확인 몫)** — 체크리스트:
+   ① `GET <base>/health` → 200 ② 부트스트랩 URL 1회 환급으로 토큰 수령→안전 보관
+   ③ `GET /whoami`(Bearer) → 200 ④ status 작업 1건 제출·조회 왕복.
+6. 남은 제한 갱신: "고정 도메인 필요" 항목은 해소(기계명 고정 주소). 단 tailnet Funnel 정책이
+   바뀌면 경로 상실 가능(감시 방법은 C2 과제). C2 나머지(verified 승격·lease·타임아웃·implement) 동일.
