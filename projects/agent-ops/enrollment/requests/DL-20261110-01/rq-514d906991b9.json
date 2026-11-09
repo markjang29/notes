@@ -1,0 +1,10 @@
+{
+  "campaign_id": "DL-20261110-01",
+  "request_id": "rq-514d906991b9",
+  "actor_ref_or_candidate": "n100-zcode/heav_firebat_claude_bot (transport match verified local, provider mismatch zcode-vs-claude, identity_pending)",
+  "policy_commit": "89ff4761970816d36482965c3d6d5ec6fc05f847",
+  "state": "enrollment_requested",
+  "reason_code": "comm_blocked_token_unheld",
+  "reply_via": "git-notes-enrollment/confirmations/DL-20261110-01",
+  "observed_at": "2026-11-10T01:10:33Z"
+}
