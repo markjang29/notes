@@ -27,8 +27,9 @@ distribution_complete: unknown
    acknowledged, transport=cokacdir\_telegram @heav\_lnx\_bot, role=coordinator, repo 6개).
    장비=duradev 홈서버(awslnx 사이트). 현재 작업=본 캠페인 수집 담당(선행 MOA 보고 완료).
 2. 왕복 확인: 매니저는 자기 ACK만으로 통과 처리 불가 → 독립 검수자(audit) 확인 요청 발송
-   (comm idem-b568fb57, 일회성 확인값 회신 요청). **회신 전이므로 매니저 상태=연결대기.**
-3. 적용 지속: L0-agent-boot.md 읽기 순서에 정본 경로 참조 추가(본 커밋) — 재시작 후 복구
+   (comm idem-b568fb57). **audit가 확인값 dl01-e351f1763144를 반환(메시지 1794240649835-89,
+   actors.json v10 대조·notes 318dad7 실존 확인 포함) — 매니저 상태=연결확인(16:12 기준).**
+3. 적용 지속: L0-agent-boot.md 읽기 순서에 정본 경로 참조 추가(커밋 5e6497b) — 재시작 후 복구
    확인은 다음 세션 부트에서 시험 예정(현재 미실행).
 
 ## 2. 기대 명부와 발송 결과 (분모 유지 — 응답자만으로 분모 안 만듦)
@@ -45,21 +46,44 @@ distribution_complete: unknown
    (토큰 없음 + 장비 접근 없음 — MOA 대조와 동일 미조사 목록). 삭제하지 않고 차단/미도달로 표시.
 4. **분모 밖 후보**: gmlnx_codex(토큰 존재하나 서버 400 미등록 수신자 거부 — 도달 불가, 후보 유지),
    DBA 코덱스(실행키만·토큰 없음), dev_2(삭제됨 — 발송 제외, 잔존 키·토큰은 기존 결정안 1에 포함).
-5. 집계: 기대 active 18 = 발송 9 + 매니저 1 + 도달 불가 8. 수신 확인 0 / 등록 요청 0 /
-   왕복 확인 0 / 차단·미도달 8(+후보 2) — 본 보고 시점 스냅숏.
+5. 집계(16:12 갱신): 기대 active 18 = 발송 9 + 매니저 1 + 도달 불가 8. 등록 요청 수신 5
+   (audit·novel_col·scenario·gmlnx_zcode·gmlnx_claude) + Git 경로 1(gmwin-claude, 분모 밖
+   gmwin 계열에서 자발 참여) / 왕복 확인 확정 1(매니저↔audit) / 확인값 반환 대기 5 /
+   미응답 4(rpg·arcade·asset_agent·codex_dev_1) / 차단·미도달 7(gmwin 잔여 2·firebat 3·
+   devpass·aws512) + 후보 2(gmlnx_codex 400, DBA 토큰無).
 
 ## 3. 봇별 읽은 규칙 버전·적용 지속 여부
 
-현재 전 봇 미응답 — 실제 읽은 commit 보고 없음. 매니저만 89ff476 읽음(본 보고 §0).
-봇들이 등록 요청에 읽은 commit을 붙이면 이 절을 갱신한다(반복 발행 없이 등록 도착 시).
+**16:07~16:12 등록 요청 수신분(전원 89ff476 읽음 명시):**
+1. audit(aws-audit) — comm 등록(1794240449482-69) + 역할 카드 부팅 참조 추가(notes 47176f2).
+   매니저 회신 발송(확인값 dl01-af561c7c955d, idem-813ef738) — 확인값 반환 대기.
+2. novel_col — comm 등록(request nvc-dl01-8f3a). 장비를 Windows 클라이언트로 자기 보고
+   (roster site=awslnx 표기와 불일치 — MOA 지적을 봇 스스로 구분 기록). 회신 발송
+   (dl01-4ffeda8cf844, idem-91e9a77b).
+3. scenario(aws-scenario) — comm 등록(DL-20261110-01:aws-scenario:enroll:v1) + ACK 중복 1건
+   (1794240411711-67, 같은 요청으로 취급·중복 집계 없음). 회신 발송(dl01-b570e9329342,
+   idem-804809a1).
+4. gmlnx_zcode — comm 등록(DL-20261110-01-gmlnx-zcode-01). roster wake=false(비각성)인데
+   응답 — 이사님이 여러 방에 공통 메시지를 붙여넣었을 가능성의 관측 증거(distribution 부분
+   관측). 회신 발송(dl01-96d58e89597f, idem-a1591df0).
+5. gmlnx_claude — comm 등록(DL-20261110-01-heav-gmlnx-claude). 발신 토큰 인증으로 경로
+   검증됨. 회신 발송(dl01-3703057013a9, idem-dde0874b).
+6. gmwin-claude(heav_gmwin_claude_bot) — **Git 대체 경로** 합류(요청 rq-73d9da07bd27, notes
+   c0287c0, 사유 comm_blocked_token_unregistered). 공용 Git 계정이라 identity_pending.
+   매니저 acks 파일 작성(확인값 dl01-ff85b03b59be) — confirmations 파일 대기.
+7. 미응답(발송 후 아직): rpg, arcade, asset_agent, codex_dev_1(구조상 대리 ACK만 — 세션
+   응답 없을 가능성 명시).
 
 ## 4. 연결 종류·마지막 왕복 증거·미확정 신원
 
-1. 연결 종류: 전 대상 comm 경로(Git 대체 경로 requests/ 사용 봇 아직 없음).
-2. 마지막 왕복 증거(캠페인 외 기존): audit 11-07 pong 왕복 7m47s, rpg·scenario 11-07
-   과제 왕복, 매니저-GPT 11-09 왕복(idem-fc5ee440 발신 — 회신 미수령).
+1. 연결 종류: comm 5건(등록 수신·회신 발송) + Git 1건(gmwin-claude 요청/매니저 ack) +
+   comm 1건(매니저 자신 — audit 독립 확인 완료).
+2. 마지막 왕복 증거: 매니저↔audit 왕복 완결(요청 idem-b568fb57 → 반환 1794240649835-89).
+   나머지 5봇은 확인값 반환 대기(왕복 미완결 — 등록만으로 연결확인 아님).
 3. 미확정 신원: gmlnx_codex(토큰 주인 불명), DBA 코덱스(실행키 주인 불명), 리수/창고 키
-   소유자(asset_agent 확정 전), gmwin/firebat 8봇(장비 미조사). MOA 보고 318dad7 §1과 동일.
+   소유자(asset_agent 확정 전), gmwin-claude(공용 Git 계정 — identity_pending),
+   gmwin 잔여 2·firebat 3·devpass·aws512(도달 불가). gmwin-claude의 Git 쓰기 실증으로
+   gmwin 계열 장비가 부분 살아있음은 관측됨(전수 미조사 상태 유지).
 
 ## 5. 대표 반복 업무 1건 — 실행·검사·수정·재검증 (절차 §4)
 
@@ -85,8 +109,10 @@ distribution_complete: unknown
 
 ## 7. 다음 행동
 
-1. 봇 등록 요청 도착 시: 신원 대조 → 확인값 회신 → 왕복 확인 → 본 보고 갱신(같은 보고 반복
-   발행 없이 상태 전이만 기록).
-2. audit 확인값 회신 시 매니저 상태 연결대기→연결확인 전이.
-3. 미응답 봇 원장 조회·제한 재시도(상한 3회) 후에도 무응답이면 미응답으로 확정 기록.
+1. 확인값 반환 도착 시: 원래 요청·회신·반환 연결 확인 후 해당 봇 왕복 확인으로 기록(같은
+   반환 중복 집계 없음). 본 보고는 상태 전이 시에만 갱신(반복 발행 없음).
+2. 미응답 4봇(rpg·arcade·asset_agent·codex_dev_1) 원장 조회 후 제한 재시도(상한 3회) —
+   F1 쿨다운 결함이 살아있으므로 즉시 미응답 확정하지 않는다.
+3. gmwin-claude confirmations 파일 도착 시 git\_exchange\_confirmed 전이(신원은
+   identity_pending 유지 — comm 토큰 등록은 사용자 결정 후).
 4. ChatGPT 검수 의견은 본 보고 Git 게시 이후 별도 수령 — 수령 전까지 검수 완료로 기록 안 함.

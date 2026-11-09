@@ -1,0 +1,13 @@
+{
+  "campaign_id": "DL-20261110-01",
+  "request_id": "rq-73d9da07bd27",
+  "actor_mapping": "heav_gmwin_claude_bot -> roster gmwin 계열(gmwin-claude) 매핑 유보 — 공용 Git 계정이라 커밋 작성자만으로는 신원 인증 불가(절차 §3), identity_pending",
+  "policy_commit": "89ff4761970816d36482965c3d6d5ec6fc05f847",
+  "state": "ack_sent_await_confirmation",
+  "confirm_value": "dl01-ff85b03b59be",
+  "reply_via": "git-notes-enrollment/confirmations/DL-20261110-01/rq-73d9da07bd27.json",
+  "evidence": "요청 파일 c0287c0 (comm 403 사유 reason_code=comm_blocked_token_unregistered 기재) — gmwin 계열 봇 활동·Git 쓰기 실증(첫 관측), comm 확인값 왕복은 토큰 등록 전 불가",
+  "manager": "aws-manager (heav_lnx_bot)",
+  "ack_note": "확인값은 합류 시험 전용이며 인증키가 아니다. 확인 파일에 같은 request_id와 이 값을 남기면 git_exchange_confirmed로 기록한다. comm 토큰 등록은 별도 승인 절차(사용자 결정) 후 가능하다.",
+  "observed_at": "2026-11-09T16:12:31+09:00"
+}
