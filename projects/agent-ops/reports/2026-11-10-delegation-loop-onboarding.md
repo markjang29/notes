@@ -46,12 +46,13 @@ distribution_complete: unknown
    (토큰 없음 + 장비 접근 없음 — MOA 대조와 동일 미조사 목록). 삭제하지 않고 차단/미도달로 표시.
 4. **분모 밖 후보**: gmlnx_codex(토큰 존재하나 서버 400 미등록 수신자 거부 — 도달 불가, 후보 유지),
    DBA 코덱스(실행키만·토큰 없음), dev_2(삭제됨 — 발송 제외, 잔존 키·토큰은 기존 결정안 1에 포함).
-5. 집계(16:26 갱신 · 11-10 03:20 novel_col 왕복완결 반영): 기대 active 18 = 발송 9 + 매니저 1 +
-   도달 불가 8. 등록 요청 수신 5
-   (audit·novel_col·scenario·gmlnx_zcode·gmlnx_claude) + Git 경로 2(gmwin-claude·gmwin-codex,
-   분모 밖 gmwin 계열에서 자발 참여) / 왕복 확인 확정 7(매니저↔audit, gmlnx_zcode, gmlnx_claude, aws-audit, aws-scenario, aws-rpg, aws-novel-col) /
-   확인값 반환 대기 0 / 미응답 3(arcade·asset_agent·codex_dev_1) / 차단·미도달
-   6(gmwin 잔여 1·firebat 3·devpass·aws512) + 후보 2(gmlnx_codex 400, DBA 토큰無).
+5. 집계(22:07 갱신 — 이사님 봇 복구 지시 반영, roster 갱신 대조): 기대 active 18. 왕복 확인
+   확정 7(매니저↔audit, gmlnx_zcode, gmlnx_claude, aws-audit, aws-scenario, aws-rpg,
+   aws-novel-col) / Git 합류 진행 4(gmwin-claude·gmwin-codex·asset_agent·dev_1 — 전원
+   acks 발급·confirmations 대기, identity_pending) / 미응답 1(arcade — 재시도 2/3,
+   idem-f164c879) / 차단·미도달 6(gmwin_zcode wake=false·devpass·firebat 3·aws512) +
+   명부 밖 후보 2(gmlnx_codex 400, DBA 토큰無). novel_col은 roster상 gmwin 이사 표기(da8d8f7) —
+   등록·왕복 기록은 awslnx 시점 보존.
 
 ## 3. 봇별 읽은 규칙 버전·적용 지속 여부
 
@@ -91,13 +92,34 @@ distribution_complete: unknown
    (rpg_game PROJECT-RULES.md cf443a0). 매니저 회신 발송(확인값 dl01-95e4ec8adac1,
    1794241133549-168) → **확인값 반환 수령(1794241163291-176, 값 일치) — 왕복 확인 완결,
    comm_confirmed.** 최종 확인 통보 발송(왕복확정 턴).
-9. 미응답(발송 후 아직): arcade, asset_agent, codex_dev_1(구조상 대리 ACK만 — 세션
-   응답 없을 가능성 명시).
+9. asset_agent(aws-asset-agent) — 1차 comm 발송 응답 없음 → **Git 대체 경로 합류 전환**
+   (요청 rq-023c83f29ead, notes 727ce39, 사유 comm_blocked_token_not_held_on_host +
+   역할 카드 사칙 참조 추가). 매니저 acks 파일 작성(확인값 dl01-1eba7335c97e) —
+   confirmations 대기.
+10. codex_dev_1(heav_lnx_codex_dev_1_bot) — 구조상 relay98 대리 ACK(세션 응답 불가)로
+    미응답 예상이었으나, **이사님이 새 세션으로 복구**한 뒤 Git 대체 경로 합류(요청 rq-62798296c020,
+    notes 4bd0c12, 사유 comm_blocked_token_rejected_403 — 송신 토큰 미보유). 합류 기록
+    actors/awslnx-codex-dev-1/enrollment-DL-20261110-01.md + 부트 참조 CLAUDE.md 반영 +
+    신규 워크스페이스 관측. 매니저 acks 파일 작성(확인값 dl01-07d0c4b6a65c) — confirmations 대기.
+11. arcade — 유일한 잔여 미응답. 재시도 2/3 발송(idem-f164c879, 22:05 — Git 대체 경로
+    안내 포함). 3회 초과 시 통신 담당 원인 확인 후 판단.
+
+**3.5 복구·승계 관측 (11-09 22:0x — 이사님 "일부 봇 새 세션 복구" 지시 후)**
+
+1. 복구 실증: codex_dev_1(신규 워크스페이스 16:25·부트 참조 반영·Git 합류 16:24).
+   roster 갱신 관측(da8d8f7 — novel_col gmwin 이사[PIPE#60 N3-c]·devpass 항목 정리·
+   04_GM그림Zcode 역할 카드 신설 b1ce2f9).
+2. 승계 확인(역할·기존 작업·승인 상태·사칙): 왕복확정 7봇은 등록 요청에 현재 작업·대기
+   승인 목록을 자기 보고했고(audit 대기 3건, scenario 2건, novel_col 큐·승인 대기 등)
+   사칙 실독(89ff476)·부팅 참조 추가까지 실증 — 승계 정상. dev_1·asset_agent·gmwin 2봇은
+   합류 진행 중(확인값 왕복·신원 대기).
+3. 16:15~18:22 사이 확인값 처리·보고 갱신은 매니저 계열 세션이 수행(공용 Git 계정 —
+   세션 특정 불가, 처리 내용은 절차 준수·원장 근거와 부합 확인).
 
 ## 4. 연결 종류·마지막 왕복 증거·미확정 신원
 
-1. 연결 종류: comm 5건(등록 수신·회신 발송) + Git 2건(gmwin-claude·gmwin-codex 요청/
-   매니저 ack) + comm 1건(매니저 자신 — audit 독립 확인 완료).
+1. 연결 종류: comm 5건(등록 수신·회신 발송·왕복확정) + Git 4건(gmwin-claude·gmwin-codex·
+   asset_agent·dev_1 요청/매니저 ack) + comm 1건(매니저 자신 — audit 독립 확인 완료).
 2. 마지막 왕복 증거: 매니저↔audit 왕복 완결(요청 idem-b568fb57 → 반환 1794240649835-89).
    gmlnx_zcode 왕복 완결(등록 1794240469509-71 → 회신 idem-a1591df0 → 반환 idem-8be6cff3).
    gmlnx_claude 왕복 완결(등록 → 회신 idem-dde0874b → 반환 1794240858094-119,
@@ -134,8 +156,9 @@ distribution_complete: unknown
 
 1. 확인값 반환 도착 시: 원래 요청·회신·반환 연결 확인 후 해당 봇 왕복 확인으로 기록(같은
    반환 중복 집계 없음). 본 보고는 상태 전이 시에만 갱신(반복 발행 없음).
-2. 미응답 4봇(rpg·arcade·asset_agent·codex_dev_1) 원장 조회 후 제한 재시도(상한 3회) —
-   F1 쿨다운 결함이 살아있으므로 즉시 미응답 확정하지 않는다.
-3. gmwin-claude confirmations 파일 도착 시 git\_exchange\_confirmed 전이(신원은
-   identity_pending 유지 — comm 토큰 등록은 사용자 결정 후).
+2. arcade 재시도(2/3 발송 완료 idem-f164c879) 응답 여부 확인 — 3회 초과 시 통신 담당 원인
+   확인 후 판단. rpg·scenario 등 이미 왕복확정.
+3. Git 합류 4봇(gmwin-claude·gmwin-codex·asset_agent·dev_1) confirmations 파일 도착 시
+   git\_exchange\_confirmed 전이(신원은 identity_pending 유지 — comm 토큰 등록은 사용자
+   결정 후).
 4. ChatGPT 검수 의견은 본 보고 Git 게시 이후 별도 수령 — 수령 전까지 검수 완료로 기록 안 함.
