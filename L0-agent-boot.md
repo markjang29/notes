@@ -50,6 +50,7 @@ tags:
 4. 자기 프로젝트 사칙
 5. `work-queue.md`
 6. 필요 시 세부 문서
+7. `principles/delegation-loop.md` (2026-11-10 채택, 캠페인 DL-20261110-01 — 업무 위임 루프 공통 사칙. 합류 절차: `projects/agent-ops/enrollment/README.md`. 작업 시작 때 적용 버전 대조)
 
 ## 3.5. comm 수신 (부팅마다 — 2026-09-21, 사칙 principles/telegram-comm-protocol-v1.md §5)
 
