@@ -1,7 +1,7 @@
 {
   "schema": "report-addresses-v1",
   "rule_id": "95-report-addr",
-  "updated": "2026-09-21",
+  "updated": "2026-11-10",
   "source": "이사님 09-18 지시 \"8024/rules 읽고 담당사이트 박아\" — 95-4-a 원장 신설",
   "rows": [
     {
@@ -62,6 +62,11 @@
     {
       "actor": "gmwin-zcode",
       "address": "http://43.201.34.144/drawing/"
+    },
+    {
+      "actor": "gmwin-codex",
+      "address": "http://43.201.34.144/tests",
+      "note": "97 테스터(코덱스) — /tests 원장·결함카드 · heav_gmwin_codex_bot"
     }
   ]
 }
