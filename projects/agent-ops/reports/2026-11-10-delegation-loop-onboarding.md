@@ -46,11 +46,11 @@ distribution_complete: unknown
    (토큰 없음 + 장비 접근 없음 — MOA 대조와 동일 미조사 목록). 삭제하지 않고 차단/미도달로 표시.
 4. **분모 밖 후보**: gmlnx_codex(토큰 존재하나 서버 400 미등록 수신자 거부 — 도달 불가, 후보 유지),
    DBA 코덱스(실행키만·토큰 없음), dev_2(삭제됨 — 발송 제외, 잔존 키·토큰은 기존 결정안 1에 포함).
-5. 집계(16:12 갱신): 기대 active 18 = 발송 9 + 매니저 1 + 도달 불가 8. 등록 요청 수신 5
-   (audit·novel_col·scenario·gmlnx_zcode·gmlnx_claude) + Git 경로 1(gmwin-claude, 분모 밖
-   gmwin 계열에서 자발 참여) / 왕복 확인 확정 1(매니저↔audit) / 확인값 반환 대기 5 /
-   미응답 4(rpg·arcade·asset_agent·codex_dev_1) / 차단·미도달 7(gmwin 잔여 2·firebat 3·
-   devpass·aws512) + 후보 2(gmlnx_codex 400, DBA 토큰無).
+5. 집계(16:15 갱신): 기대 active 18 = 발송 9 + 매니저 1 + 도달 불가 8. 등록 요청 수신 5
+   (audit·novel_col·scenario·gmlnx_zcode·gmlnx_claude) + Git 경로 2(gmwin-claude·gmwin-codex,
+   분모 밖 gmwin 계열에서 자발 참여) / 왕복 확인 확정 2(매니저↔audit, gmlnx_zcode) /
+   확인값 반환 대기 4 / 미응답 4(rpg·arcade·asset_agent·codex_dev_1) / 차단·미도달
+   6(gmwin 잔여 1·firebat 3·devpass·aws512) + 후보 2(gmlnx_codex 400, DBA 토큰無).
 
 ## 3. 봇별 읽은 규칙 버전·적용 지속 여부
 
@@ -65,21 +65,27 @@ distribution_complete: unknown
    idem-804809a1).
 4. gmlnx_zcode — comm 등록(DL-20261110-01-gmlnx-zcode-01). roster wake=false(비각성)인데
    응답 — 이사님이 여러 방에 공통 메시지를 붙여넣었을 가능성의 관측 증거(distribution 부분
-   관측). 회신 발송(dl01-96d58e89597f, idem-a1591df0).
+   관측). 회신 발송(dl01-96d58e89597f, idem-a1591df0) → **확인값 반환 수령(idem-8be6cff3) —
+   왕복 확인 완결, comm_confirmed.** 최종 확인 통보 발송(idem-3c26588e). 지속 적용도 실증
+   (자기 부팅 문서 onboarding.md 참조 추가, notes 9ac8b23).
 5. gmlnx_claude — comm 등록(DL-20261110-01-heav-gmlnx-claude). 발신 토큰 인증으로 경로
-   검증됨. 회신 발송(dl01-3703057013a9, idem-dde0874b).
+   검증됨. 회신 발송(dl01-3703057013a9, idem-dde0874b). 자체 합류 기록 커밋(f55eda5).
 6. gmwin-claude(heav_gmwin_claude_bot) — **Git 대체 경로** 합류(요청 rq-73d9da07bd27, notes
    c0287c0, 사유 comm_blocked_token_unregistered). 공용 Git 계정이라 identity_pending.
    매니저 acks 파일 작성(확인값 dl01-ff85b03b59be) — confirmations 파일 대기.
-7. 미응답(발송 후 아직): rpg, arcade, asset_agent, codex_dev_1(구조상 대리 ACK만 — 세션
+7. gmwin-codex(heav_gmwin_codex_bot) — Git 대체 경로 합류(요청 rq-6d87c549ec10, notes
+   0039288, 사유 동일). gmwin 계열 2번째 — 잔여 1(gmwin-zcode 추정)과 firebat 3은 미참여.
+   매니저 acks 파일 작성(확인값 dl01-c9936dca0b77) — confirmations 대기.
+8. 미응답(발송 후 아직): rpg, arcade, asset_agent, codex_dev_1(구조상 대리 ACK만 — 세션
    응답 없을 가능성 명시).
 
 ## 4. 연결 종류·마지막 왕복 증거·미확정 신원
 
-1. 연결 종류: comm 5건(등록 수신·회신 발송) + Git 1건(gmwin-claude 요청/매니저 ack) +
-   comm 1건(매니저 자신 — audit 독립 확인 완료).
+1. 연결 종류: comm 5건(등록 수신·회신 발송) + Git 2건(gmwin-claude·gmwin-codex 요청/
+   매니저 ack) + comm 1건(매니저 자신 — audit 독립 확인 완료).
 2. 마지막 왕복 증거: 매니저↔audit 왕복 완결(요청 idem-b568fb57 → 반환 1794240649835-89).
-   나머지 5봇은 확인값 반환 대기(왕복 미완결 — 등록만으로 연결확인 아님).
+   gmlnx_zcode 왕복 완결(등록 1794240469509-71 → 회신 idem-a1591df0 → 반환 idem-8be6cff3).
+   나머지 4봇은 확인값 반환 대기(왕복 미완결 — 등록만으로 연결확인 아님).
 3. 미확정 신원: gmlnx_codex(토큰 주인 불명), DBA 코덱스(실행키 주인 불명), 리수/창고 키
    소유자(asset_agent 확정 전), gmwin-claude(공용 Git 계정 — identity_pending),
    gmwin 잔여 2·firebat 3·devpass·aws512(도달 불가). gmwin-claude의 Git 쓰기 실증으로
