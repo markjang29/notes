@@ -37,7 +37,10 @@ tags:
 | comm 메시지 id | 1794240583530-85 (brokered:true, fanout:1) |
 | request_id (안정, 재시도 동일) | nvc-dl01-8f3a |
 | 읽은 규칙 commit | 89ff476 (delegation-loop.md + enrollment/README.md) |
-| 현재 상태 | **연결대기** — 매니저 왕복 확인(확인값 반환) 대기 |
+| 매니저 회신 | idem-91e9a77b (01:12 KST) — roster 매핑 확인·commit 일치·확인값 dl01-4ffeda8cf844 발급 |
+| 확인값 반환 | comm 1794248203017-194 (03:17 KST, 동일 request_id, type ack, brokered) |
+| 회신 수신 ACK | bot.ack 1794248203043-196 (관제 7필드 note) |
+| 현재 상태 | **연결대기** — 왕복 반환 완료, 매니저 최종 왕복 기록(통합 보고 갱신) 대기. 기록 확보 시에만 연결확인 보고 |
 | 선행 규칙 | telegram-comm-protocol-v1.md@2b0f4dc · L0-agent-common.md §6 · gwanje-ack-protocol.md |
 | 부수 정리 | 미확인 방송 1793748455822-64(11-03, 비당사) 관제 7필드 ACK — bot.ack id 1794240610162-87 |
 
