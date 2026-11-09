@@ -46,10 +46,10 @@ distribution_complete: unknown
    (토큰 없음 + 장비 접근 없음 — MOA 대조와 동일 미조사 목록). 삭제하지 않고 차단/미도달로 표시.
 4. **분모 밖 후보**: gmlnx_codex(토큰 존재하나 서버 400 미등록 수신자 거부 — 도달 불가, 후보 유지),
    DBA 코덱스(실행키만·토큰 없음), dev_2(삭제됨 — 발송 제외, 잔존 키·토큰은 기존 결정안 1에 포함).
-5. 집계(16:19 갱신): 기대 active 18 = 발송 9 + 매니저 1 + 도달 불가 8. 등록 요청 수신 5
+5. 집계(16:22 갱신): 기대 active 18 = 발송 9 + 매니저 1 + 도달 불가 8. 등록 요청 수신 5
    (audit·novel_col·scenario·gmlnx_zcode·gmlnx_claude) + Git 경로 2(gmwin-claude·gmwin-codex,
-   분모 밖 gmwin 계열에서 자발 참여) / 왕복 확인 확정 4(매니저↔audit, gmlnx_zcode, gmlnx_claude, aws-audit 등록) /
-   확인값 반환 대기 3(scenario·novel_col·rpg 회신 발급분) / 미응답 3(arcade·asset_agent·codex_dev_1) / 차단·미도달
+   분모 밖 gmwin 계열에서 자발 참여) / 왕복 확인 확정 5(매니저↔audit, gmlnx_zcode, gmlnx_claude, aws-audit 등록, aws-scenario) /
+   확인값 반환 대기 2(novel_col·rpg 회신 발급분) / 미응답 3(arcade·asset_agent·codex_dev_1) / 차단·미도달
    6(gmwin 잔여 1·firebat 3·devpass·aws512) + 후보 2(gmlnx_codex 400, DBA 토큰無).
 
 ## 3. 봇별 읽은 규칙 버전·적용 지속 여부
@@ -64,7 +64,8 @@ distribution_complete: unknown
    (dl01-4ffeda8cf844, idem-91e9a77b).
 3. scenario(aws-scenario) — comm 등록(DL-20261110-01:aws-scenario:enroll:v1) + ACK 중복 1건
    (1794240411711-67, 같은 요청으로 취급·중복 집계 없음). 회신 발송(dl01-b570e9329342,
-   idem-804809a1).
+   idem-804809a1) → **확인값 반환 수령(1794241130715-164, 값 일치) — 왕복 확인 완결,
+   comm_confirmed.** 최종 확인 통보 발송(왕복확정 턴). 부팅 참조 AGENTS.md@9b6f28c 반영 확인.
 4. gmlnx_zcode — comm 등록(DL-20261110-01-gmlnx-zcode-01). roster wake=false(비각성)인데
    응답 — 이사님이 여러 방에 공통 메시지를 붙여넣었을 가능성의 관측 증거(distribution 부분
    관측). 회신 발송(dl01-96d58e89597f, idem-a1591df0) → **확인값 반환 수령(idem-8be6cff3) —
@@ -95,7 +96,7 @@ distribution_complete: unknown
    gmlnx_zcode 왕복 완결(등록 1794240469509-71 → 회신 idem-a1591df0 → 반환 idem-8be6cff3).
    gmlnx_claude 왕복 완결(등록 → 회신 idem-dde0874b → 반환 1794240858094-119,
    16:30 매니저 확정·통보 -132). audit 등록 왕복 완결(등록 -69 → 회신 idem-813ef738 → 반환 -124,
-   16:19 매니저 확정·통보 -166). 나머지 3봇(scenario·novel_col·rpg)은 확인값 반환 대기(왕복 미완결 — 등록만으로 연결확인 아님).
+   16:19 매니저 확정·통보 -166). scenario 왕복 완결(등록 → 회신 idem-804809a1 → 반환 -164, 16:22 확정·통보). 나머지 2봇(novel_col·rpg)은 확인값 반환 대기(왕복 미완결 — 등록만으로 연결확인 아님).
 3. 미확정 신원: gmlnx_codex(토큰 주인 불명), DBA 코덱스(실행키 주인 불명), 리수/창고 키
    소유자(asset_agent 확정 전), gmwin-claude(공용 Git 계정 — identity_pending),
    gmwin 잔여 2·firebat 3·devpass·aws512(도달 불가). gmwin-claude의 Git 쓰기 실증으로
