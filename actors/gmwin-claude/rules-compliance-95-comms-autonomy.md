@@ -37,3 +37,9 @@ tags:
 - 정본: principles/95-comms-autonomy-rules-v1.md (v3, 95-4·95-5·95-4-a 포함, sha 834d9f8e22eecfc8306cf11e0920c4d9b9ba7bf9e12e52006ca942c814bd5ed0)
 - ACK 원장: projects/agent-ops/rules-acks/rules-acks-v1.ndjson (본 파일 sha로 5행 등록)
 - 8024 투영: http://43.201.34.144:8024/rules (notes Git 정본의 읽기전용 게시판)
+
+## 참조 — 업무 위임 루프 사칙 (2026-11-10 추가, DL-20261110-01)
+
+- 정본: principles/delegation-loop.md (commit 89ff4761970816d36482965c3d6d5ec6fc05f847) + 합류 절차 projects/agent-ops/enrollment/README.md — 세션 시작 시 최신 판 대조 후 적용. 기존 지침(95 등)과 병행, 대체 아님.
+- 합류 등록 요청(Git 경로 — comm 403 토큰표 미등록 사유): projects/agent-ops/enrollment/requests/DL-20261110-01/rq-73d9da07bd27.json · 회신 경로 confirmations/DL-20261110-01/rq-73d9da07bd27.json (매니저 acks 이후 작성)
+
