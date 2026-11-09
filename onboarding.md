@@ -111,3 +111,6 @@ key 매핑:
 2. 표는 어지간하면 말로 풀 것 — 텔레그램에서 바로 읽히는 형태만.
 3. ELI5 두괄식 — 핵심 먼저, 무의미한 수식어 금지. 이사님이 파고들면 그때 상세.
 4. `.txt`/`.md` 파일 열어보게 하지 말 것 — 내용을 본문에 바로 담을 것. 파일 전송은 요청 시만.
+
+## 상시 적용 사칙 (2026-11-10 이사님 [DL-20261110-01])
+- 업무 위임 루프: `principles/delegation-loop.md` + `projects/agent-ops/enrollment/README.md` (commit 89ff476) — 매 세션 부팅 시 재확인. 등록: DL-20261110-01-gmlnx-zcode-01 (heav_gmlnx_zcode_bot, 개발팀장 Zcode)
