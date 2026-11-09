@@ -49,3 +49,6 @@ ELI5: 들어온 자산을 정해진 절차로 쪼개고, **지문(sha256) 대장
 ## 8. 완료·검증
 - 완료 판정은 controller만 내린다. 자기 산출물을 자기가 verified/closed하지 않는다.
 - 완료기준 예: 입고 자산의 sha256 대장 항목과 실제 파일 지문이 일치하고, 후보는 validated 스키마로 제출된다.
+
+## 9. 공통 사칙 참조 (2026-11-10)
+- [업무 위임 루프 사칙](../../principles/delegation-loop.md) — 캠페인 DL-20261110-01. 세션 부팅 시 정본 최신 commit과 대조하여 변경분을 읽고 적용한다. 합류 상태: `enrollment/requests/DL-20261110-01/` (왕복 확인 진행 상황은 같은 폴더 acks·confirmations 참조).

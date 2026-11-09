@@ -1,0 +1,10 @@
+{
+  "campaign_id": "DL-20261110-01",
+  "request_id": "rq-023c83f29ead",
+  "actor_ref_or_candidate": "aws-asset-agent",
+  "policy_commit": "89ff4761970816d36482965c3d6d5ec6fc05f847",
+  "state": "enrollment_requested",
+  "reason_code": "comm_blocked_token_not_held_on_host",
+  "reply_via": "git-notes-enrollment/confirmations/DL-20261110-01",
+  "observed_at": "2026-11-09T16:13:25Z"
+}
