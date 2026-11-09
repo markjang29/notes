@@ -41,9 +41,10 @@
       "username": "heav_lnx_novel_col_bot",
       "telegram_id": "8877141034",
       "display": "01_GM소설수집",
-      "site": "awslnx",
+      "site": "gmwin",
       "status": "active",
-      "model": "glm-5.3-flash"
+      "model": "glm-5.3-flash",
+      "note": "site gmwin 이관(10-01 PIPE#60 N3-c) — 봇 실재 GM윈도·cokacdir 키 보유(인사99 실측 09-27·10-01), 역할명 [GM윈도]와 물리 위치 정합"
     },
     {
       "seq": "01",
@@ -244,11 +245,11 @@
       "username": "heav_gmwin_devpass_bot",
       "telegram_id": "unknown",
       "display": "devpass",
-      "site": "awslnx",
+      "site": "gmwin",
       "status": "active",
       "model": "미확인",
       "provider": "미확인",
-      "note": "09-23 이사님 멘션으로 부활·8024 whoami 등록 확인. 매니저가 roster 추가(8024 checkBot 400 해소). 실태보고 후 role·site 갱신 예정."
+      "note": "09-23 이사님 멘션으로 부활·8024 whoami 등록 확인. 매니저가 roster 추가(8024 checkBot 400 해소). site gmwin 이관(10-01 PIPE#60 N3-c — GM윈도 WSL 실재·cokacdir 키 보유, 인사99 실측). role·model 실태보고 후 갱신 예정."
     }
   ],
   "tg_synced_at": "2026-10-22"
