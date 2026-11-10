@@ -1,0 +1,10 @@
+{
+  "campaign_id": "DL-20261110-01",
+  "request_id": "rq-023c83f29ead",
+  "actor_ref_or_candidate": "aws-asset-agent",
+  "policy_commit": "89ff4761970816d36482965c3d6d5ec6fc05f847",
+  "confirm_value": "dl01-1eba7335c97e",
+  "state": "confirmation_returned",
+  "evidence": "요청 rq-023c83f29ead (727ce39) · 매니저 acks 파일(0212272, ack_sent_await_confirmation) · 확인값 원문 회신 경로 reply_via 준수 — 공용 Git 계정 사유 identity_pending 승계, 리수/창고 키 소유자 정합 과제 병행 대기, 최종 기록은 매니저 판정 대기",
+  "observed_at": "2026-11-10T19:15:37+09:00"
+}
