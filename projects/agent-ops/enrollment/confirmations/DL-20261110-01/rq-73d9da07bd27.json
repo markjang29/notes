@@ -1,0 +1,10 @@
+{
+  "campaign_id": "DL-20261110-01",
+  "request_id": "rq-73d9da07bd27",
+  "actor_ref_or_candidate": "heav_gmwin_claude_bot",
+  "policy_commit": "89ff4761970816d36482965c3d6d5ec6fc05f847",
+  "confirm_value": "dl01-ff85b03b59be",
+  "state": "confirmation_returned",
+  "evidence": "요청 rq-73d9da07bd27 (c0287c0) · 매니저 acks 파일(b95b285, ack_sent_await_confirmation) · 확인값 원문 회신 경로 reply_via 준수 — 공용 Git 계정 사유 identity_pending 승계, 최종 기록은 매니저 판정 대기",
+  "observed_at": "2026-11-10T11:02:46+09:00"
+}
