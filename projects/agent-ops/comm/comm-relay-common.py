@@ -1,3 +1,8 @@
+# 정본(원본) — 사본 거점은 버전주석과 함께 복사해 쓴다(95-5: 코드 분기·드리프트 금지)
+# N4 개정(2026-11-12, 감사 Runtime_Code_vs_Docs_Audit_20261110 반영 — aws-manager, 이사님 지시):
+#   R1(각성 등록 ok≠세션 실행 — schedule_history 실행 기록 확인 전 쿨다운 금지),
+#   X1(TTL 폐기 whoami 미ACK 교집합+폐기완료 집합 — 재ACK 루프 차단),
+#   INFRA#10 [N2] 토큰 대응(_comm_token) 정본 흡수 — 사본(gmlnx)에만 있던 차이 해소
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
@@ -25,7 +30,7 @@ import json
 import os
 import subprocess
 import time
-import urllib.request
+import urllib.request, urllib.parse
 from datetime import datetime, timezone
 
 # ---- sidecar.env (필수 5필드 — 예시는 INSTALL-sidecar.md §2) ----
@@ -67,6 +72,17 @@ LOGFILE = os.environ.get("SIDECAR_LOG", os.path.expanduser(
 STATE = os.environ.get("SIDECAR_STATE", os.path.expanduser(
     "~/.local/state/comm-relay-" + ("awslnx" if MODE == "watch" else BOT) + ".json"))
 COKACDIR = os.environ.get("SIDECAR_COKACDIR", "/usr/local/bin/cokacdir")
+
+# INFRA#10 [N2] 8024 봇별 토큰 강제 대응 — 토큰값 기입 금지, 표(600) 경로만. 미판독시 무토큰(1단계 폴백).
+_COMM_TOKENS_FILE = os.environ.get("SIDECAR_COMM_TOKENS",
+    os.path.expanduser("~/.config/matrix-studio-spring/comm-tokens.json"))
+def _comm_token(bot):
+    try:
+        with open(_COMM_TOKENS_FILE) as f:
+            import json as _j
+            return _j.load(f).get(bot, "")
+    except Exception:
+        return ""
 # N3 (PIPE#60, 2026-10-01): 메시지 TTL·각성 지수백오프 — 미ACK 공지 영구루프·스킴 스팸 방지
 MSG_TTL_H = int(os.environ.get("SIDECAR_MSG_TTL_H", "72"))     # 미ACK 만료 폐기 시간
 BACKOFF_MAX = int(os.environ.get("SIDECAR_BACKOFF_MAX", "8"))  # 백오프 상한 (COOLDOWN의 배수)
@@ -155,7 +171,7 @@ def keyfile_of(username):
 
 def pending_count(bot):
     try:
-        w = http_json(f"{BASE}/api/nats/whoami?bot={bot}")
+        w = http_json(f"{BASE}/api/nats/whoami?bot={bot}&token={urllib.parse.quote(_comm_token(bot))}")
         return len(w.get("pending", [])) + len(w.get("deliveredNotAcked", []))
     except Exception as e:
         log(f"whoami 실패({bot}): {e}")
@@ -165,14 +181,17 @@ def pending_count(bot):
 def wake(bot, keyfile, pend):
     """각성 — 봇 자기키로 발화 1회. 쿨다운 1시간 + 실패마다 지수백오프(최대 BACKOFF_MAX배, N3-a).
     스킵 로그는 상태 변화시 1회만 (N3: 주기 반복 스팸 금지).
-    cokacdir 응답(status ok)이 각성성공 판정 — 실측: --at은 1m/30m(초단위 미지원, 09-23)."""
+    N4(감사 R1): cokacdir 등록 응답 ok는 '예약 성공'일 뿐 세션 실행 실증이 아니다 — 등록 ok면
+    wake_state=scheduled, schedule_history 실행 기록 ok 확인 후에야 ok(쿨다운 적용)."""
     st = load_state()
     now = time.time()
-    fails = st.get(bot, {}).get("fails", 0)
+    b = st.get(bot, {})
+    fails = b.get("fails", 0)
     cd = min(COOLDOWN * (2 ** fails), COOLDOWN * BACKOFF_MAX)
-    if now - st.get(bot, {}).get("waked_at", 0) < cd:
-        if st.get(bot, {}).get("last_note") != "cooldown":
-            st[bot] = {**st.get(bot, {}), "last_note": "cooldown"}
+    # 쿨다운은 '세션 실행 ok 실증' 상태에만 — scheduled(예약만 됨)는 실행 확인까지 재시도 허용
+    if b.get("wake_state", "ok") == "ok" and b.get("waked_at", 0) and now - b["waked_at"] < cd:
+        if b.get("last_note") != "cooldown":
+            st[bot] = {**b, "last_note": "cooldown"}
             save_state(st)
             log(f"각성 대기({bot}) — 백오프 {int(cd // 60)}분 (연속실패 {fails})")
         return False
@@ -184,50 +203,63 @@ def wake(bot, keyfile, pend):
             [COKACDIR, "--cron", prompt, "--at", "1m", "--chat", CHAT,
              "--key-file", keyfile, "--once"],
             capture_output=True, timeout=60, text=True)
-        ok = '"status":"ok"' in (r.stdout or "") or '"status": "ok"' in (r.stdout or "")
+        try:
+            j = json.loads((r.stdout or "").strip() or "{}")
+        except Exception:
+            j = {}
+        ok = isinstance(j, dict) and j.get("status") == "ok"   # R1 — 오류 JSON stdout을 성공으로 오판 금지
         if ok:
-            st[bot] = {"waked_at": now, "pend": pend, "fails": 0, "last_note": "ok"}
+            st[bot] = {**b, "waked_at": now, "pend": pend, "fails": 0,
+                       "wake_state": "scheduled", "sched_id": str(j.get("id", "")),
+                       "last_note": "scheduled"}
             save_state(st)
-            log(f"각성 성공: {bot} (미수신 {pend}건, key={os.path.basename(keyfile)[:16]}…)")
-            return True
-        # 개정1 (부록A1/PIPE#60): 1차(--cron) 실패 시 2차 경로 — cokacdir --prompt 직접 호출(큐 적체 무관, 즉시 동기실행)
-        try:
-            r2 = subprocess.run([COKACDIR, "--prompt", prompt, "--key-file", keyfile],
-                                capture_output=True, timeout=300, text=True)
-            if r2.stdout and r2.stdout.strip():
-                st[bot] = {"waked_at": now, "pend": pend, "fails": 0, "last_note": "ok2"}
-                save_state(st)
-                log(f"각성 성공(2차 --prompt): {bot} (미수신 {pend}건)")
-                return True
-            log(f"각성 2차 실패({bot}): {(r2.stdout or '')[:80]} {(r2.stderr or '')[:80]}")
-        except Exception as e2:
-            log(f"각성 2차 예외({bot}): {e2}")
-        # 3단(텔레그램 경보): 1·2차 모두 실패 — 사이드카 무음 원칙 유지 위해 8024로 1회 경보(쿨다운은 같은 백오프 주기)
-        try:
-            http_json(f"{BASE}/api/nats/send", "POST",
-                      {"from": BOT, "to": "heav_lnx_bot", "type": "task", "ref": "wake-fail",
-                       "text": f"[각성 경보] {bot} 1·2차 경로 모두 실패 — 미수신 {pend}건. 사이드카({BOT}) 수동 점검 필요."})
-            log(f"각성 경보 발행({bot}) — 매니저 notice")
-        except Exception as e3:
-            log(f"경보 발송 실패({bot}): {e3}")
-        st[bot] = {**st.get(bot, {}), "fails": fails + 1, "last_note": "fail"}
-        save_state(st)
-        log(f"각성 실패({bot}, 백오프 x{2 ** (fails + 1)}): {(r.stdout or '')[:120]} {(r.stderr or '')[:120]}")
-        return False
+            log(f"각성 예약 성공: {bot} (미수신 {pend}건, 스케줄 {str(j.get('id', '?'))[:8]} — 실행 확인 대기, key={os.path.basename(keyfile)[:16]}…)")
+        else:
+            st[bot] = {**b, "fails": fails + 1, "wake_state": "fail",
+                       "sched_id": "", "waked_at": 0, "last_note": "fail"}
+            save_state(st)
+            log(f"각성 등록 실패({bot}, 백오프 x{2 ** (fails + 1)}): {(r.stdout or '')[:120]} {(r.stderr or '')[:120]}")
+        return ok
     except Exception as e:
-        # 1차 경로 예외(cokacdir 미존재·timeout 등)도 2차로 폴백 — 이중화 사각지대 제거(부록A1)
-        log(f"각성 1차 예외({bot}) → 2차 폴백: {e}")
-        try:
-            r2 = subprocess.run([COKACDIR, "--prompt", prompt, "--key-file", keyfile],
-                                capture_output=True, timeout=300, text=True)
-            if r2.stdout and r2.stdout.strip():
-                st[bot] = {"waked_at": now, "pend": pend, "fails": 0, "last_note": "ok2"}
-                save_state(st)
-                log(f"각성 성공(2차 --prompt, 1차예외 폴백): {bot} (미수신 {pend}건)")
-                return True
-        except Exception as e2b:
-            log(f"각성 2차 폴백 예외({bot}): {e2b}")
+        log(f"각성 예외({bot}): {e}")
         return False
+
+
+def verify_scheduled(bot):
+    """N4(감사 R1) — 예약된 각성의 실제 세션 실행 기록 확인. schedule_history JSONL에서
+    chat_id가 같은 기록만 근거로 삼는다(타 채팅 기록 인용 금지). 실행 ok 실증 전 쿨다운 적용 금지."""
+    st = load_state()
+    b = st.get(bot, {})
+    if b.get("wake_state") != "scheduled" or not b.get("sched_id"):
+        return
+    if time.time() - b.get("waked_at", 0) < 90:              # --at 1m + 실행 여유
+        return
+    rec = None
+    try:
+        with open(os.path.expanduser(f"~/.cokacdir/schedule_history/{b['sched_id']}.log")) as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    r = json.loads(line)
+                except Exception:
+                    continue
+                if str(r.get("chat_id")) == str(CHAT):       # 같은 채팅 기록만 인용
+                    rec = r
+    except FileNotFoundError:
+        rec = None
+    except Exception:
+        return                                                # 판독 오류 — 다음 주기 재확인
+    if rec and rec.get("status") == "ok":
+        st[bot] = {**b, "wake_state": "ok", "last_note": "ok"}
+        save_state(st)
+        log(f"각성 실행 확인: {bot} (스케줄 {str(b['sched_id'])[:8]} 세션 ok)")
+    else:
+        st[bot] = {**b, "wake_state": "fail", "fails": b.get("fails", 0) + 1,
+                   "waked_at": 0, "sched_id": "", "last_note": "session_fail"}
+        save_state(st)
+        log(f"각성 세션 실패/미확인: {bot} — 성공 오판 금지, 백오프 후 재시도 (기록: {rec.get('status') if rec else '없음'})")
 
 
 def mem_mb():
@@ -257,18 +289,30 @@ def run_watch():
 
         debt = {}                                           # 무음감시 — 정상시 로그 0
         wake_map = roster_wake_map()                        # N3-d: wake:false 표기봇
+        for bot in targets:                                 # N4(감사 R1): 예약 각성의 실행 기록 확인 우선
+            if wake_map.get(bot) is not False:
+                verify_scheduled(bot)
         st = load_state()
         for bot in targets:
             if wake_map.get(bot) is False:
                 continue                                    # roster wake:false — 각성 대상 외 (N3-d)
             n = pending_count(bot)
             if n > 0:
-                # N3-b: 미ACK 만료(TTL) 메시지 폐기 — 영구 재시도 루프 차단
+                # N3-b + N4(감사 X1): TTL 폐기 — whoami 미ACK(pending+deliveredNotAcked) 교집합만,
+                #   로컬 폐기완료 집합(_ttl_done)으로 중복 폐기 차단. 구버전 결함: 원장 응답에 ackedAt
+                #   필드가 없어 항상 미ACK로 판정 → ACK된 행도 매 주기 재ACK(46,060회 루프 실측).
                 try:
-                    rows = http_json(f"{BASE}/api/nats/messages?to={bot}&limit=200")
+                    w = http_json(f"{BASE}/api/nats/whoami?bot={bot}&token={urllib.parse.quote(_comm_token(bot))}")
+                    unacked = ({m.get("id") for m in w.get("pending", [])}
+                               | {m.get("id") for m in w.get("deliveredNotAcked", [])})
+                    done = set(st.get("_ttl_done", []))
+                    rows = http_json(f"{BASE}/api/nats/messages?to={bot}&limit=200&token={urllib.parse.quote(_comm_token(bot))}")
                     fresh = 0
                     import datetime as _dt
                     for m in rows:
+                        mid_ = m.get("id")
+                        if mid_ not in unacked or mid_ in done:
+                            continue                         # ACK 완료·이미 폐기 — 카운트·폐기 모두 제외
                         if str(m.get("ts", "")) < "2000": continue
                         try:
                             age_h = (_dt.datetime.now(_dt.timezone.utc)
@@ -276,13 +320,16 @@ def run_watch():
                                      ).total_seconds() / 3600
                         except Exception:
                             fresh += 1; continue
-                        if age_h > MSG_TTL_H and not m.get("ackedAt"):
+                        if age_h > MSG_TTL_H:
                             http_json(f"{BASE}/api/nats/ack", "POST",
-                                      {"from": bot, "msg_id": m["id"],
-                                       "note": f"만료 폐기 (TTL {MSG_TTL_H}h, N3-b/PIPE#60) — 재시도 루프 차단"})
-                            log(f"TTL 만료 폐기: {m['id']} → {bot} ({int(age_h)}h경과)")
+                                      {"from": bot, "msg_id": mid_, "token": _comm_token(bot),
+                                       "note": f"만료 폐기 (TTL {MSG_TTL_H}h, N3-b/N4-X1) — 재시도 루프 차단"})
+                            done.add(mid_)
+                            log(f"TTL 만료 폐기: {mid_} → {bot} ({int(age_h)}h경과)")
                         else:
                             fresh += 1
+                    st["_ttl_done"] = list(done)[-500:]      # 폐기완료 집합 상한(상태파일 비만 방지)
+                    save_state(st)
                     n = fresh
                 except Exception:
                     pass                                    # 폐기 실패 시 기존 카운트 유지
@@ -318,11 +365,11 @@ def run_relay():
 
     def drain_inbox(note_base="relay 기동회수"):
         try:
-            pend = http_json(f"{BASE}/api/nats/inbox?bot={BOT}")
+            pend = http_json(f"{BASE}/api/nats/inbox?bot={BOT}&token={urllib.parse.quote(_comm_token(BOT))}")
             for m in (pend if isinstance(pend, list) else []):
                 try:
                     http_json(f"{BASE}/api/nats/ack", "POST",
-                              {"from": BOT, "msg_id": m.get("id", ""),
+                              {"from": BOT, "msg_id": m.get("id", ""), "token": _comm_token(BOT),
                                "note": f"actor_id:{BOT}|맡은일:{note_base}|정본ref:comm/comm-relay-common.py|acknowledged"})
                 except Exception as e:
                     if "404" not in str(e):
@@ -365,7 +412,7 @@ def run_relay():
                                         f"정본ref:comm/comm-relay-common.py|acknowledged")
                                 try:
                                     http_json(f"{BASE}/api/nats/ack", "POST",
-                                              {"from": BOT, "msg_id": p.get("id", ""), "note": note})
+                                              {"from": BOT, "msg_id": p.get("id", ""), "note": note, "token": _comm_token(BOT)})
                                 except Exception as e:
                                     if "404" not in str(e):
                                         log(f"ACK 실패: {e}")

@@ -22,7 +22,10 @@ comm_client.py — 봇 표준 통신 클라이언트 (stdlib 0의존, 8024 comm 
 
 API (8024): GET /api/nats/inbox?bot=&token= · POST /api/nats/send
             POST /api/nats/ack · GET /api/nats/whoami?bot=&token=
-            — 1단계(이사님 승인) 구현본. 실패 시 재시도 3회(1/2/4초 backoff) 후 []/False.
+            — 1단계(이사님 승인) 구현본. 실패 시 재시도 3회(1/2/4초 backoff).
+N4 개정(2026-11-12, 감사 Runtime_Code_vs_Docs_Audit_20261110 반영):
+  - R3: GET 실패를 빈 배열이 아닌 None으로 반환(통신오류≠새것없음 오판 차단).
+  - B5/C: send()에 idem_key 파라미터 → Idempotency-Key 헤더(재전송 시 같은 msg id 멱등 응답).
 """
 
 import json
@@ -32,20 +35,23 @@ import urllib.request
 from typing import Any, Callable, Dict, List, Optional
 
 BASE = "http://43.201.34.144:8024"
-VERSION = "comm-client-1.0 (2026-09-21, 사칙 통신표준 v1)"
+VERSION = "comm-client-1.1 (2026-11-12 N4: GET오류 None·Idempotency-Key — 감사 Runtime_Code_vs_Docs_Audit_20261110 반영 · 사칙 통신표준 v1)"
 RETRIES = 3
 
 
-def _req(url: str, method: str = "GET", body: Optional[Dict] = None) -> Any:
+def _req(url: str, method: str = "GET", body: Optional[Dict] = None,
+         headers: Optional[Dict[str, str]] = None) -> Any:
     last = None
     for attempt in range(RETRIES):
         try:
             data = None
-            headers = {"Accept": "application/json"}
+            hdrs = {"Accept": "application/json"}
+            if headers:
+                hdrs.update(headers)
             if body is not None:
                 data = json.dumps(body, ensure_ascii=False).encode("utf-8")
-                headers["Content-Type"] = "application/json"
-            req = urllib.request.Request(url, data=data, method=method, headers=headers)
+                hdrs["Content-Type"] = "application/json"
+            req = urllib.request.Request(url, data=data, method=method, headers=hdrs)
             with urllib.request.urlopen(req, timeout=10) as res:
                 if res.status == 200:
                     return json.loads(res.read().decode("utf-8") or "[]")
@@ -53,7 +59,8 @@ def _req(url: str, method: str = "GET", body: Optional[Dict] = None) -> Any:
         except Exception as e:  # 네트워크·브로커·8024 일시장애 — 95-1: backoff 후 재시도
             last = e
             time.sleep(2 ** attempt)
-    return [] if method == "GET" else {"status": "error", "message": str(last)}
+    # N4(R3): GET 실패는 None(통신오류) — 빈 []와 구분해 '새것 없음' 오판을 막는다
+    return None if method == "GET" else {"status": "error", "message": str(last)}
 
 
 class CommClient:
@@ -67,8 +74,9 @@ class CommClient:
         self.token = token
 
     # --- GET ---
-    def poll(self) -> List[Dict]:
-        """미수신함 조회. 빈 [] = 새것 없음(정상). 수신한 것은 각자 즉시 ack() 의무."""
+    def poll(self) -> Optional[List[Dict]]:
+        """미수신함 조회. 빈 [] = 새것 없음(정상). None = 통신오류(N4 — 재시도 3회 후도 실패).
+        수신한 것은 각자 즉시 ack() 의무."""
         q = urllib.parse.urlencode({"bot": self.bot, "token": self.token})
         return _req(f"{self.base}/api/nats/inbox?{q}")
 
@@ -79,11 +87,14 @@ class CommClient:
 
     # --- POST ---
     def send(self, to: str, msg_type: str = "task", payload: Any = None,
-             text: str = "", ref: str = "") -> Any:
-        """봇간 송신. 헤더 7필드(id·ts·subject·from·to·text·payload)는 8024가 부여·검증."""
+             text: str = "", ref: str = "", idem_key: str = "") -> Any:
+        """봇간 송신. 헤더 7필드(id·ts·subject·from·to·text·payload)는 8024가 부여·검증.
+        N4(B5/C): idem_key를 주면 Idempotency-Key 헤더로 전송 — 같은 키 재전송 시 같은 msg id
+        멱등 응답(네트워크 재시도 중복발송 방지). 키는 발신마다 1회 생성·재사용 금지."""
+        headers = {"Idempotency-Key": idem_key} if idem_key else None
         return _req(f"{self.base}/api/nats/send", "POST", {
             "from": self.bot, "token": self.token, "to": to, "type": msg_type,
-            "text": text, "ref": ref, "payload": payload or {}})
+            "text": text, "ref": ref, "payload": payload or {}}, headers=headers)
 
     def broadcast(self, msg_type: str = "notice", text: str = "", ref: str = "") -> Any:
         """공지 발행(매니저·이사님 — 전봇 fanout)."""
@@ -99,16 +110,19 @@ class CommClient:
     # --- 루프 헬퍼 ---
     def poll_forever(self, handler: Optional[Callable[[Dict], Any]] = None,
                      interval: int = 30, one_shot: bool = False) -> None:
-        """30~60초 주기 폴링(사칙 §3-1). 수신→handler→자동ACK. 1회만(one_shot=True)은 부팅시 권장."""
+        """30~60초 주기 폴링(사칙 §3-1). 수신→handler→자동ACK. 1회만(one_shot=True)은 부팅시 권장.
+        N4(R3): poll()이 None(통신오류)이면 이번 주기는 건너뛴다 — 오류를 빈 사서함으로 옅지 않는다."""
         while True:
-            for m in self.poll():
-                note = "acknowledged"
-                if handler:
-                    try:
-                        note = handler(m) or "acknowledged"
-                    except Exception as e:
-                        note = f"blocked: handler 실패 {e!r}"
-                self.ack(m.get("id", ""), note=note)
+            msgs = self.poll()
+            if msgs is not None:
+                for m in msgs:
+                    note = "acknowledged"
+                    if handler:
+                        try:
+                            note = handler(m) or "acknowledged"
+                        except Exception as e:
+                            note = f"blocked: handler 실패 {e!r}"
+                    self.ack(m.get("id", ""), note=note)
             if one_shot:
                 return
             time.sleep(interval)
@@ -121,6 +135,9 @@ if __name__ == "__main__":
     tok = sys.argv[1] if len(sys.argv) > 1 else ""
     c = CommClient(bot=os.environ.get("COMM_BOT", "heav_lnx_codex_dev_1_bot"), token=tok)
     print(json.dumps(c.whoami(), ensure_ascii=False, indent=2))
-    for m in c.poll():
+    msgs = c.poll()
+    if msgs is None:
+        print("poll 실패(통신오류) — 재시도 후 재실행 권장")
+    for m in (msgs or []):
         print(m.get("from"), "->", m.get("to"), ":", m.get("text"))
         c.ack(m.get("id", ""), note="부팅 미수신 처리 — acknowledged")
