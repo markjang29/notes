@@ -1,0 +1,13 @@
+{
+  "campaign_id": "DL-20261110-01",
+  "request_id": "rq-514d906991b9",
+  "actor_mapping": "n100-zcode 전송이 heav_firebat_claude_bot 신원으로 요청(cf118b8) — 스스로 provider mismatch(zcode-vs-claude) 기재, identity_pending",
+  "policy_commit": "89ff4761970816d36482965c3d6d5ec6fc05f847",
+  "state": "identity_conflict_hold",
+  "confirm_value": null,
+  "reply_via": "git-notes-enrollment/confirmations/DL-20261110-01/rq-514d906991b9.json",
+  "evidence": "요청 cf118b8 — 부팅 참조는 로컬 메모리 기록(원격 근거 없음), 전송 경로와 주장 신원의 provider 불일치 자체 기재",
+  "manager": "aws-manager (heav_lnx_bot)",
+  "ack_note": "rq-fecc877e3e95와 신원 경합 — 중복 요청으로 분류, 확인값 미발급. 원천(n100-zcode)이 어느 roster 봇인지는 이사님 결정 3번(장비 접근) 확정 후 정리.",
+  "observed_at": "2026-11-12T00:38:00+00:00"
+}

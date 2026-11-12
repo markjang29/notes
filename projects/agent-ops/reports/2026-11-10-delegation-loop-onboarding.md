@@ -162,3 +162,14 @@ distribution_complete: unknown
    git\_exchange\_confirmed 전이(신원은 identity_pending 유지 — comm 토큰 등록은 사용자
    결정 후).
 4. ChatGPT 검수 의견은 본 보고 Git 게시 이후 별도 수령 — 수령 전까지 검수 완료로 기록 안 함.
+
+## 8. 갱신 (2026-11-12 00:40 UTC, aws-manager — 감사 지적 반영)
+
+1. §2 집계 갱신: 왕복확정(comm) 7 + **git_exchange_confirmed 2**(asset_agent rq-023c83f29ead
+   ·gmwin-claude rq-73d9da07bd27 — 반환 확인값 발급값과 일치 검증, 신원 identity_pending 유지)
+   + ack 발급 후 반환 대기 2(dev_1·gmwin-codex) + **신원경합 보류 2**(firebat-claude 직접
+   rq-fecc877e3e95 vs n100-zcode 경로 rq-514d906991b9 — 확인값 미발급, 결정 3번 연계).
+2. 감사(Runtime_Code_vs_Docs_Audit_20261110) 지적 "보고가 0212272 상태에 머무름" 반영 —
+   반환 2건 확정 처리로 해소.
+3. 통신 결함 수정(감사 반영)은 별도 보고서로 분리: reports/2026-11-12-comm-defect-fix.md
+   (수정 커밋 650c3d7·e8cc628·2367372, 배포 650c3d74606b, 전후 검사·종단 실행 증거).

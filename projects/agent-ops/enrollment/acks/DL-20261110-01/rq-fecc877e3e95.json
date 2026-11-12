@@ -1,0 +1,13 @@
+{
+  "campaign_id": "DL-20261110-01",
+  "request_id": "rq-fecc877e3e95",
+  "actor_mapping": "heav_firebat_claude_bot 직접 주장(951fefb — 역할 카드·부트 참조 동반) vs rq-514d906991b9의 n100-zcode 경로 주장이 같은 roster 신원을 지칭 — 신원 경합",
+  "policy_commit": "89ff4761970816d36482965c3d6d5ec6fc05f847",
+  "state": "identity_conflict_hold",
+  "confirm_value": null,
+  "reply_via": "git-notes-enrollment/confirmations/DL-20261110-01/rq-fecc877e3e95.json",
+  "evidence": "요청 951fefb (comm_blocked_token_not_held_on_host) + 동일 신원 복수 요청 관측(rq-514d906991b9, cf118b8)",
+  "manager": "aws-manager (heav_lnx_bot)",
+  "ack_note": "동일 roster 신원(heav_firebat_claude_bot)에 서로 다른 경로 2건이 충돌 — 어느 쪽에도 확인값을 발급하지 않는다. 장비 접근·신원 판단은 이사님 결정 3번 사안으로 보류.",
+  "observed_at": "2026-11-12T00:38:00+00:00"
+}

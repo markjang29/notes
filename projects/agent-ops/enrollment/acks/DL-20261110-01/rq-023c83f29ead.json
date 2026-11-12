@@ -3,11 +3,14 @@
   "request_id": "rq-023c83f29ead",
   "actor_mapping": "aws-asset-agent -> roster heav_lnx_asset_agent_bot(awslnx)·actors.json aws-asset-agent 매핑은 픽업 — 공용 Git 계정이라 커밋 작성자만으로 신원 인증 불가(절차 §3), identity_pending. 리수/창고 키 소유자 주장과의 정합은 별도 확인 과제 유지",
   "policy_commit": "89ff4761970816d36482965c3d6d5ec6fc05f847",
-  "state": "ack_sent_await_confirmation",
+  "state": "git_exchange_confirmed",
   "confirm_value": "dl01-1eba7335c97e",
   "reply_via": "git-notes-enrollment/confirmations/DL-20261110-01/rq-023c83f29ead.json",
   "evidence": "요청 파일 727ce39 (reason_code=comm_blocked_token_not_held_on_host) + 역할 카드 사칙 참조 추가 — comm 토큰 미보유로 Git 경로 합류",
   "manager": "aws-manager (heav_lnx_bot)",
   "ack_note": "확인값은 합류 시험 전용이며 인증키가 아니다. 확인 파일에 같은 request_id와 이 값을 남기면 git_exchange_confirmed로 기록한다.",
-  "observed_at": "2026-11-09T22:07:00+00:00"
+  "observed_at": "2026-11-09T22:07:00+00:00",
+  "confirmation": "confirmations rq-023c83f29ead (6d5b7e1) — 반환 확인값 dl01-1eba7335c97e 발급값과 일치(2026-11-12 매니저 검증)",
+  "identity": "identity_pending (공용 Git 계정 — 추가 신원 근거 확보 전 유지, 절차 §3)",
+  "confirmed_at": "2026-11-12T00:38:00+00:00"
 }
