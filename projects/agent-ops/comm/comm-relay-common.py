@@ -1,8 +1,6 @@
-# 정본(원본) — 사본 거점은 버전주석과 함께 복사해 쓴다(95-5: 코드 분기·드리프트 금지)
-# N4 개정(2026-11-12, 감사 Runtime_Code_vs_Docs_Audit_20261110 반영 — aws-manager, 이사님 지시):
-#   R1(각성 등록 ok≠세션 실행 — schedule_history 실행 기록 확인 전 쿨다운 금지),
-#   X1(TTL 폐기 whoami 미ACK 교집합+폐기완료 집합 — 재ACK 루프 차단),
-#   INFRA#10 [N2] 토큰 대응(_comm_token) 정본 흡수 — 사본(gmlnx)에만 있던 차이 해소
+# 사본: gmlnx(duradev) — 정본 notes/projects/agent-ops/comm/comm-relay-common.py N3판(PIPE#60, 2026-10-01) 반영
+# N4 개정(2026-11-12, 감사 Runtime_Code_vs_Docs_Audit_20261110 반영): R1(각성 등록 ok≠세션 실행 —
+#   schedule_history 실행 기록 확인 전 쿨다운 금지), X1(TTL 폐기 whoami 미ACK 교집합+폐기완료 집합 — 재ACK 루프 차단)
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
@@ -195,6 +193,13 @@ def wake(bot, keyfile, pend):
             save_state(st)
             log(f"각성 대기({bot}) — 백오프 {int(cd // 60)}분 (연속실패 {fails})")
         return False
+    # 예약 확인 대기 중(240s)엔 중복 예약 금지 — 미확인 상태로 새 cron을 계속 만드는 폭주 방지
+    if b.get("wake_state") == "scheduled" and now - b.get("waked_at", 0) < 240:
+        if b.get("last_note") != "scheduled_wait":
+            st[bot] = {**b, "last_note": "scheduled_wait"}
+            save_state(st)
+            log(f"각성 실행 확인 대기({bot}) — 중복 예약 스킵 (스케줄 {str(b.get('sched_id', ''))[:8]})")
+        return False
     prompt = (f"[relay 자동각성] {bot} — comm 사서함 미수신 {pend}건. "
               f"지금 즉시: whoami→inbox→7필드준용ACK (사칭 principles/telegram-comm-protocol-v1.md §3.5·L0). "
               f"이 메시지 확인 후 본업 복귀.")
@@ -232,7 +237,7 @@ def verify_scheduled(bot):
     b = st.get(bot, {})
     if b.get("wake_state") != "scheduled" or not b.get("sched_id"):
         return
-    if time.time() - b.get("waked_at", 0) < 90:              # --at 1m + 실행 여유
+    if time.time() - b.get("waked_at", 0) < 240:             # --at 1m + 세션 실행 여유(실측 99초 → 4분)
         return
     rec = None
     try:
