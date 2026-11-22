@@ -44,3 +44,18 @@
   (/reports + 상세 렌더 + 홈 카드 + ELI5 샘플). 실측: /reports 200 · 상세 200 · 홈 카드 노출.
   codex_dev_2 재독촉 회신 전 매니저 대체 실행 (규칙 3 첫 적용). 서비스 재기동(8018, 수 초).
 - RELAY-54 manager 정합성 정리 1차 — fbdca48 (08-26)
+
+## 미결 (open) — COMPANY-OPS-20261120 (2026-11-22 등록)
+
+### COMPANY-OPS-A — 도트 회사 화면 bot-dashboard 부착 [배정대기]
+- 담당: heav_lnx_zcode_bot(구현 이력) 또는 관제 지정 — 이사님 확정 필요
+- 기한: 지정 후 3일 · 검증: 8025 화면 실측 + 모바일 뷰 증거
+- 데이터 계약: reports/company-ops-roster-audit-2026-11-22.json + roster.json
+
+### COMPANY-OPS-B — 리수 중복/깨진참조/호환 검사 → 코어 자산 연결
+- 담당: asset_agent · 배정 2026-11-22 (매니저, 기존 역할 확대) · 기한 미지정
+- 검증: 검사 결과 커밋 + 코어 자산 가공 연결 근거
+
+### COMPANY-OPS-C — 전 봇 발송 규칙 실경로 시험
+- 대상: 활성 18봇 · 담당: 각 봇 (차회 회신에 tools/send-rules-check.py 통과 본문)
+- 검증: 통과 보고 원본 + 미통과 봇은 대시보드 '규칙 미적용' 표시 — ACK만으로 완료 불가

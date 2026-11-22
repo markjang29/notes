@@ -1,0 +1,203 @@
+{
+ "audit_id": "COMPANY-OPS-20261120-ROSTER-AUDIT",
+ "date": "2026-11-22",
+ "sources": {
+  "ledger": "notes origin/main projects/agent-ops/roster.json (bot-roster-v2)",
+  "registry": "actors.json v10",
+  "host": "~/.cokacdir/bot_settings.json (username만, 토큰 미취급)",
+  "ccserver": "tokens 7 / key-files 11"
+ },
+ "summary": {
+  "roster_active": 18,
+  "registry_agents": 12,
+  "unregistered_actives": [
+   "heav_aws512_bot",
+   "heav_firebat_zcode_bot",
+   "heav_gmwin_zcode_bot",
+   "heav_firebat_codex_bot",
+   "heav_gmwin_codex_bot",
+   "heav_gmwin_claude_bot",
+   "heav_gmlnx_zcode_bot",
+   "heav_gmlnx_claude_bot",
+   "heav_gmwin_devpass_bot"
+  ],
+  "settings_only_not_in_roster": [
+   "heav_gmlnx_codex_bot",
+   "heav_lnx_codex_dev_2_bot"
+  ]
+ },
+ "discrepancies": [
+  {
+   "kind": "site_label_mismatch",
+   "detail": "roster heav_gmwin_codex_bot(site=gmwin) vs 호스트 설정 heav_gmlnx_codex_bot 표기 — 동일 봇 개명/이전 여부 확인 필요"
+  },
+  {
+   "kind": "stale_setting",
+   "detail": "호스트 설정에 heav_lnx_codex_dev_2_bot 잔존 — roster는 deleted. 화면은 숨김되나 설정 잔재 정리 대상"
+  },
+  {
+   "kind": "role_missing",
+   "detail": "툴 수집·리수 관리 역할이 원장·레지스트리 어디에도 명시 항목 없음"
+  }
+ ],
+ "role_assignments": [
+  {
+   "role": "리수 관리",
+   "target": "aws-asset-agent(heav_lnx_asset_agent_bot — 표시명에 '리수및 창고 관리' 명시)",
+   "next_work": "카드·로어북 중복/깨진 참조/호환성 검사 → 코어 자산 가공 연결",
+   "decision": "manager route(기존 역할 확대 해석), 이사님 확인란"
+  },
+  {
+   "role": "툴 수집",
+   "target": null,
+   "proposal": "미등록 활성 봇(aws512·firebat_zcode·gmwin_zcode 등) 중 지정 또는 windows-zcode(격리시험 특화) 역할 부여 — 이사님 지정 필요",
+   "next_work": "실제 막힌 작업(예: 호스트 무브라우저→화면증거, MongoDB 재기동 검증)에 필요한 도구 조사→격리 시험→담당 인계"
+  }
+ ],
+ "rows": [
+  {
+   "roster_seq": "00",
+   "bot": "heav_aws512_bot",
+   "site": "aws512",
+   "actor_id": null,
+   "on_host_settings": false,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "00",
+   "bot": "heav_lnx_bot",
+   "site": "awslnx",
+   "actor_id": "aws-manager",
+   "on_host_settings": true,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "01",
+   "bot": "heav_lnx_novel_col_bot",
+   "site": "gmwin",
+   "actor_id": "aws-novel-col",
+   "on_host_settings": true,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "01",
+   "bot": "heav_firebat_zcode_bot",
+   "site": "firewin",
+   "actor_id": null,
+   "on_host_settings": false,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "02",
+   "bot": "heav_firebat_claude_bot",
+   "site": "firewin",
+   "actor_id": "n100-zcode",
+   "on_host_settings": false,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "03",
+   "bot": "heav_lnx_asset_agent_bot",
+   "site": "awslnx",
+   "actor_id": "aws-asset-agent",
+   "on_host_settings": true,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "04",
+   "bot": "heav_gmwin_zcode_bot",
+   "site": "gmwin",
+   "actor_id": null,
+   "on_host_settings": false,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "04",
+   "bot": "heav_lnx_arcade_bot",
+   "site": "awslnx",
+   "actor_id": "aws-arcade",
+   "on_host_settings": true,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "95",
+   "bot": "heav_lnx_audit_bot",
+   "site": "awslnx",
+   "actor_id": "aws-audit",
+   "on_host_settings": true,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "96",
+   "bot": "heav_firebat_codex_bot",
+   "site": "firewin",
+   "actor_id": null,
+   "on_host_settings": false,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "97",
+   "bot": "heav_gmwin_codex_bot",
+   "site": "gmwin",
+   "actor_id": null,
+   "on_host_settings": false,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "98",
+   "bot": "heav_lnx_codex_dev_1_bot",
+   "site": "awslnx",
+   "actor_id": "aws-codex-dev",
+   "on_host_settings": true,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "99",
+   "bot": "heav_gmwin_claude_bot",
+   "site": "gmwin",
+   "actor_id": null,
+   "on_host_settings": false,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "",
+   "bot": "heav_gmlnx_zcode_bot",
+   "site": "gmlnx",
+   "actor_id": null,
+   "on_host_settings": true,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "",
+   "bot": "heav_gmlnx_claude_bot",
+   "site": "gmlnx",
+   "actor_id": null,
+   "on_host_settings": true,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "",
+   "bot": "heav_lnx_scenario_bot",
+   "site": "awslnx",
+   "actor_id": "aws-scenario",
+   "on_host_settings": true,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "",
+   "bot": "heav_lnx_rpg_bot",
+   "site": "awslnx",
+   "actor_id": "aws-rpg",
+   "on_host_settings": true,
+   "send_rule_test": "not_applied"
+  },
+  {
+   "roster_seq": "",
+   "bot": "heav_gmwin_devpass_bot",
+   "site": "gmwin",
+   "actor_id": null,
+   "on_host_settings": false,
+   "send_rule_test": "not_applied"
+  }
+ ]
+}
