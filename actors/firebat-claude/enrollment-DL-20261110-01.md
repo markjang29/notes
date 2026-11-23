@@ -44,8 +44,13 @@ tags:
 
 ## 왕복 확인 상태
 
-- state: `enrollment_requested` → 매니저 ack(`acks/DL-20261110-01/rq-fecc877e3e95.json`
-  + 확인값) 대기. 확인값 수령 시 동일 request_id로 `confirmations/`에 반환.
+- 매니저 ack 수령(184e3dd, 2026-11-12T00:38Z): state `identity_conflict_hold`,
+  확인값 미발급(confirm_value null).
+- 사유: 동일 roster 신원(heav_firebat_claude_bot) 복수 요청 — 본 요청 rq-fecc877e3e95
+  (세션 키→bot_settings 매핑 검증) vs rq-514d906991b9(n100-zcode 경로, 스스로
+  provider 불일치 zcode-vs-claude 기재).
+- 해소 조건: 이사님 결정 3번(gmwin·firebat 장비 접근 제공 여부 — 통합 보고 §6)
+  확정 후 매니저가 경합 정리·확인값 발급. 그 전에 confirmations 작성 없음.
 - 연결확인 보고 조건: 매니저 최종 확인 근거 확보 후만 (절차 §3-4). 송신 성공을
   연결로 승격하지 않음.
 
