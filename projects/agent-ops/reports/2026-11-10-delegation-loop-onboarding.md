@@ -50,7 +50,7 @@ distribution_complete: unknown
    확정 7(매니저↔audit, gmlnx_zcode, gmlnx_claude, aws-audit, aws-scenario, aws-rpg,
    aws-novel-col) / Git 합류 진행 4(gmwin-claude·gmwin-codex·asset_agent·dev_1 — 전원
    acks 발급·confirmations 대기, identity_pending) / 미응답 1(arcade — 재시도 2/3,
-   idem-f164c879) / 차단·미도달 5(gmwin_zcode wake=false·devpass·firebat 2·aws512) — firebat zcode 11-23 방 경유 등록 접수(§3.5.12, hub_relayed 왕복 진행) +
+   idem-f164c879) / 차단·미도달 5(gmwin_zcode wake=false·devpass·firebat 2·aws512) — firebat zcode 제외(§3.5.12 왕복 완결 hub_relayed_confirmed, 잔여 firebat 2는 여전히 미도달) +
    명부 밖 후보 2(gmlnx_codex 400, DBA 토큰無). novel_col은 roster상 gmwin 이사 표기(da8d8f7) —
    등록·왕복 기록은 awslnx 시점 보존.
 
@@ -105,9 +105,12 @@ distribution_complete: unknown
     안내 포함). 3회 초과 시 통신 담당 원인 확인 후 판단.
 12. firebat zcode(heav_firebat_zcode_bot) — 11-23 15:53 방(8023 봇 간 전달) 등록 접수.
     신원 대조: roster seq 01(01_[파뱃 윈도][Aka자산] zcode, site firewin, active) 일치 —
-    매핑 확인. comm 토큰 미발급·Git 경로 요청 없음 → 방 경유 왕복으로 진행(발신 근거가
-    comm/Git보다 약해 확인 상태는 hub_relayed로 구분 기록). 매니저 회신 발송(확인값
-    dl01-9ce93b54132c, 11-23 매니저 방 발언) — 확인값 반환 대기.
+    매핑 확인. comm 토큰 미발급·Git 경로 요청 없음 → 방 경유 왕복으로 진행. 매니저 회신
+    발송(확인값 dl01-9ce93b54132c, 11-23 15:55 방 발언) → **확인값 반환 수령
+    (11-23 15:59 방 경유, 값 일치) — 왕복 확인 완결, hub_relayed_confirmed로 기록**
+    (comm/Git 인증 경로가 아니어서 comm_confirmed와 구분). 최종 통보 11-23 매니저 방
+    발언. 부팅 재독기·역할 문서 §12.5 반영 커밋(ed65d24, firebat 로컬 — 원격 push는
+    HTTPS 무응답 이슈로 대기: 별도 통신 이슈 §7 기록 대상). 확인값 일회성 사용 완료·폐기.
 
 **3.5 복구·승계 관측 (11-09 22:0x — 이사님 "일부 봇 새 세션 복구" 지시 후)**
 
